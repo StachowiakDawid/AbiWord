@@ -1,7 +1,7 @@
 /* -*- mode: C++; tab-width: 4; c-basic-offset: 4; indent-tabs-mode: t -*- */
 /* AbiWord
  * Copyright (C) 2002 Tomas Frydrych <tomas@frydrych.uklinux.net>
- * Copyright (C) 2021 Hubert Figuière
+ * Copyright (C) 2021-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,6 +19,8 @@
  * 02110-1301 USA.
  */
 
+#include <sstream>
+
 #include "pp_Revision.h"
 #include "pp_AttrProp.h"
 #include "pd_Style.h"
@@ -26,11 +28,6 @@
 #include "ut_debugmsg.h"
 #include "ut_misc.h"
 #include "ut_std_map.h"
-
-//#include <limits.h>
-
-#include <sstream>
-
 
 PP_Revision::PP_Revision(UT_uint32 Id, PP_RevisionType eType, const gchar * props, const gchar * attrs):
 	m_iID(Id), m_eType(eType), m_bDirty(true)
@@ -165,7 +162,7 @@ bool PP_Revision::_handleNestedRevAttr()
 		{
 			const PP_Revision * pRev = NestedAttr.getNthRevision(i);
 			UT_return_val_if_fail( pRev, false );
-					
+
 			// ignore inserts and deletes
 			if(pRev->getType() == PP_REVISION_ADDITION || pRev->getType() == PP_REVISION_DELETION)
 				continue;
@@ -386,8 +383,7 @@ PP_RevisionAttr::PP_RevisionAttr(UT_uint32 iId, PP_RevisionType eType,
                                  const PP_PropertyVector & attrs,
                                  const PP_PropertyVector & props)
 {
-	PP_Revision * pRevision = new PP_Revision((UT_uint32)iId, eType, props, attrs);
-	m_vRev.addItem((void*)pRevision);
+	m_vRev.push_back(new PP_Revision((UT_uint32)iId, eType, props, attrs));
 }
 
 
@@ -414,11 +410,9 @@ PP_RevisionAttr::setRevision(const std::string&  r)
 /*! destroys all internal data */
 void PP_RevisionAttr::_clear()
 {
-	for(UT_sint32 i = 0; i < m_vRev.getItemCount(); i++)
-	{
-		delete (PP_Revision *) m_vRev.getNthItem(i);
+	for (size_t i = 0; i < m_vRev.size(); i++) {
+		delete m_vRev.at(i);
 	}
-
 	m_vRev.clear();
 	m_bDirty = true;
 	m_pLastRevision = nullptr;
@@ -532,12 +526,8 @@ void PP_RevisionAttr::_init(const gchar *r)
 		// now we can retrieve the id
 		iId = atol(t);
 
-		{
-			PP_Revision * pRevision = new PP_Revision((UT_uint32)iId, eType, pProps, pAttrs);
+		m_vRev.push_back(new PP_Revision((UT_uint32)iId, eType, pProps, pAttrs));
 
-			m_vRev.addItem((void*)pRevision);
-		}
-		
 	skip_this_token:
 		if(next_s < end_s)
 			t = strtok(next_s,",");
@@ -557,12 +547,10 @@ void PP_RevisionAttr::_init(const gchar *r)
  */
 bool PP_RevisionAttr::changeRevisionType(UT_uint32 iId, PP_RevisionType eType)
 {
-	for(UT_sint32 i = 0; i < m_vRev.getItemCount(); i++)
-	{
-		PP_Revision * r = (PP_Revision *)m_vRev.getNthItem(i);
+	for (size_t i = 0; i < m_vRev.size(); i++) {
+		PP_Revision* r = m_vRev.at(i);
 		UT_nonnull_or_continue(r);
-		if(iId == r->getId())
-		{
+		if (iId == r->getId()) {
 			r->setType(eType);
 			m_bDirty = true;
 			return true;
@@ -575,13 +563,11 @@ bool PP_RevisionAttr::changeRevisionType(UT_uint32 iId, PP_RevisionType eType)
 bool PP_RevisionAttr::changeRevisionId(UT_uint32 iOldId, UT_uint32 iNewId)
 {
 	UT_return_val_if_fail(iNewId >= iOldId, false);
-	
-	for(UT_sint32 i = 0; i < m_vRev.getItemCount(); i++)
-	{
-		PP_Revision * r = (PP_Revision *)m_vRev.getNthItem(i);
+
+	for (size_t i = 0; i < m_vRev.size(); i++) {
+		PP_Revision* r = m_vRev.at(i);
 		UT_nonnull_or_continue(r);
-		if(iOldId == r->getId())
-		{
+		if (iOldId == r->getId()) {
 			r->setId(iNewId);
 			m_bDirty = true;
 			return true;
@@ -600,52 +586,40 @@ void PP_RevisionAttr::pruneForCumulativeResult(PD_Document * pDoc)
 {
 	// first we are looking for any deletions which cancel anything below them
 	bool bDelete = false;
-	UT_sint32 i;
-	if(m_vRev.getItemCount() == 0)
-	{
+	if (m_vRev.empty()) {
 		return;
 	}
 
     m_bDirty = true;
-	
-	for(i = m_vRev.getItemCount()-1; i >=0; --i)
-	{
-		PP_Revision * r = (PP_Revision *)m_vRev.getNthItem(i);
-		UT_nonnull_or_continue(r);
 
-		if(!bDelete && r->getType() == PP_REVISION_DELETION)
-		{
+	for (size_t i = m_vRev.size() - 1; i != 0; --i) {
+		const PP_Revision* r = m_vRev.at(i);
+		UT_nonnull_or_continue(r);
+		if (!bDelete && r->getType() == PP_REVISION_DELETION) {
 			bDelete = true;
 			continue; // we do not want the top revision deleted
 		}
-		
 
-		if(bDelete)
-		{
-			delete r;
-			m_vRev.deleteNthItem(i);
+		if (bDelete) {
+			m_vRev.erase(m_vRev.begin() + i);
 		}
 	}
 
 	// now we merge props and attrs in what is left
-	if(m_vRev.getItemCount() == 0)
-	{
+	if (m_vRev.empty()) {
 		return;
 	}
 
-	PP_Revision * r0 = (PP_Revision *)m_vRev.getNthItem(0);
-	UT_return_if_fail(r0);
-	
-	for(i = 1; i < m_vRev.getItemCount(); ++i)
-	{
-		PP_Revision * r = (PP_Revision *)m_vRev.getNthItem(i);
-		UT_return_if_fail( r );
-		
+	PP_Revision* r0 = m_vRev.at(0);
+	UT_nonnull_or_return(r0, );
+
+	for (size_t i = 1; i < m_vRev.size(); ++i) {
+		const PP_Revision* r = m_vRev.at(i);
+		UT_nonnull_or_return(r, );
 		r0->setProperties(r->getProperties());
 		r0->setAttributes(r->getAttributes());
 
-		delete r;
-		m_vRev.deleteNthItem(i);
+		m_vRev.erase(m_vRev.begin() + i);
 		--i;
 	}
 
@@ -657,17 +631,17 @@ void PP_RevisionAttr::pruneForCumulativeResult(PD_Document * pDoc)
 	// I do not think we should do this -- the emptiness indicates that the props and
 	// attributes should be removed from the format; if we remove them, we irreversibly
 	// lose this information
-	
+
 	// get rid of any empty props and attrs
 	r0->prune();
 #endif
-	
+
 	// finally, remove the revision attribute if present
 	const gchar * v;
 	if(r0->getAttribute("revision", v))
 		r0->setAttribute("revision", nullptr);
 
-	UT_ASSERT_HARMLESS( m_vRev.getItemCount() == 1 );
+	UT_ASSERT_HARMLESS( m_vRev.size() == 1 );
 }
 
 
@@ -687,10 +661,10 @@ void PP_RevisionAttr::pruneForCumulativeResult(PD_Document * pDoc)
 
 // these are special instances of PP_Revision that are used to in the
 // following function to handle special cases
-static const PP_Revision s_del(0, PP_REVISION_DELETION, (gchar*)0, (gchar*)0);
-static const PP_Revision s_add(0, PP_REVISION_ADDITION, (gchar*)0, (gchar*)0);
+static const PP_Revision s_del(0, PP_REVISION_DELETION, nullptr, nullptr);
+static const PP_Revision s_add(0, PP_REVISION_ADDITION, nullptr, nullptr);
 
-const PP_Revision *  PP_RevisionAttr::getGreatestLesserOrEqualRevision(UT_uint32 id,
+const PP_Revision*  PP_RevisionAttr::getGreatestLesserOrEqualRevision(UT_uint32 id,
 																	   const PP_Revision ** ppR) const
 {
 	if(ppR)
@@ -705,10 +679,8 @@ const PP_Revision *  PP_RevisionAttr::getGreatestLesserOrEqualRevision(UT_uint32
 	const PP_Revision *m = nullptr; // this will be the lowest revision present
 	UT_uint32 m_id = 0xFFFF;
 
-	for(UT_sint32 i = 0; i < m_vRev.getItemCount(); i++)
-	{
-		const PP_Revision * t = (const PP_Revision *) m_vRev.getNthItem(i);
-		UT_nonnull_or_continue(t);
+	for (size_t i = 0; i < m_vRev.size(); i++) {
+		const PP_Revision* t = m_vRev.at(i);
 		UT_uint32 t_id = t->getId();
 
 		// the special case speedup - if we hit our id, then we can return immediately
@@ -757,7 +729,7 @@ const PP_Revision *  PP_RevisionAttr::getGreatestLesserOrEqualRevision(UT_uint32
 	return r;
 }
 
-const PP_Revision * PP_RevisionAttr::getLowestGreaterOrEqualRevision(UT_uint32 id) const
+const PP_Revision* PP_RevisionAttr::getLowestGreaterOrEqualRevision(UT_uint32 id) const
 {
 	if(id == 0)
 		return nullptr;
@@ -765,9 +737,9 @@ const PP_Revision * PP_RevisionAttr::getLowestGreaterOrEqualRevision(UT_uint32 i
 	const PP_Revision *r = nullptr; // this will be the revision we are looking for
 	UT_uint32 r_id = PD_MAX_REVISION;
 
-	for(UT_sint32 i = 0; i < m_vRev.getItemCount(); i++)
+	for(size_t i = 0; i < m_vRev.size(); i++)
 	{
-		const PP_Revision * t = (const PP_Revision *) m_vRev.getNthItem(i);
+		const PP_Revision * t = m_vRev.at(i);
 		UT_nonnull_or_continue(t);
 		UT_uint32 t_id = t->getId();
 
@@ -788,7 +760,7 @@ const PP_Revision * PP_RevisionAttr::getLowestGreaterOrEqualRevision(UT_uint32 i
 
 /*! finds the highest revision number in this attribute
  */
-const PP_Revision * PP_RevisionAttr::getLastRevision() const
+const PP_Revision* PP_RevisionAttr::getLastRevision() const
 {
 	// since this is rather involved, we will cache the result and
 	// use the cache if it is uptodate
@@ -798,9 +770,9 @@ const PP_Revision * PP_RevisionAttr::getLastRevision() const
 	//const PP_Revision * r = nullptr;
 	UT_uint32 r_id = 0;
 
-	for(UT_sint32 i = 0; i < m_vRev.getItemCount(); i++)
+	for (size_t i = 0; i < m_vRev.size(); i++)
 	{
-		const PP_Revision * t = (const PP_Revision *)m_vRev.getNthItem(i);
+		const PP_Revision* t = m_vRev.at(i);
 		UT_nonnull_or_continue(t);
 		UT_uint32 t_id = t->getId();
 
@@ -821,9 +793,9 @@ const PP_Revision * PP_RevisionAttr::getLastRevision() const
 UT_uint32 PP_RevisionAttr::getHighestId() const
 {
     UT_uint32 ret = 0;
-	for(UT_sint32 i = 0; i < m_vRev.getItemCount(); i++)
+	for (size_t i = 0; i < m_vRev.size(); i++)
 	{
-		const PP_Revision * t = (const PP_Revision *)m_vRev.getNthItem(i);
+		const PP_Revision * t = m_vRev.at(i);
 		UT_nonnull_or_continue(t);
         ret = std::max( ret, t->getId() );
     }
@@ -840,9 +812,9 @@ const PP_Revision * PP_RevisionAttr::getRevisionWithId(UT_uint32 iId, UT_uint32 
 {
 	minId = PD_MAX_REVISION;
 
-	for(UT_sint32 i = 0; i < m_vRev.getItemCount(); i++)
+	for (size_t i = 0; i < m_vRev.size(); i++)
 	{
-		const PP_Revision * t = (const PP_Revision *)m_vRev.getNthItem(i);
+		const PP_Revision * t = m_vRev.at(i);
 		UT_nonnull_or_continue(t);
 		UT_uint32 t_id = t->getId();
 
@@ -904,11 +876,9 @@ void PP_RevisionAttr::addRevision(UT_uint32 iId, PP_RevisionType eType,
                                   const PP_PropertyVector & pAttrs,
                                   const PP_PropertyVector & pProps)
 {
-	UT_sint32 i;
-
-	for(i = 0; i < m_vRev.getItemCount(); i++)
+	for (size_t i = 0; i < m_vRev.size(); i++)
 	{
-		PP_Revision * r = (PP_Revision*) m_vRev.getNthItem(i);
+		PP_Revision * r = m_vRev.at(i);
 		UT_nonnull_or_continue(r);
 		UT_uint32 r_id = r->getId();
 		PP_RevisionType r_type = r->getType();
@@ -935,12 +905,12 @@ void PP_RevisionAttr::addRevision(UT_uint32 iId, PP_RevisionType eType,
 				// whole fragment should in fact go
 
 				delete r;
-				m_vRev.deleteNthItem(i);
+				m_vRev.erase(m_vRev.begin() + i);
 
 				m_iSuperfluous = iId;
 
-				const PP_Revision * pRevision = new PP_Revision(iId, eType, (gchar*)0, (gchar*)0);
-				m_vRev.addItem((void*)pRevision);
+				PP_Revision * pRevision = new PP_Revision(iId, eType, nullptr, nullptr);
+				m_vRev.push_back(pRevision);
 			}
 			else if((eType == PP_REVISION_ADDITION) && (r_type == PP_REVISION_DELETION))
 			{
@@ -953,7 +923,7 @@ void PP_RevisionAttr::addRevision(UT_uint32 iId, PP_RevisionType eType,
 				// this fragment can no more be superfluous
 
 				delete r;
-				m_vRev.deleteNthItem(i);
+				m_vRev.erase(m_vRev.begin() + i);
 
 				if(m_iSuperfluous == iId)
 				{
@@ -970,10 +940,10 @@ void PP_RevisionAttr::addRevision(UT_uint32 iId, PP_RevisionType eType,
 				// in inserting new text
 
 				delete r;
-				m_vRev.deleteNthItem(i);
+				m_vRev.erase(m_vRev.begin() + i);
 
-				const PP_Revision * pRevision = new PP_Revision(iId, eType, (gchar*)0, (gchar*)0);
-				m_vRev.addItem((void*)pRevision);
+				PP_Revision * pRevision = new PP_Revision(iId, eType, nullptr, nullptr);
+				m_vRev.push_back(pRevision);
 			}
 			else if((eType == PP_REVISION_FMT_CHANGE) && (r_type == PP_REVISION_DELETION))
 			{
@@ -982,11 +952,10 @@ void PP_RevisionAttr::addRevision(UT_uint32 iId, PP_RevisionType eType,
 				// we just replace the old revision with the new
 
 				delete r;
-				m_vRev.deleteNthItem(i);
+				m_vRev.erase(m_vRev.begin() + i);
 
-				const PP_Revision * pRevision = new PP_Revision(iId, eType, pProps, pAttrs);
-				
-				m_vRev.addItem((void*)pRevision);
+				PP_Revision * pRevision = new PP_Revision(iId, eType, pProps, pAttrs);
+				m_vRev.push_back(pRevision);
 			}
 			else if((eType == PP_REVISION_FMT_CHANGE) && (r_type == PP_REVISION_ADDITION))
 			{
@@ -1026,9 +995,9 @@ void PP_RevisionAttr::addRevision(UT_uint32 iId, PP_RevisionType eType,
 	}
 
 	// if we got here then the item is not in our vector so add it
-	const PP_Revision * pRevision = new PP_Revision(iId, eType, pProps, pAttrs);
-	
-	m_vRev.addItem((void*)pRevision);
+	PP_Revision * pRevision = new PP_Revision(iId, eType, pProps, pAttrs);
+
+	m_vRev.push_back(pRevision);
 	m_bDirty = true;
 	m_pLastRevision = nullptr;
 }
@@ -1090,9 +1059,9 @@ void PP_RevisionAttr::mergeAttrIfNotAlreadyThere( UT_uint32 iId,
                                                   const gchar* pzName,
                                                   const gchar* pzValue )
 {
-	for(UT_sint32 i = 0; i < m_vRev.getItemCount(); i++)
+	for (size_t i = 0; i < m_vRev.size(); i++)
 	{
-		const PP_Revision * tr = (const PP_Revision *)m_vRev.getNthItem(i);
+		const PP_Revision * tr = m_vRev.at(i);
 		UT_nonnull_or_continue(tr);
 		UT_uint32 tid = tr->getId();
 
@@ -1249,7 +1218,7 @@ void PP_RevisionAttr::mergeAll( const PP_RevisionAttr& ra )
     if( DEBUG_MERGEALL )
     {
         UT_DEBUGMSG(("ODTCT ra::merge() outputss::%s\n", outputss.str().c_str() ));
-        UT_DEBUGMSG(("ODTCT ra::merge() ret:%s\n", getXMLstring() ));
+        UT_DEBUGMSG(("ODTCT ra::merge() ret:%s\n", getXMLstring().c_str()));
     }
     return;
 }
@@ -1262,15 +1231,15 @@ void PP_RevisionAttr::mergeAll( const PP_RevisionAttr& ra )
  */
 void PP_RevisionAttr::removeRevisionIdWithType(UT_uint32 iId, PP_RevisionType eType)
 {
-	for(UT_sint32 i = 0; i < m_vRev.getItemCount(); i++)
+	for (size_t i = 0; i < m_vRev.size(); i++)
 	{
-		PP_Revision * r = (PP_Revision *)m_vRev.getNthItem(i);
+		PP_Revision * r = m_vRev.at(i);
 		UT_nonnull_or_continue(r);
 
 		if((iId == r->getId()) && (eType == r->getType()))
 		{
 			delete r;
-			m_vRev.deleteNthItem(i);
+			m_vRev.erase(m_vRev.begin() + i);
 			m_bDirty = true;
 			m_pLastRevision = nullptr;
 			return;
@@ -1283,15 +1252,15 @@ void PP_RevisionAttr::removeRevisionIdWithType(UT_uint32 iId, PP_RevisionType eT
 */
 void PP_RevisionAttr::removeRevisionIdTypeless(UT_uint32 iId)
 {
-	for(UT_sint32 i = 0; i < m_vRev.getItemCount(); i++)
+	for (size_t i = 0; i < m_vRev.size(); i++)
 	{
-		PP_Revision * r = (PP_Revision *)m_vRev.getNthItem(i);
+		PP_Revision * r = m_vRev.at(i);
 		UT_nonnull_or_continue(r);
 
 		if(iId == r->getId())
 		{
 			delete r;
-			m_vRev.deleteNthItem(i);
+			m_vRev.erase(m_vRev.begin() + i);
 			m_bDirty = true;
 			m_pLastRevision = nullptr;
 			return;
@@ -1303,14 +1272,14 @@ void PP_RevisionAttr::removeRevisionIdTypeless(UT_uint32 iId)
 */
 void PP_RevisionAttr::removeRevision(const PP_Revision * pRev)
 {
-	for(UT_sint32 i = 0; i < m_vRev.getItemCount(); i++)
+	for (size_t i = 0; i < m_vRev.size(); i++)
 	{
-		PP_Revision * r = (PP_Revision *)m_vRev.getNthItem(i);
+		PP_Revision * r = m_vRev.at(i);
 
 		if(r == pRev)
 		{
 			delete r;
-			m_vRev.deleteNthItem(i);
+			m_vRev.erase(m_vRev.begin() + i);
 			m_bDirty = true;
 			m_pLastRevision = nullptr;
 			return;
@@ -1324,15 +1293,15 @@ void PP_RevisionAttr::removeRevision(const PP_Revision * pRev)
 */
 void PP_RevisionAttr::removeAllLesserOrEqualIds(UT_uint32 iId)
 {
-	for(UT_sint32 i = 0; i < m_vRev.getItemCount(); i++)
+	for (size_t i = 0; i < m_vRev.size(); i++)
 	{
-		PP_Revision * r = (PP_Revision *)m_vRev.getNthItem(i);
+		PP_Revision * r = m_vRev.at(i);
 		UT_nonnull_or_continue(r);
 
 		if(iId >= r->getId())
 		{
 			delete r;
-			m_vRev.deleteNthItem(i);
+			m_vRev.erase(m_vRev.begin() + i);
 			--i; // the vector just shrunk
 		}
 	}
@@ -1346,15 +1315,15 @@ void PP_RevisionAttr::removeAllLesserOrEqualIds(UT_uint32 iId)
 */
 void PP_RevisionAttr::removeAllHigherOrEqualIds(UT_uint32 iId)
 {
-	for(UT_sint32 i = 0; i < m_vRev.getItemCount(); i++)
+	for (size_t i = 0; i < m_vRev.size(); i++)
 	{
-		PP_Revision * r = (PP_Revision *)m_vRev.getNthItem(i);
+		PP_Revision * r = m_vRev.at(i);
 		UT_nonnull_or_continue(r);
 
 		if(iId <= r->getId())
 		{
 			delete r;
-			m_vRev.deleteNthItem(i);
+			m_vRev.erase(m_vRev.begin() + i);
 			--i; // the vector just shrunk
 		}
 	}
@@ -1370,11 +1339,11 @@ void PP_RevisionAttr::_refreshString() const
 {
   //	char buf[30];
 	m_sXMLstring.clear();
-	UT_uint32 iCount = m_vRev.getItemCount();
+	size_t iCount = m_vRev.size();
 
-	for(UT_uint32 i = 0; i < iCount; i++)
+	for (size_t i = 0; i < iCount; i++)
 	{
-		PP_Revision * r = (PP_Revision *)m_vRev.getNthItem(i);
+		const PP_Revision * r = m_vRev.at(i);
 
         if( !m_sXMLstring.empty() )
             m_sXMLstring += ",";
@@ -1426,12 +1395,12 @@ void PP_RevisionAttr::_refreshString() const
 
 /*! get an gchar string representation of this revision
  */
-const gchar * PP_RevisionAttr::getXMLstring() const
+const std::string& PP_RevisionAttr::getXMLstring() const
 {
 	if(m_bDirty)
 		_refreshString();
 
-	return (const gchar*) m_sXMLstring.c_str();
+	return m_sXMLstring;
 }
 
 std::string
@@ -1439,9 +1408,9 @@ PP_RevisionAttr::getXMLstringUpTo( UT_uint32 iId ) const
 {
     PP_RevisionAttr rat;
     rat.setRevision( getXMLstring() );
-    UT_DEBUGMSG(("PP_RevisionAttr::getXMLstringUpTo() id:%d before:%s\n", iId, rat.getXMLstring() ));
+    UT_DEBUGMSG(("PP_RevisionAttr::getXMLstringUpTo() id:%d before:%s\n", iId, rat.getXMLstring().c_str()));
     rat.removeAllHigherOrEqualIds( iId );
-    UT_DEBUGMSG(("PP_RevisionAttr::getXMLstringUpTo() id:%d  after:%s\n", iId, rat.getXMLstring() ));
+    UT_DEBUGMSG(("PP_RevisionAttr::getXMLstringUpTo() id:%d  after:%s\n", iId, rat.getXMLstring().c_str()));
     // PP_RevisionAttr rat;
     // const PP_Revision* r = 0;
     // for( int raIdx = 0;
@@ -1464,9 +1433,8 @@ bool PP_RevisionAttr::isFragmentSuperfluous() const
 {
 	// the fragment is superfluous if the superfluous flag is set
 	// and the fragment belongs only to a single revision level
-	if(m_iSuperfluous != 0 && m_vRev.getItemCount() == 1)
-	{
-		auto rev = (PP_Revision *)m_vRev.getNthItem(0);
+	if (m_iSuperfluous != 0 && m_vRev.size() == 1) {
+		auto rev = m_vRev.at(0);
 		UT_nonnull_or_return(rev, false);
 		UT_return_val_if_fail (rev->getId() == m_iSuperfluous,false);
 		return true;
@@ -1477,13 +1445,11 @@ bool PP_RevisionAttr::isFragmentSuperfluous() const
 
 bool PP_RevisionAttr::operator== (const PP_RevisionAttr &op2) const
 {
-	for(UT_sint32 i = 0; i < m_vRev.getItemCount(); i++)
-	{
-		const PP_Revision * r1 = (const PP_Revision *) m_vRev.getNthItem(i);
+	for (size_t i = 0; i < m_vRev.size(); i++) {
+		const PP_Revision * r1 = m_vRev.at(i);
 
-		for(UT_sint32 j = 0; j < op2.m_vRev.getItemCount(); j++)
-		{
-			const PP_Revision * r2 = (const PP_Revision *) op2.m_vRev.getNthItem(j);
+		for (size_t j = 0; j < op2.m_vRev.size(); j++) {
+			const PP_Revision * r2 = op2.m_vRev.at(j);
 
 			if(!(*r1 == *r2))
 				return false;
@@ -1567,10 +1533,9 @@ UT_uint32 PP_RevisionAttr::getHighestRevisionNumberWithAttribute( const gchar * 
 
 const char* UT_getAttribute( const PP_AttrProp* pAP, const char* name, const char* def  )
 {
-    const gchar* pValue;
-    bool ok;
-    
-    ok = pAP->getAttribute( name, pValue );
+    const gchar* pValue = nullptr;
+
+    bool ok = pAP->getAttribute(name, pValue);
     if (!ok)
     {
         pValue = def;

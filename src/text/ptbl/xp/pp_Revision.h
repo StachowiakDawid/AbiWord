@@ -1,7 +1,7 @@
 /* -*- mode: C++; tab-width: 4; c-basic-offset: 4; indent-tabs-mode: t -*- */
 /* AbiWord
  * Copyright (C) 2002 Tomas Frydrych <tomas@frydrych.uklinux.net>
- * Copyright (C) 2021 Hubert Figuière
+ * Copyright (C) 2021-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,7 +24,6 @@
 #include <string>
 
 #include "ut_types.h"
-#include "ut_vector.h"
 #include "pp_AttrProp.h"
 
 class PD_Document;
@@ -65,7 +64,7 @@ class ABI_EXPORT PP_Revision: public PP_AttrProp
                     const PP_PropertyVector & props,
                     const PP_PropertyVector & attrs);
 
-	virtual ~PP_Revision(){};
+	virtual ~PP_Revision() {}
 
 	UT_uint32        getId()    const {return m_iID;}
 	void             setId(UT_uint32 iId) {UT_ASSERT_HARMLESS( iId >= m_iID); m_iID = iId;}
@@ -136,9 +135,11 @@ class ABI_EXPORT PP_RevisionAttr
 {
   public:
 	PP_RevisionAttr()
-		:m_vRev(), m_sXMLstring(), m_bDirty(true), m_iSuperfluous(0), m_pLastRevision(nullptr)
-		{};
+		: m_sXMLstring(), m_bDirty(true), m_iSuperfluous(0), m_pLastRevision(nullptr)
+		{}
 	PP_RevisionAttr(const gchar * r);
+	PP_RevisionAttr(const std::string & r)
+		: PP_RevisionAttr(r.c_str()) {}
 
 
 	PP_RevisionAttr(UT_uint32 iId, PP_RevisionType eType,
@@ -167,17 +168,20 @@ class ABI_EXPORT PP_RevisionAttr
 	void                  removeAllHigherOrEqualIds(UT_uint32 id);
 	void                  removeRevision(const PP_Revision * pRev);
 
-	const PP_Revision *   getGreatestLesserOrEqualRevision(UT_uint32 id,
+	const PP_Revision*   getGreatestLesserOrEqualRevision(UT_uint32 id,
 														   const PP_Revision ** ppR) const;
-	const PP_Revision *   getLowestGreaterOrEqualRevision(UT_uint32 id) const;
+	const PP_Revision*   getLowestGreaterOrEqualRevision(UT_uint32 id) const;
 
-	const PP_Revision *   getLastRevision() const;
-	const PP_Revision *   getRevisionWithId(UT_uint32 iId, UT_uint32 & iMinId) const;
+	const PP_Revision* getLastRevision() const;
+	const PP_Revision*   getRevisionWithId(UT_uint32 iId, UT_uint32 & iMinId) const;
     UT_uint32             getHighestId() const;
 
-	UT_uint32             getRevisionsCount() const {return m_vRev.getItemCount();}
-    bool                  empty() const { return !getRevisionsCount(); }
-	const PP_Revision *   getNthRevision(UT_uint32 n) const {return (const PP_Revision*)m_vRev.getNthItem(n);}
+	UT_uint32             getRevisionsCount() const
+	{ return m_vRev.size(); }
+    bool                  empty() const
+	{ return m_vRev.empty(); }
+	const PP_Revision*   getNthRevision(UT_uint32 n) const
+	{ return m_vRev.at(n); }
 
 	void                  pruneForCumulativeResult(PD_Document * pDoc);
 
@@ -192,11 +196,7 @@ class ABI_EXPORT PP_RevisionAttr
 	PP_RevisionType       getType(UT_uint32 iId) const;
 	PP_RevisionType       getType() const;
     UT_uint32             getHighestRevisionNumberWithAttribute( const gchar * pName ) const;
-#if 0
-	const UT_Vector *     getProps(UT_uint32 iId);
-	const UT_Vector *     getProps();
-#endif
-	const gchar *      getXMLstring() const;
+	const std::string& getXMLstring() const;
     std::string        getXMLstringUpTo( UT_uint32 iId ) const;
 	void                  forceDirty() {m_bDirty = true;}
 	bool                  isFragmentSuperfluous() const;
@@ -212,7 +212,7 @@ class ABI_EXPORT PP_RevisionAttr
     void mergeAttrIfNotAlreadyThere( UT_uint32 iId, PP_RevisionType t,
                                      const gchar* pzName, const gchar* pzValue );
 
-	const PP_Revision *   getLowestDeletionRevision() const;
+	const PP_Revision* getLowestDeletionRevision() const;
 
 
   private:
@@ -220,7 +220,7 @@ class ABI_EXPORT PP_RevisionAttr
 	void _clear();
 	void _refreshString() const;
 
-	UT_Vector           m_vRev;
+	std::vector<PP_Revision*>    m_vRev;
 	// these next 2 are a cache, hence mutable
 	mutable std::string         m_sXMLstring;
 	mutable bool                m_bDirty; // indicates whether m_sXMLstring corresponds

@@ -1,7 +1,7 @@
 /* -*- mode: C++; tab-width: 4; c-basic-offset: 4; indent-tabs-mode: t -*- */
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
- * Copyright (c) 2016 Hubert Figuiere
+ * Copyright (c) 2016-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,9 +19,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef PP_ATTRPROP_H
-#define PP_ATTRPROP_H
+#pragma once
 
 #include <memory>
 #include <unordered_map>
@@ -93,6 +91,9 @@ public:
 	PP_PropertyVector getProperties () const;
 
 	bool	setAttribute(const gchar * szName, const gchar * szValue);
+	bool	setAttribute(const gchar * szName, const std::string &value) {
+		return setAttribute(szName, value.c_str());
+	}
 	bool	setProperty(const std::string &name, const std::string &value);
 
 	bool	getNthAttribute(int ndx, const gchar *& szName, const gchar *& szValue) const;
@@ -211,5 +212,3 @@ void PP_addOrSetAttribute(const char* name, const std::string & value, PP_Proper
 
 // XXX ineficient
 bool PP_removeAttribute(const char* name, PP_PropertyVector & atts);
-
-#endif /* PP_ATTRPROP_H */
