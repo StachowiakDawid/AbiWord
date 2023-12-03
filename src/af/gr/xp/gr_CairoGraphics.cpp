@@ -3554,7 +3554,9 @@ GR_PangoFont::GR_PangoFont(const char * pDesc, double dSize,
 GR_PangoFont::~GR_PangoFont()
 {
 	if(m_pCover)
-		pango_coverage_unref(m_pCover);
+	{
+		g_object_unref(m_pCover);
+	}
 	if (m_pf) 
 	{
 		g_object_unref(m_pf);
