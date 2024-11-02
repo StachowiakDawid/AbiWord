@@ -1,6 +1,6 @@
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
- * Copyright (C) 2021 Hubert Figuière
+ * Copyright (C) 2021-2024 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,12 +34,7 @@ class GR_UnixCairoGraphics;
 ******************************************************************
 *****************************************************************/
 
-// Some convience functions to make Abi's pixmaps easily available to unix
-// dialogs
-
-bool findIconDataByName(const char * szName, const char *** pIconData, UT_uint32 * pSizeofData) ;
-
-bool label_button_with_abi_pixmap( GtkWidget * button, const char * szIconName);
+bool label_button_with_abi_pixmap( GtkWidget * button, const char * szIconName, int32_t size);
 
 
 //----------------------------------------------------------------

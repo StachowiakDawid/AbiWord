@@ -1,7 +1,7 @@
 /* -*- mode: C++; tab-width: 4; c-basic-offset: 4; indent-tabs-mode: t -*- */
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
- * Copyright (C) 2019-2023 Hubert Figuière
+ * Copyright (C) 2019-2024 Hubert Figuière
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -256,26 +256,26 @@ GtkWidget * AP_UnixDialog_MergeCells::_constructWindowContents(void)
 
 	wMergeLeft = gtk_button_new();
 	gtk_widget_show (wMergeLeft);
-	label_button_with_abi_pixmap(wMergeLeft, "tb_MergeLeft_xpm");
+	label_button_with_abi_pixmap(wMergeLeft, "tb_MergeLeft_xpm", 32);
 
 	gtk_grid_attach(GTK_GRID(grid1), wMergeLeft, 1, 0, 1, 1);
 
 
 	wMergeRight = gtk_button_new();
 	gtk_widget_show (wMergeRight);
-	label_button_with_abi_pixmap(wMergeRight, "tb_MergeRight_xpm");
+	label_button_with_abi_pixmap(wMergeRight, "tb_MergeRight_xpm", 32);
 	gtk_grid_attach(GTK_GRID(grid1), wMergeRight, 1, 1, 1, 1);
 
 	wMergeAbove = gtk_button_new();
 	gtk_widget_show (wMergeAbove);
-	label_button_with_abi_pixmap(wMergeAbove, "tb_MergeAbove_xpm");
+	label_button_with_abi_pixmap(wMergeAbove, "tb_MergeAbove_xpm", 32);
 
 	gtk_grid_attach(GTK_GRID(grid1), wMergeAbove, 1, 2, 1, 1);
 
 
 	wMergeBelow = gtk_button_new();
 	gtk_widget_show (wMergeBelow);
-	label_button_with_abi_pixmap(wMergeBelow, "tb_MergeBelow_xpm");
+	label_button_with_abi_pixmap(wMergeBelow, "tb_MergeBelow_xpm", 32);
 
 	gtk_grid_attach(GTK_GRID(grid1), wMergeBelow, 1, 3, 1, 1);
 

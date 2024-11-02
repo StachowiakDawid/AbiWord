@@ -2,7 +2,7 @@
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
  * Copyright (c) 2010 Maleesh Prasan
- * Copyright (C) 2019 Hubert Figuière
+ * Copyright (C) 2019-2024 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -498,10 +498,10 @@ GtkWidget * AP_UnixDialog_Border_Shading::_constructWindow(void)
 	m_wLineBottom 	= GTK_WIDGET(gtk_builder_get_object(builder, "tbBorderBottom"));
 
 	// place some nice pixmaps on our border toggle buttons
-	label_button_with_abi_pixmap(m_wLineTop, "tb_LineTop_xpm");
-	label_button_with_abi_pixmap(m_wLineLeft, "tb_LineLeft_xpm");
-	label_button_with_abi_pixmap(m_wLineRight, "tb_LineRight_xpm");
-	label_button_with_abi_pixmap(m_wLineBottom, "tb_LineBottom_xpm");
+	label_button_with_abi_pixmap(m_wLineTop, "tb_LineTop_xpm", 24);
+	label_button_with_abi_pixmap(m_wLineLeft, "tb_LineLeft_xpm", 24);
+	label_button_with_abi_pixmap(m_wLineRight, "tb_LineRight_xpm", 24);
+	label_button_with_abi_pixmap(m_wLineBottom, "tb_LineBottom_xpm", 24);
 	
 	// set button states
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(m_wLineTop), getTopToggled());  

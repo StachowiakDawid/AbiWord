@@ -2,7 +2,7 @@
 
 /* AbiSource Application Framework
  * Copyright (C) 1998 AbiSource, Inc.
- * Copyright (C) 2009-2023 Hubert Figuière
+ * Copyright (C) 2009-2024 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -989,104 +989,6 @@ gint XAP_UnixDialog_FileOpenSaveAs::previewPicture (void)
 	return answer;
 }
 
-GdkPixbuf *  XAP_UnixDialog_FileOpenSaveAs::_loadXPM(UT_ByteBuf * pBB)
-{
-	GdkPixbuf * pixbuf = nullptr;
-	const char * pBC = reinterpret_cast<const char *>(pBB->getPointer(0));
-
-	UT_GenericVector<char*> vecStr;
-	UT_sint32 k =0;
-	UT_sint32 iBase =0;
-
-	//
-	// Find dimension line to start with.
-	//
-	UT_sint32 length = static_cast<UT_sint32>(pBB->getLength());
-	for(k =0; ( k < length) && (*(pBC+k) != '"'); k++) {
-
-	}
-
-	if(k >= length)
-	{
-		return nullptr;
-	}
-
-	k++;
-	iBase = k;
-	for( ; (k < length) && (*(pBC+k) != '"') ; k++) {
-
-	}
-	if(k >= length)
-	{
-		return nullptr;
-	}
-
-	char * sz = nullptr;
-	UT_sint32 kLen = k-iBase+1;
-	sz = static_cast<char *>(UT_calloc(kLen,sizeof(char)));
-	UT_sint32 i =0;
-
-	for(i=0; i< (kLen -1); i++)
-	{
-		*(sz+i) = *(pBC+iBase+i);
-	}
-	*(sz+i) = 0;
-	vecStr.addItem(sz);
-
-	//
-	// Now loop through all the lines until we get to "}" outside the
-	// '"'
-	while((k < length) && (*(pBC+k) != '}'))
-	{
-		k++;
-
-		//
-		// Load a single string of data into our vector.
-		// 
-		if(*(pBC+k) =='"')
-		{
-			//
-			// Start of a line
-			//
-			k++;
-			iBase = k;
-			for( ; (k < length) && (*(pBC+k) != '"'); k++) {
-
-			}
-			if(k >= length)
-			{
-				return nullptr;
-			}
-			sz = nullptr;
-			kLen = k-iBase+1;
-			sz = static_cast<char *>(UT_calloc(kLen,sizeof(char)));
-			for(i=0; i<(kLen -1); i++)
-			{
-				*(sz+i) = *(pBC+iBase+i);
-			}
-			*(sz +i) = 0;
-			vecStr.addItem(sz);
-		}
-	}
-
-	if(k >= length)
-	{
-		for(i=0; i<vecStr.getItemCount(); i++)
-		{
-			char * psz = vecStr.getNthItem(i);
-			FREEP(psz);
-		}
-		return nullptr;
-	}
-
-	const char ** pszStr = static_cast<const char **>(UT_calloc(vecStr.getItemCount(),sizeof(char *)));
-	for(i=0; i<vecStr.getItemCount(); i++)
-		pszStr[i] = vecStr.getNthItem(i);
-	pixbuf = gdk_pixbuf_new_from_xpm_data(pszStr);
-	DELETEP(pszStr);
-	return pixbuf;
-}
-
 GdkPixbuf *  XAP_UnixDialog_FileOpenSaveAs::pixbufForByteBuf (UT_ByteBuf * pBB)
 {
 	if ( !pBB || !pBB->getLength() )
@@ -1103,7 +1005,8 @@ GdkPixbuf *  XAP_UnixDialog_FileOpenSaveAs::pixbufForByteBuf (UT_ByteBuf * pBB)
 
 	if(bIsXPM)
 	{
-		pixbuf = _loadXPM(pBB);
+		UT_DEBUGMSG(("XPM is no longer supported\n"));
+		UT_ASSERT_NOT_REACHED();
 	}
 	else
 	{

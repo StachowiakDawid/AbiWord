@@ -2,6 +2,7 @@
 
 /* AbiSource Application Framework
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2024 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -47,7 +48,6 @@ public:
 
 protected:
 	GdkPixbuf *            pixbufForByteBuf (UT_ByteBuf * pBB);
-	GdkPixbuf *            _loadXPM(UT_ByteBuf * pBB);
 
 	bool					_run_main_loop(XAP_Frame * pFrame,
 										  GtkWidget * filetypes_pulldown);

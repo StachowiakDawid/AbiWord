@@ -1,7 +1,7 @@
 /* -*- mode: C++; tab-width: 4; c-basic-offset: 4; indent-tabs-mode: t -*- */
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
- * Copyright (C) 2023 Hubert Figuière
+ * Copyright (C) 2023-2024 Hubert Figuière
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -313,39 +313,39 @@ GtkWidget * AP_UnixDialog_SplitCells::_constructWindowContents(void)
 
 	wSplitLeft = gtk_button_new();
 	gtk_widget_show (wSplitLeft);
-	label_button_with_abi_pixmap(wSplitLeft, "tb_SplitLeft_xpm");
+	label_button_with_abi_pixmap(wSplitLeft, "tb_SplitLeft_xpm", 50);
 
 	gtk_grid_attach (GTK_GRID (grid1), wSplitLeft, 1, 0, 1, 1);
 
 	wSplitHoriMid = gtk_button_new();
 	gtk_widget_show (wSplitHoriMid);
-	label_button_with_abi_pixmap(wSplitHoriMid, "tb_SplitHoriMid_xpm");
+	label_button_with_abi_pixmap(wSplitHoriMid, "tb_SplitHoriMid_xpm", 50);
 
 	gtk_grid_attach (GTK_GRID (grid1), wSplitHoriMid, 1, 1, 1, 1);
 
 
 	wSplitRight = gtk_button_new();
 	gtk_widget_show (wSplitRight);
-	label_button_with_abi_pixmap(wSplitRight, "tb_SplitRight_xpm");
+	label_button_with_abi_pixmap(wSplitRight, "tb_SplitRight_xpm", 50);
 	gtk_grid_attach (GTK_GRID (grid1), wSplitRight, 1, 2, 1, 1);
 
 	wSplitAbove = gtk_button_new();
 	gtk_widget_show (wSplitAbove);
-	label_button_with_abi_pixmap(wSplitAbove, "tb_SplitAbove_xpm");
+	label_button_with_abi_pixmap(wSplitAbove, "tb_SplitAbove_xpm", 50);
 
 	gtk_grid_attach (GTK_GRID (grid1), wSplitAbove, 1, 3, 1, 1);
 
 
 	wSplitVertMid = gtk_button_new();
 	gtk_widget_show (wSplitVertMid);
-	label_button_with_abi_pixmap(wSplitVertMid, "tb_SplitVertMid_xpm");
+	label_button_with_abi_pixmap(wSplitVertMid, "tb_SplitVertMid_xpm", 50);
 
 	gtk_grid_attach (GTK_GRID (grid1), wSplitVertMid, 1, 4, 1, 1);
 
 
 	wSplitBelow = gtk_button_new();
 	gtk_widget_show (wSplitBelow);
-	label_button_with_abi_pixmap(wSplitBelow, "tb_SplitBelow_xpm");
+	label_button_with_abi_pixmap(wSplitBelow, "tb_SplitBelow_xpm", 50);
 
 	gtk_grid_attach (GTK_GRID (grid1), wSplitBelow, 1, 5, 1, 1);
 

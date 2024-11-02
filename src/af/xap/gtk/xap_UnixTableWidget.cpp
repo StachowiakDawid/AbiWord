@@ -1,8 +1,8 @@
 /* -*- Mode: C++; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
-/* 
+/*
  * xap_TableWidget.cpp
  * Copyright 2002 Joaquin Cuenca Abela
- * Copyright 2016 Hubert Figuiere
+ * Copyright 2016-2024 Hubert Figuière
  *
  * Authors:
  *   Joaquin Cuenca Abela (e98cuenc@yahoo.com)
@@ -459,68 +459,6 @@ on_key_event(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
 	return TRUE;
 }
 
-
-/* XPM */
-static const char * widget_tb_insert_table_xpm[] = {
-	"24 24 32 1",
-	" 	c None",
-	".	c #000000",
-	"+	c #FFFFFF",
-	"@	c #B1B1B1",
-	"#	c #BABABA",
-	"$	c #E4E4E4",
-	"%	c #ECECEC",
-	"&	c #A8A8A8",
-	"*	c #ADADAD",
-	"=	c #B9B9B9",
-	"-	c #ABABAB",
-	";	c #B8B8B8",
-	">	c #B5B5B5",
-	",	c #AAAAAA",
-	"'	c #858585",
-	")	c #828282",
-	"!	c #707070",
-	"~	c #BCBCBC",
-	"{	c #A7A7A7",
-	"]	c #8D8D8D",
-	"^	c #737373",
-	"/	c #ACACAC",
-	"(	c #878787",
-	"_	c #747474",
-	":	c #A9A9A9",
-	"<	c #E9E9E9",
-	"[	c #C3C3C3",
-	"}	c #BFBFBF",
-	"|	c #757575",
-	"1	c #7E7E7E",
-	"2	c #BBBBBB",
-	"3	c #A3A3A3",
-	"                        ",
-	"                        ",
-	"                        ",
-	"   ...................  ",
-	"   .+++++@+++++#++++$.  ",
-	"   .+%%%%&%%%%%*%%%%=.  ",
-	"   .+%%%%-%%%%%-%%%%;.  ",
-	"   .>&,,&'&----)&---!.  ",
-	"   .+%%%%-%%%%%-%%%%~.  ",
-	"   .+%%%%-%%%%%-%%%%~.  ",
-	"   .+%%%%-%%%%%-%%%%~.  ",
-	"   .#{---'-----]*---^.  ",
-	"   .+%%%%-%%%%%-%%%%~.  ",
-	"   .+%%%%-%%%%%-%%%%;.  ",
-	"   .+%%%%-%%%%%-%%%%~.  ",
-	"   .;&--/(&{--&'&---_.  ",
-	"   .+%%%%-%%%%%-%%%%;.  ",
-	"   .+%%%%&%%%%%:%%%%~.  ",
-	"   .<[[[}|~~~~~1;~~23.  ",
-	"   ...................  ",
-	"                        ",
-	"                        ",
-	"                        ",
-	"                        "};
-
-
 void abi_table_set_icon(AbiTable* abi_table,GtkWidget * gtkImageIcon)
 {
 	if(!GTK_IS_IMAGE(G_OBJECT(gtkImageIcon)))
@@ -605,13 +543,7 @@ abi_table_init (AbiTable* table, gpointer)
 
 	abi_table_resize(table);
 
-	table->icon = nullptr;
-
-	GdkPixbuf* pixbuf = gdk_pixbuf_new_from_xpm_data((const char **)widget_tb_insert_table_xpm);
-	if (pixbuf) {
-		table->icon = gtk_image_new_from_pixbuf(pixbuf);
-		g_object_unref(pixbuf);
-	}
+	table->icon = gtk_image_new_from_resource("/com/abisource/AbiWord/24x24/actions/tb_insert_table.png");
 
 	gtk_widget_show(table->icon);
 	gtk_box_pack_end(GTK_BOX(table->button_box), table->icon, FALSE, FALSE, 0);

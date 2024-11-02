@@ -1,7 +1,7 @@
 /* -*- mode: C++; tab-width: 4; c-basic-offset: 4; indent-tabs-mode: t -*- */
 /* AbiWord
  * Copyright (C) 1998-2000 AbiSource, Inc.
- * Copyright (c) 2009-2023 Hubert Figuière
+ * Copyright (c) 2009-2024 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,6 +28,7 @@
 #include <math.h>
 
 #include "ut_string.h"
+#include "ut_std_string.h"
 #include "ut_assert.h"
 #include "ut_debugmsg.h"
 
@@ -80,19 +81,14 @@ static struct _it s_itTable[] =
 #undef DefineToolbarIcon
 
 
-//
-//--------------------------------------------------------------------------
-//
-// Code to make pixmaps for gtk buttons
-//
-// findIconDataByName stolen from ap_Toolbar_Icons.cpp
-//
-bool findIconDataByName(const char * szName, const char *** pIconData, UT_uint32 * pSizeofData)
+// Naively convert a name to a resource path.
+// TODO: move this it a common location
+// TODO: remove s_itTable at the same time.
+static
+std::string findIconDataByName(const char * szName, int32_t size)
 {
-	// This is a static function.
-
 	if (!szName || !*szName || (g_ascii_strcasecmp(szName,"NoIcon")==0))
-		return false;
+		return "";
 
 	UT_uint32 kLimit = G_N_ELEMENTS(s_itTable);
 	UT_uint32 k;
@@ -102,32 +98,31 @@ bool findIconDataByName(const char * szName, const char *** pIconData, UT_uint32
 		xxx_UT_DEBUGMSG(("SEVIOR: examining %s \n",s_itTable[k].m_name));
 		if (g_ascii_strcasecmp(szName,s_itTable[k].m_name) == 0)
 		{
-			*pIconData = s_itTable[k].m_staticVariable;
-			*pSizeofData = s_itTable[k].m_sizeofVariable;
-			return true;
+			std::string name = UT_std_string_sprintf("/com/abisource/AbiWord/%dx%d/actions/%s", size, size, szName);
+			auto ext = name.find("_xpm");
+			if (ext != std::string::npos) {
+				name.replace(ext, 4, ".png");
+			}
+			return name;
 		}
 	}
-	return false;
+	return "";
 }
 
-bool label_button_with_abi_pixmap( GtkWidget * button, const char * szIconName)
+bool label_button_with_abi_pixmap( GtkWidget * button, const char * szIconName, int32_t size)
 {
-        const char ** pIconData = nullptr;
-	UT_uint32 sizeofIconData = 0;		// number of cells in the array
-	bool bFound = findIconDataByName(szIconName, &pIconData, &sizeofIconData);
-	if (!bFound)
+	std::string name = findIconDataByName(szIconName, size);
+	if (name.empty())
 	{
 		UT_DEBUGMSG(("Could not find icon %s \n",szIconName));
 		return false;
 	}
-	UT_DEBUGMSG(("SEVIOR: found icon name %s \n",szIconName));
-	GdkPixbuf *pixbuf = gdk_pixbuf_new_from_xpm_data(pIconData);
-	GtkWidget * wpixmap = gtk_image_new_from_pixbuf(pixbuf);
-	g_object_unref(pixbuf);
+	xxx_UT_DEBUGMSG(("SEVIOR: found icon name %s %s\n",szIconName, name.c_str()));
+	GtkWidget * wpixmap = gtk_image_new_from_resource(name.c_str());
 	if (!wpixmap)
 		return false;
 	gtk_widget_show(wpixmap);
-	UT_DEBUGMSG(("SEVIOR: Adding pixmap to button now \n"));
+	xxx_UT_DEBUGMSG(("SEVIOR: Adding pixmap to button now \n"));
 	gtk_container_add (GTK_CONTAINER (button), wpixmap);
 	return true;
 }
@@ -560,7 +555,7 @@ void AP_UnixDialog_Columns::_constructWindowContents(GtkWidget * windowColumns)
 
 	wToggleOne = gtk_toggle_button_new();
 	gtk_widget_show(wToggleOne );
-        label_button_with_abi_pixmap(wToggleOne, "tb_1column_xpm");
+	label_button_with_abi_pixmap(wToggleOne, "tb_1column_xpm", 24);
 	gtk_widget_set_can_default(wToggleOne, true);
 	gtk_widget_set_margin_start(wToggleOne, 18);
 	gtk_grid_attach(GTK_GRID(grid), wToggleOne, 0, 1, 1, 1);
@@ -573,7 +568,7 @@ void AP_UnixDialog_Columns::_constructWindowContents(GtkWidget * windowColumns)
 
 	wToggleTwo = gtk_toggle_button_new ();
 	gtk_widget_show(wToggleTwo);
-        label_button_with_abi_pixmap(wToggleTwo, "tb_2column_xpm");
+	label_button_with_abi_pixmap(wToggleTwo, "tb_2column_xpm", 24);
 	gtk_widget_set_can_default(wToggleTwo, true);
 	gtk_widget_set_margin_start(wToggleTwo, 18);
 	gtk_grid_attach(GTK_GRID(grid), wToggleTwo, 0, 2, 1, 1);
@@ -587,7 +582,7 @@ void AP_UnixDialog_Columns::_constructWindowContents(GtkWidget * windowColumns)
 
 	wToggleThree = gtk_toggle_button_new ();
 	gtk_widget_show(wToggleThree);
-        label_button_with_abi_pixmap(wToggleThree, "tb_3column_xpm");
+	label_button_with_abi_pixmap(wToggleThree, "tb_3column_xpm", 24);
 	gtk_widget_set_can_default(wToggleThree, true);
 	gtk_widget_set_margin_start(wToggleThree, 18);
 	gtk_grid_attach(GTK_GRID(grid), wToggleThree, 0, 3, 1, 1);
