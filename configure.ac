@@ -1158,7 +1158,7 @@ AC_CONFIG_FILES([libabiword.pc
   user/wp/dictionary/Makefile
   user/wp/templates/Makefile
   tools/Makefile
-  com.abisource.AbiWord.appdata.xml
+  com.abisource.AbiWord.metainfo.xml
 ])
 AC_OUTPUT
 
