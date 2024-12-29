@@ -72,7 +72,7 @@ XAP_UnixApp::XAP_UnixApp(const char * szAppName, const char* app_id)
 	  m_controlFactory(new AP_UnixToolbar_ControlFactory()),
 	  m_szTmpFile(nullptr),
 	  // XXX maybe we need better flags as we handle command line
-	  m_gtkApp(gtk_application_new(app_id, G_APPLICATION_FLAGS_NONE))
+	  m_gtkApp(gtk_application_new(app_id, G_APPLICATION_DEFAULT_FLAGS))
 {
 	int fc_inited = FcInit();
 	UT_UNUSED(fc_inited); // TODO actually deal with the error here
