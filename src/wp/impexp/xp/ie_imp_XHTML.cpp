@@ -2,7 +2,7 @@
 
 /* AbiWord
  * Copyright (C) 1998-2000 AbiSource, Inc.
- * Copyright (C) 2016-2021 Hubert Figuière
+ * Copyright (C) 2016-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -1910,8 +1910,13 @@ FG_ConstGraphicPtr IE_Imp_XHTML::importImage (const gchar * szSrc)
 
 bool IE_Imp_XHTML::pushInline (const char * props)
 {
-	if (!requireBlock ()) return false;
+	if (!requireBlock ()) {
+		return false;
+	}
 
+	if (props == nullptr || *props == 0) {
+		return true;
+	}
 	const PP_PropertyVector api_atts = {
 		PT_PROPS_ATTRIBUTE_NAME, props
 	};
