@@ -196,7 +196,6 @@ UT_Error UT_HTML::parse (const char * szFilename)
 				if (!ctxt->wellFormed && !m_bStopped)
 					ret = UT_IE_IMPORTERROR; // How does stopping mid-file affect wellFormed?
 
-			ctxt->sax = nullptr;
 			htmlFreeParserCtxt (ctxt);
 		}
 	else
