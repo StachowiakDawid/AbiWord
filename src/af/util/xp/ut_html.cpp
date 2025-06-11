@@ -165,7 +165,7 @@ UT_Error UT_HTML::parse (const char * szFilename)
 					reader->closeFile ();
 					return UT_ERROR;
 				}
-			xmlSubstituteEntitiesDefault (1);
+			xmlCtxtUseOptions (ctxt, XML_PARSE_NOENT);
 
 			while (!done && !m_bStopped)
 				{
