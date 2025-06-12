@@ -1,7 +1,7 @@
 /* -*- mode: C++; tab-width: 4; c-basic-offset: 4; indent-tabs-mode:t -*- */
 /* AbiSource Program Utilities
  * Copyright (C) 1998-2000 AbiSource, Inc.
- * Copyright (C) 2019 Hubert Figuière
+ * Copyright (C) 2019-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -292,6 +292,9 @@ EV_UnixMenu::EV_UnixMenu(XAP_UnixApp * pUnixApp,
 
 EV_UnixMenu::~EV_UnixMenu()
 {
+	for (auto w : m_vecMenuWidgets) {
+		g_object_unref(w);
+	}
 	m_vecMenuWidgets.clear();
 	UT_std_vector_purgeall(m_vecCallbacks);
 }
@@ -464,7 +467,7 @@ bool EV_UnixMenu::synthesizeMenu(GtkWidget * wMenuRoot, bool isPopup)
 				  UT_ASSERT(w);
 			}
 
-			m_vecMenuWidgets.push_back(w);
+			m_vecMenuWidgets.push_back(g_object_ref_sink(w));
 			break;
 		}
 		case EV_MLF_BeginSubMenu:
@@ -583,7 +586,7 @@ bool EV_UnixMenu::synthesizeMenu(GtkWidget * wMenuRoot, bool isPopup)
 				stack.push(wsub);
 
 				// item is created, add to vector
-				m_vecMenuWidgets.push_back(w);
+				m_vecMenuWidgets.push_back(g_object_ref_sink(w));
 				break;
 			}			
 			
@@ -592,7 +595,7 @@ bool EV_UnixMenu::synthesizeMenu(GtkWidget * wMenuRoot, bool isPopup)
 			// have no children
 			GtkWidget * w = gtk_menu_item_new();
 			UT_ASSERT(w);
-			m_vecMenuWidgets.push_back(w);
+			m_vecMenuWidgets.push_back(g_object_ref_sink(w));
 			break;
 		}
 		case EV_MLF_EndSubMenu:
@@ -605,7 +608,7 @@ bool EV_UnixMenu::synthesizeMenu(GtkWidget * wMenuRoot, bool isPopup)
 			group = nullptr;
 
 			// item is created (albeit empty in this case), add to vector
-			m_vecMenuWidgets.push_back(w);
+			m_vecMenuWidgets.push_back(g_object_ref_sink(w));
 			break;
 		}
 		case EV_MLF_Separator:
@@ -621,7 +624,7 @@ bool EV_UnixMenu::synthesizeMenu(GtkWidget * wMenuRoot, bool isPopup)
 			gtk_menu_shell_append(GTK_MENU_SHELL(wParent),w);
 
 			// item is created, add to class vector
-			m_vecMenuWidgets.push_back(w);
+			m_vecMenuWidgets.push_back(g_object_ref_sink(w));
 			break;
 		}
 
@@ -744,8 +747,9 @@ bool EV_UnixMenu::_refreshMenu(AV_View * pView, GtkWidget * wMenuRoot)
 					// we do NOT add a new item, we point the existing index at our new widget
 					// (update the pointers)
 					GtkWidget *oldItem = m_vecMenuWidgets[k];
-					m_vecMenuWidgets[k] = w;
+					m_vecMenuWidgets[k] = g_object_ref_sink(w);
 					gtk_container_remove(GTK_CONTAINER(gtk_widget_get_parent(oldItem)), oldItem);
+					g_object_unref(oldItem);
 					break;
 				}
 				else
@@ -813,7 +817,8 @@ bool EV_UnixMenu::_refreshMenu(AV_View * pView, GtkWidget * wMenuRoot)
 				// have no children
 				GtkWidget * w = gtk_menu_item_new();
 				UT_ASSERT(w);
-				m_vecMenuWidgets[k] = w;
+				g_object_unref(item);
+				m_vecMenuWidgets[k] = g_object_ref_sink(w);
 				break;
 			}
 
