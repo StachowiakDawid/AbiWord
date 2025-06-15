@@ -89,10 +89,13 @@ static gint searchTreeView(GtkTreeView* tv, const char * compareText)
 
        gint i = 0;
        do {
-       	       gtk_tree_model_get(model, &iter, TEXT_COLUMN, &text, -1);
-	       if (!g_ascii_strcasecmp(text, compareText))
-	                       return i;
-	       i++;
+           gtk_tree_model_get(model, &iter, TEXT_COLUMN, &text, -1);
+           if (!g_ascii_strcasecmp(text, compareText)) {
+               g_free(text);
+               return i;
+           }
+           i++;
+           g_free(text);
        } while(gtk_tree_model_iter_next (model, &iter));
 
        return -1;
