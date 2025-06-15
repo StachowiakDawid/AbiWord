@@ -1572,8 +1572,8 @@ void XAP_UnixFrameImpl::_imPreeditEnd_cb (GtkIMContext * /*context*/,
 void XAP_UnixFrameImpl::_imPreeditChanged_cb (GtkIMContext *context,
 											  gpointer data)
 {
-	gchar *text;
-	gint   len = 0;
+	gchar *text = nullptr;
+	size_t len = 0;
 	gint   pos;
 
 	XAP_UnixFrameImpl * pImpl = static_cast<XAP_UnixFrameImpl*>(data);
@@ -1598,17 +1598,20 @@ void XAP_UnixFrameImpl::_imPreeditChanged_cb (GtkIMContext *context,
 	// fetch the updated pre-edit string.
 	gtk_im_context_get_preedit_string (context, &text, nullptr, &pos);
 
-	if (!text || !(len = strlen (text)))
+	if (!text)
 		return;
 
-	pImpl->m_iPreeditStart = pView->getInsPoint ();
-	pImpl->m_iPreeditLen   = g_utf8_strlen (text, -1);
+	len = strlen(text);
+	if (len > 0) {
+		pImpl->m_iPreeditStart = pView->getInsPoint ();
+		pImpl->m_iPreeditLen   = g_utf8_strlen (text, -1);
 
-	pUnixKeyboard->charDataEvent(pView, static_cast<EV_EditBits>(0),
-								 text, strlen(text));
-
-	UT_DEBUGMSG(("@@@@ Preedit Changed, text %s, len %d (utf8 chars %d)\n",
-				 text, len, pImpl->m_iPreeditLen));
+		pUnixKeyboard->charDataEvent(pView, static_cast<EV_EditBits>(0),
+									 text, len);
+		UT_DEBUGMSG(("@@@@ Preedit Changed, text %s, len %ld (utf8 chars %d)\n",
+					 text, len, pImpl->m_iPreeditLen));
+	}
+	g_free(text);
 }
 
 gint XAP_UnixFrameImpl::_imRetrieveSurrounding_cb (GtkIMContext *context,
