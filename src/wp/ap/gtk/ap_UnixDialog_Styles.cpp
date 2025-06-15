@@ -96,6 +96,9 @@ AP_UnixDialog_Styles::AP_UnixDialog_Styles(XAP_DialogFactory * pDlgFactory,
 
 AP_UnixDialog_Styles::~AP_UnixDialog_Styles(void)
 {
+	if (m_selectedStyle) {
+		gtk_tree_path_free(m_selectedStyle);
+	}
 	DELETEP (m_pParaPreviewWidget);
 	DELETEP (m_pCharPreviewWidget);
 	DELETEP (m_pAbiPreviewWidget);
@@ -452,8 +455,13 @@ void AP_UnixDialog_Styles::event_SelectionChanged(GtkTreeSelection * selection)
 	GtkTreeModel *model = gtk_tree_view_get_model(tree);
 	GList *list = gtk_tree_selection_get_selected_rows(selection, &model);
 
-	gpointer item = g_list_nth_data(list, 0);
-	m_selectedStyle = reinterpret_cast<GtkTreePath *>(item);
+	GtkTreePath *item = reinterpret_cast<GtkTreePath *>(g_list_nth_data(list, 0));
+	if (m_selectedStyle) {
+		gtk_tree_path_free(m_selectedStyle);
+	}
+	m_selectedStyle = item ? gtk_tree_path_copy(item) : nullptr;
+
+	g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
 
 	// refresh the previews
 	_populatePreviews(false);
