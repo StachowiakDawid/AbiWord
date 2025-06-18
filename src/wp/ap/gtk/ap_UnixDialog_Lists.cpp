@@ -820,14 +820,17 @@ GtkWidget *AP_UnixDialog_Lists::_constructWindowContents (void)
 	gtk_widget_show (style_om);
 	gtk_grid_attach(GTK_GRID(grid1), style_om, 1, 1, 1, 1);
 
-	m_wListStyleNone_menu = gtk_list_store_new(2, G_TYPE_STRING, 
-											   G_TYPE_INT);
+	m_wListStyleNone_menu.take(std::move(
+								   gtk_list_store_new(2, G_TYPE_STRING,
+													  G_TYPE_INT)));
 	_fillNoneStyleMenu(m_wListStyleNone_menu.obj());
-	m_wListStyleNumbered_menu = gtk_list_store_new (2, G_TYPE_STRING, 
-													G_TYPE_INT);
+	m_wListStyleNumbered_menu.take(std::move(
+									   gtk_list_store_new (2, G_TYPE_STRING,
+														   G_TYPE_INT)));
 	_fillNumberedStyleMenu(m_wListStyleNumbered_menu.obj());
-	m_wListStyleBulleted_menu = gtk_list_store_new(2, G_TYPE_STRING,
-												   G_TYPE_INT);
+	m_wListStyleBulleted_menu.take(std::move(
+									   gtk_list_store_new(2, G_TYPE_STRING,
+														  G_TYPE_INT)));
 	_fillBulletedStyleMenu(m_wListStyleBulleted_menu.obj());
 
 	// This is the default list. Change if the list style changes

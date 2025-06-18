@@ -41,6 +41,24 @@ public:
 		{
 			_unref();
 		}
+	/// Take the object, without adding a ref.
+	/// The object is now NULL
+	XAP_GtkObjectHolder<T> &take(T *& _obj)
+		{
+			_unref();
+			m_obj = _obj;
+			_obj = nullptr;
+			return *this;
+		}
+	/// Take the object, without adding a ref.
+	/// The object is moved.
+	XAP_GtkObjectHolder<T> &take(T *&& _obj)
+		{
+			_unref();
+			m_obj = _obj;
+			return *this;
+		}
+
 	XAP_GtkObjectHolder<T> & operator=(T * _obj)
 		{
 			_unref();
