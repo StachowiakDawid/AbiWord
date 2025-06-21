@@ -226,22 +226,124 @@ libxap_la_SOURCES += \
 endif
 
 if TOOLKIT_COCOA
+include $(top_srcdir)/src/wp/main/cocoa/bundle.mk
+
+AM_CPPFLAGS += \
+	-I$(top_srcdir)/src/wp/ap/cocoa \
+	-x objective-c++
+
 libxap_la_SOURCES += \
-	xap_QtApp.h \
-	xap_QtApp.cpp \
-	xap_QtAppImpl.cpp \
-	xap_QtAppImpl.h \
-	xap_QtDialogFactory.h \
-	xap_QtEncodingManager.cpp \
-	xap_QtEncodingManager.h \
-	xap_QtFeatures.h \
-	xap_QtFrameImpl.h \
-	xap_QtFrameImpl.cpp \
-	xap_QtModule.h \
-	xap_QtModule.cpp \
-	xap_Qt_TB_CFactory.h \
-	xap_QtDlg_FileOpenSaveAs.cpp \
-	xap_QtDlg_FileOpenSaveAs.h
+	cocoa/xap_CocoaAbiConversions.h \
+	cocoa/xap_CocoaAbiConversions.cpp \
+	cocoa/xap_CocoaAppController.h \
+	cocoa/xap_CocoaAppController.cpp \
+	cocoa/xap_CocoaApp.h \
+	cocoa/xap_CocoaAppImpl.h \
+	cocoa/xap_CocoaAppImpl.cpp \
+	cocoa/xap_CocoaApp.cpp \
+	cocoa/xap_CocoaAssert.h \
+	cocoa/xap_CocoaAssert.cpp \
+	cocoa/xap_CocoaClipboard.h \
+	cocoa/xap_CocoaClipboard.cpp \
+	cocoa/xap_CocoaDialogFactory.h \
+	cocoa/xap_CocoaDialog_Utilities.h \
+	cocoa/xap_CocoaDialog_Utilities.cpp \
+	cocoa/xap_CocoaDlg_About.h \
+	cocoa/xap_CocoaDlg_About.cpp \
+	cocoa/xap_CocoaDlg_ClipArt.h \
+	cocoa/xap_CocoaDlg_ClipArt.cpp \
+	cocoa/xap_CocoaDlg_DocComparison.h \
+	cocoa/xap_CocoaDlg_DocComparison.cpp \
+	cocoa/xap_CocoaDlg_Encoding.h \
+	cocoa/xap_CocoaDlg_Encoding.cpp \
+	cocoa/xap_CocoaDlg_FileOpenSaveAs.h \
+	cocoa/xap_CocoaDlg_FileOpenSaveAs.cpp \
+	cocoa/xap_CocoaDlg_FontChooser.h \
+	cocoa/xap_CocoaDlg_FontChooser.cpp \
+	cocoa/xap_CocoaDlg_History.h \
+	cocoa/xap_CocoaDlg_History.cpp \
+	cocoa/xap_CocoaDlg_HTMLOptions.h \
+	cocoa/xap_CocoaDlg_HTMLOptions.cpp \
+	cocoa/xap_CocoaDlg_Image.h \
+	cocoa/xap_CocoaDlg_Image.cpp \
+	cocoa/xap_CocoaDlg_Insert_Symbol.h \
+	cocoa/xap_CocoaDlg_Insert_Symbol.cpp \
+	cocoa/xap_CocoaDlg_Language.h \
+	cocoa/xap_CocoaDlg_Language.cpp \
+	cocoa/xap_CocoaDlg_ListDocuments.h \
+	cocoa/xap_CocoaDlg_ListDocuments.cpp \
+	cocoa/xap_CocoaDlg_MessageBox.h \
+	cocoa/xap_CocoaDlg_MessageBox.cpp \
+	cocoa/xap_CocoaDlg_Password.h \
+	cocoa/xap_CocoaDlg_Password.cpp \
+	cocoa/xap_CocoaDlg_PluginManager.h \
+	cocoa/xap_CocoaDlg_PluginManager.cpp \
+	cocoa/xap_CocoaDlg_Print.h \
+	cocoa/xap_CocoaDlg_Print.cpp \
+	cocoa/xap_CocoaDlg_PrintPreview.h \
+	cocoa/xap_CocoaDlg_PrintPreview.cpp \
+	cocoa/xap_CocoaDlg_WindowMore.h \
+	cocoa/xap_CocoaDlg_WindowMore.cpp \
+	cocoa/xap_CocoaDlg_Zoom.h \
+	cocoa/xap_CocoaDlg_Zoom.cpp \
+	cocoa/xap_CocoaEncodingManager.h \
+	cocoa/xap_CocoaEncodingManager.cpp \
+	cocoa/xap_CocoaFeatures.h \
+	cocoa/xap_CocoaFrame.h \
+	cocoa/xap_CocoaFrameImpl.h \
+	cocoa/xap_CocoaFrameImpl.cpp \
+	cocoa/xap_CocoaFrame.cpp \
+	cocoa/xap_CocoaModule.h \
+	cocoa/xap_CocoaModule.cpp \
+	cocoa/xap_Cocoa_NSTableUtils.h \
+	cocoa/xap_Cocoa_NSTableUtils.cpp \
+	cocoa/xap_CocoaPlugin.h \
+	cocoa/xap_CocoaPlugin.cpp \
+	cocoa/xap_Cocoa_ResourceIDs.h \
+	cocoa/xap_Cocoa_ResourceIDs.cpp \
+	cocoa/xap_Cocoa_TB_CFactory.h \
+	cocoa/xap_CocoaTextView.h \
+	cocoa/xap_CocoaTextView.cpp \
+	cocoa/xap_CocoaTimer.h \
+	cocoa/xap_CocoaTimer.cpp \
+	cocoa/xap_CocoaToolbar_Icons.h \
+	cocoa/xap_CocoaToolbar_Icons.cpp \
+	cocoa/xap_CocoaToolbarWindow.h \
+	cocoa/xap_CocoaToolbarWindow.cpp \
+	cocoa/xap_CocoaToolPalette.h \
+	cocoa/xap_CocoaToolPalette.cpp \
+	cocoa/xap_CocoaToolProvider.h \
+	cocoa/xap_CocoaToolProvider.cpp \
+	cocoa/xap_CocoaTools.h \
+	cocoa/xap_CocoaWidget.h \
+	cocoa/xap_CocoaWidget.cpp \
+	cocoa/xap_CocoaWindow.h \
+	cocoa/xap_CocoaWindow.cpp \
+	cocoa/xap_FrameNSWindow.h \
+	cocoa/xap_FrameNSWindow.cpp \
+	cocoa/xap_GenericListChooser_Controller.h \
+	cocoa/xap_GenericListChooser_Controller.cpp \
+	cocoa/xap_PrintingDelegate.h \
+	cocoa/xap_PrintingDelegate.cpp \
+	cocoa/xap_PrintingNSView.h \
+	cocoa/xap_PrintingNSView.cpp
+
+nobase_resources_DATA = \
+	cocoa/xap_CocoaDlg_About.nib/*.nib \
+	cocoa/xap_CocoaDlg_DocComparison.nib/*.nib \
+	cocoa/xap_CocoaDlg_FontChooser.nib/*.nib \
+	cocoa/xap_CocoaDlg_HTMLOptions.nib/*.nib \
+	cocoa/xap_CocoaDlg_History.nib/*.nib \
+	cocoa/xap_CocoaDlg_Image.nib/*.nib \
+	cocoa/xap_CocoaDlg_Insert_Symbol.nib/*.nib \
+	cocoa/xap_CocoaDlg_Language.nib/*.nib \
+	cocoa/xap_CocoaDlg_Password.nib/*.nib \
+	cocoa/xap_CocoaDlg_PluginManager.nib/*.nib \
+	cocoa/xap_CocoaDlg_Zoom.nib/*.nib \
+	cocoa/xap_CocoaFileOpen_Views.nib/*.nib \
+	cocoa/xap_CocoaToolPalette.nib/*.nib \
+	cocoa/xap_GenericListChooser_Controller.nib/*.nib \
+	$(NULL)
 endif
 
 if TOOLKIT_WIN
@@ -380,5 +482,19 @@ EXTRA_DIST = \
 	gtk/xap_UnixDlg_History.ui \
 	gtk/xap_UnixDlg_DocComparison.ui \
 	gtk/xap_UnixDlg_ListDocuments.ui \
+	cocoa/xap_CocoaDlg_About.nib \
+	cocoa/xap_CocoaDlg_DocComparison.nib \
+	cocoa/xap_CocoaDlg_FontChooser.nib \
+	cocoa/xap_CocoaDlg_HTMLOptions.nib \
+	cocoa/xap_CocoaDlg_History.nib \
+	cocoa/xap_CocoaDlg_Image.nib \
+	cocoa/xap_CocoaDlg_Insert_Symbol.nib \
+	cocoa/xap_CocoaDlg_Language.nib \
+	cocoa/xap_CocoaDlg_Password.nib \
+	cocoa/xap_CocoaDlg_PluginManager.nib \
+	cocoa/xap_CocoaDlg_Zoom.nib \
+	cocoa/xap_CocoaFileOpen_Views.nib \
+	cocoa/xap_CocoaToolPalette.nib \
+	cocoa/xap_GenericListChooser_Controller.nib \
 	$(rc2files) \
 	$(curfiles)
