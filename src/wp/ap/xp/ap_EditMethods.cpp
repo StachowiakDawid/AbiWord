@@ -2735,7 +2735,8 @@ Defun(fileSave)
 	}
 	// can only save without prompting if filename already known
 
-	if (!pFrame->getFilename())
+	auto filename = pFrame->getFilename();
+	if (!filename || !*filename)
    		return EX(fileSaveAs);
 
 	UT_Error errSaved;
