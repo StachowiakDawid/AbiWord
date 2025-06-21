@@ -317,8 +317,12 @@ public:
 	void insert(const T v, const UT_String &k, UT_uint32 h)
 		{
 			m_value = v;
-			m_key = k;
-			m_key.set_hashval(h);
+			// We don't want to invalidate the key if it is already
+			// there, like when replacing an existing value.
+			if (h != m_key.hashval() || m_key.value() != k) {
+				m_key = k;
+				m_key.set_hashval(h);
+			}
 		}
 
 	void assign(hash_slot<T>* s)
