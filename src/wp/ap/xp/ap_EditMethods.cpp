@@ -2416,7 +2416,7 @@ UT_Error fileOpen(XAP_Frame * pFrame, const char * pNewFile, IEFileType ieft)
 	// current frame if it's the only top-level view on an empty,
 	// untitled document.
 
-	if ((pFrame == nullptr) || pFrame->isDirty() || pFrame->getFilename() || (pFrame->getViewNumber() > 0))
+	if ((pFrame == nullptr) || pFrame->isDirty() || (pFrame->getFilename() && *pFrame->getFilename()) || (pFrame->getViewNumber() > 0))
 	{
 		// open new document in a new frame.  if we fail,
 		// put up an error dialog on current frame (our
