@@ -632,14 +632,17 @@ AP_UnixDialog_Tab::_getSelectedIndex ()
 }
 
 //! Get alignment of selected tab.
-eTabType 
+eTabType
 AP_UnixDialog_Tab::_gatherAlignment ()
 {
-	const gchar *text =  gtk_combo_box_text_get_active_text (GTK_COMBO_BOX_TEXT (m_cobAlignment));
+	gchar *text =  gtk_combo_box_text_get_active_text (GTK_COMBO_BOX_TEXT (m_cobAlignment));
 	for (guint i = 0; i < __FL_TAB_MAX; i++) {
-		if (strcmp (text, m_AlignmentMapping[i]) == 0)
+		if (strcmp (text, m_AlignmentMapping[i]) == 0) {
+			g_free(text);
 			return (eTabType)i;
+		}
 	}
+	g_free(text);
 	return FL_TAB_NONE;
 }
 
@@ -660,19 +663,22 @@ AP_UnixDialog_Tab::_setAlignment (eTabType a)
 }
 
 //! Get leader of selected tab.
-eTabLeader 
+eTabLeader
 AP_UnixDialog_Tab::_gatherLeader ()
 {
-	const gchar *text =  gtk_combo_box_text_get_active_text (GTK_COMBO_BOX_TEXT (m_cobLeader));
+	gchar *text =  gtk_combo_box_text_get_active_text (GTK_COMBO_BOX_TEXT (m_cobLeader));
 	for (guint i = 0; i < __FL_LEADER_MAX; i++) {
-		
+
 		if (m_LeaderMapping[i] == nullptr)
 			break;
 
 		UT_DEBUGMSG (("ROB: %d='%s' (%s)\n", i, m_LeaderMapping[i], text));
-		if (strcmp (text, m_LeaderMapping[i]) == 0) 
+		if (strcmp (text, m_LeaderMapping[i]) == 0) {
+			g_free(text);
 			return (eTabLeader)i;
+		}
 	}
+	g_free(text);
 	return FL_LEADER_NONE;
 }
 

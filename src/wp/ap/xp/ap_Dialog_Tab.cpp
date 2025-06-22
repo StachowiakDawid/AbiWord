@@ -306,6 +306,7 @@ void AP_Dialog_Tab::_event_Update(void)
 	pTabInfo1 = m_tabInfo.getNthItem(ndx);
 	_deleteTabFromTabString(pTabInfo1);
 	m_tabInfo.deleteNthItem(ndx);
+	DELETEP(pTabInfo1);
 
 
 	// re-add
