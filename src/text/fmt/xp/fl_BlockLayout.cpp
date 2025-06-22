@@ -341,20 +341,11 @@ static int compare_tabs(const void* p1, const void* p2)
 	return 0;
 }
 
-void buildTabStops(const char* pszTabStops, UT_GenericVector<fl_TabStop*> &m_vecTabs)
+void buildTabStops(const char* pszTabStops, UT_GenericVector<fl_TabStop*> &vecTabs)
 {
 	// no matter what, clear prior tabstops
-	UT_uint32 iCount = m_vecTabs.getItemCount();
-	UT_uint32 i;
-
-	for (i=0; i<iCount; i++)
-	{
-		fl_TabStop* pTab = m_vecTabs.getNthItem(i);
-
-		delete pTab;
-	}
-
-	m_vecTabs.clear();
+	UT_VECTOR_PURGEALL(fl_TabStop *, vecTabs);
+	vecTabs.clear();
 
 	if (pszTabStops && pszTabStops[0])
 	{
@@ -437,7 +428,7 @@ void buildTabStops(const char* pszTabStops, UT_GenericVector<fl_TabStop*> &m_vec
 			pTabStop->setLeader(iLeader);
 			pTabStop->setOffset(pStart - pszTabStops);
 
-			m_vecTabs.addItem(pTabStop);
+			vecTabs.addItem(pTabStop);
 
 			pStart = pEnd;
 			if (*pStart)
@@ -451,7 +442,7 @@ void buildTabStops(const char* pszTabStops, UT_GenericVector<fl_TabStop*> &m_vec
 			}
 		}
 
-		m_vecTabs.qsort(compare_tabs);
+		vecTabs.qsort(compare_tabs);
 	}
 }
 
