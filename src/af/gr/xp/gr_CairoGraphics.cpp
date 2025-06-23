@@ -2278,7 +2278,9 @@ void GR_CairoGraphics::drawChars(const UT_UCSChar* pChars,
 				g_object_unref(pf);
 			}
 			UT_ASSERT(pfs);
-			UT_sint32 fontSize = pango_font_description_get_size(pango_font_describe(m_pPFont->getPangoFont()));
+			PangoFontDescription* description = pango_font_describe(m_pPFont->getPangoFont());
+			UT_sint32 fontSize = pango_font_description_get_size(description);
+			pango_font_description_free(description);
 			pf = pango_fontset_get_font (pfs, g_utf8_get_char (utf8.utf8_str()+pItem->offset));
 			PangoFontDescription * pfd = pango_font_describe (pf);
 			pango_font_description_set_size (pfd, fontSize*m_iDeviceResolution/getResolution());
@@ -2414,11 +2416,13 @@ UT_uint32 GR_CairoGraphics::measureString(const UT_UCSChar * pChars,
 				g_object_unref(pf);
 			}
 			UT_ASSERT(pfs);
-			UT_sint32 fontSize = pango_font_description_get_size(pango_font_describe(m_pPFont->getPangoFont()));
+			PangoFontDescription *description = pango_font_describe(m_pPFont->getPangoFont());
+			UT_sint32 fontSize = pango_font_description_get_size(description);
+			pango_font_description_free(description);
 			pf = pango_fontset_get_font (pfs, g_utf8_get_char (utf8.utf8_str()+pItem->offset));
 			PangoFontDescription * pfd = pango_font_describe (pf);
 			pango_font_description_set_size (pfd, fontSize);
-			UT_ASSERT(pfd);
+			g_object_unref(pf);
 			pf = pango_context_load_font(getLayoutContext(), pfd);
 			pango_font_description_free(pfd);
 			bClear_pf = true;
