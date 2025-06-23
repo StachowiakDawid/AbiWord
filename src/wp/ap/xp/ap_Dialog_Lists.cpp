@@ -681,6 +681,7 @@ void  AP_Dialog_Lists::generateFakeLabels(void)
 	//
 	for(i=0; i<4; i++)
 	{
+		DELETEP(m_pFakeSdh[i]);
 		DELETEP(m_pFakeLayout[i]);
 		m_pFakeSdh[i] = new pf_Frag_Strux_Block(nullptr,0);
 		m_pFakeLayout[i] = new fl_Layout((PTStruxType) 0 , m_pFakeSdh[i] );
