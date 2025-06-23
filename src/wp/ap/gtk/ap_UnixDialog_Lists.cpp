@@ -730,6 +730,8 @@ GtkWidget *AP_UnixDialog_Lists::_constructWindowContents (void)
 		gtk_grid_attach(GTK_GRID(wFoldingGrid), lbFoldHeading, 0, 0, 2, 1);
 		gtk_widget_show(lbFoldHeading);
 
+		m_vecFoldCheck.clear();
+		m_vecFoldID.clear();
 		UT_uint32 ID =0;
 // RadioButtons
 		pSS->getValueUTF8(AP_STRING_ID_DLG_Lists_FoldingLevel0,s);
