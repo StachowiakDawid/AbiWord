@@ -26,6 +26,7 @@
 #endif
 
 #include <stdlib.h>
+#include <cstdint>
 #include <glib.h>
 
 /*
@@ -37,34 +38,35 @@
 #  define GNUC_EXTENSION
 #endif
 
-typedef guint8		UT_Byte;
+typedef uint8_t		UT_Byte;
 
-typedef gunichar        UT_UCS4Char;
-typedef guint16      UT_UCS2Char;
-typedef gint32          UT_GrowBufElement;
+typedef uint32_t        UT_UCS4Char;
+typedef uint16_t        UT_UCS2Char;
+typedef int32_t         UT_GrowBufElement;
 
 /* NOTA BENE: UT_UCSChar is deprecated; all new code must use
    UT_UCS4Char instead !!! */
+// [[deprecated("Use UT_UCS4Char instead")]]
 typedef UT_UCS4Char		UT_UCSChar;	/* Unicode */
 
-typedef guint8       UT_uint8;
-typedef gint8        UT_sint8;
+typedef uint8_t       UT_uint8;
+typedef int8_t        UT_sint8;
 
-typedef guint16		UT_uint16;
-typedef gint16       UT_sint16;
+typedef uint16_t		UT_uint16;
+typedef int16_t       UT_sint16;
 
-typedef guint32		UT_uint32;
-typedef gint32		    UT_sint32;
+typedef uint32_t		UT_uint32;
+typedef int32_t		    UT_sint32;
 
-typedef guint64 UT_uint64;
-typedef gint64 UT_sint64;
+typedef uint64_t UT_uint64;
+typedef int64_t UT_sint64;
 
 #ifdef _WIN64
 typedef guint64 	UT_uintptr;
 typedef gint64 	UT_sintptr;
 #else
-typedef unsigned long UT_uintptr;
-typedef long        UT_sintptr;
+typedef uintptr_t UT_uintptr;
+typedef intptr_t        UT_sintptr;
 #endif
 
 /** use to mark variable as unused */
