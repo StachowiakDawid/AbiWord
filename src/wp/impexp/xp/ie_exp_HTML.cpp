@@ -190,6 +190,7 @@ UT_Error IE_Exp_HTML::copyToBuffer(PD_DocumentRange * pDocRange,UT_ByteBuf *  bu
     IEFileType ftHTML = IE_Exp::fileTypeForMimetype("text/html");
     UT_Error aerr = IE_Exp::constructExporter(outDoc,outBuf,
 											  ftHTML,(IE_Exp**)&pNewExp);
+    g_object_unref(outBuf);
     if(pNewExp == nullptr)
     {
          return aerr;
@@ -200,12 +201,12 @@ UT_Error IE_Exp_HTML::copyToBuffer(PD_DocumentRange * pDocRange,UT_ByteBuf *  bu
     aerr = pNewExp->writeFile(url.c_str());
     if(aerr != UT_OK)
     {
-	delete pNewExp;
-	delete pRangeListener;
-	UNREFP( outDoc);
-	g_remove(szTempFileName);
-	g_free (szTempFileName);
-	return aerr;
+        delete pNewExp;
+        delete pRangeListener;
+        UNREFP( outDoc);
+        g_remove(szTempFileName);
+        g_free (szTempFileName);
+        return aerr;
     }
     //
     // File is closed at the end of the export. Open it again.
@@ -216,7 +217,8 @@ UT_Error IE_Exp_HTML::copyToBuffer(PD_DocumentRange * pDocRange,UT_ByteBuf *  bu
     const UT_Byte * pData = gsf_input_read(fData,gsf_input_size(fData),nullptr);
     UT_DEBUGMSG(("Writing %d bytes to clipboard \n", (UT_sint32)siz));
     bufHTML->append( pData, gsf_input_size(fData));
-    
+
+    g_object_unref(fData);
     delete pNewExp;
     delete pRangeListener;
     UNREFP( outDoc);

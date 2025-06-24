@@ -298,7 +298,9 @@ static void allTargets(GtkClipboard * /*clipboard*/,
   for(i=0;i<n_atoms;i++)
   {
       GdkAtom Atom = atoms[i];
-      UT_DEBUGMSG((" Found Atom %s on clipboard \n", gdk_atom_name(Atom)));
+      auto name = gdk_atom_name(Atom);
+      UT_DEBUGMSG((" Found Atom %s on clipboard \n", name));
+      g_free(name);
   }
 }
 #endif

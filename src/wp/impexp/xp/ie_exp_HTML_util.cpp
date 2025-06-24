@@ -332,11 +332,14 @@ IE_Exp_HTML_DataExporter::IE_Exp_HTML_DataExporter(PD_Document* pDocument,
             const UT_UTF8String &filename):
     m_pDocument(pDocument)
 {
-	std::string baseName = UT_go_basename_from_uri(filename.utf8_str());
-	m_fileDirectory = baseName.c_str();
+	auto baseName = UT_go_basename_from_uri(filename.utf8_str());
+	m_fileDirectory = baseName;
     m_fileDirectory += FILES_DIR_NAME;
+	g_free(baseName);
 
-	m_baseDirectory = g_path_get_dirname(filename.utf8_str());
+	auto path = g_path_get_dirname(filename.utf8_str());
+	m_baseDirectory = path;
+	g_free(path);
 }
 
 IE_Exp_HTML_FileExporter::IE_Exp_HTML_FileExporter(PD_Document* pDocument, 
