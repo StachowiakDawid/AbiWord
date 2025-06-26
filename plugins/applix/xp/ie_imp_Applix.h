@@ -119,10 +119,10 @@ protected:
 
 	void                    _dispatchTag (Applix_tag_t tag, const char *buf, size_t len);
 	// tokenizer helpers
-	typedef struct {
+	struct Applix_mapping_t {
 	    const char * name;
 	    Applix_tag_t tag;
-	} Applix_mapping_t;
+	};
 	static Applix_mapping_t axwords[];
 	static Applix_tag_t     s_name_2_tag (const char *name, size_t n);
 	static Applix_tag_t     s_getTagName(const char *str, size_t len);

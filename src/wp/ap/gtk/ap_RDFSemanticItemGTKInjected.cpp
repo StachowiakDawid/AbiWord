@@ -29,20 +29,20 @@
 
 static gchar *s_id;
 
-typedef struct
+struct ssList_t
 {
     const XAP_String_Id translation_id;  
     const char *stylesheet;  
-} ssList_t;
+};
 
-typedef struct
+struct combo_box_t
 {
     const char *itemClass;
     const char *defaultStylesheet;
     const ssList_t *ssList;
     GtkWidget *combo_box; 
     int index; 
-} combo_box_t;
+};
 
 static const ssList_t ssListContact[] =
 {

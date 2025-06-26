@@ -703,8 +703,8 @@ Defun_EV_GetMenuItemState_Fn(ap_GetState_Suggest)
 	ABIWORD_VIEW;
 	UT_return_val_if_fail (pView, EV_MIS_Gray);
 
-	UT_ASSERT_HARMLESS(id >= AP_MENU_ID_SPELL_SUGGEST_1);
-	UT_ASSERT_HARMLESS(id <= AP_MENU_ID_SPELL_SUGGEST_9);
+	UT_ASSERT_HARMLESS(id >= (XAP_Menu_Id)AP_MENU_ID_SPELL_SUGGEST_1);
+	UT_ASSERT_HARMLESS(id <= (XAP_Menu_Id)AP_MENU_ID_SPELL_SUGGEST_9);
 
 	UT_uint32 ndx = (id - AP_MENU_ID_SPELL_SUGGEST_1 + 1);
 
@@ -735,8 +735,8 @@ Defun_EV_GetMenuItemComputedLabel_Fn(ap_GetLabel_Suggest)
 	AV_View * pAV_View = frame->getCurrentView();
 	ABIWORD_VIEW;
 
-	UT_ASSERT_HARMLESS(id >= AP_MENU_ID_SPELL_SUGGEST_1);
-	UT_ASSERT_HARMLESS(id <= AP_MENU_ID_SPELL_SUGGEST_9);
+	UT_ASSERT_HARMLESS(id >= (XAP_Menu_Id)AP_MENU_ID_SPELL_SUGGEST_1);
+	UT_ASSERT_HARMLESS(id <= (XAP_Menu_Id)AP_MENU_ID_SPELL_SUGGEST_9);
 
 	UT_return_val_if_fail(pView != nullptr, nullptr);
 

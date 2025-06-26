@@ -21,7 +21,7 @@
 #include "ut_assert.h"
 #include <stdlib.h>
 
-typedef struct {UT_UCS4Char min; UT_UCS4Char max; UT_uint32 dir;} char_bounds;
+struct char_bounds {UT_UCS4Char min; UT_UCS4Char max; UT_uint32 dir;};
 
 // the following table is heuristic; we will add to it more characters
 // when we need to (we could try to generate this table for the whole

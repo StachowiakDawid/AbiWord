@@ -73,7 +73,7 @@ AbiGO_LocaleTransactor::~AbiGO_LocaleTransactor ()
 	FREEP(mOldLocale);
 }
 
-struct _AbiControlGUI
+struct AbiControlGUI
 {
 	GObject base;
 	char *object_id;
@@ -81,7 +81,6 @@ struct _AbiControlGUI
 	GOChartView * pView;
 };
 
-typedef struct _AbiControlGUI AbiControlGUI;
 typedef GObjectClass AbiControlGUIClass;
 
 static GType abi_control_gui_get_type ();
@@ -112,12 +111,12 @@ abi_data_allocator_allocate (G_GNUC_UNUSED GogDataAllocator *dalloc, G_GNUC_UNUS
 //	sv_selection_to_plot (sc_view (SHEET_CONTROL (scg)), plot);
 }
 
-typedef struct {
+struct GraphDimEditor {
 	GtkEntry *entry;
 	GogDataset *dataset;
 	int dim_i;
 	GogDataType data_type;
-} GraphDimEditor;
+};
 
 static void
 cb_graph_dim_editor_update (GtkEntry *gee,

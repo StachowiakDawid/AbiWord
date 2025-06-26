@@ -125,7 +125,11 @@ gsf_input_memory_new_from_file (FILE * input)
 #define GSF_OUTPUT_PROXY(o)	(G_TYPE_CHECK_INSTANCE_CAST ((o), GSF_OUTPUT_PROXY_TYPE, GsfOutputProxy))
 #define GSF_IS_OUTPUT_PROXY(o)	(G_TYPE_CHECK_INSTANCE_TYPE ((o), GSF_OUTPUT_PROXY_TYPE))
 
-typedef struct _GsfOutputProxy GsfOutputProxy;
+struct GsfOutputProxy {
+	GsfOutput output;
+	GsfOutput *memory_output;
+	GsfOutput *sink;
+};
 
 GType gsf_output_proxy_get_type      (void) G_GNUC_CONST;
 void  gsf_output_proxy_register_type (GTypeModule *module);
@@ -139,15 +143,9 @@ enum {
 
 static GsfOutputClass *parent_class;
 
-struct _GsfOutputProxy {
-	GsfOutput output;
-	GsfOutput *memory_output;
-	GsfOutput *sink;
-};
-
-typedef struct {
+struct GsfOutputProxyClass {
 	GsfOutputClass output_class;
-} GsfOutputProxyClass;
+};
 
 /**
  * gsf_output_proxy_new :

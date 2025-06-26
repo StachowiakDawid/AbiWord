@@ -33,13 +33,13 @@ enum RTF_CONTEXT: uint8_t {
 
 #include "ie_imp_RTFKeywordIDs.h"
 
-typedef struct {
+struct _rtf_keyword {
 	const char * keyword;
 	bool hasParam;
 	bool longParam;
 	RTF_CONTEXT  context;
 	RTF_KEYWORD_ID id;
-} _rtf_keyword;
+};
 
 
 

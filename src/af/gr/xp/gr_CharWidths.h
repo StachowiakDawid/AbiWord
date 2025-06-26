@@ -71,7 +71,7 @@ public:
 private:
 	GR_CharWidths(GR_CharWidths &cp); // no impl
 
-	typedef struct _a { UT_sint32 aCW[256]; } Array256;
+	struct Array256 { UT_sint32 aCW[256]; };
 
 	Array256		m_aLatin1;		// for speed, we don't use vector
 	UT_GenericVector<Array256*>	m_vecHiByte;	// sparse vector<Array256 *>[hibyte]

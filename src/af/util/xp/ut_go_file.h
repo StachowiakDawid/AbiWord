@@ -32,9 +32,7 @@
 
 G_BEGIN_DECLS
 
-typedef struct _UT_GOFilePermissions UT_GOFilePermissions;
-
-struct _UT_GOFilePermissions {
+struct UT_GOFilePermissions {
 	gboolean owner_read;
 	gboolean owner_write;
 	gboolean owner_execute;

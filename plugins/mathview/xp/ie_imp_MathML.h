@@ -20,9 +20,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef IE_IMP_MATHML_H
-#define IE_IMP_MATHML_H
+#pragma once
 
 #include <stdio.h>
 #include "ie_imp.h"
@@ -33,10 +31,10 @@
 
 class  ImportStream;
 
-typedef struct {
+struct AbiMathViewEntityMapItem {
 	const char * szEntity;
 	const char * szVal;
-} AbiMathViewEntityMapItem;
+};
 
 class IE_Imp_MathML_EntityTable
 {
@@ -107,5 +105,3 @@ protected:
 
 	const IE_Imp_MathML_EntityTable *	m_EntityTable;
 };
-
-#endif /* IE_IMP_MATHML_H */

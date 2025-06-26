@@ -48,12 +48,11 @@
 			goto Failed;								\
 	} while(0)
 
-typedef struct
+struct ST_LOCALISED_STYLES
 {
 	const char*	pStyle;
-	int		nID;	
-	
-} ST_LOCALISED_STYLES;
+	int		nID;
+};
 
 //
 //	A list of the styles and they correspondant localised name

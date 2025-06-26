@@ -88,9 +88,15 @@ G_BEGIN_DECLS
 #define ABI_WIDGET_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST ((k), ABI_TYPE_WIDGET, AbiWidgetClass))
 
   /* forward declarations */
-  typedef struct _AbiWidget      AbiWidget;
-  typedef struct _AbiWidgetClass AbiWidgetClass;
-  typedef struct _AbiPrivData    AbiPrivData;
+  struct AbiPrivData;
+
+  struct AbiWidget
+  {
+    GtkBin bin;
+    GtkWidget * child;
+    /* private instance data */
+    AbiPrivData * priv;
+  };
 
   /*
    * These functions basically just marshall back their arguments into
@@ -107,15 +113,7 @@ G_BEGIN_DECLS
    */
   typedef gboolean (*AbiSignal) (AbiWidget *, gpointer closure);
 
-  struct _AbiWidget
-  {
-    GtkBin bin;
-    GtkWidget * child;
-    /* private instance data */
-    AbiPrivData * priv;
-  };
-
-  struct  _AbiWidgetClass {
+  struct  AbiWidgetClass {
     GtkBinClass parent_class;
 
     /* invoke any edit method based on its name */

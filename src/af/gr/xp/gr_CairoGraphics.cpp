@@ -2697,11 +2697,11 @@ UT_uint32 GR_CairoGraphics::getFontHeight(const GR_Font *pFont)
 	return pFP->getAscent() + pFP->getDescent();
 }
 
-typedef struct
+struct FieldMap
 {
   int value;
   const char str[16];
-} FieldMap;
+};
 
 static const FieldMap style_map[] = {
   { PANGO_STYLE_NORMAL, "" },

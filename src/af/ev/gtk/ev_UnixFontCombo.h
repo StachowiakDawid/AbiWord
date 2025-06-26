@@ -30,17 +30,14 @@ G_BEGIN_DECLS
 #define ABI_IS_FONT_COMBO_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), ABI_TYPE_FONT_COMBO))
 #define ABI_FONT_COMBO_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), ABI_TYPE_FONT_COMBO, AbiFontComboClass))
 
-typedef struct _AbiFontCombo 		AbiFontCombo;
-typedef struct _AbiFontComboClass 	AbiFontComboClass;
-
-struct _AbiFontCombo {
+struct AbiFontCombo {
 	GtkComboBox 	 parent;
 	GtkTreeModel	*model;
 	GtkTreeModel	*sort;
 	gboolean	 is_disposed;
 };
 
-struct _AbiFontComboClass {
+struct AbiFontComboClass {
 	GtkComboBoxClass parent;
 
 	void (* popup_opened) (GtkCellRenderer 	*cell,

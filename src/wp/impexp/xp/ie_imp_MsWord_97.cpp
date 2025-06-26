@@ -384,11 +384,11 @@ struct field
 //
 // A mapping between DOC's field names and our given IDs
 //
-typedef struct
+struct Doc_Field_Mapping_t
 {
 	const char * m_name;
 	Doc_Field_t m_id;
-} Doc_Field_Mapping_t;
+};
 
 /*
  * This next bit of code enables us to import many of Word's fields
@@ -492,10 +492,10 @@ enum MSWordListIdType: int8_t
   WLNF_HEBREW_NUMBERS  = 45
 };
 
-typedef struct{
+struct ListIdLevelPair {
   UT_uint32 listId;
   UT_uint32 level;
-} ListIdLevelPair;
+};
 
 /*!
  * Map msword list enums back to abi's

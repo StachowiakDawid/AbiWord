@@ -29,14 +29,14 @@
 #define CT_BLOB   2
 
 // the general structure for all structures
-typedef struct
+struct wri_struct
 {
 	int value;
 	char *data;
 	short size;         // in bytes
 	short type;         // a CT_xxx from above
 	const char *name;
-} wri_struct;
+};
 
 bool read_wri_struct(wri_struct *w, GsfInput *f);
 bool read_wri_struct_mem(wri_struct *w, unsigned char *blob);

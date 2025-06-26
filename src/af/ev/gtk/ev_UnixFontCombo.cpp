@@ -34,16 +34,13 @@
 #define ABI_IS_CELL_RENDERER_FONT_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), ABI_TYPE_CELL_RENDERER_FONT))
 #define ABI_CELL_RENDERER_FONT_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), ABI_TYPE_CELL_RENDERER_FONT, AbiCellRendererFontClass))
 
-typedef struct _AbiCellRendererFont 		AbiCellRendererFont;
-typedef struct _AbiCellRendererFontClass 	AbiCellRendererFontClass;
-
-struct _AbiCellRendererFont {
+struct AbiCellRendererFont {
 	GtkCellRendererText 	 parent;
 	GtkWidget		*parent_widget;
 	gboolean		 is_popped_up;
 };
 
-struct _AbiCellRendererFontClass {
+struct AbiCellRendererFontClass {
 	GtkCellRendererTextClass parent;
 
 	void (* popup_position) (GtkCellRenderer *cell, 

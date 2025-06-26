@@ -71,14 +71,11 @@ enum FG_Fill_Type: uint8_t {
 
 #define INITIAL_OFFSET -99999999
 
-typedef struct _fp_Requisition	  fp_Requisition;
-typedef struct _fp_Allocation    fp_Allocation;
-
 /*!
  *  A requisition is a desired amount of space which a
  *  container may request.
  */
-struct _fp_Requisition
+struct fp_Requisition
 {
   UT_sint32 width;
   UT_sint32 height;
@@ -89,7 +86,7 @@ struct _fp_Requisition
  *  can ask for a desired size, it is actually given
  *  this amount of space at the specified position.
  */
-struct _fp_Allocation
+struct fp_Allocation
 {
   UT_sint32 x;
   UT_sint32 y;

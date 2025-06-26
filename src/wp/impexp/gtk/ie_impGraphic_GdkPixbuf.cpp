@@ -46,10 +46,10 @@ static void _write_png( png_structp png_ptr,
 
 //static void _write_flush(png_structp png_ptr) { } // Empty Fuction.
 
-typedef struct {
+struct SuffixInfo {
 	const gchar **suffixes;
 	gint		  count;
-} SuffixInfo;
+};
 
 /*!
  * Get the null terminated array of recognized suffixes.

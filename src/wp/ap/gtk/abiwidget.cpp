@@ -92,10 +92,10 @@ class AbiWidget_ViewListener;
 // Their GTK+ or GNOME XAP equivalents, so we don't need to worry
 // About that here
 
-struct _AbiPrivData
+struct AbiPrivData
 {
 public:
-	_AbiPrivData()
+	AbiPrivData()
 		: m_pDoc(nullptr),
 		m_pFrame(nullptr),
 		m_bMappedToScreen(false),

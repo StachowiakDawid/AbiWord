@@ -19,8 +19,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_MODULE_H
-#define XAP_MODULE_H
+#pragma once
 
 // This is an abstract class meant for dynamically
 // Loading and unloading modules. To load a module,
@@ -33,13 +32,7 @@
 
 #include <stdio.h>
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 #ifdef TOOLKIT_WIN
   #define WIN32_LEAN_AND_MEAN
@@ -52,13 +45,13 @@
 // we want to have C linkage for both
 // this and for all of our required functions
 extern "C" {
-	typedef struct {
+	struct XAP_ModuleInfo {
 		const char * name;
 		const char * desc;
 		const char * version;
 		const char * author;
 		const char * usage;
-	} XAP_ModuleInfo;
+	};
 }
 
 class XAP_ModuleManager;
@@ -164,5 +157,3 @@ _isCurrentAbiVersion(int a, int b, int c)
 #else
 #define ABI_VERSION_STRING ABI_BUILD_VERSION
 #endif
-
-#endif /* XAP_MODULE_H */

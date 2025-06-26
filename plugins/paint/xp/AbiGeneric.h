@@ -30,9 +30,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_GENERIC_PLUGIN_H
-#define XAP_GENERIC_PLUGIN_H
-
+#pragma once
 
 #ifndef ABI_PLUGIN_NAME	// allow easy redefinition
 #define ABI_PLUGIN_NAME AbiPlugin
@@ -182,7 +180,7 @@ extern const gchar * szAbiPluginSchemeName;
  *        most notable on the end of a submenu; its probably ok
  *        for separators to share a nullptr label.
  */
-typedef struct AbiMenuOptions
+struct AbiMenuOptions
 {
   const char    * methodName;
   EV_EditMethod_pFn method;
@@ -198,7 +196,7 @@ typedef struct AbiMenuOptions
   bool inMainMenu;			/* true if should show in main menu     (generally true) */
   bool inContextMenu;			/* true if should show in context menu  (depends)        */
   XAP_Menu_Id id;
-} AbiMenuOptions ;
+};
 
 
 /*
@@ -240,6 +238,3 @@ void plugin_imp_unlockGUI(EV_EditMethodCallData *d);
 XAP_ModuleInfo *      getModuleInfo(void);
 bool                  doRegistration(void);
 void                  doUnregistration(void);
-
-
-#endif /* XAP_GENERIC_PLUGIN_H */

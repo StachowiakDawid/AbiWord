@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef IE_IMPEXP_PALM_H
-#define IE_IMPEXP_PALM_H
+#pragma once
 
 #include <limits.h>
 #include <stdio.h>
@@ -53,7 +52,7 @@ typedef UT_uint32 DWord;
 
 #define	dmDBNameLength	32	/* 31 chars + 1 null terminator */
 
-typedef struct {		/* 78 bytes total */
+struct pdb_header {		/* 78 bytes total */
 	char	name[ dmDBNameLength ];
 	Word	attributes;
 	Word	version;
@@ -68,7 +67,7 @@ typedef struct {		/* 78 bytes total */
 	DWord	id_seed;
 	DWord	nextRecordList;
 	Word	numRecords;
-} pdb_header;
+};
 
 /*
 ** Some compilers pad structures out to DWord boundaries so using sizeof()
@@ -83,14 +82,14 @@ typedef struct {		/* 78 bytes total */
  *
  *****************************************************************************/
 
-typedef struct {		/* 16 bytes total */
+struct doc_record0 {		/* 16 bytes total */
 	Word	version;	/* 1 = plain text, 2 = compressed */
 	Word	reserved1;
 	DWord	doc_size;	/* in bytes, when uncompressed */
 	Word	numRecords; 	/* text rec's only; = pdb_header.numRecords-1 */
 	Word	rec_size;	/* usually RECORD_SIZE_MAX */
 	DWord	reserved2;
-} doc_record0;
+};
 
 /*****************************************************************************
  *
@@ -98,16 +97,14 @@ typedef struct {		/* 16 bytes total */
  *
  *****************************************************************************/
 
-typedef struct {
+struct buffer {
     Byte buf[BUFFER_SIZE];
     UT_uint32	len;
     UT_uint32	position;
-} buffer;
+};
 
 #define	PUT_Word(f,n)	{  Word n1 = _swap_Word ( n ); gsf_output_write(f, 2, (guint8*)&n1); }
 #define	PUT_DWord(f,n)	{ DWord n1 = _swap_DWord( n ); gsf_output_write(f, 4, (guint8*)&n1); }
 
 #define	GET_Word(f,n)	{ gsf_input_read( f, 2, (guint8*)&n ); n = _swap_Word ( n ); }
 #define	GET_DWord(f,n)	{ gsf_input_read( f, 4, (guint8*)&n ); n = _swap_DWord( n ); }
-
-#endif

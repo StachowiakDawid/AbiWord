@@ -19,8 +19,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef IE_IMP_MSWRITE_H
-#define IE_IMP_MSWRITE_H
+#pragma once
 
 #include <string>
 
@@ -30,12 +29,12 @@
 #include "ut_mbtowc.h"
 #include "ut_string_class.h"
 
-typedef struct
+struct wri_font
 {
 	short ffid;             // unused
 	const char *name;
 	const char *codepage;
-} wri_font;
+};
 
 class IE_Imp_MSWrite_Sniffer : public IE_ImpSniffer
 {
@@ -96,5 +95,3 @@ private:
 	void set_codepage(const char *charset);
 	void translate_char(const UT_Byte ch, UT_UCS4String &buf);
 };
-
-#endif

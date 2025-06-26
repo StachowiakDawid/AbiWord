@@ -27,12 +27,14 @@ extern "C" {
 }
 
 //-----------------------------------------------------------------------------
-typedef struct {
+struct mem_destination_mgr {
 	struct jpeg_destination_mgr pub;
 	JOCTET *buf;
 	size_t bufsize;
 	size_t jpegsize;
-} mem_destination_mgr, *mem_dest_ptr;
+};
+
+typedef mem_destination_mgr* mem_dest_ptr;
 
 //-----------------------------------------------------------------------------
 static void _jpeg_init_destination( j_compress_ptr cinfo )

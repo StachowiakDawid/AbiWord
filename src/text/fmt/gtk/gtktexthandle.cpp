@@ -18,8 +18,6 @@
 #include "gtktexthandleprivate.h"
 #include <gtk/gtk.h>
 
-typedef struct _HandleWindow HandleWindow;
-
 enum: uint8_t {
   HANDLE_DRAGGED,
   DRAG_FINISHED,
@@ -32,7 +30,7 @@ enum: uint8_t {
   PROP_RELATIVE_TO
 };
 
-struct _HandleWindow
+struct HandleWindow
 {
   GdkWindow *window;
   GdkRectangle pointing_to;

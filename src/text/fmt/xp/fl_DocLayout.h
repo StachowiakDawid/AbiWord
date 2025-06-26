@@ -55,11 +55,11 @@ enum FootnoteType: uint16_t
 };
 
 /** describe a footnote. */
-typedef struct {
+struct FootnoteTypeDesc {
 	FootnoteType n;        /**< numeric value */
 	const char * label;    /**< UI label */
 	const char * prop;     /**< property string */
-} FootnoteTypeDesc;
+};
 
 extern const FootnoteTypeDesc s_FootnoteTypeDesc[];
 

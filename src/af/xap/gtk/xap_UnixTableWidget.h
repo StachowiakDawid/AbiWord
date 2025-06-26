@@ -21,8 +21,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef ABI_TABLE_H
-#define ABI_TABLE_H
+#pragma once
 
 #include <gtk/gtk.h>
 
@@ -36,7 +35,7 @@ extern "C" {
 #define IS_ABITABLE_WIDGET_CLASS(obj)  (G_TYPE_CHECK_CLASS_CAST((obj), ABITABLE_TYPE_WIDGET))
 #define ABITABLE_WIDGET_CLASS(k) (G_TYPE_CHECK_CLASS_CAST((k), ABITABLE_TYPE_WIDGET,AbiTableClass))
 
-typedef struct _AbiTable
+struct AbiTable
 {
 	GtkButton button;
 
@@ -64,15 +63,15 @@ typedef struct _AbiTable
 	guint max_cols;
 	gchar * szTable;
 	gchar * szCancel;
-} AbiTable;
+};
 
-typedef struct
+struct AbiTableClass
 {
 	GtkButtonClass parent_class;
 
 	/* Signals emited by this widget */
 	void (* selected) (AbiTable *abi_table, guint rows, guint cols);
-} AbiTableClass;
+};
 
 
 GType    abi_table_get_type   (void);
@@ -98,5 +97,3 @@ void	   abi_table_get_max_size   (const AbiTable* abi_table, guint* rows, guint*
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* ABI_TABLE_H */

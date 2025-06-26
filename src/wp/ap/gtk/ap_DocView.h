@@ -31,11 +31,10 @@ G_BEGIN_DECLS
 #define AP_DOCVIEW_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST ((k), AT_TYPE_DOCVIEW, AbiWidgetClass))
 
   /* forward declarations */
-  typedef struct _ApDocView      ApDocView;
   typedef GtkDrawingAreaClass ApDocViewClass;
-  typedef struct _AbiPrivData    AbiPrivData;
+  struct AbiPrivData;
 
-  struct _ApDocView
+  struct ApDocView
   {
     GtkDrawingArea base;
     GtkWidget * child;

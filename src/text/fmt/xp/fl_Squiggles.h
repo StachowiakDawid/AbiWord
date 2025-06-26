@@ -106,8 +106,6 @@ class ABI_EXPORT fl_GrammarSquiggles : public fl_Squiggles
   fl_GrammarSquiggles(fl_BlockLayout* pOwner);
 };
 
-#endif /* FL_SQUIGGLES_H */
-
 
 
 

@@ -7551,7 +7551,7 @@ Defun1(dlgSpell)
 {
 	CHECK_FRAME;
 	ABIWORD_VIEW;
-   XAP_Dialog_Id id = AP_DIALOG_ID_SPELL;
+	XAP_Dialog_Id id = (XAP_Dialog_Id)AP_DIALOG_ID_SPELL;
 
    return s_doSpellDlg(pView,id);
 }

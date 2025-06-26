@@ -28,9 +28,6 @@ G_BEGIN_DECLS
 #define FV_IS_TEXT_HANDLE_CLASS(o)    (G_TYPE_CHECK_CLASS_TYPE ((o), FV_TYPE_TEXT_HANDLE))
 #define FV_TEXT_HANDLE_GET_CLASS(o)   (G_TYPE_INSTANCE_GET_CLASS ((o), FV_TYPE_TEXT_HANDLE, FvTextHandleClass))
 
-typedef struct _FvTextHandle FvTextHandle;
-typedef struct _FvTextHandleClass FvTextHandleClass;
-
 enum FvTextHandlePosition: uint8_t
 {
   FV_TEXT_HANDLE_POSITION_CURSOR,
@@ -47,13 +44,13 @@ enum FvTextHandleMode: uint8_t
 
 struct FvTextHandlePrivate;
 
-struct _FvTextHandle
+struct FvTextHandle
 {
   GObject parent_instance;
   FvTextHandlePrivate* priv;
 };
 
-struct _FvTextHandleClass
+struct FvTextHandleClass
 {
   GObjectClass parent_class;
 

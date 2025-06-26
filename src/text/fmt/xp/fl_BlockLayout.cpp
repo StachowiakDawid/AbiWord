@@ -11522,12 +11522,12 @@ fl_BlockSpellIterator::updateBlock(void)
   \return True if word was found, false otherwise.
 */
 
-typedef struct 
+struct _spell_type
 {
 	UT_uint32 iStart;
 	UT_uint32 iEnd;
 	bool      bIgnore;
-} _spell_type;
+};
 
 
 /*!
