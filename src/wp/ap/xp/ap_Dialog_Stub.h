@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_STUB_H
-#define AP_DIALOG_STUB_H
+#pragma once
 
 #include "xap_Frame.h"
 #include "xap_Dialog.h"
@@ -49,7 +48,7 @@ public:
 
 	virtual void runModal(XAP_Frame * pFrame) = 0;
 
-	typedef enum { a_OK, a_CANCEL } tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
 
 	AP_Dialog_Stub::tAnswer		getAnswer(void) const;
 
@@ -57,5 +56,3 @@ protected:
 
 	AP_Dialog_Stub::tAnswer		m_answer;
 };
-
-#endif /* AP_DIALOG_STUB_H */

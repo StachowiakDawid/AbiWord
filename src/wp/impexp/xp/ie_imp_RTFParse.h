@@ -18,21 +18,18 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef _IE_IMP_RTFPARSE_H_
-#define _IE_IMP_RTFPARSE_H_
+#pragma once
 
 #define MAX_KEYWORD_LEN 256
 
 class IE_Imp_RTF;
 
-
-typedef enum {
+enum RTF_CONTEXT: uint8_t {
 	CONTEXT_FRAME,
 	CONTEXT_FONT_FORM_PROP,
 	CONTEXT_STYLE_SHEET,
 	NO_CONTEXT
-} RTF_CONTEXT;
+};
 
 #include "ie_imp_RTFKeywordIDs.h"
 
@@ -81,5 +78,3 @@ protected:
 	/// when a brace close
 	int m_nested;
 };
-
-#endif

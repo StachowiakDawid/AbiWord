@@ -19,9 +19,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef IE_IMP_XML_H
-#define IE_IMP_XML_H
+#pragma once
 
 #include <stdio.h>
 #include <string>
@@ -113,7 +111,7 @@ protected:
     void			_pushInlineFmt(const PP_PropertyVector & atts);
     void			_popInlineFmt(void);
 
-    typedef enum _parseState { _PS_Init,
+    enum  ParseState: uint8_t { _PS_Init,
 			       _PS_Doc,
 			       _PS_Sec,
 			       _PS_Block,
@@ -139,7 +137,7 @@ protected:
 				   _PS_Version,
 				   _PS_RDFTriple,
 				   _PS_RDFData,
-    } ParseState;
+    };
 
  protected:
 
@@ -187,5 +185,3 @@ protected:
 	UT_uint32	_data_CharCount () const { return m_iCharCount; }
 	void		_data_NewBlock ();
 };
-
-#endif /* IE_IMP_XML_H */

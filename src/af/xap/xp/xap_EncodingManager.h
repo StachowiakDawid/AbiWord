@@ -18,16 +18,9 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_ENCMGR_H
-#define XAP_ENCMGR_H
+#pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 #ifdef HAVE_EXPAT
 #ifndef gchar
@@ -47,7 +40,7 @@ struct ABI_EXPORT XAP_LangInfo
 	/*no memeber can have nullptr value. If string is empty, then value is
 	 not defined. All fields are strings to simplify searches.
 	*/
-	enum fieldidx { longname_idx, /*this field is not empty*/
+	enum fieldidx: uint8_t { longname_idx, /*this field is not empty*/
 			isoshortname_idx /*ISO*/,
 			countrycode_idx, /*e.g. the "US" in "en-US" */
 			winlangcode_idx, /*0x400 + atoi() it to get a value*/
@@ -322,5 +315,3 @@ extern "C" {
 extern int XAP_EncodingManager__swap_stou,XAP_EncodingManager__swap_utos;
 const char * xap_encoding_manager_get_language_iso_name(void);
 }
-
-#endif /* XAP_ENCMGR_H */

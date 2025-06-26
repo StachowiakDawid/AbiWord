@@ -2,7 +2,7 @@
 
 /* AbiSource Application Framework
  * Copyright (C) 2002 AbiSource, Inc.
- * Copyright (c) 2023 Hubert Figuière
+ * Copyright (c) 2023-2025 Hubert Figuière
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -52,13 +52,12 @@ XAP_UnixDialog_HTMLOptions::~XAP_UnixDialog_HTMLOptions ()
 	// 
 }
 
-typedef enum
-{
+enum ResponseId: uint8_t {
 	BUTTON_OK,
 	BUTTON_SAVE_SETTINGS,
 	BUTTON_RESTORE_SETTINGS,
 	BUTTON_CANCEL
-} ResponseId;
+};
 
 void XAP_UnixDialog_HTMLOptions::runModal (XAP_Frame * pFrame)
 {

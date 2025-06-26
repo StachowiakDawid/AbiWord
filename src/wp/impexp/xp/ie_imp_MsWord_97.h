@@ -21,8 +21,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef IE_IMP_MSWORD_H
-#define IE_IMP_MSWORD_H
+#pragma once
 
 // The importer/reader for Microsoft Word Documents
 
@@ -81,7 +80,7 @@ struct textboxPos
 	pf_Frag * endFrame;
 };
 
-typedef enum
+enum _headerTypes: uint8_t
 	{
 		HF_HeaderFirst = 0,
 		HF_FooterFirst,
@@ -90,7 +89,7 @@ typedef enum
 		HF_HeaderEven,
 		HF_FooterEven,
 		HF_Unsupported
-	}_headerTypes;
+	};
 
 
 struct header
@@ -349,5 +348,3 @@ private:
 	UT_sint32    m_iLeftCellPos;
 	UT_uint32    m_iLastAppendedHeader;
 };
-
-#endif /* IE_IMP_MSWORD_H */

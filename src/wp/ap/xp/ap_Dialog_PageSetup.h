@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_Dialog_PageSetup_H
-#define AP_Dialog_PageSetup_H
+#pragma once
 
 #include "ut_types.h"
 #include "ut_units.h"
@@ -34,8 +33,8 @@ public:
 
 	virtual void runModal(XAP_Frame *pFrame) override = 0;
 
-	typedef enum { a_OK, a_CANCEL } tAnswer;
-	typedef enum { PORTRAIT, LANDSCAPE } Orientation;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
+	enum  Orientation: uint8_t { PORTRAIT, LANDSCAPE };
 
 	// declare JavaBean-like accessors for our properties
 #define SET_GATHER(a, u)  inline u get##a(void) const {return m_##a;} \
@@ -76,5 +75,3 @@ public:
 	float                   m_MarginHeader;
 	float                   m_MarginFooter;
 };
-
-#endif // AP_Dialog_PageSetup_H

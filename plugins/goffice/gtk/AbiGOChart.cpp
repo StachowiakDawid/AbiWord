@@ -660,11 +660,11 @@ void GR_GOChartManager::buildContextualMenu ()
     EV_Menu_ActionSet* pActionSet = pApp->getMenuActionSet();
 	XAP_Menu_Factory * pFact = pApp->getMenuFactory();
 	ChartMenuID = pFact->createContextMenu("AbiGOChart");
-	pFact->addNewMenuBefore("AbiGOChart",nullptr,0,EV_MLF_Normal,AP_MENU_ID_EDIT_DELETEEMBED);
-	pFact->addNewMenuBefore("AbiGOChart",nullptr,0,EV_MLF_Normal,AP_MENU_ID_EDIT_COPYEMBED);
-	pFact->addNewMenuBefore("AbiGOChart",nullptr,0,EV_MLF_Normal,AP_MENU_ID_EDIT_CUTEMBED);
-    pFact->addNewMenuBefore("AbiGOChart",nullptr,0,EV_MLF_Normal,AP_MENU_ID_FMT_EMBED);
-	XAP_Menu_Id separatorID = pFact->addNewMenuAfter("AbiGOChart",nullptr,AP_MENU_ID_FMT_EMBED,EV_MLF_Separator);
+	pFact->addNewMenuBefore("AbiGOChart", nullptr, nullptr, EV_MLF_Normal, (XAP_Menu_Id)AP_MENU_ID_EDIT_DELETEEMBED);
+	pFact->addNewMenuBefore("AbiGOChart", nullptr, nullptr, EV_MLF_Normal, (XAP_Menu_Id)AP_MENU_ID_EDIT_COPYEMBED);
+	pFact->addNewMenuBefore("AbiGOChart", nullptr, nullptr, EV_MLF_Normal, (XAP_Menu_Id)AP_MENU_ID_EDIT_CUTEMBED);
+    pFact->addNewMenuBefore("AbiGOChart", nullptr, nullptr, EV_MLF_Normal, (XAP_Menu_Id)AP_MENU_ID_FMT_EMBED);
+	XAP_Menu_Id separatorID = pFact->addNewMenuAfter("AbiGOChart", nullptr, (XAP_Menu_Id)AP_MENU_ID_FMT_EMBED, EV_MLF_Separator);
 	pFact->addNewLabel(nullptr,separatorID,nullptr,nullptr);
 	// Create the Action that will be called.
 	EV_Menu_Action* mySeparatorAction = new EV_Menu_Action(

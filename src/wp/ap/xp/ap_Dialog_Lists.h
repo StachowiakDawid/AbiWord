@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_LISTS_H
-#define AP_DIALOG_LISTS_H
+#pragma once
 
 #include <string>
 
@@ -82,11 +81,11 @@ public:
 
 	// these are used for the Modal version of the dialog called from the
     // styles dialog.
-	typedef enum {
+	enum tAnswer: uint8_t {
 		a_OK,
 		a_QUIT,
 		a_CLOSE
-	} tAnswer;
+	};
 
 	AP_Dialog_Lists::tAnswer	getAnswer(void) const;
 	void                        setAnswer(AP_Dialog_Lists::tAnswer ans ) {m_Answer = ans;}
@@ -243,6 +242,3 @@ private:
 	UT_String				m_Output[5];
 	bool                                    m_bFoldingLevelChanged;
 };
-
-
-#endif /* AP_DIALOG_LISTS_H */

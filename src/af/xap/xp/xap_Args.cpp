@@ -99,7 +99,7 @@ XAP_Args::XAP_Args(const char * szCmdLine)
 	int k = 0;
 	char ** argv = (char **)UT_calloc(count,sizeof(char *));
 
-	enum _state { S_START, S_INTOKEN, S_INDQUOTE, S_INSQUOTE } state;
+	enum: uint8_t { S_START, S_INTOKEN, S_INDQUOTE, S_INSQUOTE } state;
 	state = S_START;
 
 #define GrowArrayIfNecessary()								\

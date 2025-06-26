@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef TABLELAYOUT_H
-#define TABLELAYOUT_H
+#pragma once
 
 #ifdef FMT_TEST
 #include <stdio.h>
@@ -36,7 +35,7 @@
 #include "ut_debugmsg.h"
 #include "ut_misc.h" // for UT_RGBColor
 
-enum  FL_TableJustification
+enum FL_TableJustification: uint8_t
 {
     FL_TABLE_LEFT,
     FL_TABLE_CENTER,
@@ -44,7 +43,7 @@ enum  FL_TableJustification
     FL_TABLE_FULL
 };
 
-enum FL_RowHeightType
+enum FL_RowHeightType: uint8_t
 {
 	FL_ROW_HEIGHT_NOT_DEFINED,
 	FL_ROW_HEIGHT_AUTO,
@@ -407,5 +406,3 @@ private:
 #define LS_DOTTED	2	// A dotted line
 #define LS_DASHED	3	// A dashed line
 // add more line styles here
-
-#endif /* TABLELAYOUT_H */

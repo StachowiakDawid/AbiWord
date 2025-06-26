@@ -2,7 +2,7 @@
 /* AbiSource Application Framework
  * Copyright (C) 1998-2000 AbiSource, Inc.
  * Copyright (C) 2002 William Lachance
- * Copyright (C) 2019-2021 Hubert Figuière
+ * Copyright (C) 2019-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -76,7 +76,7 @@
 #include "ie_impGraphic.h"
 #include "fg_Graphic.h"
 
-enum {
+enum: uint8_t {
 	TARGET_DOCUMENT, // 0, to sync with gtk_drag_dest_add_text_target's default info value
  	TARGET_IMAGE,
 	TARGET_URI_LIST,

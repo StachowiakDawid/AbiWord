@@ -80,9 +80,9 @@ XAP_Frame::XAP_Frame(XAP_FrameImpl *pFrameImpl)
 	  m_stAutoSaveExt(),
 	  m_bBackupRunning(false),
 	  m_bBackupInProgress(false),
-	  m_isrcId(0),
+	  m_isrcId((XAP_Toolbar_Id)0),
 	  m_isrcTBNr(0),
-	  m_idestId(0),
+	  m_idestId((XAP_Toolbar_Id)0),
 	  m_idestTBNr(0),
 	  m_bisDragging(false),
 	  m_bHasDropped(false),
@@ -116,9 +116,9 @@ XAP_Frame::XAP_Frame(XAP_Frame * f)
 	m_iAutoSavePeriod(f->m_iAutoSavePeriod),
 	m_bBackupRunning(false),
 	m_bBackupInProgress(false),
-	m_isrcId(0),
+	m_isrcId((XAP_Toolbar_Id)0),
 	m_isrcTBNr(0),
-	m_idestId(0),
+	m_idestId((XAP_Toolbar_Id)0),
 	m_idestTBNr(0),
 	m_bisDragging(false),
 	m_bHasDropped(false),
@@ -1022,10 +1022,10 @@ void XAP_Frame::dragBegin(XAP_Toolbar_Id srcId, EV_Toolbar * pTBsrc)
 	m_bisDragging = true;
 	m_bHasDropped = false;
 	m_bHasDroppedTB = false;
-	m_idestId = 0;
+	m_idestId = (XAP_Toolbar_Id)0;
 	m_idestTBNr = 0;
 }
-	
+
 /*
  * Record the XP stuff from drop event recorded from the toolbars onto an icon
  */

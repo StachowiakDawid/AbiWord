@@ -18,16 +18,15 @@
  */
 
 
-#ifndef XAP_TYPES_H
-#define XAP_TYPES_H
+#pragma once
+
+#include <cstdint>
 
 /*
 	The actual set of IDs is private to each app, but we want a general
 	way to reference them.
 */
 
-typedef int		XAP_Menu_Id;
-typedef int		XAP_Toolbar_Id;
-typedef int		XAP_Dialog_Id;
-
-#endif /* XAP_TYPES_H */
+enum XAP_Menu_Id: uint16_t;
+enum XAP_Toolbar_Id: uint8_t;
+enum XAP_Dialog_Id: uint16_t;

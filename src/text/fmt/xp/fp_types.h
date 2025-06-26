@@ -17,10 +17,11 @@
  * 02110-1301 USA.
  */
 
-#ifndef FP_TYPES_H
-#define FP_TYPES_H
+#pragma once
 
-enum FL_ListType
+#include <cstdint>
+
+enum FL_ListType: uint8_t
 {
   NUMBERED_LIST = 0,
   LOWERCASE_LIST = 1,
@@ -52,7 +53,7 @@ enum FL_ListType
   NOT_A_LIST = 0xff
 };
 
-enum FV_DocPos
+enum FV_DocPos: uint8_t
 {
   FV_DOCPOS_BOB, FV_DOCPOS_EOB,	// block
   FV_DOCPOS_BOD, FV_DOCPOS_EOD,	// document
@@ -62,7 +63,7 @@ enum FV_DocPos
   FV_DOCPOS_BOW, FV_DOCPOS_EOW_MOVE, FV_DOCPOS_EOW_SELECT // word
 };
 
-enum ToggleCase
+enum ToggleCase: uint8_t
 {
   CASE_SENTENCE,
   CASE_LOWER,
@@ -73,7 +74,7 @@ enum ToggleCase
   CASE_ROTATE
 };
 
-enum FormatTable
+enum FormatTable: uint8_t
 {
   FORMAT_TABLE_SELECTION,
   FORMAT_TABLE_ROW,
@@ -81,7 +82,7 @@ enum FormatTable
   FORMAT_TABLE_TABLE
 };
 
-enum  BreakSectionType
+enum  BreakSectionType: uint8_t
 {
   BreakSectionContinuous,
   BreakSectionNextPage,
@@ -89,7 +90,7 @@ enum  BreakSectionType
   BreakSectionOddPage
 };
 
-enum ViewMode
+enum ViewMode: uint8_t
 {
   VIEW_PRINT,
   VIEW_NORMAL,
@@ -97,7 +98,7 @@ enum ViewMode
   VIEW_PREVIEW
 };
 
-enum PreViewMode
+enum PreViewMode: uint8_t
 {
   PREVIEW_NONE,
   PREVIEW_ZOOMED,
@@ -107,6 +108,3 @@ enum PreViewMode
   PREVIEW_ADJUSTED_PAGE_SCROLL,
   PREVIEW_CLIPPED_SCROLL
 };
-
-
-#endif /* FP_TYPES_H */

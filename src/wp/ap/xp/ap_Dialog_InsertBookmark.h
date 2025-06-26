@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_INSERTBOOKMARK_H
-#define AP_DIALOG_INSERTBOOKMARK_H
+#pragma once
 
 #include "ap_Dialog_Modal.h"
 #include "pd_Document.h"
@@ -38,7 +37,7 @@ public:
 
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK=0, a_CANCEL=1, a_DELETE=2 } tAnswer;
+	enum tAnswer: uint8_t { a_OK=0, a_CANCEL=1, a_DELETE=2 };
 
 	tAnswer 			getAnswer(void) const;
 	void				setAnswer(tAnswer a);
@@ -69,5 +68,3 @@ private:
 	AP_Dialog_InsertBookmark::tAnswer	m_answer;
 	gchar			m_pBookmark[BOOKMARK_SIZE_LIMIT + 1];
 };
-
-#endif /* AP_DIALOG_TOGGLECASE_H */

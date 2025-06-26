@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_DIALOG_CLIPART_H
-#define XAP_DIALOG_CLIPART_H
+#pragma once
 
 /* #include "xap_Frame.h" */
 #include "xap_Dialog.h"
@@ -30,7 +29,7 @@ class ABI_EXPORT XAP_Dialog_ClipArt : public XAP_Dialog_NonPersistent
 {
 public:
 
-	typedef enum { a_OK, a_CANCEL } tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
 
 	XAP_Dialog_ClipArt(XAP_DialogFactory * pDlgFactory, XAP_Dialog_Id id);
 	virtual ~XAP_Dialog_ClipArt(void);
@@ -54,5 +53,3 @@ private:
 	char * m_szGraphicName;
 	char * m_szInitialDir;
 };
-
-#endif /* XAP_DIALOG_CLIPART_H */

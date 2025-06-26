@@ -107,7 +107,7 @@ class SpellChecker;
 
 class CellLine;
 
-typedef enum
+enum AP_CellSplitType: uint8_t
 {
 	hori_left,
 	hori_mid,
@@ -115,10 +115,10 @@ typedef enum
 	vert_above,
 	vert_mid,
 	vert_below
-} AP_CellSplitType;
+};
 
 
-typedef enum _AP_JumpTarget
+enum AP_JumpTarget: uint8_t
 {
 	AP_JUMPTARGET_PAGE, 			// beginning of page
 	AP_JUMPTARGET_LINE,
@@ -126,7 +126,7 @@ typedef enum _AP_JumpTarget
 //	AP_JUMPTARGET_PICTURE, TODO
     AP_JUMPTARGET_XMLID,
     AP_JUMPTARGET_ANNOTATION
-} AP_JumpTarget;
+};
 
 struct fv_ChangeState
 {
@@ -179,7 +179,7 @@ private:
 	fl_ContainerLayout* m_pCurrentCL;
 };
 
-enum FV_BIDI_Order
+enum FV_BIDI_Order: uint16_t
 {
 	FV_Order_Visual = 0,
 	FV_Order_Logical_LTR = UT_BIDI_LTR,

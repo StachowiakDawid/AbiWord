@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_FIELD_H
-#define AP_DIALOG_FIELD_H
+#pragma once
 
 #include "xap_Frame.h"
 #include "xap_Dialog.h"
@@ -32,7 +31,7 @@ class XAP_Frame;
 class ABI_EXPORT AP_Dialog_Field : public XAP_Dialog_NonPersistent
 {
 public:
-	typedef enum { a_OK, a_CANCEL } tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
 
 	AP_Dialog_Field(XAP_DialogFactory * pDlgFactory, XAP_Dialog_Id id);
 	virtual ~AP_Dialog_Field();
@@ -47,5 +46,3 @@ protected:
 private:
 	gchar * m_pParameter;
 };
-
-#endif /* AP_DIALOG_FIELD_H */

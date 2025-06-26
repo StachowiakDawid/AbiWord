@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_DIALOG_PASSWORD_H
-#define XAP_DIALOG_PASSWORD_H
+#pragma once
 
 #include "ut_string_class.h"
 
@@ -32,7 +31,7 @@ class ABI_EXPORT XAP_Dialog_Password : public XAP_Dialog_NonPersistent
 {
 public:
 
-  typedef enum { a_OK, a_Cancel } tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_Cancel };
 
 	XAP_Dialog_Password(XAP_DialogFactory * pDlgFactory, XAP_Dialog_Id id);
 	virtual ~XAP_Dialog_Password(void);
@@ -52,5 +51,3 @@ public:
 	UT_UTF8String m_passwd;
 	tAnswer m_answer;
 };
-
-#endif /* XAP_DIALOG_PASSWORD_H */

@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_UNIXDIALOG_ToggleCase_H
-#define AP_UNIXDIALOG_ToggleCase_H
+#pragma once
 
 #include <gtk/gtk.h>
 #include "ap_Dialog_ToggleCase.h"
@@ -39,15 +38,13 @@ class AP_UnixDialog_ToggleCase: public AP_Dialog_ToggleCase
 
  protected:
 
-	typedef enum
+	enum ResponseId: int8_t
 		{
 			BUTTON_OK = GTK_RESPONSE_OK,
 			BUTTON_CANCEL = GTK_RESPONSE_CANCEL
-		} ResponseId ;
+		};
 
 	virtual GtkWidget * _constructWindow(void);
 	virtual void        _constructWindowContents (GtkWidget *parent);
 
 };
-
-#endif /* AP_UNIXDIALOG_STUB_H */

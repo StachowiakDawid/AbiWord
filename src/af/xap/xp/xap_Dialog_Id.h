@@ -1,5 +1,6 @@
 /* AbiSource Application Framework
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,9 +18,9 @@
  * 02110-1301 USA.
  */
 
+#pragma once
 
-#ifndef XAP_DIALOG_ID_H
-#define XAP_DIALOG_ID_H
+#include <cstdint>
 
 // since the dialog framework is split between cross-application
 // and application-specific, we partition the DialogId space two
@@ -30,7 +31,7 @@
 // (defined in ap_Types.h as the actual parameter type (this
 // solves some compiler oddities)).
 
-enum _XAP_Dialog_Id
+enum XAP_Dialog_Id: uint16_t
 {
 	XAP_DIALOG_ID__FIRST__				= 0, /* must be first */
 
@@ -88,5 +89,3 @@ enum _XAP_Dialog_Id
 	XAP_DIALOG_ID__LAST__				= 1000	/* must be last */
 
 };
-
-#endif /* XAP_DIALOG_ID_H */

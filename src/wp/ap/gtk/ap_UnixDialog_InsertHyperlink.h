@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_UNIXDIALOG_INSERTHYPERLINK_H
-#define AP_UNIXDIALOG_INSERTHYPERLINK_H
+#pragma once
 
 #include <vector>
 #include <string>
@@ -55,7 +54,7 @@ public:
 
  private:
 
-	enum ResponseId
+	enum ResponseId: int8_t
         {
 	    BUTTON_OK = GTK_RESPONSE_OK,
 	    BUTTON_CANCEL = GTK_RESPONSE_CANCEL
@@ -67,5 +66,3 @@ public:
 	gint		m_iRow;
 
 };
-
-#endif /* AP_UNIXDIALOG_INSERTBOOKMARK_H */

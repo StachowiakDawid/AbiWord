@@ -4,6 +4,7 @@
  *
  * Copyright (C) 2001 Mike Nordell <tamlin@alogonet.se>
  * Copyright (C) 2001 Dom Lachowicz <cinamod@hotmail.com>
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -147,7 +148,7 @@ private:
 	void operator=(const UT_GenericStringMap<T>&);		// no impl
 
 
-	enum SM_search_type
+	enum SM_search_type: uint8_t
 	{
 		SM_INSERT,
 		SM_LOOKUP,

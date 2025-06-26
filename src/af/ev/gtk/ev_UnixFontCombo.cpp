@@ -56,13 +56,13 @@ struct _AbiCellRendererFontClass {
 GType abi_cell_renderer_font_get_type (void);
 
 /* TreeModel columns */
-enum {
+enum: uint8_t {
 	FONT, 
 	NUM_COLS
 };
 
 /* Signal IDs */
-enum {
+enum: uint8_t {
 	RENDERER_POPUP_OPENED,
 	RENDERER_PRELIGHT,
 	RENDERER_POPUP_CLOSED,
@@ -233,7 +233,7 @@ abi_cell_renderer_font_new (GtkWidget *parent)
 /* GtkComboBox subclass */
 
 /* Signal IDs */
-enum {
+enum: uint8_t {
 	POPUP_OPENED,
 	PRELIGHT,
 	POPUP_CLOSED,

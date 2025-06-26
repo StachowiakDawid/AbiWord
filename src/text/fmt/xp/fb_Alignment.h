@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef FB_ALIGNMENT_H
-#define FB_ALIGNMENT_H
+#pragma once
 
 #include "ut_types.h"
 
@@ -38,7 +37,7 @@ class fp_Run;
 		fb_Alignment_right
 		fb_Alignment_justify
 */
-enum FB_AlignmentType { FB_ALIGNMENT_LEFT,
+enum FB_AlignmentType: uint8_t { FB_ALIGNMENT_LEFT,
                         FB_ALIGNMENT_RIGHT,
                         FB_ALIGNMENT_CENTER,
                         FB_ALIGNMENT_JUSTIFY
@@ -115,5 +114,3 @@ private:
 	UT_sint32	m_iStartPosition;
 
 };
-
-#endif /* FB_ALIGNMENT_H */

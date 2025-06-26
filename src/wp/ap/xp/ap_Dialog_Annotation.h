@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_ANNOTATION_H
-#define AP_DIALOG_ANNOTATION_H
+#pragma once
 
 #include <string>
 
@@ -49,7 +48,7 @@ public:
 
 	virtual void	runModal(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_APPLY, a_OK, a_CANCEL } tAnswer;
+	enum tAnswer: uint8_t { a_APPLY, a_OK, a_CANCEL };
 
 	AP_Dialog_Annotation::tAnswer		getAnswer(void) const
 	  {
@@ -75,5 +74,3 @@ public:
 };
 
 #undef DCL_PROP
-
-#endif /* AP_DIALOG_STUB_H */

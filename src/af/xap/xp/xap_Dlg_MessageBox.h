@@ -1,6 +1,6 @@
 /* AbiSource Application Framework
  * Copyright (C) 1998 AbiSource, Inc.
- * Copyright (C) 2021 Hubert Figuière
+ * Copyright (C) 2021-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,19 +34,19 @@ public:
 
     virtual void runModal(XAP_Frame* pFrame) override = 0;
 
-    typedef enum {
+    enum tButtons: uint8_t {
         b_O,
         b_OC,
         b_YN,
         b_YNC
-    } tButtons;
+    };
 
-    typedef enum {
+    enum tAnswer: uint8_t {
         a_OK,
         a_CANCEL,
         a_YES,
         a_NO
-    } tAnswer;
+    };
 
     void setMessage(XAP_String_Id id, ...);
     void setMessage(const char* sz, ...)

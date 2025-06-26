@@ -17,9 +17,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef PX_CHANGERECORD_H
-#define PX_CHANGERECORD_H
+#pragma once
 
 #include "ut_types.h"
 #include "ut_uuid.h"
@@ -33,7 +31,7 @@ class ABI_EXPORT PX_ChangeRecord
 {
   friend class pt_PieceTable;
 public:
-	typedef enum _PXType {
+	enum PXType: int8_t {
 		PXT__FIRST__=-1,
 		PXT_GlobMarker=-1,
 		PXT_InsertSpan=0,
@@ -58,9 +56,9 @@ public:
 		PXT_RemoveStyle=19,
 		PXT_CreateDataItem=20,
 		PXT_ChangeDocProp=21,
-        PXT_ChangeDocRDF=22,
+		PXT_ChangeDocRDF=22,
 		PXT__LAST__ = 23
-	}PXType;
+	};
 
 	PX_ChangeRecord(PXType type,
 			PT_DocPosition position,
@@ -118,4 +116,3 @@ private:
 	struct uuid		m_MyDocUUID;
 	UT_sint32		m_iAdjust;
 };
-#endif /* PX_CHANGERECORD_H */

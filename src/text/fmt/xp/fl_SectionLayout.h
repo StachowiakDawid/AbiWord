@@ -26,7 +26,7 @@
 
 #include <string>
 
-typedef enum _SectionType
+enum SectionType: uint8_t
 {
 	FL_SECTION_DOC,
     FL_SECTION_HDRFTR,
@@ -39,10 +39,10 @@ typedef enum _SectionType
 	FL_SECTION_FRAME,
 	FL_SECTION_TOC,
 	FL_SECTION_ANNOTATION
-} SectionType;
+};
 
 
-typedef enum _HdrFtrType
+enum HdrFtrType: uint8_t
 {
 	FL_HDRFTR_HEADER,
 	FL_HDRFTR_HEADER_EVEN,
@@ -53,7 +53,7 @@ typedef enum _HdrFtrType
 	FL_HDRFTR_FOOTER_FIRST,
 	FL_HDRFTR_FOOTER_LAST,
 	FL_HDRFTR_NONE
-} HdrFtrType;
+};
 
 
 #include "ut_types.h"

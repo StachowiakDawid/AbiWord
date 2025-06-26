@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_WORDCOUNT_H
-#define AP_DIALOG_WORDCOUNT_H
+#pragma once
 
 #include "xap_Frame.h"
 #include "xap_Dialog.h"
@@ -35,7 +34,7 @@ public:
 	AP_Dialog_WordCount(XAP_DialogFactory * pDlgFactory, XAP_Dialog_Id id);
 	virtual ~AP_Dialog_WordCount(void);
 
-	typedef enum { a_OK, a_CANCEL } tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
 
 	AP_Dialog_WordCount::tAnswer		getAnswer(void) const;
 	FV_DocCount							getCount(void) const;
@@ -46,7 +45,7 @@ public:
         void setActiveFrame(XAP_Frame *pFrame) override;
 	// must be public for Cocoa, because I can't make an Obj-C class
 	// be friend of a C++ class. Not a big deal.
-	enum {
+	enum: uint8_t {
 		DIALOG_WID,
 		CLOSE_BTN_WID,
 		TITLE_LBL_WID,
@@ -76,7 +75,3 @@ protected:
 	FV_DocCount							m_count;
 	char m_WindowName[100];
 };
-
-#endif /* AP_DIALOG_WORDCOUNT_H */
-
-

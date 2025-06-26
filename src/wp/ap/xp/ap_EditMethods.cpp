@@ -2,7 +2,7 @@
 /* AbiWord
  * Copyright (C) 1998-2000 AbiSource, Inc.
  * Copyright (C) 2001 Tomas Frydrych
- * Copyright (C) 2004-2021 Hubert Figuière
+ * Copyright (C) 2004-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -3376,7 +3376,7 @@ Defun1(dlgToggleCase)
 	XAP_Frame * pFrame = static_cast<XAP_Frame *> ( pAV_View->getParentData());
 	UT_return_val_if_fail(pFrame, false);
 
-	return s_doToggleCase(pFrame, static_cast<FV_View *>(pAV_View), AP_DIALOG_ID_TOGGLECASE);
+	return s_doToggleCase(pFrame, static_cast<FV_View *>(pAV_View), (XAP_Dialog_Id)AP_DIALOG_ID_TOGGLECASE);
 }
 
 Defun1(rotateCase)
@@ -3422,7 +3422,7 @@ Defun1(dlgMetaData)
     = static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
   AP_Dialog_MetaData * pDialog
-    = static_cast<AP_Dialog_MetaData *>(pDialogFactory->requestDialog(AP_DIALOG_ID_METADATA));
+    = static_cast<AP_Dialog_MetaData *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_METADATA));
   UT_return_val_if_fail (pDialog, false);
 
   // get the properties
@@ -3515,7 +3515,7 @@ Defun1(fileNewUsingTemplate)
 		= static_cast<XAP_DialogFactory *>(pApp->getDialogFactory());
 
 	AP_Dialog_New * pDialog
-		= static_cast<AP_Dialog_New *>(pDialogFactory->requestDialog(AP_DIALOG_ID_FILE_NEW));
+		= static_cast<AP_Dialog_New *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_FILE_NEW));
 	UT_return_val_if_fail (pDialog, false);
 
 	pDialog->runModal(pFrame);
@@ -4707,7 +4707,7 @@ static bool dlgEditLatexEquation(AV_View *pAV_View, EV_EditMethodCallData * /*pC
 		= static_cast<XAP_DialogFactory *>(XAP_App::getApp()->getDialogFactory());
 
 	AP_Dialog_Latex * pDialog
-		= static_cast<AP_Dialog_Latex *>(pDialogFactory->requestDialog(AP_DIALOG_ID_LATEX));
+		= static_cast<AP_Dialog_Latex *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_LATEX));
 	UT_return_val_if_fail(pDialog, false);
 	if(pDialog->isRunning())
 	{
@@ -6016,7 +6016,7 @@ static bool s_doBookmarkDlg(FV_View * pView, bool /*bInsert*/)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_InsertBookmark * pDialog
-		= static_cast<AP_Dialog_InsertBookmark *>(pDialogFactory->requestDialog(AP_DIALOG_ID_INSERTBOOKMARK));
+		= static_cast<AP_Dialog_InsertBookmark *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_INSERTBOOKMARK));
 UT_return_val_if_fail(pDialog, false);
 	if (!pView->isSelectionEmpty())
 	{
@@ -6073,7 +6073,7 @@ static bool s_xmlidDlg(FV_View * pView, bool /*bInsert*/)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_InsertXMLID * pDialog
-		= static_cast<AP_Dialog_InsertXMLID *>(pDialogFactory->requestDialog(AP_DIALOG_ID_INSERTXMLID));
+		= static_cast<AP_Dialog_InsertXMLID *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_INSERTXMLID));
 	UT_return_val_if_fail(pDialog, false);
 
 	pDialog->setDoc(pView);
@@ -6124,7 +6124,7 @@ static bool s_doHyperlinkDlg(FV_View * pView)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_InsertHyperlink * pDialog
-		= static_cast<AP_Dialog_InsertHyperlink *>(pDialogFactory->requestDialog(AP_DIALOG_ID_INSERTHYPERLINK));
+		= static_cast<AP_Dialog_InsertHyperlink *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_INSERTHYPERLINK));
 	UT_return_val_if_fail(pDialog, false);
 	std::string sTarget;
 	std::string sTitle;
@@ -6521,7 +6521,7 @@ static bool s_doMergeCellsDlg(FV_View * pView)
 		= static_cast<XAP_DialogFactory *>(XAP_App::getApp()->getDialogFactory());
 
 	AP_Dialog_MergeCells * pDialog
-		= static_cast<AP_Dialog_MergeCells *>(pDialogFactory->requestDialog(AP_DIALOG_ID_MERGE_CELLS));
+		= static_cast<AP_Dialog_MergeCells *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_MERGE_CELLS));
 UT_return_val_if_fail(pDialog, false);
 	if(pDialog->isRunning() == true)
 	{
@@ -6557,7 +6557,7 @@ static bool s_doSplitCellsDlg(FV_View * pView)
 		= static_cast<XAP_DialogFactory *>(XAP_App::getApp()->getDialogFactory());
 
 	AP_Dialog_SplitCells * pDialog
-		= static_cast<AP_Dialog_SplitCells *>(pDialogFactory->requestDialog(AP_DIALOG_ID_SPLIT_CELLS));
+		= static_cast<AP_Dialog_SplitCells *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_SPLIT_CELLS));
 UT_return_val_if_fail(pDialog, false);
 	if(pDialog->isRunning() == true)
 	{
@@ -6601,7 +6601,7 @@ static bool s_doFormatTableDlg(FV_View * pView)
 	//	Maleesh 6/8/2010 - TEMP
 
 	AP_Dialog_FormatTable * pDialog
-		= static_cast<AP_Dialog_FormatTable *>(pDialogFactory->requestDialog(AP_DIALOG_ID_FORMAT_TABLE));
+		= static_cast<AP_Dialog_FormatTable *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_FORMAT_TABLE));
 	UT_return_val_if_fail(pDialog, false);
 	if(pDialog->isRunning() == true)
 	{
@@ -6638,7 +6638,7 @@ Defun1(formatTOC)
 		= static_cast<XAP_DialogFactory *>(XAP_App::getApp()->getDialogFactory());
 
 	AP_Dialog_FormatTOC * pDialog
-		= static_cast<AP_Dialog_FormatTOC *>(pDialogFactory->requestDialog(AP_DIALOG_ID_FORMAT_TOC));
+		= static_cast<AP_Dialog_FormatTOC *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_FORMAT_TOC));
 UT_return_val_if_fail(pDialog, false);
 	if(pDialog->isRunning() == true)
 	{
@@ -7509,7 +7509,7 @@ Defun1(go)
 {
 	CHECK_FRAME;
 	ABIWORD_VIEW;
-	XAP_Dialog_Id id = AP_DIALOG_ID_GOTO;
+	XAP_Dialog_Id id = (XAP_Dialog_Id)AP_DIALOG_ID_GOTO;
 
 	return s_doGotoDlg(pView, id);
 }
@@ -7613,7 +7613,7 @@ Defun1(find)
 {
 	CHECK_FRAME;
 	ABIWORD_VIEW;
-	XAP_Dialog_Id id = AP_DIALOG_ID_FIND;
+	XAP_Dialog_Id id = (XAP_Dialog_Id)AP_DIALOG_ID_FIND;
 
 	return s_doFindOrFindReplaceDlg(pView,id);
 }
@@ -7631,7 +7631,7 @@ Defun1(replace)
 {
 	CHECK_FRAME;
 	ABIWORD_VIEW;
-	XAP_Dialog_Id id = AP_DIALOG_ID_REPLACE;
+	XAP_Dialog_Id id = (XAP_Dialog_Id)AP_DIALOG_ID_REPLACE;
 
 	return s_doFindOrFindReplaceDlg(pView,id);
 }
@@ -8028,7 +8028,7 @@ bool s_doTabDlg(FV_View * pView)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_Tab * pDialog
-		= static_cast<AP_Dialog_Tab *>(pDialogFactory->requestDialog(AP_DIALOG_ID_TAB));
+		= static_cast<AP_Dialog_Tab *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_TAB));
 
 	if(pDialog)
 	{
@@ -8073,7 +8073,7 @@ static bool s_doParagraphDlg(FV_View * pView)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_Paragraph * pDialog
-		= static_cast<AP_Dialog_Paragraph *>(pDialogFactory->requestDialog(AP_DIALOG_ID_PARAGRAPH));
+		= static_cast<AP_Dialog_Paragraph *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_PARAGRAPH));
 	UT_return_val_if_fail(pDialog, false);
 	PP_PropertyVector props;
 
@@ -8147,7 +8147,7 @@ static bool s_doOptionsDlg(FV_View * pView, int which = -1)
 		= static_cast<XAP_DialogFactory *>(XAP_App::getApp()->getDialogFactory());
 #endif
 	XAP_TabbedDialog_NonPersistent * pDialog
-		= static_cast<XAP_TabbedDialog_NonPersistent *>(pDialogFactory->requestDialog(AP_DIALOG_ID_OPTIONS));
+		= static_cast<XAP_TabbedDialog_NonPersistent *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_OPTIONS));
 	UT_return_val_if_fail(pDialog, false);
 
 	if ( which != -1 )
@@ -9223,7 +9223,7 @@ static bool s_doBreakDlg(FV_View * pView)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_Break * pDialog
-		= static_cast<AP_Dialog_Break *>(pDialogFactory->requestDialog(AP_DIALOG_ID_BREAK));
+		= static_cast<AP_Dialog_Break *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_BREAK));
 	UT_return_val_if_fail(pDialog, false);
 	pDialog->runModal(pFrame);
 
@@ -9281,7 +9281,7 @@ static bool s_doPageSetupDlg (FV_View * pView)
 	  = static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_PageSetup * pDialog =
-	  static_cast<AP_Dialog_PageSetup *>(pDialogFactory->requestDialog(AP_DIALOG_ID_FILE_PAGESETUP));
+	  static_cast<AP_Dialog_PageSetup *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_FILE_PAGESETUP));
 
 	UT_return_val_if_fail(pDialog, false);
 	PD_Document * pDoc = pView->getLayout()->getDocument();
@@ -10364,7 +10364,7 @@ static bool s_doInsertDateTime(FV_View * pView)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_Insert_DateTime * pDialog
-		= static_cast<AP_Dialog_Insert_DateTime *>(pDialogFactory->requestDialog(AP_DIALOG_ID_INSERT_DATETIME));
+		= static_cast<AP_Dialog_Insert_DateTime *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_INSERT_DATETIME));
 UT_return_val_if_fail(pDialog, false);
 	pDialog->runModal(pFrame);
 
@@ -10425,7 +10425,7 @@ static bool s_doInsertPageNumbers(FV_View * pView)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_PageNumbers * pDialog
-		= static_cast<AP_Dialog_PageNumbers *>(pDialogFactory->requestDialog(AP_DIALOG_ID_PAGE_NUMBERS));
+		= static_cast<AP_Dialog_PageNumbers *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_PAGE_NUMBERS));
 UT_return_val_if_fail(pDialog, false);
 	pDialog->runModal(pFrame);
 
@@ -10478,7 +10478,7 @@ static bool s_doField(FV_View * pView)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_Field * pDialog
-		= static_cast<AP_Dialog_Field *>(pDialogFactory->requestDialog(AP_DIALOG_ID_FIELD));
+		= static_cast<AP_Dialog_Field *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_FIELD));
 UT_return_val_if_fail(pDialog, false);
 	pDialog->runModal(pFrame);
 
@@ -10523,7 +10523,7 @@ Defun1(insMailMerge)
 		= static_cast<XAP_DialogFactory *>(XAP_App::getApp()->getDialogFactory());
 
 	AP_Dialog_MailMerge * pDialog
-		= static_cast<AP_Dialog_MailMerge *>(pDialogFactory->requestDialog(AP_DIALOG_ID_MAILMERGE));
+		= static_cast<AP_Dialog_MailMerge *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_MAILMERGE));
 UT_return_val_if_fail(pDialog, false);
 	if(pDialog->isRunning())
 	{
@@ -10634,7 +10634,7 @@ void insertAnnotation(FV_View * pView, bool bDescr)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 	
 	AP_Dialog_Annotation * pDialog
-		= static_cast<AP_Dialog_Annotation *>(pDialogFactory->requestDialog(AP_DIALOG_ID_ANNOTATION));
+		= static_cast<AP_Dialog_Annotation *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_ANNOTATION));
 	UT_return_if_fail(pDialog);
 	
 	pDialog->setAuthor(pView->getDocument()->getUserName());
@@ -10828,7 +10828,7 @@ Defun1(rdfQuery)
 {
 	CHECK_FRAME;
 	ABIWORD_VIEW;
-	XAP_Dialog_Id id = AP_DIALOG_ID_RDF_QUERY;
+	XAP_Dialog_Id id = (XAP_Dialog_Id)AP_DIALOG_ID_RDF_QUERY;
 	AP_Dialog_RDFQuery* dialog = nullptr;
 	return s_doRDFQueryDlg( pView, id, dialog );
 }
@@ -10874,7 +10874,7 @@ Defun1(rdfEditor)
 {
 	CHECK_FRAME;
 	ABIWORD_VIEW;
-	XAP_Dialog_Id id = AP_DIALOG_ID_RDF_EDITOR;
+	XAP_Dialog_Id id = (XAP_Dialog_Id)AP_DIALOG_ID_RDF_EDITOR;
 	AP_Dialog_RDFEditor* dialog = nullptr;
 	return s_doRDFEditorDlg( pView, id, dialog, false );
 }
@@ -10942,7 +10942,7 @@ Defun1(rdfQueryXMLIDs)
 	CHECK_FRAME;
 	ABIWORD_VIEW;
 	AP_Dialog_RDFQuery* dialog = nullptr;
-	XAP_Dialog_Id id = AP_DIALOG_ID_RDF_QUERY;
+	XAP_Dialog_Id id = (XAP_Dialog_Id)AP_DIALOG_ID_RDF_QUERY;
 
 	bool rc = s_doRDFQueryDlg( pView, id, dialog );
 	if( dialog )
@@ -10994,7 +10994,7 @@ static bool s_doBullets(FV_View *pView)
 	XAP_DialogFactory * pDialogFactory
 		= static_cast<XAP_DialogFactory *>(XAP_App::getApp()->getDialogFactory());
 	AP_Dialog_Lists * pDialog
-		= static_cast<AP_Dialog_Lists *>(pDialogFactory->requestDialog(AP_DIALOG_ID_LISTS));
+		= static_cast<AP_Dialog_Lists *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_LISTS));
 UT_return_val_if_fail(pDialog, false);
 	if(pDialog->isRunning() == true)
 	{
@@ -11041,7 +11041,7 @@ static bool s_doBorderShadingDlg(FV_View * pView)
 		= static_cast<XAP_DialogFactory *>(XAP_App::getApp()->getDialogFactory());
 
 	AP_Dialog_Border_Shading * pDialog
-		= static_cast<AP_Dialog_Border_Shading *>(pDialogFactory->requestDialog(AP_DIALOG_ID_BORDER_SHADING));
+		= static_cast<AP_Dialog_Border_Shading *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_BORDER_SHADING));
 	UT_return_val_if_fail(pDialog, false);
 	if(!pView->isInTable(pView->getPoint()))
 	{
@@ -11972,7 +11972,7 @@ Defun(dlgColumns)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_Columns * pDialog
-		= static_cast<AP_Dialog_Columns *>(pDialogFactory->requestDialog(AP_DIALOG_ID_COLUMNS));
+		= static_cast<AP_Dialog_Columns *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_COLUMNS));
 UT_return_val_if_fail(pDialog, false);
 	UT_uint32 iColumns = 1;
 	bool bLineBetween = false;
@@ -12087,7 +12087,7 @@ static bool s_doStylesDlg(FV_View * pView)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_Styles * pDialog
-		= static_cast<AP_Dialog_Styles *>(pDialogFactory->requestDialog(AP_DIALOG_ID_STYLES));
+		= static_cast<AP_Dialog_Styles *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_STYLES));
 UT_return_val_if_fail(pDialog, false);	if(pView->isHdrFtrEdit())
 	{
 		pView->clearHdrFtrEdit();
@@ -12145,7 +12145,7 @@ Defun1(formatFootnotes)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_FormatFootnotes * pDialog
-		= static_cast<AP_Dialog_FormatFootnotes *>(pDialogFactory->requestDialog(AP_DIALOG_ID_FORMAT_FOOTNOTES));
+		= static_cast<AP_Dialog_FormatFootnotes *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_FORMAT_FOOTNOTES));
 	UT_return_val_if_fail(pDialog, false);	
 	pDialog->runModal(pFrame);
 	AP_Dialog_FormatFootnotes::tAnswer ans = pDialog->getAnswer();
@@ -12191,7 +12191,7 @@ Defun1(dlgStylist)
 		= static_cast<XAP_DialogFactory *>(XAP_App::getApp()->getDialogFactory());
 
 	AP_Dialog_Stylist * pDialog
-		= static_cast<AP_Dialog_Stylist *>(pDialogFactory->requestDialog(AP_DIALOG_ID_STYLIST));
+		= static_cast<AP_Dialog_Stylist *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_STYLIST));
 UT_return_val_if_fail(pDialog, false);
 	if(pDialog->isRunning())
 	{
@@ -12233,7 +12233,7 @@ static bool s_doWordCountDlg(FV_View * pView)
 		= static_cast<XAP_DialogFactory *>(XAP_App::getApp()->getDialogFactory());
 
 	AP_Dialog_WordCount * pDialog
-		= static_cast<AP_Dialog_WordCount *>(pDialogFactory->requestDialog(AP_DIALOG_ID_WORDCOUNT));
+		= static_cast<AP_Dialog_WordCount *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_WORDCOUNT));
 UT_return_val_if_fail(pDialog, false);
 	if(pDialog->isRunning())
 	{
@@ -12272,7 +12272,7 @@ static bool s_doInsertTableDlg(FV_View * pView)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_InsertTable * pDialog
-		= static_cast<AP_Dialog_InsertTable *>(pDialogFactory->requestDialog(AP_DIALOG_ID_INSERT_TABLE));
+		= static_cast<AP_Dialog_InsertTable *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_INSERT_TABLE));
 UT_return_val_if_fail(pDialog, false);
 	pDialog->runModal(pFrame);
 
@@ -13705,7 +13705,7 @@ Defun1(dlgColorPickerFore)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_Background * pDialog
-		= static_cast<AP_Dialog_Background *>(pDialogFactory->requestDialog(AP_DIALOG_ID_BACKGROUND));
+		= static_cast<AP_Dialog_Background *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_BACKGROUND));
 UT_return_val_if_fail(pDialog, false);//
 // Set the color in the dialog to the current Color
 //
@@ -13751,7 +13751,7 @@ Defun1(dlgColorPickerBack)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_Background * pDialog
-		= static_cast<AP_Dialog_Background *>(pDialogFactory->requestDialog(AP_DIALOG_ID_BACKGROUND));
+		= static_cast<AP_Dialog_Background *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_BACKGROUND));
 UT_return_val_if_fail(pDialog, false);//
 // Set the color in the dialog to the current Color
 //
@@ -13796,7 +13796,7 @@ Defun1(dlgBackground)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_Background * pDialog
-		= static_cast<AP_Dialog_Background *>(pDialogFactory->requestDialog(AP_DIALOG_ID_BACKGROUND));
+		= static_cast<AP_Dialog_Background *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_BACKGROUND));
 UT_return_val_if_fail(pDialog, false);
 //
 // Get Current background color
@@ -13838,7 +13838,7 @@ Defun1(dlgHdrFtr)
 	XAP_DialogFactory * pDialogFactory
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
-	AP_Dialog_HdrFtr * pDialog = static_cast<AP_Dialog_HdrFtr *>(pDialogFactory->requestDialog(AP_DIALOG_ID_HDRFTR));
+	AP_Dialog_HdrFtr * pDialog = static_cast<AP_Dialog_HdrFtr *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_HDRFTR));
 UT_return_val_if_fail(pDialog, false);//
 // Get stuff we need from the view
 //
@@ -14097,7 +14097,7 @@ Defun1(rdfAnchorEditTriples)
 {
 	CHECK_FRAME;
 	ABIWORD_VIEW;
-	XAP_Dialog_Id id = AP_DIALOG_ID_RDF_EDITOR;
+	XAP_Dialog_Id id = (XAP_Dialog_Id)AP_DIALOG_ID_RDF_EDITOR;
 	AP_Dialog_RDFEditor* dialog = nullptr;
 	return s_doRDFEditorDlg( pView, id, dialog, true );
 }
@@ -14879,7 +14879,7 @@ Defun(hyperlinkStatusBar)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Preview_Annotation * pAnnPview
-		= static_cast<AP_Preview_Annotation *>(pDialogFactory->requestDialog(AP_DIALOG_ID_ANNOTATION_PREVIEW));
+		= static_cast<AP_Preview_Annotation *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_ANNOTATION_PREVIEW));
 
 	if(!pAnnPview)
 		return false;
@@ -14935,7 +14935,7 @@ static bool s_doMarkRevisions(XAP_Frame * pFrame, PD_Document * pDoc, FV_View * 
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_MarkRevisions * pDialog
-		= static_cast<AP_Dialog_MarkRevisions *>(pDialogFactory->requestDialog(AP_DIALOG_ID_MARK_REVISIONS));
+		= static_cast<AP_Dialog_MarkRevisions *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_MARK_REVISIONS));
 UT_return_val_if_fail(pDialog, false);
 	pDialog->setDocument(pDoc);
 
@@ -15225,7 +15225,7 @@ static bool s_doListRevisions(XAP_Frame * pFrame, PD_Document * pDoc, FV_View * 
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Dialog_ListRevisions * pDialog
-		= static_cast<AP_Dialog_ListRevisions *>(pDialogFactory->requestDialog(AP_DIALOG_ID_LIST_REVISIONS));
+		= static_cast<AP_Dialog_ListRevisions *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_LIST_REVISIONS));
 UT_return_val_if_fail(pDialog, false);
 	pDialog->setDocument(pDoc);
 	pDialog->runModal(pFrame);
@@ -15320,7 +15320,7 @@ Defun1(history)
 
     \return: returns pointer to the document user selected or nullptr
 */
-static PD_Document * s_doListDocuments(XAP_Frame * pFrame, bool bExcludeCurrent, UT_uint32 iId)
+static PD_Document * s_doListDocuments(XAP_Frame * pFrame, bool bExcludeCurrent, XAP_Dialog_Id iId)
 {
 	UT_return_val_if_fail(pFrame, nullptr);
 
@@ -15878,7 +15878,7 @@ Defun1(dlgFormatFrame)
 		= static_cast<XAP_DialogFactory *>(XAP_App::getApp()->getDialogFactory());
 
 	AP_Dialog_FormatFrame * pDialog
-		= static_cast<AP_Dialog_FormatFrame *>(pDialogFactory->requestDialog(AP_DIALOG_ID_FORMAT_FRAME));
+		= static_cast<AP_Dialog_FormatFrame *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_FORMAT_FRAME));
 UT_return_val_if_fail(pDialog, false);
 	if(pDialog->isRunning() == true)
 	{

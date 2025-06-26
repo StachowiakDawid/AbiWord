@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_MARKREVISIONS_H
-#define AP_DIALOG_MARKREVISIONS_H
+#pragma once
 
 #include "xap_Dialog.h"
 #include "pd_Document.h"
@@ -35,7 +34,7 @@ public:
 
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK=0, a_CANCEL=1 } tAnswer;
+	enum tAnswer: uint8_t { a_OK=0, a_CANCEL=1 };
 
 	tAnswer	      getAnswer(void) const;
 	void          setAnswer(tAnswer a);
@@ -70,5 +69,3 @@ private:
 	const AD_Revision *                 m_pRev;
 	bool                                m_bForceNew;
 };
-
-#endif /* AP_DIALOG_MARKREVISIONS_H */

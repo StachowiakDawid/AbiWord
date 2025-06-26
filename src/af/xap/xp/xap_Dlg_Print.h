@@ -37,7 +37,7 @@ public:
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 	virtual void useEnd(void) override;
 
-	typedef enum { a_VOID, a_OK, a_CANCEL }	tAnswer;
+	enum tAnswer: uint8_t { a_VOID, a_OK, a_CANCEL };
 
 	void							setDocumentTitle(const char *);
 	void							setDocumentPathname(const char * );

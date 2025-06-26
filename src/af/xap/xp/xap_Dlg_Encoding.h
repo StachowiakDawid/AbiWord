@@ -17,16 +17,10 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_DIALOG_ENCODING_H
-#define XAP_DIALOG_ENCODING_H
+#pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
+
 /* #include "ut_Encoding.h" */
 /* #include "ut_assert.h" */
 /* #include "ut_debugmsg.h" */
@@ -52,7 +46,7 @@ INSTRUCTIONS FOR DESIGN OF THE PLATFORM VERSIONS OF THIS DIALOGUE
 class ABI_EXPORT XAP_Dialog_Encoding : public XAP_Dialog_NonPersistent
 {
 public:
-	typedef enum { a_OK, a_CANCEL, a_YES, a_NO }	tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL, a_YES, a_NO };
 
 	XAP_Dialog_Encoding(XAP_DialogFactory * pDlgFactory, XAP_Dialog_Id id);
 	virtual ~XAP_Dialog_Encoding(void);
@@ -88,6 +82,3 @@ private:
 	UT_uint32						m_iEncCount;
 	UT_uint32						m_iSelIndex;
 };
-#endif /* XAP_DIALOG_ENCODING_H */
-
-

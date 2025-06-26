@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_REPLACE_H
-#define AP_DIALOG_REPLACE_H
+#pragma once
 
 #include "xap_Frame.h"
 #include "xap_Dialog.h"
@@ -44,8 +43,8 @@ public:
 	virtual void	setActiveFrame(XAP_Frame *pFrame) override;
 	virtual void	notifyActiveFrame(XAP_Frame *pFrame) override = 0;
 
-	typedef enum { find_FIND_NEXT, find_REPLACE, find_REPLACE_ALL } tFindType;
-	typedef enum { a_VOID, a_FIND_NEXT, a_REPLACE, a_REPLACE_ALL, a_CANCEL }	tAnswer;
+	enum tFindType: uint8_t { find_FIND_NEXT, find_REPLACE, find_REPLACE_ALL };
+	enum tAnswer: uint8_t { a_VOID, a_FIND_NEXT, a_REPLACE, a_REPLACE_ALL, a_CANCEL };
         void                                       ConstructWindowName(void);
 	char *		getWindowName(void) { return m_WindowName; };
 
@@ -113,5 +112,3 @@ public:
 	// returns true when the internal list was changed
 	bool						_manageList(UT_GenericVector<UT_UCS4Char*>* list, UT_UCSChar* string);
 };
-
-#endif /* AP_DIALOG_REPLACE_H */

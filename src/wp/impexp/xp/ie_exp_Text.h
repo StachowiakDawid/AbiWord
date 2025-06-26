@@ -17,9 +17,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef IE_EXP_TEXT_H
-#define IE_EXP_TEXT_H
+#pragma once
 
 #include "ie_exp.h"
 #include "pl_Listener.h"
@@ -139,7 +137,7 @@ protected:
 	void                _handleDirMarker(PT_AttrPropIndex apiSpan);
 
  private:
-	enum _dirOverride
+	enum _dirOverride: uint8_t
 	{
 		DO_LTR,
 		DO_RTL,
@@ -168,5 +166,3 @@ protected:
 	_dirOverride        m_eSectionDir;
 	_dirOverride        m_eDocDir;
 };
-
-#endif /* IE_EXP_TEXT_H */

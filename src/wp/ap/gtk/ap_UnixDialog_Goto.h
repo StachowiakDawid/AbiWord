@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_UNIXDIALOG_GOTO_H
-#define AP_UNIXDIALOG_GOTO_H
+#pragma once
 
 #include "ap_Dialog_Goto.h"
 #include "fv_View.h"
@@ -64,13 +63,13 @@ protected:
 
 private:
 
-	enum {
+    enum: uint8_t {
 		COLUMN_NAME = 0,  /* currently only one column
 		COLUMN_PAGE,
 		COLUMN_NUMBER,  */
 		NUM_COLUMNS
 	};
-	enum {
+    enum: uint8_t {
         COLUMN_ANNO_ID = 0,
         COLUMN_ANNO_TITLE,
         COLUMN_ANNO_AUTHOR,
@@ -111,8 +110,3 @@ private:
     void setupAnnotationList( GtkWidget* w );
     void updateAnnotationList( GtkWidget* w );
 };
-
-#endif /* AP_UNIXDIALOG_GOTO_H */
-
-
-

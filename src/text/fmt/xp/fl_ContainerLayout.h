@@ -25,7 +25,7 @@
 #include <stdio.h>
 #endif
 
-typedef enum _fl_ContainerType
+enum fl_ContainerType: uint8_t
 {
     FL_CONTAINER_BLOCK,
     FL_CONTAINER_DOCSECTION,
@@ -40,16 +40,16 @@ typedef enum _fl_ContainerType
         FL_CONTAINER_TOC,
 	FL_CONTAINER_ANNOTATION,
 	FL_CONTAINER_RDFANCHOR
-} fl_ContainerType;
+};
 
 // this enum is used here and by the run classes
 // I had to move it here from fp_Run to avoid circular dependency
-typedef enum {FP_VISIBLE = 0,
+enum FPVisibility: uint8_t {FP_VISIBLE = 0,
 			  FP_HIDDEN_TEXT,
 			  FP_HIDDEN_REVISION,
 			  FP_HIDDEN_REVISION_AND_TEXT,
 			  FP_HIDDEN_FOLDED
-} FPVisibility;
+};
 
 
 #include "ut_types.h"

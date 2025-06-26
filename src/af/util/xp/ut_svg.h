@@ -1,5 +1,6 @@
 /* AbiSource Program Utilities
  * Copyright (C) 2000 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,18 +18,9 @@
  * 02110-1301 USA.
  */
 
+#pragma once
 
-
-#ifndef UT_SVG_H
-#define UT_SVG_H
-
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 #include "ut_bytebuf.h"
 #include "ut_xml.h"
 
@@ -48,7 +40,7 @@ public:
 	virtual void endElement (const gchar * name) override;
 	virtual void charData (const gchar * buffer, int length) override;
 
-	enum ParseMode
+	enum ParseMode: uint8_t
 	{
 		pm_recognizeContent,
 		pm_getDimensions,
@@ -128,5 +120,3 @@ class ABI_EXPORT UT_SVGMatrix
 
   static bool applyTransform (UT_SVGMatrix * currentMatrix,const char * transformAttribute);
 };
-
-#endif /* UT_SVG_H */

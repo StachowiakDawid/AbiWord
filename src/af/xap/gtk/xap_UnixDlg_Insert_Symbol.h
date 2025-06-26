@@ -1,7 +1,7 @@
 /* -*- mode: C++; tab-width: 4; c-basic-offset: 4; indent-tabs-mode: t -*- */
 /* AbiSource Application Framework
  * Copyright (C) 1998 AbiSource, Inc.
- * Copyright (C) 2019 Hubert Figuière
+ * Copyright (C) 2019-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -61,11 +61,10 @@ public:
 
 	static XAP_Dialog *		static_constructor(XAP_DialogFactory *, XAP_Dialog_Id id);
 
-	typedef enum
-		{
-		  BUTTON_INSERT,
-		  BUTTON_CLOSE = GTK_RESPONSE_CLOSE
-		} ResponseId ;
+	enum ResponseId: int8_t {
+		BUTTON_INSERT,
+		BUTTON_CLOSE = GTK_RESPONSE_CLOSE
+	};
 
 	// callbacks can fire these events
 	void			SymbolMap_exposed( void);

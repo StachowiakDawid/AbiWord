@@ -17,19 +17,12 @@
  * 02110-1301 USA.
  */
 
-#ifndef SPELL_MANAGER_H
-#define SPELL_MANAGER_H
+#pragma once
 
 #include <memory>
 #include <vector>
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 #include "ut_string_class.h"
 #include "ut_hash.h"
 #include "barbarisms.h"
@@ -50,7 +43,7 @@ class ABI_EXPORT SpellChecker
 
 public:
 
-	enum SpellCheckResult
+	enum SpellCheckResult: uint8_t
 	{
 		LOOKUP_SUCCEEDED = 0, // looking up the word succeeded
 		LOOKUP_FAILED = 1,    // could not find the word
@@ -138,5 +131,3 @@ private:
 	SpellChecker * m_lastDict;
 	UT_uint32 m_nLoadedDicts;
 };
-
-#endif /* SPELL_MANAGER_H */

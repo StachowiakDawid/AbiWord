@@ -16,8 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301 USA.
  */
-#ifndef FIELD_H
-#define FIELD_H
+
+#pragma once
 
 #include "ut_types.h"
 #include "ut_xml.h"
@@ -37,7 +37,7 @@ class ABI_EXPORT fd_Field
 {
  public:
     // TBD: convention for naming
-    enum FieldType
+    enum FieldType: uint8_t
     {
         FD_None,
         FD_Test,
@@ -134,9 +134,3 @@ class ABI_EXPORT fd_Field
     gchar * m_szValue;
     gchar * m_pParameter;
 };
-
-#endif
-
-
-
-

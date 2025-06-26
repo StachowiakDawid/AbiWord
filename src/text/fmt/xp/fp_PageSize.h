@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef FP_PAGESIZE_H
-#define FP_PAGESIZE_H
+#pragma once
 
 #include "ut_types.h"
 #include "ut_units.h"
@@ -30,7 +29,7 @@ class ABI_EXPORT fp_PageSize
 {
 public:
 
-	enum Predefined
+	enum Predefined: uint8_t
 	{
 		_first_predefined_pagesize_ = 0,
 
@@ -89,5 +88,3 @@ private:
 	double m_scale;
 	UT_Dimension m_unit;
 };
-
-#endif	// FP_PAGESIZE_H

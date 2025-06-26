@@ -2,6 +2,7 @@
 
 /* AbiWord
  * Copyright (C) 1998-2000 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,15 +20,13 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef AP_DIALOG_ID_H
-#define AP_DIALOG_ID_H
+#pragma once
 
 // see the note in xap_Dialog_Id.h on number space partitioning.
 
 #include "xap_Dialog_Id.h"
 
-enum _AP_Dialog_Id
+enum AP_Dialog_Id: uint16_t
 {
 	AP_DIALOG_ID__FIRST__			= XAP_DIALOG_ID__LAST__+1,	/* must be first */
 	AP_DIALOG_ID_FILE_NEW, /* new/template dialog */
@@ -82,5 +81,3 @@ enum _AP_Dialog_Id
 	AP_DIALOG_ID__LAST__				/* must be last */
 
 };
-
-#endif /* AP_DIALOG_ID_H */

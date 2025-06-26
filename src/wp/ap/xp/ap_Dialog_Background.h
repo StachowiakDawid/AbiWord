@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_BACKGROUND_H
-#define AP_DIALOG_BACKGROUND_H
+#pragma once
 
 #include "xap_Frame.h"
 #include "xap_Dialog.h"
@@ -35,7 +34,7 @@ public:
 
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK, a_CANCEL } tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
 
 	AP_Dialog_Background::tAnswer		getAnswer(void) const;
 
@@ -57,5 +56,3 @@ public:
 	bool m_bDoForeground;
 	bool m_bDoHighlight;
 };
-
-#endif /* AP_DIALOG_BACKGROUND_H */

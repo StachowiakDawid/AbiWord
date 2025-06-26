@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_GOTO_H
-#define AP_DIALOG_GOTO_H
+#pragma once
 
 #include <string>
 
@@ -37,9 +36,9 @@ public:
 
 	// these are kinda screwy now, but we never return anything but on
 	// "cancel" or "close"
-	typedef enum {
+	enum tAnswer: uint8_t {
 		a_CLOSE
-	} tAnswer;
+	};
 
 	AP_Dialog_Goto::tAnswer		getAnswer() const;
 	void						ConstructWindowName();
@@ -74,5 +73,3 @@ protected:
 	char						m_WindowName[100];
 	void						_setupJumpTargets();
 };
-
-#endif /* AP_DIALOG_GOTO_H */

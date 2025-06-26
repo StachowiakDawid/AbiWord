@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_UNIXDIALOG_RDFQUERY_H
-#define AP_UNIXDIALOG_RDFQUERY_H
+#pragma once
 
 #include "ap_Dialog_RDFQuery.h"
 #include "fv_View.h"
@@ -62,7 +61,7 @@ protected:
 
 private:
 
-    enum
+    enum: uint16_t
     {
         C_SUBJ_COLUMN = 0,
         C_PRED_COLUMN,
@@ -83,8 +82,3 @@ private:
     GtkWidget *m_status;
 
 };
-
-#endif /* AP_UNIXDIALOG_RDFQUERY_H */
-
-
-

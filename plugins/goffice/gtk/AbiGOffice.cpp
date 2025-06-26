@@ -118,10 +118,10 @@ static const char* AbiGOComponent_MenuTooltipInsertFromFile = "Insert the conten
 static const char* AbiGOComponent_MenuLabelCreate = "New";
 static const char* AbiGOComponent_MenuTooltipCreate = "Create a new object";
 
-static XAP_Menu_Id newObjectID = 0;
-static XAP_Menu_Id InsertGOChartID = 0;
-static XAP_Menu_Id InsertGOComponentFromFileID = 0;
-static XAP_Menu_Id CreateGOComponentID = 0;
+static XAP_Menu_Id newObjectID = (XAP_Menu_Id)0;
+static XAP_Menu_Id InsertGOChartID = (XAP_Menu_Id)0;
+static XAP_Menu_Id InsertGOComponentFromFileID = (XAP_Menu_Id)0;
+static XAP_Menu_Id CreateGOComponentID = (XAP_Menu_Id)0;
 
 static void AbiGOffice_addToMenus()
 {
@@ -168,7 +168,7 @@ static void AbiGOffice_addToMenus()
      // Put it after Insert Picture in the Main menu
      // FIXME put it before!
      bObjectExists = false;
-     newObjectID= pFact->addNewMenuBefore("Main",nullptr,AP_MENU_ID_INSERT_DIRECTIONMARKER,EV_MLF_BeginSubMenu);
+     newObjectID= pFact->addNewMenuBefore("Main", nullptr, (XAP_Menu_Id)AP_MENU_ID_INSERT_DIRECTIONMARKER, EV_MLF_BeginSubMenu);
    }
 
    UT_DEBUGMSG(("newObjectID %d \n",newObjectID));

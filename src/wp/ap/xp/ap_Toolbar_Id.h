@@ -17,9 +17,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef AP_TOOLBAR_IDSET_H
-#define AP_TOOLBAR_IDSET_H
+#pragma once
 
 #include "xap_Types.h"
 
@@ -35,7 +33,7 @@
 
 #define toolbaritem(id)	 AP_TOOLBAR_ID_##id,
 
-enum _Ap_Toolbar_Id
+enum _Ap_Toolbar_Id: uint8_t
 {
 	AP_TOOLBAR_ID__BOGUS1__ = 0,	/* must be first */
 #include "ap_Toolbar_Id_List.h"
@@ -43,5 +41,3 @@ enum _Ap_Toolbar_Id
 };
 
 #undef toolbaritem
-
-#endif /* AP_TOOLBAR_IDSET_H */

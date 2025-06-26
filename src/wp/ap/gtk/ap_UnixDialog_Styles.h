@@ -38,8 +38,8 @@ class GR_CairoGraphics;
 class AP_UnixDialog_Styles: public AP_Dialog_Styles
 {
 public:
-	typedef enum _StyleType
-	  {USED_STYLES, ALL_STYLES, USER_STYLES} StyleType;
+	enum StyleType: uint8_t
+	  {USED_STYLES, ALL_STYLES, USER_STYLES};
 
 	AP_UnixDialog_Styles(XAP_DialogFactory * pDlgFactory, XAP_Dialog_Id id);
 	virtual ~AP_UnixDialog_Styles(void);
@@ -96,13 +96,13 @@ public:
 	const gchar *   getStyleType(void) const {return m_styleType;}
 protected:
 
-	enum
+	enum ResponseId: int8_t
 	  {
 	    BUTTON_APPLY = GTK_RESPONSE_APPLY,
 	    BUTTON_CLOSE = GTK_RESPONSE_CLOSE,
 	    BUTTON_MODIFY_OK = GTK_RESPONSE_OK,
 	    BUTTON_MODIFY_CANCEL = GTK_RESPONSE_CANCEL
-	  } ResponseId;
+	  };
 
 	// private construction functions
 	virtual GtkWidget * _constructWindow(void);

@@ -17,12 +17,11 @@
  * 02110-1301 USA.
  */
 
-#ifndef FV_BASE_H
-#define FV_BASE_H
+#pragma once
 
-typedef enum _FV_DragWhat
+enum FV_DragWhat: uint8_t
 {
-	FV_DragNothing,
+    FV_DragNothing,
     FV_DragTopLeftCorner,
     FV_DragTopRightCorner,
     FV_DragBotLeftCorner,
@@ -32,7 +31,7 @@ typedef enum _FV_DragWhat
     FV_DragRightEdge,
     FV_DragBotEdge,
     FV_DragWhole
-} FV_DragWhat;
+};
 
 class FL_DocLayout;
 class PD_Document;
@@ -80,5 +79,3 @@ protected:
 private:
 	FV_DragWhat				m_iDraggingWhat;	// made private on purpose
 };
-
-#endif

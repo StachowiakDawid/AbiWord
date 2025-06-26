@@ -55,11 +55,11 @@ public:
 	virtual void  notifyActiveFrame(XAP_Frame * pFrame) override;
 	const GtkWidget 	  * getWindow (void) const { return m_windowMain; }
 protected:
-	typedef enum
+	enum ResponseId: int8_t
 	{
 	  BUTTON_APPLY = GTK_RESPONSE_APPLY,
 	  BUTTON_CLOSE = GTK_RESPONSE_CLOSE
-	} ResponseId ;
+	};
 
 	virtual GtkWidget *		_constructWindow(void);
 	void					_populateWindowData(void);

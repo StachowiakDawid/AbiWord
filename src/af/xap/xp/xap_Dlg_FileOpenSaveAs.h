@@ -1,6 +1,7 @@
 /* -*- mode: C++; tab-width: 4; c-basic-offset: 4; indent-tabs-mode: t -*- */
 /* AbiSource Application Framework
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -46,7 +47,11 @@ public:
 	virtual void						runModal(XAP_Frame * pFrame) override = 0;
 	virtual void						useEnd(void) override;
 
-	typedef enum { a_VOID, a_OK, a_CANCEL }	tAnswer;
+	enum tAnswer: uint8_t {
+		a_VOID,
+		a_OK,
+		a_CANCEL
+	};
 
 	void							setCurrentPathname(const std::string & pathname);
 	void								setSuggestFilename(bool);

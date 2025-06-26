@@ -41,8 +41,8 @@ EV_Toolbar_ActionSet * AP_CreateToolbarActionSet(void)
 	// This should only be called once by the application.
 	// Everyone should share the set we create.
 
-	EV_Toolbar_ActionSet * pActionSet = new EV_Toolbar_ActionSet(AP_TOOLBAR_ID__BOGUS1__,
-																 AP_TOOLBAR_ID__BOGUS2__);
+	EV_Toolbar_ActionSet * pActionSet = new EV_Toolbar_ActionSet((XAP_Toolbar_Id)AP_TOOLBAR_ID__BOGUS1__,
+																 (XAP_Toolbar_Id)AP_TOOLBAR_ID__BOGUS2__);
 	UT_return_val_if_fail (pActionSet, nullptr);
 
 	// The following is a list of all toolbar id's that we define,
@@ -71,7 +71,7 @@ EV_Toolbar_ActionSet * AP_CreateToolbarActionSet(void)
 	//              of string.
 
 #define _s(id,type,szMethodName,maskOfInterest,pfnGetState)		\
-	pActionSet->setAction(id,type,szMethodName,maskOfInterest,pfnGetState)
+	pActionSet->setAction((XAP_Toolbar_Id)id,type,szMethodName,maskOfInterest,pfnGetState)
 
 	//( __id__,          			type,					szMethodName,	mask,				pfn);
 

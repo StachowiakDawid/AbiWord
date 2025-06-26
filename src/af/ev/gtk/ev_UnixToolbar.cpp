@@ -446,7 +446,7 @@ public:									// we create...
 			return;
 		}
 
-		if (wd->m_id == AP_TOOLBAR_ID_FMT_SIZE) {
+		if (wd->m_id == (XAP_Toolbar_Id)AP_TOOLBAR_ID_FMT_SIZE) {
 			// no updates of the font size while the entry is being edited
 			GtkWidget *entry;
 			entry = gtk_bin_get_child (GTK_BIN(combo));
@@ -484,7 +484,7 @@ public:									// we create...
 			buffer = gtk_combo_box_text_get_active_text (GTK_COMBO_BOX_TEXT(combo));
 		}
 
-		if (wd->m_id == AP_TOOLBAR_ID_FMT_FONT) {
+		if (wd->m_id == (XAP_Toolbar_Id)AP_TOOLBAR_ID_FMT_FONT) {
 			const gchar *font;
 			font = XAP_EncodingManager::fontsizes_mapping.lookupByTarget(buffer);
 			if (font) {
@@ -499,7 +499,7 @@ public:									// we create...
 			}
 		}
 
-		if (wd->m_id == AP_TOOLBAR_ID_FMT_STYLE)
+		if (wd->m_id == (XAP_Toolbar_Id)AP_TOOLBAR_ID_FMT_STYLE)
 			text = pt_PieceTable::s_getUnlocalisedStyleName(buffer);
 		else
 			text = buffer;
@@ -763,7 +763,7 @@ bool EV_UnixToolbar::synthesize(void)
 			case EV_TBIT_PushButton:
 			{
 				UT_ASSERT(g_ascii_strcasecmp(pLabel->getIconName(),"NoIcon")!=0);
-				if(pAction->getToolbarId() != AP_TOOLBAR_ID_INSERT_TABLE)
+				if(pAction->getToolbarId() != (XAP_Toolbar_Id)AP_TOOLBAR_ID_INSERT_TABLE)
 				{
 					wd->m_widget = toolbar_append_button(GTK_BOX(m_wToolbar), pLabel->getIconName(),
 														  szToolTip,
@@ -825,7 +825,7 @@ bool EV_UnixToolbar::synthesize(void)
 				UT_ASSERT(pControl);
 
 				GtkWidget *combo;
-				if (wd->m_id == AP_TOOLBAR_ID_FMT_SIZE) {
+				if (wd->m_id == (XAP_Toolbar_Id)AP_TOOLBAR_ID_FMT_SIZE) {
 					combo = gtk_combo_box_text_new_with_entry();
 					GtkEntry *entry = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo)));
 					g_object_set (G_OBJECT(entry), "can-focus", TRUE, nullptr);
@@ -836,7 +836,7 @@ bool EV_UnixToolbar::synthesize(void)
 					// same size for font and font-size combos
 					// gtk_size_group_add_widget (m_wHSizeGroup, combo);
 				}
-				else if (wd->m_id == AP_TOOLBAR_ID_FMT_FONT) {
+				else if (wd->m_id == (XAP_Toolbar_Id)AP_TOOLBAR_ID_FMT_FONT) {
 					gulong handler_id;
 					combo = abi_font_combo_new ();
 					gtk_widget_set_name (combo, "AbiFontCombo");
@@ -855,11 +855,11 @@ bool EV_UnixToolbar::synthesize(void)
 					// gtk_widget_set_size_request (combo, 0, -1);
 					// gtk_size_group_add_widget (m_wHSizeGroup, combo);
 				}
-				else if (wd->m_id == AP_TOOLBAR_ID_ZOOM) {
+				else if (wd->m_id == (XAP_Toolbar_Id)AP_TOOLBAR_ID_ZOOM) {
 					combo = gtk_combo_box_text_new();
 					gtk_widget_set_name (combo, "AbiZoomCombo");
 				}
-				else if (wd->m_id == AP_TOOLBAR_ID_FMT_STYLE) {
+				else if (wd->m_id == (XAP_Toolbar_Id)AP_TOOLBAR_ID_FMT_STYLE) {
 					combo = gtk_combo_box_text_new();
 					gtk_widget_set_name (combo, "AbiStyleCombo");
 				}
@@ -889,7 +889,7 @@ bool EV_UnixToolbar::synthesize(void)
 						for (gint m=0; m < items; m++) {
 							const char * sz = v->getNthItem(m);
 							std::string sLoc;
-							if (wd->m_id == AP_TOOLBAR_ID_FMT_STYLE)
+							if (wd->m_id == (XAP_Toolbar_Id)AP_TOOLBAR_ID_FMT_STYLE)
 							{
 								pt_PieceTable::s_getLocalisedStyleName(sz, sLoc);
 								sz = sLoc.c_str();
@@ -1156,7 +1156,7 @@ bool EV_UnixToolbar::refreshToolbar(AV_View * pView, AV_ChangeMask mask)
 					if (!szState) {
 						gtk_combo_box_set_active (combo, -1);
 					}
-					else if (wd->m_id == AP_TOOLBAR_ID_FMT_SIZE) {
+					else if (wd->m_id == (XAP_Toolbar_Id)AP_TOOLBAR_ID_FMT_SIZE) {
 						const char * fsz = XAP_EncodingManager::fontsizes_mapping.lookupBySource(szState);
 						gboolean ret = FALSE;
 						if (fsz) {
@@ -1167,7 +1167,7 @@ bool EV_UnixToolbar::refreshToolbar(AV_View * pView, AV_ChangeMask mask)
 											   szState);
 						}
 					}
-					else if (wd->m_id == AP_TOOLBAR_ID_FMT_STYLE) {
+					else if (wd->m_id == (XAP_Toolbar_Id)AP_TOOLBAR_ID_FMT_STYLE) {
 #define BUILTIN_INDEX "builtin-index"
 						pt_PieceTable::s_getLocalisedStyleName(szState, sLoc);
 						szState = sLoc.c_str();
@@ -1194,7 +1194,7 @@ bool EV_UnixToolbar::refreshToolbar(AV_View * pView, AV_ChangeMask mask)
 					else {
 						combo_box_set_active_text(combo, szState, wd->m_handlerId);
 					} 
-					if (wd->m_id == AP_TOOLBAR_ID_FMT_FONT) {
+					if (wd->m_id == (XAP_Toolbar_Id)AP_TOOLBAR_ID_FMT_FONT) {
 						if (wd->m_pUnixToolbar->m_pFontPreview) {
 							UT_DEBUGMSG(("ev_UnixToolbar - deleting FontPreview %p \n",wd->m_pUnixToolbar));
 						    delete wd->m_pUnixToolbar->m_pFontPreview;
@@ -1282,14 +1282,14 @@ bool EV_UnixToolbar::repopulateStyles(void)
 	UT_uint32 count = m_pToolbarLayout->getLayoutItemCount();
 	UT_uint32 i =0;
 	EV_Toolbar_LayoutItem * pLayoutItem = nullptr;
-	XAP_Toolbar_Id id = 0;
+	XAP_Toolbar_Id id = (XAP_Toolbar_Id)0;
 	_wd * wd = nullptr;
 	for(i=0; i < count; i++)
 	{
 		pLayoutItem = m_pToolbarLayout->getLayoutItem(i);
 		id = pLayoutItem->getToolbarId();
 		wd = m_vecToolbarWidgets.getNthItem(i);
-		if(id == AP_TOOLBAR_ID_FMT_STYLE)
+		if(id == (XAP_Toolbar_Id)AP_TOOLBAR_ID_FMT_STYLE)
 			break;
 	}
 	if(i>=count)
@@ -1297,7 +1297,7 @@ bool EV_UnixToolbar::repopulateStyles(void)
 //
 // GOT IT!
 //
-	UT_ASSERT(wd->m_id == AP_TOOLBAR_ID_FMT_STYLE);
+	UT_ASSERT(wd->m_id == (XAP_Toolbar_Id)AP_TOOLBAR_ID_FMT_STYLE);
 	XAP_Toolbar_ControlFactory * pFactory = m_pUnixApp->getControlFactory();
 	UT_return_val_if_fail(pFactory, false);
 	EV_Toolbar_Control * pControl = pFactory->getControl(this, id);

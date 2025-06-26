@@ -19,8 +19,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_FORMATTABLE_H
-#define AP_DIALOG_FORMATTABLE_H
+#pragma once
 
 #include "ut_types.h"
 #include "ut_misc.h"
@@ -73,11 +72,11 @@ public:
 
 	virtual void runModeless(XAP_Frame * pFrame) override = 0;
 
-	enum tAnswer {
+	enum tAnswer: uint8_t {
 		a_OK,
 		a_CLOSE
 	};
-	enum toggle_button {
+	enum toggle_button: uint8_t {
 		toggle_left,
 		toggle_right,
 		toggle_top,
@@ -159,5 +158,3 @@ private:
 	GR_Image *                          m_pImage;
 	FG_ConstGraphicPtr                  m_pGraphic;
 };
-
-#endif /* AP_DIALOG_FORMATTABLE_H */

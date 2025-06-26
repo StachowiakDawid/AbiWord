@@ -1,5 +1,6 @@
 /* AbiWord
  * Copyright (C) 2004 Tomas Frydrych <tomasfrydrych@yahoo.co.uk>
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_DIALOG_HISTORY_H
-#define XAP_DIALOG_HISTORY_H
+#pragma once
 
 #include "xap_Dialog.h"
 #include "ut_vector.h"
@@ -68,7 +68,11 @@ class ABI_EXPORT XAP_Dialog_History : public XAP_Dialog_NonPersistent
 
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK, a_CANCEL, a_SHOW } tAnswer;
+	enum tAnswer: uint8_t {
+		a_OK,
+		a_CANCEL,
+		a_SHOW
+	};
 
 	XAP_Dialog_History::tAnswer		getAnswer(void) const {return m_answer;};
 
@@ -101,5 +105,3 @@ class ABI_EXPORT XAP_Dialog_History : public XAP_Dialog_NonPersistent
 	const XAP_StringSet * m_pSS;
 	UT_uint32             m_iId;
 };
-
-#endif /* XAP_DIALOG_HISTORY_H */

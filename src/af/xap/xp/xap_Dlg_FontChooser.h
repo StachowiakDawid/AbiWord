@@ -2,7 +2,7 @@
 
 /* AbiSource Application Framework
  * Copyright (C) 1998 AbiSource, Inc.
- * Copyright (C) 2009-2021 Hubert Figuière
+ * Copyright (C) 2009-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,13 +22,7 @@
 
 #pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 #include <map>
 #include <string>
@@ -55,7 +49,7 @@ public:
 
 	virtual void					runModal(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK, a_CANCEL, a_YES, a_NO }	tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL, a_YES, a_NO };
 
 	void setDrawString (const UT_UCSChar * str);
 

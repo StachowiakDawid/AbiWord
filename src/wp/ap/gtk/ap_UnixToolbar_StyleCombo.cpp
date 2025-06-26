@@ -54,7 +54,7 @@ AP_UnixToolbar_StyleCombo::AP_UnixToolbar_StyleCombo(EV_Toolbar * pToolbar,
 	  m_pDefaultDesc(nullptr)
 {
 	UT_DEBUG_ONLY_ARG(id);
-	UT_ASSERT(id==AP_TOOLBAR_ID_FMT_STYLE);
+	UT_ASSERT(id == (XAP_Toolbar_Id)AP_TOOLBAR_ID_FMT_STYLE);
 
 	m_nPixels = 120;		// TODO: do a better calculation
 	m_nLimit = 15;         // 15 styles before the scroll bar??.

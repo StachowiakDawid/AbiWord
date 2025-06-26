@@ -1,5 +1,6 @@
 /* AbiSource Program Utilities
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,12 +18,13 @@
  * 02110-1301 USA.
  */
 
-#ifndef UT_TEST_H
-#define UT_TEST_H
+#pragma once
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
+
+#include <cstdint>
 
 // UT_TEST_H governs multiple inclusion of this header file
 //
@@ -37,7 +39,7 @@
 #include <stdio.h>
 
 #ifdef DEBUG
-enum UT_TestStatus {
+enum UT_TestStatus: int8_t {
   UT_Test_SystemError = -1,
   UT_Test_Fail = 0,
   UT_Test_Pass = 1
@@ -49,5 +51,3 @@ const char * UT_TestStatus_GetMessage(UT_TestStatus status);
 #ifdef UT_TEST
 void UT_Test(FILE * fp);
 #endif
-
-#endif /* UT_TEST_H */

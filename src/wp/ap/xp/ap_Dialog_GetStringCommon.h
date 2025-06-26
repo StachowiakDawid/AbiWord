@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_GETSTRINGCOMMON_H
-#define AP_DIALOG_GETSTRINGCOMMON_H
+#pragma once
 
 #include "xap_Dialog.h"
 #include "ut_xml.h"
@@ -45,7 +44,7 @@ class ABI_EXPORT AP_Dialog_GetStringCommon : public XAP_Dialog_NonPersistent
 
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK=0, a_CANCEL=1, a_DELETE=2 } tAnswer;
+	enum tAnswer: uint8_t { a_OK=0, a_CANCEL=1, a_DELETE=2 };
 
 	tAnswer     getAnswer() const;
 	void        setAnswer(tAnswer a);
@@ -58,5 +57,3 @@ private:
 	std::string  m_string;
 	AP_Dialog_GetStringCommon::tAnswer	m_answer;
 };
-
-#endif

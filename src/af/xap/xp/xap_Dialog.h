@@ -2,6 +2,7 @@
 
 /* AbiSource Application Framework
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,16 +20,9 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_DIALOG_H
-#define XAP_DIALOG_H
+#pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 #include <glib.h>
 
@@ -52,14 +46,13 @@ class AV_View;
 ******************************************************************
 *****************************************************************/
 
-typedef enum _XAP_Dialog_Type
+enum XAP_Dialog_Type: uint8_t
 {
 	XAP_DLGT_NON_PERSISTENT		= 1,
 	XAP_DLGT_FRAME_PERSISTENT	= 2,
 	XAP_DLGT_APP_PERSISTENT		= 3,
 	XAP_DLGT_MODELESS		= 4
-
-} XAP_Dialog_Type;
+};
 
 typedef int xap_widget_id;
 
@@ -270,5 +263,3 @@ public:
 	virtual ~XAP_NotebookDialog() {}
 	virtual void addPage (const XAP_NotebookDialog::Page *page) = 0;
 };
-
-#endif /* XAP_DIALOG_H */

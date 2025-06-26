@@ -56,8 +56,8 @@ class FG_Graphic;
 struct ABI_EXPORT RTFFontTableItem
 {
  public:
-	enum FontFamilyEnum { ffNone, ffRoman, ffSwiss, ffModern, ffScript, ffDecorative, ffTechnical, ffBiDirectional};
-	enum FontPitch { fpDefault, fpFixed, fpVariable};
+    enum FontFamilyEnum: uint8_t { ffNone, ffRoman, ffSwiss, ffModern, ffScript, ffDecorative, ffTechnical, ffBiDirectional};
+    enum FontPitch: uint8_t { fpDefault, fpFixed, fpVariable};
 
 	RTFFontTableItem(FontFamilyEnum fontFamily, int charSet, int codepage, FontPitch pitch,
 						const char* panose, const char* pFontName, const char* pAlternativeFontName);
@@ -165,7 +165,7 @@ struct ABI_EXPORT _rtfListTable
 	UT_uint32 iWord97Level;
 };
 
-enum rtfCellBorder
+enum rtfCellBorder: uint8_t
 {
 	rtfCellBorderBot,
 	rtfCellBorderLeft,
@@ -174,7 +174,7 @@ enum rtfCellBorder
 };
 
 
-enum rtfBorder
+enum rtfBorder: uint8_t
 {
 	rtfBorderBot,
 	rtfBorderLeft,
@@ -209,7 +209,7 @@ struct ABI_EXPORT RTFProps_TableProps
 // Paragraph properties
 struct ABI_EXPORT RTFProps_ParaProps
 {
-	enum ParaJustification { pjLeft, pjCentre, pjRight, pjFull};
+	enum ParaJustification: uint8_t { pjLeft, pjCentre, pjRight, pjFull};
 
 	RTFProps_ParaProps();
 	RTFProps_ParaProps& operator=(const RTFProps_ParaProps&);
@@ -425,7 +425,7 @@ private:
 
 struct ABI_EXPORT RTFProps_ImageProps
 {
-	enum IPSizeType { ipstNone, ipstGoal, ipstScale };
+	enum IPSizeType: uint8_t { ipstNone, ipstGoal, ipstScale };
 
 	RTFProps_ImageProps ();
 	IPSizeType sizeType;
@@ -445,8 +445,8 @@ struct ABI_EXPORT RTFProps_ImageProps
 // Section properties
 struct ABI_EXPORT RTFProps_SectionProps
 {
-	enum ESectionBreak {sbkNone, sbkColumn, sbkEven, sbkOdd, sbkPage};
-	enum EPageNumber {pgDecimal, pgURoman, pgLRoman, pgULtr, pgLLtr};
+	enum ESectionBreak: uint8_t {sbkNone, sbkColumn, sbkEven, sbkOdd, sbkPage};
+	enum EPageNumber: uint8_t {pgDecimal, pgURoman, pgLRoman, pgULtr, pgLLtr};
 
 	RTFProps_SectionProps();
 
@@ -474,7 +474,7 @@ struct ABI_EXPORT RTFProps_SectionProps
  */
 struct ABI_EXPORT RTFHdrFtr
 {
-	enum HdrFtrType {hftNone,
+	enum HdrFtrType: uint8_t {hftNone,
 					 hftHeader,
 					 hftHeaderEven,
 					 hftHeaderFirst,
@@ -498,8 +498,8 @@ struct ABI_EXPORT RTFStateStore
     RTFStateStore * clone();
 	// RTFStateStore& operator=(const RTFStateStore& s)
 
-	enum DestinationStateTypes { rdsNorm, rdsSkip, rdsFootnote, rdsHeader, rdsFooter, rdsField };
-	enum InternalStateTypes { risNorm, risBin, risHex };
+	enum DestinationStateTypes: uint8_t { rdsNorm, rdsSkip, rdsFootnote, rdsHeader, rdsFooter, rdsField };
+	enum InternalStateTypes:uint8_t { risNorm, risBin, risHex };
 
 	DestinationStateTypes	m_destinationState;		// Reading or skipping text
 	InternalStateTypes		m_internalState;		// Normal, binary or hex
@@ -612,7 +612,7 @@ public:
     bool  isWord97Lists(void) const
 		{ return !m_vecWord97Lists.empty();}
 
-	enum PictFormat {
+	enum PictFormat: uint8_t {
 		picNone,
 		picPNG,
 		picJPEG,
@@ -636,10 +636,10 @@ protected:
 private:
 
 
-	typedef enum {
+	enum RTFBookmarkType: uint8_t {
 		RBT_START = 0,
 		RBT_END
-	} RTFBookmarkType;
+	};
 
 	bool AddChar(UT_UCSChar ch);
 public:
@@ -848,14 +848,14 @@ private:
 	// Section property handlers
 	bool ApplySectionAttributes();
 	bool ResetSectionAttributes();
-	typedef enum {
+	enum RTFTokenType: int8_t {
 	    RTF_TOKEN_NONE = 0,
 	    RTF_TOKEN_OPEN_BRACE,
 	    RTF_TOKEN_CLOSE_BRACE,
 	    RTF_TOKEN_KEYWORD,
 	    RTF_TOKEN_DATA,
 	    RTF_TOKEN_ERROR = -1
-	} RTFTokenType;
+	};
 	RTFTokenType NextToken (unsigned char *pKeyword, UT_sint32* pParam,
 							bool* pParamUsed, UT_uint32 len,
                             bool bIgnoreWhiteSpace = false);

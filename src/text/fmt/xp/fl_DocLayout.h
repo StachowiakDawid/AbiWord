@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef DOCLAYOUT_H
-#define DOCLAYOUT_H
+#pragma once
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -36,7 +35,7 @@
 #include "xav_Listener.h"
 #include "xap_Prefs.h"
 
-typedef enum _FootnoteType
+enum FootnoteType: uint16_t
 {
 	FOOTNOTE_TYPE_NUMERIC = 0,
 	FOOTNOTE_TYPE_NUMERIC_SQUARE_BRACKETS,
@@ -53,7 +52,7 @@ typedef enum _FootnoteType
 	FOOTNOTE_TYPE_UPPER_ROMAN,
 	FOOTNOTE_TYPE_UPPER_ROMAN_PAREN,
 	_FOOTNOTE_TYPE_INVALID = 10000
-} FootnoteType;
+};
 
 /** describe a footnote. */
 typedef struct {
@@ -341,7 +340,7 @@ public:
 
 	// These are used as bit flags in a UT_uint32.  The enum is here just
 	// to get the namespace protection.
-	enum backgroundCheckReason
+	enum backgroundCheckReason: uint8_t
 	{
 		bgcrNone         = 0,
 		bgcrDebugFlash   = (1 <<  0),
@@ -473,7 +472,3 @@ private:
 	fl_BlockLayout *    m_pRebuiltBlockLayout;
 	UT_GenericVector<fp_FrameContainer *> m_vecFramesToBeInserted;
 };
-
-#endif /* DOCLAYOUT_H */
-
-

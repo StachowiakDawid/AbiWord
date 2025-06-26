@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_HDRFTR_H
-#define AP_DIALOG_HDRFTR_H
+#pragma once
 
 #include "xap_Frame.h"
 #include "xap_Dialog.h"
@@ -36,8 +35,8 @@ public:
 
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK, a_CANCEL } tAnswer;
-	typedef enum
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
+	enum HdrFtr_Control: uint8_t
 	{
 		HdrEven,
 		HdrFirst,
@@ -45,7 +44,7 @@ public:
 		FtrEven,
 		FtrFirst,
 		FtrLast
-	} HdrFtr_Control;
+	};
 
 	AP_Dialog_HdrFtr::tAnswer		getAnswer(void) const;
 	void    setValue(AP_Dialog_HdrFtr::HdrFtr_Control which, bool value, bool changed);
@@ -67,14 +66,3 @@ public:
 	UT_sint32 m_iStartAt;
     tAnswer m_answer;
 };
-
-#endif /* AP_DIALOG_HDRFTR_H */
-
-
-
-
-
-
-
-
-

@@ -48,11 +48,11 @@
 #include "ie_imp_XHTML.h"
 #include "ut_html.h"
 
-typedef enum section_class
+enum  SectionClass: uint8_t
 {
 	sc_section = 0,
 	sc_other
-} SectionClass;
+};
 
 static const char * s_section_classes[sc_other] = {
 	"Section"

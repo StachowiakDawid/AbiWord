@@ -1,5 +1,6 @@
 /* AbiSource Program Utilities
  * Copyright (C) 2001 Dom Lachowicz <dominicl@seas.upenn.edu>
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,16 +18,9 @@
  * 02110-1301 USA.
  */
 
-#ifndef UT_WORKER_H
-#define UT_WORKER_H
+#pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 class UT_Worker;
 
@@ -42,7 +36,7 @@ typedef void (*UT_WorkerCallback)(UT_Worker* pWorker);
 class ABI_EXPORT UT_WorkerFactory
 {
  public:
-  enum ConstructMode {
+  enum ConstructMode: uint8_t {
     NONE   = 0x00,
     IDLE   = 0x01,
     TIMER  = 0x02
@@ -92,5 +86,3 @@ class ABI_EXPORT UT_Worker
   UT_WorkerCallback m_pCallback;
 
 };
-
-#endif /* UT_WORKER_H */

@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_PAGENUMBERS_H
-#define AP_DIALOG_PAGENUMBERS_H
+#pragma once
 
 #include "xap_Frame.h"
 #include "xap_Dialog.h"
@@ -40,13 +39,13 @@ class ABI_EXPORT AP_Dialog_PageNumbers : public XAP_Dialog_NonPersistent
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 
 	// answer from dialog
-	typedef enum { a_OK, a_CANCEL } tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
 
 	// alignment ids
-	typedef enum { id_RALIGN, id_LALIGN, id_CALIGN } tAlign;
+	enum tAlign: uint8_t { id_RALIGN, id_LALIGN, id_CALIGN };
 
 	// control ids
-	typedef enum { id_HDR, id_FTR } tControl;
+	enum tControl: uint8_t { id_HDR, id_FTR };
 
 	AP_Dialog_PageNumbers::tAlign   getAlignment(void);
 	AP_Dialog_PageNumbers::tAnswer  getAnswer(void);
@@ -93,5 +92,3 @@ protected:
 
 	UT_UCSChar * m_str;
 };
-
-#endif /* AP_DIALOG_PAGENUMBERS_H */

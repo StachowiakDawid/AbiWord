@@ -49,7 +49,7 @@ protected:
 	virtual bool _letPointPass(void) const override;
 
 private:
-	enum
+	enum: uint8_t
 	{
 		TEXT_POSITION_NORMAL,
 		TEXT_POSITION_SUPERSCRIPT,

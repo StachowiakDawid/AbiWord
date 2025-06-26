@@ -206,7 +206,7 @@ void AP_UnixDialog_Replace::event_FindEntryChange(void)
 	const UT_UCS4String input = get_combobox_text(m_comboFind);
 	bool enable = !input.empty();
 	gtk_widget_set_sensitive(m_buttonFind, enable);
-	if (m_id == AP_DIALOG_ID_REPLACE)
+	if (m_id == (XAP_Dialog_Id)AP_DIALOG_ID_REPLACE)
 	{
 		gtk_widget_set_sensitive(m_buttonFindReplace, enable);
 		gtk_widget_set_sensitive(m_buttonReplaceAll, enable);
@@ -338,7 +338,7 @@ GtkWidget * AP_UnixDialog_Replace::_constructWindow(void)
 	gtk_widget_show_all (m_windowMain);
 
 	
-	if (m_id != AP_DIALOG_ID_REPLACE){
+	if (m_id != (XAP_Dialog_Id)AP_DIALOG_ID_REPLACE){
 		// todo: get rid of this code once bug # 5085 is closed
 		gtk_widget_hide (labelReplace);
 		gtk_widget_hide (m_comboReplace);
@@ -420,7 +420,7 @@ void AP_UnixDialog_Replace::_populateWindowData(void)
 	}	
 	
 	// last used replace string
-	if (m_id == AP_DIALOG_ID_REPLACE)
+	if (m_id == (XAP_Dialog_Id)AP_DIALOG_ID_REPLACE)
 	{
 		UT_ASSERT(m_comboReplace);
 		append_string_to_model(getReplaceString(), m_comboReplace, this);		

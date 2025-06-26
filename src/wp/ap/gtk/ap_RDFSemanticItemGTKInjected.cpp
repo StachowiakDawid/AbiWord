@@ -285,7 +285,7 @@ OnSemanticStylesheetsOk_cb (GtkWidget *widget, GdkEvent *event, combo_box_t *box
 /******************************/
 /******************************/
 
-enum {
+enum: uint8_t {
     COLUMN_REFDLG_NAME = 0,
     NUM_REFDLG_COLUMNS
 };

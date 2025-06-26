@@ -1,5 +1,6 @@
 /* AbiSource Program Utilities
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,16 +18,9 @@
  * 02110-1301 USA.
  */
 
-#ifndef UT_UNITS_H
-#define UT_UNITS_H
+#pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 G_BEGIN_DECLS
 
@@ -38,7 +32,7 @@ G_BEGIN_DECLS
 
 #define UT_INT_MAX 2147483647
 
-enum UT_Dimension {
+enum UT_Dimension: uint8_t {
   DIM_IN,
   DIM_CM,
   DIM_MM,
@@ -90,5 +84,3 @@ ABI_EXPORT double UT_getDimensionResolution (UT_Dimension dim);
 ABI_EXPORT double UT_convertFraction(const char * sz);
 
 G_END_DECLS
-
-#endif /* UT_UNITS_H */

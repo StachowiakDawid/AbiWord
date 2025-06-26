@@ -19,9 +19,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef IE_IMP_TEXT_H
-#define IE_IMP_TEXT_H
+#pragma once
 
 #include <stdio.h>
 #include "ie_imp.h"
@@ -109,7 +107,7 @@ public:
 										IE_Imp ** ppie) override;
 
 protected:
-	enum UCS2_Endian { UE_BigEnd = -1, UE_NotUCS = 0, UE_LittleEnd };
+	enum UCS2_Endian: int8_t { UE_BigEnd = -1, UE_NotUCS = 0, UE_LittleEnd };
 
 	static bool _recognizeUTF8 (const char * szBuf,
 								UT_uint32 iNumbytes);
@@ -177,5 +175,3 @@ protected:
 	bool            m_bFirstBlockData;
 	pf_Frag_Strux * m_pBlock;
 };
-
-#endif /* IE_IMP_TEXT_H */

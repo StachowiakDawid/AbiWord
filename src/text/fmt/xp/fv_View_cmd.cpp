@@ -4495,7 +4495,7 @@ bool FV_View::cmdEditAnnotationWithDialog(UT_uint32 aID)
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 	
 	AP_Dialog_Annotation * pDialog
-		= static_cast<AP_Dialog_Annotation *>(pDialogFactory->requestDialog(AP_DIALOG_ID_ANNOTATION));
+		= static_cast<AP_Dialog_Annotation *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_ANNOTATION));
 	UT_return_val_if_fail (pDialog, false);
 	
 	// set initial annotation properties

@@ -120,7 +120,7 @@ static void LoadBindings_registerMethod ()
 	XAP_Menu_Factory* pFact = pApp->getMenuFactory();
 
 	// add menu item
-	loadBindingID = pFact->addNewMenuAfter("Main",nullptr,AP_MENU_ID_FMT_STYLIST,EV_MLF_Normal);	// named _FMT_, but actually in tools menu
+	loadBindingID = pFact->addNewMenuAfter("Main", nullptr, (XAP_Menu_Id)AP_MENU_ID_FMT_STYLIST, EV_MLF_Normal);	// named _FMT_, but actually in tools menu
 	pFact->addNewLabel(nullptr,loadBindingID,szLoadBinding,szLoadBindingStatus);
 	EV_Menu_Action* myLoadBindingAction = new EV_Menu_Action(
 		loadBindingID,          // id that the layout said we could use

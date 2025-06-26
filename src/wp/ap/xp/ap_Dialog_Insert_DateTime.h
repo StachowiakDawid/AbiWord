@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_INSERT_DATETIME_H
-#define AP_DIALOG_INSERT_DATETIME_H
+#pragma once
 
 #include "xap_Frame.h"
 #include "xap_Dialog.h"
@@ -34,7 +33,7 @@ class XAP_Frame;
 class ABI_EXPORT AP_Dialog_Insert_DateTime : public XAP_Dialog_NonPersistent
 {
 public:
-    typedef enum { a_OK, a_CANCEL } tAnswer;
+    enum tAnswer: uint8_t { a_OK, a_CANCEL };
 
     AP_Dialog_Insert_DateTime(XAP_DialogFactory * pDlgFactory, XAP_Dialog_Id id);
     AP_Dialog_Insert_DateTime::tAnswer    getAnswer(void) const;
@@ -43,5 +42,3 @@ protected:
     AP_Dialog_Insert_DateTime::tAnswer    m_answer;
     int m_iFormatIndex;
 };
-
-#endif /* AP_DIALOG_INSERT_DATETIME_H */

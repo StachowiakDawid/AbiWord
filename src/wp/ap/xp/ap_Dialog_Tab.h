@@ -19,8 +19,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_TAB_H
-#define AP_DIALOG_TAB_H
+#pragma once
 
 #include "xap_Frame.h"
 #include "xap_Dialog.h"
@@ -48,10 +47,10 @@ class ABI_EXPORT AP_Dialog_Tab : public XAP_Dialog_NonPersistent
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 
 	// answer from dialog
-	typedef enum { a_OK, a_CANCEL } tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
 
 	// control ids
-	typedef enum { id_EDIT_TAB = 0, id_LIST_TAB,
+	enum tControl: uint8_t { id_EDIT_TAB = 0, id_LIST_TAB,
 				   id_SPIN_DEFAULT_TAB_STOP,
 
 				   // should be in same order as eTabType (fl_BlockLayout.h)
@@ -63,7 +62,7 @@ class ABI_EXPORT AP_Dialog_Tab : public XAP_Dialog_NonPersistent
 				   id_BUTTON_SET, id_BUTTON_CLEAR, id_BUTTON_CLEAR_ALL,
 				   id_BUTTON_OK, id_BUTTON_CANCEL,
 
-				   id_last } tControl;
+				   id_last };
 
 	AP_Dialog_Tab::tAnswer	getAnswer(void) const;
 
@@ -145,5 +144,3 @@ private:
 	char buf[20];
 
 };
-
-#endif /* AP_DIALOG_PARAGRAPH_H */

@@ -77,8 +77,8 @@ EV_Menu::addMenuItem(const UT_String &path, const UT_String& description)
 //	EV_Menu_ActionSet *pMenuActionSet = getApp()->getMenuActionSet();
 	std::string label;
 	UT_uint32 last_pos = 1;
-	XAP_Menu_Id last_index = 0;
-	XAP_Menu_Id index = 0;
+	XAP_Menu_Id last_index = (XAP_Menu_Id)0;
+	XAP_Menu_Id index = (XAP_Menu_Id)0;
 	UT_ASSERT(!names.empty());
 	UT_ASSERT(m_pMenuLabelSet);
 //	UT_ASSERT(pMenuActionSet);
@@ -277,7 +277,7 @@ XAP_Menu_Id EV_searchMenuLabel(const EV_Menu_LabelSet *labels, const UT_String &
 	const EV_Menu_Label *l = nullptr;
 
 	UT_uint32 size_labels = labels_table.size();
-	XAP_Menu_Id id = 0;
+	XAP_Menu_Id id = (XAP_Menu_Id)0;
 
 	for (UT_uint32 i = 0; i < size_labels; ++i)
 	{

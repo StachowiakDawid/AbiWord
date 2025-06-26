@@ -19,8 +19,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef IE_TYPES_H
-#define IE_TYPES_H
+#pragma once
 
 /*
   NOTE:  File filters can support one or MORE of the following
@@ -79,7 +78,7 @@ typedef UT_sint32 IEGraphicFileType;
 /*!
  * How to match mimetypes that plugins support.
  */
-enum IE_MimeMatch {
+enum IE_MimeMatch: uint8_t {
 	IE_MIME_MATCH_BOGUS,	/*!< Terminator for mime match entry array */
 	IE_MIME_MATCH_CLASS, 	/*!< Matches only the mime class, e.g. "text" from mimetype "text/plain" */
 	IE_MIME_MATCH_FULL		/*!< Matches the whole mimetype */
@@ -101,5 +100,3 @@ struct IE_SuffixConfidence {
 	std::string		 suffix;		/*!< Filename suffix to match. */
 	UT_Confidence_t	 confidence;	/*!< Confidence for supporting that mimetype. */
 };
-
-#endif /* IE_TYPES_H */

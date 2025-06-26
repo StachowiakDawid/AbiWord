@@ -18,15 +18,12 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_UNIXDIALOG_RDFEDITOR_H
-#define AP_UNIXDIALOG_RDFEDITOR_H
+#pragma once
 
 #include "ap_Dialog_RDFEditor.h"
 #include "fv_View.h"
 
 class XAP_UnixFrame;
-
-
 
 class AP_UnixDialog_RDFEditor: public AP_Dialog_RDFEditor
 {
@@ -72,12 +69,12 @@ protected:
 
 private:
 
-    enum
+  enum: uint8_t
     {
         C_SUBJ_COLUMN = 0,
         C_PRED_COLUMN,
         C_OBJ_COLUMN,
-		C_COLUMN_COUNT
+	C_COLUMN_COUNT
     };
 
     GtkTreeViewColumn* w_cols[C_COLUMN_COUNT];
@@ -100,5 +97,3 @@ private:
     PD_RDFStatement GIterToStatement( GtkTreeIter* giter );
 
 };
-
-#endif

@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_STRINGS_H
-#define AP_STRINGS_H
+#pragma once
 
 #include "xap_Strings.h"
 
@@ -28,12 +27,12 @@
 
 #define dcl(id,s)					AP_STRING_ID_##id,
 
-typedef enum _AP_String_Id_Enum
+enum AP_String_Id_Enum: uint16_t
 {
 	AP_STRING_ID__FIRST__			= 1000,	/* must be first -- must be >= XAP_STRING_ID__LAST__ */
 #include "ap_String_Id.h"
 	AP_STRING_ID__LAST__					/* must be last */
-} AP_String_Id_Enum;
+};
 
 #undef dcl
 
@@ -75,9 +74,3 @@ public:
 protected:
 	UT_GenericVector<gchar*>					m_vecStringsAP;
 };
-
-
-
-#endif /* AP_STRINGS_H */
-
-

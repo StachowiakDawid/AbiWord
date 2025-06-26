@@ -17,20 +17,13 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_DIALOG_LANGUAGE_H
-#define XAP_DIALOG_LANGUAGE_H
+#pragma once
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 #include <string>
 
@@ -62,7 +55,7 @@ INSTRUCTIONS FOR DESIGN OF THE PLATFORM VERSIONS OF THIS DIALOGUE
 class ABI_EXPORT XAP_Dialog_Language : public XAP_Dialog_NonPersistent
 {
 public:
-	typedef enum { a_OK, a_CANCEL, a_YES, a_NO }	tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL, a_YES, a_NO };
 
 	XAP_Dialog_Language(XAP_DialogFactory * pDlgFactory, XAP_Dialog_Id id);
 	virtual ~XAP_Dialog_Language(void);
@@ -103,5 +96,3 @@ protected:
 	bool                            m_bDocDefault;
 	std::string                   m_docLang;
 };
-#endif /* XAP_DIALOG_LANGUAGE_H */
-

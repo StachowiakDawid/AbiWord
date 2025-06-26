@@ -19,8 +19,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef IE_IMP_XHTML_1_H
-#define IE_IMP_XHTML_1_H
+#pragma once
 
 #include <stack>
 
@@ -114,7 +113,7 @@ private:
 
 	IE_Imp_TableHelperStack *	m_TableHelperStack;
 
-	enum listType {L_NONE = 0, L_OL = 1, L_UL = 2 } m_listType;
+	enum listType: uint8_t {L_NONE = 0, L_OL = 1, L_UL = 2 } m_listType;
 	UT_uint16	m_iListID;
 	UT_uint16	m_iNewListID;
 	UT_uint16	m_iNewImage;
@@ -134,5 +133,3 @@ private:
 	UT_ByteBufPtr m_pMathBB;
 	std::string m_Title;
 };
-
-#endif /* IE_IMP_XHTML_H */

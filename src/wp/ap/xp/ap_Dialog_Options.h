@@ -21,8 +21,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_OPTIONS_H
-#define AP_DIALOG_OPTIONS_H
+#pragma once
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -52,10 +51,10 @@ class ABI_EXPORT AP_Dialog_Options : public XAP_TabbedDialog_NonPersistent
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 
 	// answer from dialog
-	typedef enum { a_OK, a_CANCEL, a_SAVE, a_APPLY } tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL, a_SAVE, a_APPLY };
 
 	// control ids
-	typedef enum { id_CHECK_SPELL_CHECK_AS_TYPE = 0, id_CHECK_SPELL_HIDE_ERRORS,
+	enum tControl: uint8_t { id_CHECK_SPELL_CHECK_AS_TYPE = 0, id_CHECK_SPELL_HIDE_ERRORS,
 				   id_CHECK_SPELL_SUGGEST, id_CHECK_SPELL_MAIN_ONLY,
 				   id_CHECK_SPELL_UPPERCASE, id_CHECK_SPELL_NUMBERS,
 				   id_BUTTON_SPELL_AUTOREPLACE,
@@ -90,9 +89,9 @@ class ABI_EXPORT AP_Dialog_Options : public XAP_TabbedDialog_NonPersistent
 				   id_NOTEBOOK,
 				   id_CHECK_LANG_WITH_KEYBOARD,
 				   id_CHECK_DIR_MARKER_AFTER_CLOSING_PARENTHESIS,
-				   id_last } tControl;
+				   id_last };
 
-	// typedef enum { check_FALSE = 0, check_TRUE, check_INDETERMINATE } tCheckState;
+	// enum tCheckState: uint8_t { check_FALSE = 0, check_TRUE, check_INDETERMINATE };
 
 	AP_Dialog_Options::tAnswer	getAnswer(void) const;
 
@@ -204,6 +203,3 @@ private:
 	bool                m_bInitialPop;
 
 };
-
-
-#endif /* AP_DIALOG_PARAGRAPH_H */

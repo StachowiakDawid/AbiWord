@@ -17,18 +17,17 @@
  * 02110-1301 USA.
  */
 
-#ifndef FL_SQUIGGLES_H
-#define FL_SQUIGGLES_H
+#pragma once
 
 #include <vector>
 
 #include "fl_BlockLayout.h"
 
-typedef enum
+enum FL_SQUIGGLE_TYPE: uint8_t
 {
   FL_SQUIGGLE_SPELL,
   FL_SQUIGGLE_GRAMMAR
-} FL_SQUIGGLE_TYPE;
+};
 
 class ABI_EXPORT fl_Squiggles
 {

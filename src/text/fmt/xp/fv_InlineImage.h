@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef FV_VISUALINLINEIMAGE_H
-#define FV_VISUALINLINEIMAGE_H
+#pragma once
 
 #include <string>
 
@@ -27,7 +26,7 @@
 #include "fv_FrameEdit.h" // for FV_Base
 
 
-typedef enum _FV_InlineDragMode
+enum FV_InlineDragMode: uint8_t
 {
 	FV_InlineDrag_NOT_ACTIVE,
 	FV_InlineDrag_WAIT_FOR_MOUSE_CLICK,
@@ -35,7 +34,7 @@ typedef enum _FV_InlineDragMode
 	FV_InlineDrag_DRAGGING,
 	FV_InlineDrag_RESIZE,
 	FV_InlineDrag_START_DRAGGING
-} FV_InlineDragMode;
+};
 
 class GR_Graphics;
 class GR_Image;
@@ -100,5 +99,3 @@ private:
 	std::string           m_sDataId;
 	bool                  m_bSelectionDrawn;
 };
-
-#endif /* FV_VISUALINLINEIMAGE_H */

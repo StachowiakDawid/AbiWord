@@ -41,7 +41,7 @@
 
 
 //! Custom response IDs
-enum {
+enum: uint8_t {
 	SPELL_RESPONSE_ADD = 0, 
 	SPELL_RESPONSE_IGNORE,
 	SPELL_RESPONSE_IGNORE_ALL,
@@ -50,7 +50,7 @@ enum {
 };
 
 //! Column indices for list-store
-enum {
+enum: uint8_t {
 	COLUMN_SUGGESTION = 0,
 	COLUMN_NUMBER,
 	NUM_COLUMNS

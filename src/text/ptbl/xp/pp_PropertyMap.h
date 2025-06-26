@@ -19,9 +19,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef PP_PROPERTYMAP_H
-#define PP_PROPERTYMAP_H
+#pragma once
 
 #if 0  // only used for code below. determine what to do with it
 #if defined(__MINGW32__)
@@ -57,7 +55,7 @@ public:
 	 * List of all properties used internally by AbiWord
 	 * Keep these sorted.
 	 */
-	enum AbiPropertyIndex
+	enum AbiPropertyIndex: uint8_t
 	{
 		abi_annotation_author= 0,
 		abi_annotation_date,
@@ -262,14 +260,14 @@ public:
 		abi_ypos,
 		abi__count
 	};
-	enum TypeColor
+	enum TypeColor: uint8_t
 	{
 		color__unset = 0,
 		color_inherit,
 		color_transparent,
 		color_color
 	};
-	enum TypeLineStyle
+	enum TypeLineStyle: uint8_t
 	{
 		linestyle__unset = 0,
 		linestyle_none,   // "0" or "none"
@@ -281,7 +279,7 @@ public:
 
 		linestyle_inherit
 	};
-	enum TypeThickness
+	enum TypeThickness: uint8_t
 	{
 		thickness__unset = 0,
 		thickness_inherit,
@@ -291,7 +289,7 @@ public:
 	/* currently support only for solid fill styles, but should be able to
 	 * come up with something to support images etc. - what else?
 	 */
-	enum TypeBackground
+	enum TypeBackground: uint8_t
 	{
 		background__unset = 0,
 		background_none,  // background-color: transparent
@@ -412,5 +410,3 @@ public:
 #endif
 };
 ABI_EXPORT bool operator==(const PP_PropertyMap::Line L1, const PP_PropertyMap::Line L2);
-
-#endif /* ! PP_PROPERTYMAP_H */

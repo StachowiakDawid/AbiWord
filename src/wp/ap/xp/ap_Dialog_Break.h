@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_BREAK_H
-#define AP_DIALOG_BREAK_H
+#pragma once
 
 #include "xap_Frame.h"
 #include "xap_Dialog.h"
@@ -34,8 +33,8 @@ public:
 
 	virtual void	runModal(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK, a_CANCEL } tAnswer;
-	typedef enum { b_PAGE = 0, b_COLUMN, b_NEXTPAGE, b_CONTINUOUS, b_EVENPAGE, b_ODDPAGE } breakType;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
+	enum breakType: uint8_t { b_PAGE = 0, b_COLUMN, b_NEXTPAGE, b_CONTINUOUS, b_EVENPAGE, b_ODDPAGE };
 
 	AP_Dialog_Break::tAnswer		getAnswer(void) const;
 	AP_Dialog_Break::breakType		getBreakType(void) const;
@@ -45,5 +44,3 @@ protected:
 	AP_Dialog_Break::tAnswer		m_answer;
 	AP_Dialog_Break::breakType		m_break;
 };
-
-#endif /* AP_DIALOG_BREAK_H */

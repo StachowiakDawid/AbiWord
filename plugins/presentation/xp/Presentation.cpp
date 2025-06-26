@@ -160,7 +160,7 @@ Presentation_registerMethod ()
 
 // Put it after 
 
-    presentationID= pFact->addNewMenuAfter("Main",nullptr,AP_MENU_ID_VIEW_SHOWPARA,EV_MLF_Normal);
+    presentationID = pFact->addNewMenuAfter("Main", nullptr, (XAP_Menu_Id)AP_MENU_ID_VIEW_SHOWPARA, EV_MLF_Normal);
     UT_DEBUGMSG(("presentationID %d \n",presentationID));
 
 
@@ -190,11 +190,11 @@ Presentation_registerMethod ()
     // OK Now build a context menu
     //
     PresentationContextID = pFact->createContextMenu("PresentationContext");
-    prevSlideID = pFact->addNewMenuBefore("PresentationContext",nullptr,0,EV_MLF_Normal,0);
+    prevSlideID = pFact->addNewMenuBefore("PresentationContext", nullptr, nullptr, EV_MLF_Normal, (XAP_Menu_Id)0);
     pFact->addNewLabel(nullptr,prevSlideID,szPrevSlide, nullptr);
-    nextSlideID = pFact->addNewMenuBefore("PresentationContext",nullptr,0,EV_MLF_Normal,0);
+    nextSlideID = pFact->addNewMenuBefore("PresentationContext", nullptr, nullptr, EV_MLF_Normal, (XAP_Menu_Id)0);
     pFact->addNewLabel(nullptr,nextSlideID,szNextSlide, nullptr);
-    endPresentationID = pFact->addNewMenuBefore("PresentationContext",nullptr,0,EV_MLF_Normal,0);
+    endPresentationID = pFact->addNewMenuBefore("PresentationContext", nullptr, nullptr, EV_MLF_Normal, (XAP_Menu_Id)0);
     pFact->addNewLabel(nullptr,endPresentationID,szEndPresentation, nullptr);
 
     myPresentationAction = new EV_Menu_Action(

@@ -998,7 +998,7 @@ const XAP_LangInfo XAP_EncodingManager::langinfo[] =
  */
 
 
-enum EUniCat {
+enum EUniCat: uint8_t {
 	NONATOMIC=0, 
 	ATOMIC=1, 
 	PUNCNOEND=2, 
@@ -1007,12 +1007,12 @@ enum EUniCat {
 	UNKNOWN=5
 };
 // Prototype.
-static enum EUniCat categoriseUniChar(UT_UCS4Char c);
+static EUniCat categoriseUniChar(UT_UCS4Char c);
 
 struct SCatRange {
 	UT_UCS4Char start;
 	UT_UCS4Char end;
-	enum EUniCat cat;
+	EUniCat cat;
 };
 
 /* 
@@ -1654,8 +1654,8 @@ static int s_compare_unichar_cats(const void * pC, const void *puc)
 	return 0;
 }
 
-static enum EUniCat categoriseUniChar(UT_UCS4Char c) {
-	enum EUniCat cat=UNKNOWN;
+static EUniCat categoriseUniChar(UT_UCS4Char c) {
+	EUniCat cat=UNKNOWN;
 
 	// use linear search for the bottom (western part of the table, and bsearch for the
 	// rest

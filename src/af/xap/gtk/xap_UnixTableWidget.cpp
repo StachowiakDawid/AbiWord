@@ -2,7 +2,7 @@
 /*
  * xap_TableWidget.cpp
  * Copyright 2002 Joaquin Cuenca Abela
- * Copyright 2016-2024 Hubert Figuière
+ * Copyright 2016-2025 Hubert Figuière
  *
  * Authors:
  *   Joaquin Cuenca Abela (e98cuenc@yahoo.com)
@@ -75,7 +75,7 @@ g_cclosure_user_marshal_VOID__UINT_UINT (GClosure     *closure,
             data2);
 }
 
-enum
+enum: uint8_t
 {
 	SELECTED,
 	LAST_SIGNAL

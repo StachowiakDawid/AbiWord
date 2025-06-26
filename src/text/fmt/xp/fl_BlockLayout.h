@@ -79,7 +79,7 @@ class fp_VerticalContainer;
 class fp_HyperlinkRun;
 
 // Tab types and leaders
-typedef enum {
+enum eTabType: uint8_t {
 	FL_TAB_NONE = 0,
 	FL_TAB_LEFT,
 	FL_TAB_CENTER,
@@ -87,9 +87,9 @@ typedef enum {
 	FL_TAB_DECIMAL,
 	FL_TAB_BAR,
 	__FL_TAB_MAX
-} eTabType;
+};
 
-typedef enum {
+enum eTabLeader: uint8_t {
 	FL_LEADER_NONE = 0,
 	FL_LEADER_DOT,
 	FL_LEADER_HYPHEN,
@@ -97,7 +97,7 @@ typedef enum {
 	FL_LEADER_THICKLINE,
 	FL_LEADER_EQUALSIGN,
 	__FL_LEADER_MAX
-} eTabLeader;
+};
 
 
 /*
@@ -130,12 +130,12 @@ public:
 				   PT_AttrPropIndex indexAP, bool bIsHdrFtr = false);
 	~fl_BlockLayout();
 
-	typedef enum _eSpacingPolicy
+	enum eSpacingPolicy: uint8_t
 	{
 		spacing_MULTIPLE,
 		spacing_EXACT,
 		spacing_ATLEAST
-	} eSpacingPolicy;
+	};
 
     void                formatAll(void);
 	virtual void        format(void) override;

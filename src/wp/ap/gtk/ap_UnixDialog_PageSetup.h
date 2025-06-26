@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_UnixDialog_PageSetup_H
-#define AP_UnixDialog_PageSetup_H
+#pragma once
 
 #include <gtk/gtk.h>
 #include "ap_Dialog_PageSetup.h"
@@ -55,11 +54,11 @@ public:
 	GtkWidget * m_wHelp;
 	GtkBuilder * m_pBuilder;
 
-	typedef enum
+	enum ResponseId: int8_t
 		{
 			BUTTON_OK = GTK_RESPONSE_OK,
 			BUTTON_CANCEL = GTK_RESPONSE_CANCEL
-		} ResponseId ;
+		};
 
  private:
 	// pointers to widgets that we may need to query
@@ -98,5 +97,3 @@ public:
 
 	void _updatePageSizeList();
 };
-
-#endif // AP_UnixDialog_PageSetup_H

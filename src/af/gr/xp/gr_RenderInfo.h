@@ -1,6 +1,7 @@
 /* -*- mode: C++; tab-width: 4; c-basic-offset: 4; -*- */
 /* AbiWord
  * Copyright (C) 2004 Tomas Frydrych
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,8 +19,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef GR_RENDERINFO_H
-#define GR_RENDERINFO_H
+#pragma once
 
 #include "ut_types.h"
 #include "ut_vector.h"
@@ -36,7 +36,7 @@ class UT_TextIterator;
    Void      - indicates the record does not represent real item;
    only used with the last (dummy) record in GR_Itemization
 */
-enum GR_ScriptType
+enum GR_ScriptType: uint32_t
 {
 	GRScriptType_Undefined = 0,
 	GRScriptType_Void = 0xffffffff
@@ -44,7 +44,7 @@ enum GR_ScriptType
 
 /** used to identify GR_RenderInfo and related classes
 	add as required */
-enum GRRI_Type
+enum GRRI_Type: uint32_t
 {
 	GRRI_XP = 0,
 	GRRI_WIN32,
@@ -311,7 +311,7 @@ class ABI_EXPORT GR_XPRenderInfo : public GR_RenderInfo
 class ABI_EXPORT GR_ShapingInfo
 {
   public:
-	enum TextTransform {
+	enum TextTransform: uint8_t {
 		NONE = 0,
 		CAPITALIZE,
 		UPPERCASE,
@@ -353,6 +353,3 @@ class ABI_EXPORT GR_ShapingInfo
 	TextTransform       m_TextTransform;
 	bool                m_previousWasSpace;
 };
-
-
-#endif /* GR_RENDERINFO_H */

@@ -223,12 +223,12 @@ UT_Error AbiCollabSessionManager::deserializeDocument(PD_Document** pDoc, const 
 }
 
 AbiCollabSessionManager::AbiCollabSessionManager(void)
-	: m_iDialogShare(0),
-	m_iDialogJoin(0),
-	m_iDialogAccounts(0),
-	m_iDialogAddAccount(0),
-	m_iDialogEditAccount(0),
-	m_iDialogAddBuddy(0)
+	: m_iDialogShare(XAP_DIALOG_ID__FIRST__),
+	m_iDialogJoin(XAP_DIALOG_ID__FIRST__),
+	m_iDialogAccounts(XAP_DIALOG_ID__FIRST__),
+	m_iDialogAddAccount(XAP_DIALOG_ID__FIRST__),
+	m_iDialogEditAccount(XAP_DIALOG_ID__FIRST__),
+	m_iDialogAddBuddy(XAP_DIALOG_ID__FIRST__)
 {
 	m_pManager = this;
 }

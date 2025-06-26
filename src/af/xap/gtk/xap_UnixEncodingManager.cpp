@@ -149,7 +149,7 @@ free_entry (void *ekey,void *eval,void * /*user_data*/)
 /* Mask for components of locale spec. The ordering here is from
  * least significant to most significant
  */
-enum
+enum: uint8_t
 {
   COMPONENT_CODESET =   1 << 0,
   COMPONENT_TERRITORY = 1 << 1,

@@ -1,6 +1,6 @@
 /* AbiSource Application Framework
  * Copyright (C) 1998 AbiSource, Inc.
- * Copyright (C) 2009 Hubert Figuiere
+ * Copyright (C) 2009-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,19 +18,12 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_STRINGS_H
-#define XAP_STRINGS_H
+#pragma once
 
 #include <map>
 #include <string>
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 #include "ut_xml.h"
 #include "ut_vector.h"
 #include "ut_string.h"
@@ -43,12 +36,12 @@ class XAP_App;
 
 #define dcl(id,s)					XAP_STRING_ID_##id,
 
-typedef enum _XAP_String_Id_Enum
+enum XAP_String_Id_Enum: uint16_t
 {
 	XAP_STRING_ID__FIRST__			= 0,	/* must be first */
 #include "xap_String_Id.h"
 	XAP_STRING_ID__LAST__					/* must be last */
-} XAP_String_Id_Enum;
+};
 
 #undef dcl
 
@@ -139,5 +132,3 @@ private:
 		bool				m_parserStatus;
 	} m_parserState;
 };
-
-#endif /* XAP_STRINGS_H */

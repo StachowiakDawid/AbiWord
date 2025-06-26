@@ -60,7 +60,7 @@ public:
 	class  Node
 	{
 	public:
-	  enum Color { red, black };
+	  enum Color: uint8_t { red, black };
 	  Node();
 	  Node(Color c);
 	  Node(Color c, pf_Frag * pf, Node * l, Node * r, Node * p);

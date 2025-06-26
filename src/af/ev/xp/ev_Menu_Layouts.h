@@ -37,15 +37,14 @@
 ******************************************************************
 *****************************************************************/
 
-typedef enum _ev_Menu_LayoutFlags {
+enum EV_Menu_LayoutFlags: uint8_t {
     EV_MLF_Normal,
     EV_MLF_BeginSubMenu,
     EV_MLF_EndSubMenu,
     EV_MLF_BeginPopupMenu,
     EV_MLF_EndPopupMenu,
     EV_MLF_Separator
-
-} EV_Menu_LayoutFlags;
+};
 
 /*****************************************************************/
 
@@ -85,5 +84,5 @@ public:
 private:
     std::string m_stName; /* the name of our layout (like "MainMenu") */
     std::vector<EV_Menu_LayoutItem*> m_layoutTable;
-    XAP_Menu_Id m_iMaxId;
+    uint16_t m_iMaxId;
 };

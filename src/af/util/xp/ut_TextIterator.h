@@ -1,5 +1,6 @@
 /* AbiWord
  * Copyright (C) 2003 Tomas Frydrych <tomas@frydrych.uklinux.net>
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef UT_ITERATOR_H
-#define UT_ITERATOR_H
+#pragma once
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -30,9 +30,9 @@
 //  interface so that we can pass a generic type into and out of
 //  functions. For example of implementation see pd_Iterator.h/cpp
 //
-//  Notes on imlementation
+//  Notes on implementation
 //  ----------------------
-//  Any derrived classes should implement the individual functions to
+//  Any derived classes should implement the individual functions to
 //  conform to the behaviour outlined in the comments in the class
 //  definion below.
 //
@@ -93,7 +93,7 @@ class pf_Frag;
 //     Error: any other error; this state is irrecoverable, clean up
 //            and go home
 //
-enum UTIterStatus
+enum UTIterStatus: uint8_t
 {
 	UTIter_OK,
 	UTIter_OutOfBounds,
@@ -227,6 +227,3 @@ class ABI_EXPORT UT_TextIterator
 	virtual UT_UCS4Char   operator [](UT_uint32 pos) = 0;
 
 };
-
-
-#endif //UT_ITERATOR_H

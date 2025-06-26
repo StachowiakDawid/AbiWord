@@ -208,7 +208,7 @@ public:
 	XAP_Menu_Factory *				getMenuFactory(void) const { return m_pMenuFactory; }
 	XAP_Toolbar_Factory *				getToolbarFactory(void) const { return m_pToolbarFactory; }
 
-	enum BidiSupportType {
+	enum BidiSupportType: uint8_t {
 		BIDI_SUPPORT_NONE,
 		BIDI_SUPPORT_GUI,
 		BIDI_SUPPORT_FULL

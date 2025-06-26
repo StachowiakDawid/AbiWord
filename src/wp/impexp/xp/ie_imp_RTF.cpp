@@ -3454,12 +3454,12 @@ bool IE_Imp_RTF::HandleField()
 
 	int rtfFieldAttr = 0;
 
-	typedef enum {
+	enum RTFFieldAttr: uint8_t {
 		fldAttrDirty = 1,
 		fldAttrEdit = 2,
 		fldAttrLock = 4,
 		fldAttrPriv = 8
-	} RTFFieldAttr;
+	};
 
 	m_bFieldRecognized = false;
 
@@ -8901,8 +8901,8 @@ bool IE_Imp_RTF::ReadRevisionTable()
  * state of the stack and so this index reverts back to FontName.
  */
 struct SFontTableState {
-	enum DataType { MainFontName=0, AltFontName=1, Panose=2};
-	enum DataType iCurrentInputData;// Are we reading the main name, the alt name or panose?
+	enum DataType: uint8_t { MainFontName=0, AltFontName=1, Panose=2};
+	DataType iCurrentInputData;// Are we reading the main name, the alt name or panose?
 	UT_uint32 iUniSkipCount;        // How many characters should we skip after a /uXXXXX sequence?
 	UT_uint32 iUniCharsLeftToSkip;  // How many remaining skippable ANSI chars are there?
 	bool bSeenStar;                 // Have we seen a "\*" in this group?
@@ -12309,7 +12309,7 @@ bool IE_Imp_RTF::HandleInfoMetaData()
 	//bool result;
 	const char * metaDataKey = nullptr;
 	std::string metaDataProp;
-	enum {
+	enum: uint8_t {
 		ACT_NONE,
 		ACT_PCDATA,
 		ACT_DATETIME

@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_INSERTTABLE_H
-#define AP_DIALOG_INSERTTABLE_H
+#pragma once
 
 #include "ut_types.h"
 #include "xap_Frame.h"
@@ -36,8 +35,8 @@ public:
 
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK, a_CANCEL } tAnswer;
-	typedef enum { b_AUTOSIZE = 0, b_FIXEDSIZE } columnType;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
+	enum columnType: uint8_t { b_AUTOSIZE = 0, b_FIXEDSIZE };
 
 	AP_Dialog_InsertTable::tAnswer		getAnswer(void) const;
 	AP_Dialog_InsertTable::columnType	getColumnType(void) const;
@@ -59,5 +58,3 @@ protected:
 	float					m_columnWidth;
 	UT_Dimension			m_dim;
 };
-
-#endif /* AP_DIALOG_INSERTTABLE_H */

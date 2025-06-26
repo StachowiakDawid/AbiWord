@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_DIALOG_ZOOM_H
-#define XAP_DIALOG_ZOOM_H
+#pragma once
 
 #include "xap_Frame.h"
 #include "xap_Dialog.h"
@@ -40,8 +39,8 @@ public:
 
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK, a_CANCEL } tAnswer;
-//	typedef enum { z_200, z_100, z_75, z_PAGEWIDTH, z_WHOLEPAGE, z_PERCENT } zoomType;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
+//	enum zoomType: uint8_t { z_200, z_100, z_75, z_PAGEWIDTH, z_WHOLEPAGE, z_PERCENT };
 
 	XAP_Dialog_Zoom::tAnswer		getAnswer(void) const;
 
@@ -71,5 +70,3 @@ protected:
 	XAP_Dialog_Zoom::tAnswer		m_answer;
 	XAP_Frame * m_pFrame;
 };
-
-#endif /* XAP_DIALOG_ZOOM_H */

@@ -20,8 +20,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_FrameImpl_H
-#define XAP_FrameImpl_H
+#pragma once
 
 #include "ut_types.h"
 #include "ut_vector.h"
@@ -41,12 +40,12 @@ class UT_Worker;
 class GR_Graphics;
 class AV_View;
 
-typedef enum _FrameModes
+enum XAP_FrameMode: uint8_t
 {
 	XAP_NormalFrame,	// Normal Frame
 	XAP_NoMenusWindowLess,	// No toplevel window or menus
 	XAP_WindowLess // No toplevel window but menus are OK.
-} XAP_FrameMode;
+};
 
 class ABI_EXPORT XAP_FrameImpl
 {
@@ -117,5 +116,3 @@ protected:
 private:
 	XAP_Frame * m_pFrame;
 };
-
-#endif

@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_UNIXDIALOG_BACKGROUND_H
-#define AP_UNIXDIALOG_BACKGROUND_H
+#pragma once
 
 #include <gtk/gtk.h>
 #include "ap_Dialog_Background.h"
@@ -47,13 +46,11 @@ public:
 
  private:
 
-	typedef enum
+	enum ResponseId: int8_t
 		{
 			BUTTON_OK = GTK_RESPONSE_OK,
 			BUTTON_CANCEL = GTK_RESPONSE_CANCEL
-		} ResponseId ;
+		};
 
 	GtkWidget * m_dlg;
 };
-
-#endif /* AP_UNIXDIALOG_BACKGROUND_H */

@@ -68,9 +68,9 @@ public:
 class ABI_EXPORT AP_LeftRulerInfo
 {
 public:
-	typedef enum _mode { TRI_MODE_COLUMNS,
+	enum Mode: uint8_t { TRI_MODE_COLUMNS,
 						 TRI_MODE_TABLE,
-						 TRI_MODE_FRAME } Mode;
+						 TRI_MODE_FRAME };
 
 	AP_LeftRulerInfo(void) : 	m_mode(TRI_MODE_COLUMNS),
 								m_yPageStart(0),
@@ -215,11 +215,11 @@ private:
 	AP_LeftRulerInfo 	m_infoCache;
 	UT_sint32			m_oldY; /* Only for dragging; used to see if object has moved */
 
-	typedef enum _draggingWhat { DW_NOTHING,
+	enum DraggingWhat: uint8_t { DW_NOTHING,
 								 DW_TOPMARGIN,
 								 DW_BOTTOMMARGIN,
 								 DW_CELLMARK
-	} DraggingWhat;
+	};
 
 	DraggingWhat		m_draggingWhat;
 	UT_sint32			m_draggingCenter; /* center of primary thing being dragged */

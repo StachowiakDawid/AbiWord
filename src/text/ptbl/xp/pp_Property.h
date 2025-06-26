@@ -52,12 +52,12 @@ const PP_PropertyVector PP_NOPROPS;
 // such as their initial/default values and whether they are
 // inherited.
 
-typedef enum {
+enum tProperty_type: uint8_t {
 	Property_type_bool,
 	Property_type_int,
 	Property_type_size,
 	Property_type_color
-	} tProperty_type;
+	};
 
 
 class ABI_EXPORT PP_PropertyType

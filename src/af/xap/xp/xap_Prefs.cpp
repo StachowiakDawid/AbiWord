@@ -45,8 +45,7 @@ struct xmlToIdMapping {
 	int m_type;
 };
 
-enum
-{
+enum: uint8_t {
 	TT_ABIPREFERENCES,
 	TT_GEOMETRY,
 	TT_FACE,

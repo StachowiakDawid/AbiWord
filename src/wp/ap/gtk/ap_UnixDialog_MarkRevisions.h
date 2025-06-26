@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_UNIXDIALOG_MARKREVISIONS_H
-#define AP_UNIXDIALOG_MARKREVISIONS_H
+#pragma once
 
 #include <gtk/gtk.h>
 #include "ap_Dialog_MarkRevisions.h"
@@ -39,11 +38,11 @@ class AP_UnixDialog_MarkRevisions: public AP_Dialog_MarkRevisions
 	static XAP_Dialog *		static_constructor(XAP_DialogFactory *, XAP_Dialog_Id id);
 
  protected:
-	typedef enum
+	enum ResponseId: int8_t
 	{
 		BUTTON_OK = GTK_RESPONSE_OK,
 		BUTTON_CANCEL = GTK_RESPONSE_CANCEL
-	} ResponseId ;
+	};
 
 	virtual GtkWidget * constructWindow () ;
 
@@ -82,5 +81,3 @@ class AP_UnixDialog_MarkRevisions: public AP_Dialog_MarkRevisions
 	GtkWidget * mComment ;
 	GtkWidget * mButtonOK ;
 };
-
-#endif /* AP_UNIXDIALOG_MARKREVISIONS_H */

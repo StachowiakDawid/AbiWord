@@ -1,6 +1,6 @@
 /* AbiSource Application Framework
  * Copyright (C) 1998 AbiSource, Inc.
- * Copyright (C) 2021 Hubert Figuière
+ * Copyright (C) 2021-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,10 +20,6 @@
 
 #pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
 #include "ut_types.h"
 #include "ut_misc.h"
 
@@ -39,9 +35,9 @@ public:
 	virtual ~XAP_Preview_Zoom(void);
 
 	// example placements useful in zoom
-	typedef enum { pos_TOP, pos_CENTER, pos_BOTTOM } tPos;
+	enum tPos: uint8_t { pos_TOP, pos_CENTER, pos_BOTTOM };
 	// example fonts useful in zoom (add more later)
-	typedef enum { font_NORMAL } tFont;
+	enum tFont: uint8_t { font_NORMAL };
 
 	// data twiddlers
 	void	setDrawAtPosition(XAP_Preview_Zoom::tPos pos);

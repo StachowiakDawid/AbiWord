@@ -37,7 +37,8 @@ my @keywords;
 open (FILE, "<" . $file);
 
 push @keywordids, "/* automatically generated, do no edit !*/";
-push @keywordids, "typedef enum {";
+push @keywordids, "\#include <cstdint>";
+push @keywordids, "enum RTF_KEYWORD_ID: uint16_t {";
 push @keywordids, "\tRTF_UNKNOWN_KEYWORD = 0,";
 push @keywordids, "\tRTF_KW_LF,";
 push @keywordids, "\tRTF_KW_CR,";
@@ -111,7 +112,7 @@ push @keywordids, "\tRTF_KW__END__";
 
 close FILE;
 
-push @keywordids, "} RTF_KEYWORD_ID;";
+push @keywordids, "};";
 
 push @keywords, "\t{\"{\", false, false, NO_CONTEXT, RTF_KW_OPENCBRACE },";
 push @keywords, "\t{\"|\", false, false, NO_CONTEXT, RTF_KW_PIPE },";

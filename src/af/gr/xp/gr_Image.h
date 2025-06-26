@@ -1,5 +1,6 @@
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef GR_IMAGE_H
-#define GR_IMAGE_H
+#pragma once
 
 #include <memory>
 #include <string>
@@ -75,7 +75,7 @@ public:
 
 	bool isOutLinePresent(void) const
 	  { return (m_vecOutLine.getItemCount() > 0);}
-   	enum GRType {
+   	enum GRType: uint8_t {
 	   GRT_Unknown,
 	   GRT_Raster,
 	   GRT_Vector
@@ -115,5 +115,3 @@ public:
 };
 
 #include "gr_VectorImage.h"
-
-#endif /* GR_IMAGE */

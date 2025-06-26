@@ -45,7 +45,7 @@ class ABI_EXPORT AP_Dialog_Styles : public XAP_Dialog_NonPersistent
 
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK, a_CANCEL }   tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
 	AP_Dialog_Styles::tAnswer	  getAnswer(void) const;
 
 	// wish that this could be protected

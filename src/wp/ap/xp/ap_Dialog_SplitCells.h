@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_SPLITCELLS_H
-#define AP_DIALOG_SPLITCELLS_H
+#pragma once
 
 #include "ut_types.h"
 #include "fv_View.h"
@@ -38,7 +37,7 @@ public:
 
 	virtual void	runModeless(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK, a_CANCEL } tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
 
 	AP_Dialog_SplitCells::tAnswer		getAnswer(void) const;
 	PT_DocPosition						getCellSource(void);
@@ -77,5 +76,3 @@ private:
 	bool m_bAutoUpdate_happening_now;
 
 };
-
-#endif /* AP_DIALOG_SPLITCELLS_H */

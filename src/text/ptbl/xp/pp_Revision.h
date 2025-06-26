@@ -39,13 +39,13 @@ ABI_EXPORT std::string UT_getLatestAttribute( const PP_AttrProp* pAP,
                                               const char* def );
 
 
-typedef enum {
+enum PP_RevisionType: uint8_t {
 	PP_REVISION_NONE             = 0,
 	PP_REVISION_ADDITION         = 0x01,
 	PP_REVISION_DELETION         = 0x02,
 	PP_REVISION_FMT_CHANGE       = 0x04,
 	PP_REVISION_ADDITION_AND_FMT = 0x05
-} PP_RevisionType;
+};
 
 /*! PP_Revision is a class that encapsulates a single revision,
     holding its id, type and associated properties and attributes. It

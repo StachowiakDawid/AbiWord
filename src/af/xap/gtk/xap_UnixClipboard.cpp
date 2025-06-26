@@ -1,5 +1,6 @@
 /* AbiSource Application Framework
  * Copyright (c) 2002 Dom Lachowicz
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,7 +26,7 @@
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 
-GtkClipboard * XAP_UnixClipboard::gtkClipboardForTarget(XAP_UnixClipboard::_T_AllowGet get) const
+GtkClipboard * XAP_UnixClipboard::gtkClipboardForTarget(XAP_UnixClipboard::T_AllowGet get) const
 {
 	if (XAP_UnixClipboard::TAG_ClipboardOnly == get)
 		return m_clip;

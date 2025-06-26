@@ -17,20 +17,19 @@
  * 02110-1301 USA.
  */
 
-#ifndef FV_VISUALDRAGTEXT_H
-#define FV_VISUALDRAGTEXT_H
+#pragma once
 
 #include "pt_Types.h"
 #include "fl_FrameLayout.h"
 
-typedef enum _FV_VisualDragMode
+enum FV_VisualDragMode: uint8_t
 {
 	FV_VisualDrag_NOT_ACTIVE,
 	FV_VisualDrag_WAIT_FOR_MOUSE_CLICK,
 	FV_VisualDrag_WAIT_FOR_MOUSE_DRAG,
 	FV_VisualDrag_DRAGGING,
 	FV_VisualDrag_START_DRAGGING
-} FV_VisualDragMode;
+};
 
 class GR_Graphics;
 class GR_Image;
@@ -96,5 +95,3 @@ private:
 	bool                  m_bNotDraggingImage;
 	bool                  m_bSelectedRow;
 };
-
-#endif /* FV_VISUALDRAGTEXT_H */

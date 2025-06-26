@@ -31,19 +31,19 @@ G_BEGIN_DECLS
 typedef struct _FvTextHandle FvTextHandle;
 typedef struct _FvTextHandleClass FvTextHandleClass;
 
-typedef enum
+enum FvTextHandlePosition: uint8_t
 {
   FV_TEXT_HANDLE_POSITION_CURSOR,
   FV_TEXT_HANDLE_POSITION_SELECTION_START,
   FV_TEXT_HANDLE_POSITION_SELECTION_END = FV_TEXT_HANDLE_POSITION_CURSOR
-} FvTextHandlePosition;
+};
 
-typedef enum
+enum FvTextHandleMode: uint8_t
 {
   FV_TEXT_HANDLE_MODE_NONE,
   FV_TEXT_HANDLE_MODE_CURSOR,
   FV_TEXT_HANDLE_MODE_SELECTION
-} FvTextHandleMode;
+};
 
 struct FvTextHandlePrivate;
 

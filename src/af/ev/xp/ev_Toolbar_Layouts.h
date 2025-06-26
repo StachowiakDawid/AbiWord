@@ -17,10 +17,7 @@
  * 02110-1301 USA.
  */
 
-
-
-#ifndef EV_TOOLBAR_LAYOUTS_H
-#define EV_TOOLBAR_LAYOUTS_H
+#pragma once
 
 #include "ut_types.h"
 #include "xap_Types.h"
@@ -37,12 +34,11 @@
 ******************************************************************
 *****************************************************************/
 
-typedef enum _ev_Toolbar_LayoutFlags
+enum EV_Toolbar_LayoutFlags: uint8_t
 {
 	EV_TLF_Normal,
 	EV_TLF_Spacer
-
-} EV_Toolbar_LayoutFlags;
+};
 
 /*****************************************************************/
 
@@ -80,5 +76,3 @@ protected:
 	UT_uint32					m_nrLayoutItems;
 	EV_Toolbar_LayoutItem **	m_layoutTable;
 };
-
-#endif /* EV_TOOLBAR_LAYOUTS_H */

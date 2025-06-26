@@ -1,5 +1,25 @@
-#ifndef UT_CRC32_H
-#define UT_CRC32_H
+/* AbiWord
+ * Copyright (C) AbiWord contributors
+ * Copyright (C) 2025 Hubert Figuière
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301 USA.
+ */
+
+#pragma once
+
 #include "ut_types.h"
 
 const UT_uint32 CRC32_NEGL = 0xffffffffL;
@@ -15,7 +35,7 @@ const UT_uint32 CRC32_NEGL = 0xffffffffL;
 class ABI_EXPORT UT_CRC32
 {
 public:
-        enum {DIGESTSIZE = 4};
+        enum : uint8_t {DIGESTSIZE = 4};
         UT_CRC32();
         void Fill(const char *input);
         void Fill(const char *input, UT_uint32 length);
@@ -31,6 +51,3 @@ private:
         static const UT_uint32 m_tab[256];
         UT_uint32  m_crc;
 };
-
-
-#endif /* UT_CRC32_H */

@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_TOGGLECASE_H
-#define AP_DIALOG_TOGGLECASE_H
+#pragma once
 
 #include "xap_Dialog.h"
 #include "fv_View.h" // for ToggleCase enum
@@ -34,7 +33,7 @@ public:
 
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK=0, a_CANCEL=1 } tAnswer;
+	enum tAnswer: uint8_t { a_OK=0, a_CANCEL=1 };
 
 	tAnswer	                 getAnswer(void) const;
 	void                     setAnswer(tAnswer a);
@@ -46,5 +45,3 @@ private:
 	AP_Dialog_ToggleCase::tAnswer	m_answer;
 	ToggleCase                      m_case;
 };
-
-#endif /* AP_DIALOG_TOGGLECASE_H */

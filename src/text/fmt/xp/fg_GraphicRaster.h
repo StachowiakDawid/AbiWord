@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef FG_GRAPHICRASTER_H
-#define FG_GRAPHICRASTER_H
+#pragma once
 
 #include "fg_Graphic.h"
 #include "ut_bytebuf.h"
@@ -30,7 +29,7 @@
 class ABI_EXPORT FG_GraphicRaster : public FG_Graphic
 {
 public:
-    enum Format {
+    enum Format: uint8_t {
         PNG_FORMAT = 0,
         JPEG_FORMAT
     };
@@ -85,5 +84,3 @@ protected:
 
 typedef std::unique_ptr<FG_GraphicRaster> FG_GraphicRasterPtr;
 // no Const since we use FG_ConstGraphicPtr.
-
-#endif /* FG_GRAPHICRASTER_H */

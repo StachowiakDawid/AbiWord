@@ -2,6 +2,7 @@
 
 /* AbiSource Application Framework
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -41,7 +42,10 @@
 class XAP_UnixClipboard
 {
 public:
-	typedef enum _T_AllowGet { TAG_ClipboardOnly, TAG_PrimaryOnly } T_AllowGet;
+	enum T_AllowGet: uint8_t {
+		TAG_ClipboardOnly,
+		TAG_PrimaryOnly
+	};
 
 	XAP_UnixClipboard(XAP_UnixApp * pUnixApp);
 	virtual ~XAP_UnixClipboard();
@@ -73,7 +77,7 @@ protected:
 
  private:
 
-	GtkClipboard * gtkClipboardForTarget(XAP_UnixClipboard::_T_AllowGet get) const;
+	GtkClipboard * gtkClipboardForTarget(XAP_UnixClipboard::T_AllowGet get) const;
 
 	bool				_getDataFromServer(T_AllowGet tFrom, const char** formatList,
 							   void ** ppData, UT_uint32 * pLen,

@@ -166,12 +166,12 @@
 *****************************************************************/
 
 #define BeginLayout(Name,Cxt)	static struct _lt s_ltTable_##Name[] = {
-#define MenuItem(id)			{ EV_MLF_Normal,		(id)				 },
-#define BeginSubMenu(id)		{ EV_MLF_BeginSubMenu,	(id)				 },
-#define BeginPopupMenu()		{ EV_MLF_BeginPopupMenu,AP_MENU_ID__BOGUS1__ },
-#define Separator()				{ EV_MLF_Separator,		AP_MENU_ID__BOGUS1__ },
-#define EndSubMenu()			{ EV_MLF_EndSubMenu,	AP_MENU_ID__BOGUS1__ },
-#define EndPopupMenu()			{ EV_MLF_EndPopupMenu,	AP_MENU_ID__BOGUS1__ },
+#define MenuItem(id)			{ EV_MLF_Normal,		(XAP_Menu_Id)(id)				 },
+#define BeginSubMenu(id)		{ EV_MLF_BeginSubMenu,	(XAP_Menu_Id)(id)				 },
+#define BeginPopupMenu()		{ EV_MLF_BeginPopupMenu,(XAP_Menu_Id)AP_MENU_ID__BOGUS1__ },
+#define Separator()				{ EV_MLF_Separator,		(XAP_Menu_Id)AP_MENU_ID__BOGUS1__ },
+#define EndSubMenu()			{ EV_MLF_EndSubMenu,	(XAP_Menu_Id)AP_MENU_ID__BOGUS1__ },
+#define EndPopupMenu()			{ EV_MLF_EndPopupMenu,	(XAP_Menu_Id)AP_MENU_ID__BOGUS1__ },
 #define EndLayout()				};
 
 #include "ap_Menu_Layouts_All.h"
@@ -262,7 +262,7 @@ XAP_Menu_Id XAP_Menu_Factory::getNewID(void)
 	if(m_maxID > 0)
 	{
 		m_maxID++;
-		return m_maxID;
+		return (XAP_Menu_Id)m_maxID;
 	}
 	UT_sint32 i =0;
 	UT_uint32 j =0;
@@ -282,7 +282,7 @@ XAP_Menu_Id XAP_Menu_Factory::getNewID(void)
 		}
 	}
 	m_maxID++;
-	return m_maxID;
+	return (XAP_Menu_Id)m_maxID;
 }
 		
 
@@ -338,7 +338,7 @@ XAP_Menu_Id XAP_Menu_Factory::addNewMenuAfter(const char * szMenu,
 											   const XAP_Menu_Id afterID, 
 											   EV_Menu_LayoutFlags flags, XAP_Menu_Id newID)
 {
-	UT_return_val_if_fail (szMenu && *szMenu, 0);		// no defaults
+	UT_return_val_if_fail (szMenu && *szMenu, (XAP_Menu_Id)0);		// no defaults
 	UT_sint32 k = 0;
 	bool bFoundMenu = false;
 	_vectt * pVectt = nullptr;
@@ -352,7 +352,7 @@ XAP_Menu_Id XAP_Menu_Factory::addNewMenuAfter(const char * szMenu,
 	if(!bFoundMenu)
 	{
 		UT_ASSERT_HARMLESS(UT_SHOULD_NOT_HAPPEN);
-		return 0;
+		return (XAP_Menu_Id)0;
 	}
 	
 //
@@ -369,7 +369,7 @@ XAP_Menu_Id XAP_Menu_Factory::addNewMenuAfter(const char * szMenu,
 	plt->m_id = newID;
 	plt->m_flags = flags;
 	pVectt->insertItemAt(plt, afterID);
-	return (XAP_Menu_Id) newID;
+	return newID;
 }
 
 XAP_Menu_Id XAP_Menu_Factory::addNewMenuAfter(const char * szMenu, 
@@ -378,7 +378,7 @@ XAP_Menu_Id XAP_Menu_Factory::addNewMenuAfter(const char * szMenu,
 											  EV_Menu_LayoutFlags flags,
 											  XAP_Menu_Id newID)
 {
-	UT_return_val_if_fail (szMenu && *szMenu, 0);		// no defaults
+	UT_return_val_if_fail (szMenu && *szMenu, (XAP_Menu_Id)0);		// no defaults
 	UT_sint32 k = 0;
 	bool bFoundMenu = false;
 	_vectt * pVectt = nullptr;
@@ -392,7 +392,7 @@ XAP_Menu_Id XAP_Menu_Factory::addNewMenuAfter(const char * szMenu,
 	if(!bFoundMenu)
 	{
 		UT_ASSERT_HARMLESS(UT_SHOULD_NOT_HAPPEN);
-		return 0;
+		return (XAP_Menu_Id)0;
 	}
 	
 // next we need to find the id of the label name
@@ -411,7 +411,7 @@ XAP_Menu_Id XAP_Menu_Factory::addNewMenuAfter(const char * szMenu,
 		if(afterID == 0)
 		{	
 			UT_ASSERT_HARMLESS(UT_SHOULD_NOT_HAPPEN);
-			return 0;
+			return (XAP_Menu_Id)0;
 		}
 	}
 //
@@ -428,7 +428,7 @@ XAP_Menu_Id XAP_Menu_Factory::addNewMenuAfter(const char * szMenu,
 	plt->m_id = newID;
 	plt->m_flags = flags;
 	pVectt->insertItemAt(plt, afterID);
-	return (XAP_Menu_Id) newID;
+	return newID;
 }
 
 XAP_Menu_Id XAP_Menu_Factory::addNewMenuBefore(const char * szMenu, 
@@ -436,7 +436,7 @@ XAP_Menu_Id XAP_Menu_Factory::addNewMenuBefore(const char * szMenu,
 											   const XAP_Menu_Id beforeID, 
 											   EV_Menu_LayoutFlags flags, XAP_Menu_Id newID)
 {
-	UT_return_val_if_fail (szMenu && *szMenu, 0);		// no defaults
+	UT_return_val_if_fail (szMenu && *szMenu, (XAP_Menu_Id)0);		// no defaults
 	UT_sint32 k = 0;
 	bool bFoundMenu = false;
 	_vectt * pVectt = nullptr;
@@ -450,7 +450,7 @@ XAP_Menu_Id XAP_Menu_Factory::addNewMenuBefore(const char * szMenu,
 	if(!bFoundMenu)
 	{
 		UT_ASSERT_HARMLESS(UT_SHOULD_NOT_HAPPEN);
-		return 0;
+		return (XAP_Menu_Id)0;
 	}
 	
 //
@@ -482,7 +482,7 @@ XAP_Menu_Id XAP_Menu_Factory::addNewMenuBefore(const char * szMenu,
 											   const char * szBefore, 
 											   EV_Menu_LayoutFlags flags, XAP_Menu_Id newID)
 {
-	UT_return_val_if_fail (szMenu && *szMenu, 0);		// no defaults
+	UT_return_val_if_fail (szMenu && *szMenu, (XAP_Menu_Id)0);		// no defaults
 	UT_sint32 k = 0;
 	bool bFoundMenu = false;
 	_vectt * pVectt = nullptr;
@@ -496,7 +496,7 @@ XAP_Menu_Id XAP_Menu_Factory::addNewMenuBefore(const char * szMenu,
 	if(!bFoundMenu)
 	{
 		UT_ASSERT_HARMLESS(UT_SHOULD_NOT_HAPPEN);
-		return 0;
+		return (XAP_Menu_Id)0;
 	}
 	
 	XAP_Menu_Id beforeID;
@@ -518,12 +518,12 @@ XAP_Menu_Id XAP_Menu_Factory::addNewMenuBefore(const char * szMenu,
 			if(beforeID == 0)
 			{	
 				UT_ASSERT_HARMLESS(UT_SHOULD_NOT_HAPPEN);
-				return 0;
+				return (XAP_Menu_Id)0;
 			}
 		}
 	}
 	else
-		beforeID = 0;
+		beforeID = (XAP_Menu_Id)0;
 //
 // OK got the menu ID at last, insert the new id here.
 //
@@ -556,7 +556,7 @@ XAP_Menu_Id XAP_Menu_Factory::removeMenuItem(const char * szMenu,
 							  const char * /*szLanguage*/,  
 							  XAP_Menu_Id nukeID)
 {
-	UT_return_val_if_fail (szMenu && *szMenu, 0);		// no defaults
+	UT_return_val_if_fail (szMenu && *szMenu, (XAP_Menu_Id)0);		// no defaults
 	UT_sint32 k = 0;
 	bool bFoundMenu = false;
 	_vectt * pVectt = nullptr;
@@ -570,7 +570,7 @@ XAP_Menu_Id XAP_Menu_Factory::removeMenuItem(const char * szMenu,
 	if(!bFoundMenu)
 	{
 		UT_ASSERT_HARMLESS(UT_SHOULD_NOT_HAPPEN);
-		return 0;
+		return (XAP_Menu_Id)0;
 	}
 	pVectt->removeItem(nukeID);
 	return nukeID;
@@ -584,7 +584,7 @@ XAP_Menu_Id XAP_Menu_Factory::removeMenuItem(const char * szMenu,
 									  const char * /*szLanguage*/,
 											 const char * szNuke)
 {
-	UT_return_val_if_fail (szMenu && *szMenu, 0);		// no defaults
+	UT_return_val_if_fail (szMenu && *szMenu, (XAP_Menu_Id)0);		// no defaults
 	UT_sint32 k = 0;
 	bool bFoundMenu = false;
 	_vectt * pVectt = nullptr;
@@ -598,7 +598,7 @@ XAP_Menu_Id XAP_Menu_Factory::removeMenuItem(const char * szMenu,
 	if(!bFoundMenu)
 	{
 		UT_ASSERT_HARMLESS(UT_SHOULD_NOT_HAPPEN);
-		return 0;
+		return (XAP_Menu_Id)0;
 	}
 	
 // next we need to find the id of the label name
@@ -617,7 +617,7 @@ XAP_Menu_Id XAP_Menu_Factory::removeMenuItem(const char * szMenu,
 		if(nukeID == 0)
 		{	
 			UT_ASSERT_HARMLESS(UT_SHOULD_NOT_HAPPEN);
-			return 0;
+			return (XAP_Menu_Id)0;
 		}
 	}
 //
@@ -659,13 +659,13 @@ bool  XAP_Menu_Factory::buildMenuLabelSet(const char * szLanguage_)
 	const XAP_StringSet * pSS = XAP_App::getApp()->getStringSet();
 	if( !m_pLabelSet )
 	{
-		m_pLabelSet = new EV_Menu_LabelSet(szLanguage,AP_MENU_ID__BOGUS1__,AP_MENU_ID__BOGUS2__);	
+		m_pLabelSet = new EV_Menu_LabelSet(szLanguage, (XAP_Menu_Id)AP_MENU_ID__BOGUS1__, (XAP_Menu_Id)AP_MENU_ID__BOGUS2__);
 		std::string s1, s2;
 		#define menuitem(id)                                                         \
 		{                                                                            \
             pSS->getValueUTF8(AP_STRING_ID_MENU_LABEL_##id, s1);                     \
 			pSS->getValueUTF8(AP_STRING_ID_MENU_STATUSLINE_##id, s2);                \
-			m_pLabelSet->setLabel((AP_MENU_ID_##id), s1.c_str(), s2.c_str() ); \
+			m_pLabelSet->setLabel((XAP_Menu_Id)(AP_MENU_ID_##id), s1.c_str(), s2.c_str() ); \
 	    }
 		#include "ap_Menu_Id_List.h"
 		#undef menuitem
@@ -687,13 +687,13 @@ bool  XAP_Menu_Factory::buildBuiltInMenuLabelSet(EV_Menu_LabelSet *& pLabelSet)
 		AP_BuiltinStringSet * pBSS = new AP_BuiltinStringSet(m_pApp,"en-US");
 		m_pBSS = (XAP_StringSet *) pBSS;
 	}
-	pLabelSet = new EV_Menu_LabelSet("en-US",AP_MENU_ID__BOGUS1__,AP_MENU_ID__BOGUS2__);	
+	pLabelSet = new EV_Menu_LabelSet("en-US", (XAP_Menu_Id)AP_MENU_ID__BOGUS1__, (XAP_Menu_Id)AP_MENU_ID__BOGUS2__);
 	std::string s1, s2;
     #define menuitem(id)                                                       \
 	{                                                                          \
 	    m_pBSS->getValueUTF8(AP_STRING_ID_MENU_LABEL_##id, s1);                \
 		m_pBSS->getValueUTF8(AP_STRING_ID_MENU_STATUSLINE_##id, s2);           \
-		pLabelSet->setLabel( (AP_MENU_ID_##id),	s1.c_str(), s2.c_str() );\
+		pLabelSet->setLabel( (XAP_Menu_Id)(AP_MENU_ID_##id),	s1.c_str(), s2.c_str() );\
 	}
     #include "ap_Menu_Id_List.h"
     #undef menuitem
@@ -719,14 +719,14 @@ EV_Menu_LabelSet *  XAP_Menu_Factory::CreateMenuLabelSet(const char * szLanguage
 
 	if( !m_pLabelSet )
 	{
-		m_pLabelSet = new EV_Menu_LabelSet(szLanguage,AP_MENU_ID__BOGUS1__,AP_MENU_ID__BOGUS2__);
+		m_pLabelSet = new EV_Menu_LabelSet(szLanguage, (XAP_Menu_Id)AP_MENU_ID__BOGUS1__, (XAP_Menu_Id)AP_MENU_ID__BOGUS2__);
 
 		std::string s1, s2;
 		#define menuitem(id)                                                          \
 		{                                                                             \
 		    pSS->getValueUTF8(AP_STRING_ID_MENU_LABEL_##id, s1);                      \
 			pSS->getValueUTF8(AP_STRING_ID_MENU_STATUSLINE_##id, s2);                 \
-			m_pLabelSet->setLabel( (AP_MENU_ID_##id), s1.c_str(), s2.c_str() ); \
+			m_pLabelSet->setLabel( (XAP_Menu_Id)(AP_MENU_ID_##id), s1.c_str(), s2.c_str() ); \
 		}
 			#include "ap_Menu_Id_List.h"
 		#undef menuitem
@@ -773,8 +773,8 @@ void XAP_Menu_Factory::resetLabelsToDefault(void)
 EV_EditMouseContext XAP_Menu_Factory::createContextMenu(const char * szMenu)
 {
 	struct _lt items[2] =
-	{{EV_MLF_BeginPopupMenu,AP_MENU_ID__BOGUS1__ },
-	{EV_MLF_EndPopupMenu,AP_MENU_ID__BOGUS1__ }};
+		{{EV_MLF_BeginPopupMenu,(XAP_Menu_Id)AP_MENU_ID__BOGUS1__ },
+		 {EV_MLF_EndPopupMenu,(XAP_Menu_Id)AP_MENU_ID__BOGUS1__ }};
 	struct _tt newtt;
 	newtt.m_name = szMenu;
 	newtt.m_nrEntries = 2;

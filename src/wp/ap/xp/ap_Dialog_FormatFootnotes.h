@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_FORMATFOOTNOTES_H
-#define AP_DIALOG_FORMATFOOTNOTES_H
+#pragma once
 
 #include "xap_Dialog.h"
 #include "ut_xml.h"
@@ -42,7 +41,7 @@ public:
 
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK=0, a_CANCEL=1, a_DELETE=2 } tAnswer;
+	enum tAnswer: uint8_t { a_OK=0, a_CANCEL=1, a_DELETE=2 };
 
 	tAnswer 			getAnswer(void) const;
 	void				setAnswer(tAnswer a);
@@ -95,5 +94,3 @@ private:
 	bool            m_bPlaceAtDocEnd;
 	bool            m_bPlaceAtSecEnd;
 };
-
-#endif /* AP_DIALOG_FORMATFOOTNOTES_H */

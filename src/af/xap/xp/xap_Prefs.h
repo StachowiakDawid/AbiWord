@@ -1,7 +1,7 @@
 /* -*- mode: C++; tab-width: 4; c-basic-offset: 4; indent-tabs-mode:t; -*- */
 /* AbiSource Application Framework
  * Copyright (C) 1998 AbiSource, Inc.
- * Copyright (c) 2020 Hubert Figuière
+ * Copyright (c) 2020-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,9 +21,7 @@
 
 #pragma once
 
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 #include "ut_string.h"
 #include "ut_string_class.h"
 #include "ut_xml.h"
@@ -35,7 +33,7 @@
 #include <set>
 
 /* For handling the position of windows on the screen, this sets up preferences */
-enum {
+enum: uint8_t {
 	PREF_FLAG_GEOMETRY_POS = 0x1,     // Position is valid
 	PREF_FLAG_GEOMETRY_SIZE = 0x2,    // Size is valid
 	PREF_FLAG_GEOMETRY_NOUPDATE = 0x4, // User specified, don't update it
@@ -58,7 +56,7 @@ typedef void (*PrefsListener) (
 ** between schemes.
 ******************************************************************/
 
-enum XAPPrefsLog_Level
+enum XAPPrefsLog_Level: uint8_t
 {
 	Log,
 	Warning,

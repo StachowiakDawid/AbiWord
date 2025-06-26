@@ -18,8 +18,7 @@
  */
 
 
-#ifndef AP_MENU_IDSET_H
-#define AP_MENU_IDSET_H
+#pragma once
 
 #include "xap_Types.h"
 
@@ -35,7 +34,7 @@
 
 #define menuitem(id)			AP_MENU_ID_##id,
 
-enum _Ap_Menu_Id
+enum _Ap_Menu_Id: uint16_t
 {
 	AP_MENU_ID__BOGUS1__,
 #include "ap_Menu_Id_List.h"
@@ -44,5 +43,3 @@ enum _Ap_Menu_Id
 
 
 #undef menuitem
-
-#endif /* AP_MENU_IDSET_H */

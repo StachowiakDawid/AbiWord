@@ -137,7 +137,7 @@ void  AP_Dialog_Replace::ConstructWindowName(void)
 	// conditionally set title
 	std::string s;
 	
-	if (m_id == AP_DIALOG_ID_FIND)
+	if (m_id == (XAP_Dialog_Id)AP_DIALOG_ID_FIND)
 	{
 		pSS->getValueUTF8(AP_STRING_ID_DLG_FR_FindTitle,s);
 		UT_XML_cloneNoAmpersands(tmp, s.c_str());

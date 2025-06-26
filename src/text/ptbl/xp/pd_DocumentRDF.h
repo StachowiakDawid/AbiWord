@@ -19,8 +19,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef PD_DOCUMENTRDF_H
-#define PD_DOCUMENTRDF_H
+#pragma once
 
 #include <string>
 #include <functional>
@@ -113,7 +112,7 @@ ostream& operator<<( ostream& ss, PD_URI& uri )
 class ABI_EXPORT PD_Object : public PD_URI
 {
   public:
-    enum
+    enum: uint8_t
     {
         OBJECT_TYPE_URI = 1,
         OBJECT_TYPE_LITERAL,
@@ -567,7 +566,7 @@ class ABI_EXPORT PD_RDFSemanticItem
     virtual PD_RDFSemanticStylesheets stylesheets() const = 0;
     virtual std::string className() const = 0;
 
-    enum RelationType
+    enum RelationType: uint8_t
     {
         RELATION_FOAF_KNOWS = 1
     };
@@ -1227,6 +1226,3 @@ public:
     bool isEnd();
     std::string getID();
 };
-
-
-#endif

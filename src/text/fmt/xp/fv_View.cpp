@@ -12917,7 +12917,7 @@ void FV_View::killAnnotationPreview()
 		= static_cast<XAP_DialogFactory *>(pFrame->getDialogFactory());
 
 	AP_Preview_Annotation * pPview
-		= static_cast<AP_Preview_Annotation *>(pDialogFactory->requestDialog(	AP_DIALOG_ID_ANNOTATION_PREVIEW));
+		= static_cast<AP_Preview_Annotation *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_ANNOTATION_PREVIEW));
 	UT_nonnull_or_return(pPview, );
     pDialogFactory->releaseDialog(pPview);
 	pPview->destroy();

@@ -66,7 +66,7 @@ public:
 class ABI_EXPORT AP_TopRulerInfo
 {
 public:
-	typedef enum _mode { TRI_MODE_COLUMNS, TRI_MODE_TABLE, TRI_MODE_FRAME } Mode;
+	enum Mode: uint8_t { TRI_MODE_COLUMNS, TRI_MODE_TABLE, TRI_MODE_FRAME };
 
 	AP_TopRulerInfo(void) :
 							m_mode(TRI_MODE_COLUMNS),
@@ -347,7 +347,7 @@ private:
 	bool				m_bValidMouseClick;
 	bool				m_bEventIgnored;
 
-	typedef enum _draggingWhat { DW_NOTHING,
+	enum DraggingWhat: uint8_t { DW_NOTHING,
 								 DW_LEFTMARGIN,
 								 DW_RIGHTMARGIN,
 								 DW_COLUMNGAP,
@@ -359,7 +359,7 @@ private:
 								 DW_TABSTOP,
 								 DW_TABTOGGLE,
 								 DW_CELLMARK
-	} DraggingWhat;
+	};
 
 	DraggingWhat		m_draggingWhat;
 	UT_sint32			m_draggingCenter; /* center of primary thing being dragged */

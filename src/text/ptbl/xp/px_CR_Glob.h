@@ -17,9 +17,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef PX_CHANGERECORD_GLOB_H
-#define PX_CHANGERECORD_GLOB_H
+#pragma once
 
 #include "ut_types.h"
 #include "px_ChangeRecord.h"
@@ -45,11 +43,11 @@
 class ABI_EXPORT PX_ChangeRecord_Glob : public PX_ChangeRecord
 {
 public:
-	typedef enum _PXFlags { PXF_Null=				0x00,
+	enum PXFlags: uint8_t { PXF_Null=				0x00,
 							PXF_MultiStepStart=		0x01, /* display-atomic */
 							PXF_MultiStepEnd=		0x02,
 							PXF_UserAtomicStart=	0x04, /* user-level-atomic */
-							PXF_UserAtomicEnd=		0x08 } PXFlags;
+							PXF_UserAtomicEnd=		0x08 };
 
 	PX_ChangeRecord_Glob(PXType type,
 						 UT_Byte flags);
@@ -67,5 +65,3 @@ public:
 protected:
 	UT_Byte					m_flags;			/* see PXFlags above */
 };
-
-#endif /* PX_CHANGERECORD_GLOB_H */

@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_UNIXDIALOG_IMAGE_H
-#define XAP_UNIXDIALOG_IMAGE_H
+#pragma once
 
 #include "xap_Dlg_Image.h"
 
@@ -44,11 +43,10 @@ class XAP_UnixDialog_Image: public XAP_Dialog_Image
 
  private:
 
-	typedef enum
-	  {
+	enum ResponseId : int8_t {
 	    BUTTON_OK = GTK_RESPONSE_OK,
 	    BUTTON_CANCEL = GTK_RESPONSE_CANCEL
-	  } ResponseId ;
+	};
 
 	void event_Ok ();
 	void event_Cancel ();
@@ -108,5 +106,3 @@ class XAP_UnixDialog_Image: public XAP_Dialog_Image
 	bool m_bAspect;
 	double m_dHeightWidth;
 };
-
-#endif /* XAP_UNIXDIALOG_IMAGE_H */

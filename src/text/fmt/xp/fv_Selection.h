@@ -17,14 +17,13 @@
  * 02110-1301 USA.
  */
 
-#ifndef FV_SELECTION_H
-#define FV_SELECTION_H
+#pragma once
 
 #include "pt_Types.h"
 #include "ut_vector.h"
 #include "ut_string_class.h"
 
-typedef enum _FV_SelectionMode
+enum FV_SelectionMode: uint8_t
 {
 	FV_SelectionMode_NONE,
 	FV_SelectionMode_TOC,
@@ -32,7 +31,7 @@ typedef enum _FV_SelectionMode
 	FV_SelectionMode_Single,
 	FV_SelectionMode_Multiple,
 	FV_SelectionMode_TableColumn
-} FV_SelectionMode;
+};
 
 class UT_ByteBuf;
 class FL_DocLayout;
@@ -108,5 +107,3 @@ private:
 	UT_GenericVector<FV_SelectionCellProps*> m_vecSelCellProps;
 	bool                  m_bSelectAll;
 };
-
-#endif /* FV_Selection_H */

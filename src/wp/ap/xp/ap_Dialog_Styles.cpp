@@ -1,7 +1,7 @@
 /* -*- mode: C++; tab-width: 4; c-basic-offset: 4;  indent-tabs-mode: t -*- */
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
- * Copyright (C) 2021 Hubert Figuière
+ * Copyright (C) 2021-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -466,7 +466,7 @@ void AP_Dialog_Styles::ModifyTabs(void)
 //
 // Fire up the Tab dialog
 //
-	XAP_Dialog_Id id = AP_DIALOG_ID_TAB;
+	XAP_Dialog_Id id = (XAP_Dialog_Id)AP_DIALOG_ID_TAB;
 
 	XAP_DialogFactory * pDialogFactory
 		= (XAP_DialogFactory *) getFrame()->getDialogFactory();
@@ -503,7 +503,7 @@ void AP_Dialog_Styles::ModifyLists(void)
 // modal version simultaneously
 //
 	AP_Dialog_Lists * pDialog
-		= (AP_Dialog_Lists *)(pDialogFactory->justMakeTheDialog(AP_DIALOG_ID_LISTS));
+		= (AP_Dialog_Lists *)(pDialogFactory->justMakeTheDialog((XAP_Dialog_Id)AP_DIALOG_ID_LISTS));
 
 	UT_return_if_fail (pDialog);
 
@@ -633,7 +633,7 @@ void AP_Dialog_Styles::ModifyParagraph(void)
 		= (XAP_DialogFactory *)(getFrame()->getDialogFactory());
 
 	AP_Dialog_Paragraph * pDialog
-		= (AP_Dialog_Paragraph *)(pDialogFactory->requestDialog(AP_DIALOG_ID_PARAGRAPH));
+		= (AP_Dialog_Paragraph *)(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_PARAGRAPH));
 	UT_return_if_fail (pDialog);
 
 	const static gchar * paraFields[] = {"text-align", "text-indent", "margin-left", "margin-right", "margin-top", "margin-bottom", "line-height","tabstops","start-value","list-delim", "list-decimal","list-style","field-font","field-color", "keep-together","keep-with-next","orphans","widows","dom-dir"};

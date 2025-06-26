@@ -75,7 +75,7 @@ typedef std::shared_ptr<PD_DocumentRDF> PD_DocumentRDFHandle;
 #include "ut_test.h"
 #endif
 
-enum
+enum: uint8_t
 {
 	PD_SIGNAL_UPDATE_LAYOUT = 0,
 	PD_SIGNAL_REFORMAT_LAYOUT,

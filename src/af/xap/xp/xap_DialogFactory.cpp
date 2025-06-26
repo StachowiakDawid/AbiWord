@@ -1,4 +1,4 @@
-/* -*- mode: C++; tab-width: 4; c-basic-offset: 4; ident-tabs-mode: t; -*- */
+/* -*- mode: C++; tab-width: 4; c-basic-offset: 4; indent-tabs-mode: t; -*- */
 
 /* AbiSource Application Framework
  * Copyright (C) 1998 AbiSource, Inc.
@@ -94,7 +94,7 @@ XAP_Dialog_Id XAP_DialogFactory::getNextId(void) const
 {
 	UT_sint32 i = m_vec_dlg_table.getItemCount()-1;
 	auto dialog = m_vec_dlg_table.getNthItem(i);
-	UT_nonnull_or_return(dialog, 0);
+	UT_nonnull_or_return(dialog, XAP_DIALOG_ID__FIRST__);
 	UT_sint32 id = static_cast<UT_sint32>(dialog->m_id);
 	return static_cast<XAP_Dialog_Id>(id+1);
 }

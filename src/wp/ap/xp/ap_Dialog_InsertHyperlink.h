@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_INSERTHYPERLINK_H
-#define AP_DIALOG_INSERTHYPERLINK_H
+#pragma once
 
 #include "xap_Dialog.h"
 #include "ut_xml.h"
@@ -37,7 +36,7 @@ public:
 
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK=0, a_CANCEL=1 } tAnswer;
+	enum tAnswer: uint8_t { a_OK=0, a_CANCEL=1 };
 
 	tAnswer				getAnswer(void) const;
 	void            	setAnswer(tAnswer a);
@@ -57,5 +56,3 @@ private:
 	gchar *			m_pHyperlink;
 	gchar *			m_pHyperlinkTitle;
 };
-
-#endif /* AP_DIALOG_TOGGLECASE_H */

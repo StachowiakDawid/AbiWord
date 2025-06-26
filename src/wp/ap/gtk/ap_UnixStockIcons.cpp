@@ -152,7 +152,7 @@ static struct AbiStockEntry {
  */
 static struct AbiStockMapping {
 	const gchar 		*abi_stock_id;
-	const XAP_Menu_Id        menu_id;
+	const _Ap_Menu_Id        menu_id;
 	const gchar 		*gtk_stock_id;
 } const stock_mapping[] = {
   { ABIWORD_FILE_NEW,				AP_MENU_ID_FILE_NEW,			"document-new" },
@@ -184,20 +184,20 @@ static struct AbiStockMapping {
   { ABIWORD_FMT_BOLD,				AP_MENU_ID_FMT_BOLD,			"format-text-bold" },
   { ABIWORD_FMT_ITALIC,				AP_MENU_ID_FMT_ITALIC,			"format-text-italic" },
   { ABIWORD_FMT_UNDERLINE,			AP_MENU_ID_FMT_UNDERLINE,		"format-text-underline" },
-//  { ABIWORD_FMT_CHOOSE,             0,                              GTK_STOCK_SELECT_FONT },
+//  { ABIWORD_FMT_CHOOSE,             (_Ap_Menu_Id)0,                 GTK_STOCK_SELECT_FONT },
 
   { ABIWORD_ALIGN_LEFT,				AP_MENU_ID_ALIGN_LEFT,			"format-justify-left" },
   { ABIWORD_ALIGN_CENTER,			AP_MENU_ID_ALIGN_CENTER,		"format-justify-center" },
   { ABIWORD_ALIGN_RIGHT,			AP_MENU_ID_ALIGN_RIGHT,			"format-justify-right" },
   { ABIWORD_ALIGN_JUSTIFY,			AP_MENU_ID_ALIGN_JUSTIFY,		"format-justify-fill" },
 
-  { ABIWORD_UNINDENT,				0,								"format-indent-less" },
-  { ABIWORD_INDENT,					0,								"format-indent-more" },
+  { ABIWORD_UNINDENT,				(_Ap_Menu_Id)0,					"format-indent-less" },
+  { ABIWORD_INDENT,					(_Ap_Menu_Id)0,					"format-indent-more" },
 
   { ABIWORD_SCRIPT_PLAY,			AP_MENU_ID_TOOLS_SCRIPTS,		"system-run" },
   { ABIWORD_FMT_STRIKE,				AP_MENU_ID_FMT_STRIKE,			"format-text-strikethrough" },
-  { ABIWORD_VIEW_FULL_SCREEN,       0,                              "view-fullscreen" },
-  { nullptr, 					0,					nullptr }
+  { ABIWORD_VIEW_FULL_SCREEN,       (_Ap_Menu_Id)0,                 "view-fullscreen" },
+  { nullptr, 					(_Ap_Menu_Id)0,					nullptr }
 };
 
 /*!

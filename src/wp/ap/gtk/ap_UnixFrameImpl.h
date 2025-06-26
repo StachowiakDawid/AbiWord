@@ -31,7 +31,7 @@
 class XAP_UnixApp;
 class AP_UnixFrame;
 
-enum apufi_ScrollType { apufi_scrollX, apufi_scrollY }; // can we use namespaces yet? this is quite ugly
+enum apufi_ScrollType: uint8_t { apufi_scrollX, apufi_scrollY }; // can we use namespaces yet? this is quite ugly
 
 class AP_UnixFrameImpl : public XAP_UnixFrameImpl
 {

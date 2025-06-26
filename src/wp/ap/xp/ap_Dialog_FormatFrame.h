@@ -19,8 +19,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_FORMATFRAME_H
-#define AP_DIALOG_FORMATFRAME_H
+#pragma once
 
 #include <string>
 
@@ -82,8 +81,8 @@ public:
 
 	virtual void runModeless(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK, a_CLOSE } tAnswer;
-	typedef enum { toggle_left, toggle_right, toggle_top, toggle_bottom } toggle_button;
+	enum tAnswer: uint8_t { a_OK, a_CLOSE };
+	enum toggle_button: uint8_t { toggle_left, toggle_right, toggle_top, toggle_bottom };
 
 	AP_Dialog_FormatFrame::tAnswer		getAnswer(void) const;
 	virtual void                        startUpdater(void);
@@ -240,5 +239,3 @@ private:
 
 	FL_FrameFormatMode		m_iFramePositionTo;
 };
-
-#endif /* AP_DIALOG_FORMATFRAME_H */

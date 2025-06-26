@@ -2,7 +2,7 @@
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
  * Copyright (C) 2002 Tomas Frydrych, <tomas@frydrych.uklinux.net>
- * Coprygiht (C) 2021 Hubert Figuière
+ * Copyright (C) 2021-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <memory>
 #include <optional>
 
@@ -73,7 +74,7 @@ class GR_Graphics;
 class GR_Painter;
 class GR_Caret;
 
-enum GrFontType {
+enum GrFontType: uint8_t {
 	GR_FONT_UNSET=0,
 	GR_FONT_UNIX,
 	GR_FONT_UNIX_PANGO,
@@ -91,10 +92,22 @@ class ABI_EXPORT GR_Font
 	// objects without having to be declared here as friends
  	virtual ~GR_Font();
 
-
-	enum FontFamilyEnum { FF_Unknown = 0, FF_Roman, FF_Swiss, FF_Modern,
-				   FF_Script, FF_Decorative, FF_Technical, FF_BiDi, FF_Last };
-	enum FontPitchEnum { FP_Unknown = 0, FP_Fixed, FP_Variable };
+	enum FontFamilyEnum: int32_t {
+		FF_Unknown = 0,
+		FF_Roman,
+		FF_Swiss,
+		FF_Modern,
+		FF_Script,
+		FF_Decorative,
+		FF_Technical,
+		FF_BiDi,
+		FF_Last
+	};
+	enum FontPitchEnum: uint8_t {
+		FP_Unknown = 0,
+		FP_Fixed,
+		FP_Variable
+	};
 
 	// The following is actually implemented in platform code.
 	// It is primarily used to characterize fonts for RTF export.
@@ -181,7 +194,7 @@ private:
 	request a fixed ID from the built-in range (we could use UUIDs to
 	identify graphics, but that seems an overkill).
  */
-enum GR_GraphicsId
+enum GR_GraphicsId: uint32_t
 {
 	/* default id's */
 	/* these id's can be reregistered at will */
@@ -220,7 +233,7 @@ enum GR_GraphicsId
 };
 
 // or-able graphics type
-enum GR_Capability
+enum GR_Capability : uint8_t
 {
 	GRCAP_UNKNOWN            = 0,
 	GRCAP_SCREEN_ONLY        = 1,
@@ -329,7 +342,7 @@ class ABI_EXPORT GR_GraphicsFactory
 };
 
 
-enum GRShapingResult
+enum GRShapingResult: uint8_t
 {
 	GRSR_BufferClean = 0x00,                  // clear all bits; see notes above !!!
 	GRSR_None = 0x01,                         // bit 0 set
@@ -509,23 +522,27 @@ class ABI_EXPORT GR_Graphics
 							 UT_sint32 width,
 							 UT_sint32 height) = 0;
 
-	enum Properties { DGP_SCREEN, DGP_PAPER, DGP_OPAQUEOVERLAY };
+	enum Properties: uint8_t {
+		DGP_SCREEN,
+		DGP_PAPER,
+		DGP_OPAQUEOVERLAY
+	};
 
-	enum JoinStyle
+	enum JoinStyle: uint8_t
 	{
 		JOIN_MITER,
 		JOIN_ROUND,
 		JOIN_BEVEL
 	};
 
-	enum CapStyle
+	enum CapStyle: uint8_t
 	{
 		CAP_BUTT,
 		CAP_ROUND,
 		CAP_PROJECTING
 	};
 
-	enum LineStyle
+	enum LineStyle: uint8_t
 	{
 		LINE_SOLID,
 		LINE_ON_OFF_DASH,
@@ -555,7 +572,7 @@ class ABI_EXPORT GR_Graphics
 
 	/* specific color space support */
 
-	enum ColorSpace {
+	enum ColorSpace: uint8_t {
 		GR_COLORSPACE_COLOR,
 		GR_COLORSPACE_GRAYSCALE,
 		GR_COLORSPACE_BW
@@ -566,7 +583,7 @@ class ABI_EXPORT GR_Graphics
 
 	/* multiple cursor support */
 
-	enum Cursor {
+	enum Cursor: uint8_t {
 		GR_CURSOR_INVALID = 0,
 		GR_CURSOR_DEFAULT,
 		GR_CURSOR_IBEAM,
@@ -604,7 +621,7 @@ class ABI_EXPORT GR_Graphics
 	inline void       setPortrait (bool b) {m_bIsPortrait = b;}
 	inline bool       isPortrait (void) const {return m_bIsPortrait;}
 
-	enum GR_Color3D {
+	enum GR_Color3D: uint8_t {
 		CLR3D_Foreground = 0,				/* color of text/foreground on a 3d object */
 		CLR3D_Background = 1,				/* color of face/background on a 3d object */
 		CLR3D_BevelUp = 2,					/* color of bevel-up  */
@@ -876,7 +893,7 @@ class ABI_EXPORT GR_Graphics
 	bool m_bDoubleBufferingActive;
 	bool m_bDrawingSuspended;
 
-	enum DeviceContextSwitchType {
+	enum DeviceContextSwitchType: uint8_t {
 		SWITCHED_TO_BUFFER = 0,
 		DRAWING_SUSPENDED
 	};

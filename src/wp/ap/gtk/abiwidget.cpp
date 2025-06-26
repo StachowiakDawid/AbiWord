@@ -128,7 +128,7 @@ public:
 //
 // Our widget's arguments. 
 //
-enum {
+enum: uint8_t {
 	ARG_0,
 	CURSOR_ON,
 	UNLINK_AFTER_LOAD,
@@ -435,7 +435,7 @@ static const guint32 ABI_DEFAULT_HEIGHT = 250 ;
 									  g_cclosure_user_marshal_VOID__INT_INT_INT, \
 									  G_TYPE_NONE, 3, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT); } while(0)
 
-enum {
+enum: uint8_t {
 	SIGNAL_BOLD,
 	SIGNAL_ITALIC,
 	SIGNAL_UNDERLINE,

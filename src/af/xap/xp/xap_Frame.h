@@ -19,19 +19,11 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef XAP_Frame_H
-#define XAP_Frame_H
+#pragma once
 
 #include <string>
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 #include "ut_string_class.h"
 #include "ut_vector.h"
 #include "ut_misc.h"
@@ -146,7 +138,14 @@ public:
 	bool runModalContextMenu(AV_View * pView, const char * szMenuName,
 		UT_sint32 x, UT_sint32 y) { return m_pFrameImpl->_runModalContextMenu(pView, szMenuName, x, y); }
 
-	typedef enum { z_200, z_100, z_75, z_PAGEWIDTH, z_WHOLEPAGE, z_PERCENT } tZoomType;
+	enum tZoomType: uint8_t {
+		z_200,
+		z_100,
+		z_75,
+		z_PAGEWIDTH,
+		z_WHOLEPAGE,
+		z_PERCENT
+	};
 	virtual void				setZoomPercentage(UT_uint32 iZoom);
 	virtual UT_uint32			getZoomPercentage();
 	void						setZoomType(XAP_Frame::tZoomType z_Type){ m_zoomType = z_Type; }
@@ -293,14 +292,3 @@ private:
 	XAP_FrameImpl *           m_pFrameImpl; /* set by platform specific code */
 	UT_uint32                   m_iZoomPercentage;
 };
-
-#endif /* XAP_Frame_H */
-
-
-
-
-
-
-
-
-

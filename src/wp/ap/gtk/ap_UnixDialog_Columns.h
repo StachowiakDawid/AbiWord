@@ -71,11 +71,11 @@ public:
 
 protected:
 
-	typedef enum
+	enum ResponseId: int8_t
 		{
 			BUTTON_OK = GTK_RESPONSE_OK,
 			BUTTON_CANCEL = GTK_RESPONSE_CANCEL
-		} ResponseId ;
+		};
 
 	// private construction functions
 	virtual GtkWidget * _constructWindow(void);

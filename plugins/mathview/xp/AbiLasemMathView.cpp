@@ -204,7 +204,7 @@ static void AbiMathView_addToMenus()
 
 // Put it after Insert Picture in the Main menu
 
-    newEquationID= pFact->addNewMenuAfter("Main",nullptr,AP_MENU_ID_INSERT_GRAPHIC,EV_MLF_BeginSubMenu);
+    newEquationID= pFact->addNewMenuAfter("Main", nullptr, (XAP_Menu_Id)AP_MENU_ID_INSERT_GRAPHIC, EV_MLF_BeginSubMenu);
    UT_DEBUGMSG(("newEquationID %d \n",newEquationID));
 
 
@@ -530,7 +530,7 @@ AbiMathView_LatexInsert(AV_View* v, EV_EditMethodCallData* /*d*/)
 	  = static_cast<XAP_DialogFactory *>(XAP_App::getApp()->getDialogFactory());
 
 	AP_Dialog_Latex * pDialog 
-		= static_cast<AP_Dialog_Latex *>(pDialogFactory->requestDialog(AP_DIALOG_ID_LATEX));
+	  = static_cast<AP_Dialog_Latex *>(pDialogFactory->requestDialog((XAP_Dialog_Id)AP_DIALOG_ID_LATEX));
 	UT_return_val_if_fail(pDialog, false);
 
 	if (pDialog->isRunning())

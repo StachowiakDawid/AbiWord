@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_UNIXDIALOG_LISTREVISIONS_H
-#define AP_UNIXDIALOG_LISTREVISIONS_H
+#pragma once
 
 #include <gtk/gtk.h>
 #include "ut_types.h"
@@ -39,11 +38,11 @@ class AP_UnixDialog_ListRevisions: public AP_Dialog_ListRevisions
 	static XAP_Dialog *		static_constructor(XAP_DialogFactory *, XAP_Dialog_Id id);
 
  protected:
-	typedef enum
+	enum ResponseId: int8_t
 	{
 		BUTTON_OK = GTK_RESPONSE_OK,
 		BUTTON_CANCEL = GTK_RESPONSE_CANCEL
-	} ResponseId ;
+	};
 
 	virtual GtkWidget * constructWindow () ;
 
@@ -66,7 +65,7 @@ class AP_UnixDialog_ListRevisions: public AP_Dialog_ListRevisions
 	GtkWidget* m_mainWindow;
 	GtkListStore* m_treeModel;
 
-    enum
+    enum: uint8_t
     {
         COL_REVID = 0,
         COL_DATE_STRING,
@@ -74,6 +73,4 @@ class AP_UnixDialog_ListRevisions: public AP_Dialog_ListRevisions
         COL_DATE_AS_TIMET,
         COL_MAX
     };
-} ;
-
-#endif /* AP_UNIXDIALOG_LISTREVISIONS_H */
+};

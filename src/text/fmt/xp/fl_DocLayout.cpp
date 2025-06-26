@@ -4375,7 +4375,7 @@ algorithm.
 // look familar from the algorithm above.  There is a special class
 // used only for the coding of rule:  sqDONTCARE in a rule means it
 // doesn't matter what occurs in that position.
-enum sqThingAt
+enum sqThingAt: uint8_t
 {
 	sqDONTCARE     = 1,
 	sqQUOTEls      = 2,
@@ -4392,7 +4392,7 @@ enum sqThingAt
 };
 
 // TODO:  This function probably needs tuning for non-Anglo locales.
-static enum sqThingAt whatKindOfChar(UT_UCSChar thing)
+static sqThingAt whatKindOfChar(UT_UCSChar thing)
 {
 	xxx_UT_DEBUGMSG(("what sort of character is %d 0x%x |%c|\n", thing, thing, thing));
 	switch (thing)
@@ -4423,9 +4423,9 @@ static enum sqThingAt whatKindOfChar(UT_UCSChar thing)
 
 struct sqTable
 {
-	enum sqThingAt before;
+	sqThingAt before;
 	UT_UCSChar thing;
-	enum sqThingAt after;
+	sqThingAt after;
 	UT_UCSChar replacement;
 };
 // The idea of the table is to drive the algorithm without lots of
@@ -4558,7 +4558,7 @@ void FL_DocLayout::considerSmartQuoteCandidateAt(fl_BlockLayout *block, UT_uint3
 	//  smart quote, so just double check before plunging onward
 	if (UT_isSmartQuotableCharacter(c))
 	{
-		enum sqThingAt before = sqBREAK, after = sqBREAK;
+		sqThingAt before = sqBREAK, after = sqBREAK;
 		if (offset > 0)
 		{
 			// TODO: is there a need to see if this is on a run boundary?

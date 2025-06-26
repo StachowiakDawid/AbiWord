@@ -2,7 +2,7 @@
 
 /* AbiSource Application Framework
  * Copyright (C) 1998-2000 AbiSource, Inc.
- * Copyright (C) 2009 Hubert Figuiere
+ * Copyright (C) 2009-2025 Hubert Figuiere
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -55,8 +55,7 @@
 
 //
 // For Screen color picker
-	enum
-	{
+	enum: uint8_t {
 		RED,
 		GREEN,
 		BLUE,
@@ -65,8 +64,7 @@
 
 //
 // List store model , used as model for GtkTreeView
-	enum
-	{
+	enum: uint8_t {
 		TEXT_COLUMN,
 		N_COLUMNS
 	};

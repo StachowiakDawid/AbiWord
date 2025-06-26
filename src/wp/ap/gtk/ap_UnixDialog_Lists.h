@@ -19,8 +19,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_UNIXDIALOG_LISTS_H
-#define AP_UNIXDIALOG_LISTS_H
+#pragma once
 
 #include <vector>
 #include <string>
@@ -93,14 +92,14 @@ class AP_UnixDialog_Lists
 	inline void				_setMainWindow(GtkWidget *w) { m_windowMain = w; }
 
  private:
-	typedef enum
+    enum ResponseId: int8_t
 	{
 		BUTTON_OK = GTK_RESPONSE_OK,
 		BUTTON_CANCEL = GTK_RESPONSE_CANCEL,
 		BUTTON_CLOSE = GTK_RESPONSE_CLOSE,
 		BUTTON_APPLY = GTK_RESPONSE_APPLY,
 		BUTTON_RESET
-	} ResponseId ;
+	};
 
     std::vector<std::string>  m_glFonts;
 	GR_CairoGraphics *		        m_pPreviewWidget;
@@ -151,12 +150,3 @@ class AP_UnixDialog_Lists
 	UT_GenericVector<GtkWidget*>  m_vecFoldCheck;
 	UT_NumberVector  m_vecFoldID;
 };
-
-#endif /* AP_UNIXDIALOG_LISTS_H */
-
-
-
-
-
-
-

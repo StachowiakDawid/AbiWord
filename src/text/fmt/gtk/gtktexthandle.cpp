@@ -20,13 +20,13 @@
 
 typedef struct _HandleWindow HandleWindow;
 
-enum {
+enum: uint8_t {
   HANDLE_DRAGGED,
   DRAG_FINISHED,
   LAST_SIGNAL
 };
 
-enum {
+enum: uint8_t {
   PROP_0,
   PROP_PARENT,
   PROP_RELATIVE_TO

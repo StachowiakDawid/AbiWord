@@ -1,5 +1,6 @@
 /* AbiSource Program Utilities
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -100,7 +101,7 @@ class ABI_EXPORT UT_UniqueId
 	UT_UniqueId();
 	~UT_UniqueId(){};
 
-	enum idType
+	enum idType: uint8_t
 	{
 		List = 0,
 		Footnote,
@@ -110,7 +111,7 @@ class ABI_EXPORT UT_UniqueId
 		Image,
 		Math,
 		Embed,
-        ODTCTSplit,
+		ODTCTSplit,
 
 		/* must be last; for internal use only !*/
 		_Last

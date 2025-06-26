@@ -63,11 +63,11 @@
 
 class fp_ContainerObject;
 
-typedef enum {
+enum FG_Fill_Type: uint8_t {
 	FG_FILL_TRANSPARENT,
 	FG_FILL_COLOR,
 	FG_FILL_IMAGE
-} FG_Fill_Type;
+};
 
 #define INITIAL_OFFSET -99999999
 
@@ -107,7 +107,7 @@ struct dg_DrawArgs;
 struct fp_Sliver;
 struct dg_DrawArgs;
 
-typedef enum {
+enum FP_ContainerType: uint8_t {
 	FP_CONTAINER_RUN,      //0
 	FP_CONTAINER_LINE,     //1
 	FP_CONTAINER_VERTICAL, //2
@@ -123,8 +123,7 @@ typedef enum {
 	FP_CONTAINER_FRAME, // 12
 	FP_CONTAINER_TOC, // 13
 	FP_CONTAINER_ANNOTATION // 14
-
-} FP_ContainerType;
+};
 
 class ABI_EXPORT fg_FillType
 {

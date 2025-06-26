@@ -1555,7 +1555,7 @@ bool IE_Imp_AbiWord_1::_handleResource (const gchar ** atts, bool isResource)
 			const gchar * r_id = 0;
 			const gchar * r_64 = 0;
 
-			enum { mt_unknown, mt_png, mt_svg, mt_mathml,mt_embed } mt = mt_unknown;
+			enum: uint8_t { mt_unknown, mt_png, mt_svg, mt_mathml,mt_embed } mt = mt_unknown;
 			const gchar * pszEmbed = nullptr;
 			const gchar ** attr = atts;
 			while (*attr)

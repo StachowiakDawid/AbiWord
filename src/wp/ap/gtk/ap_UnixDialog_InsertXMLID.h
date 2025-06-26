@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_UNIXDIALOG_INSERTXMLID_H
-#define AP_UNIXDIALOG_INSERTXMLID_H
+#pragma once
 
 #include "ap_Dialog_InsertXMLID.h"
 
@@ -45,16 +44,14 @@ protected:
 	void _constructWindowContents (GtkWidget * container);
 	void _setList();
 
-	enum
+	enum ResponseId: int8_t
 	  {
 	    BUTTON_CANCEL = GTK_RESPONSE_CANCEL,
 	    BUTTON_OK = GTK_RESPONSE_OK,
 	    BUTTON_DELETE
-	  } ResponseId ;
+	  };
 
 	GtkWidget*   m_window;
 	GtkWidget*   m_combo;
 	GtkWidget*   m_btInsert;
 };
-
-#endif

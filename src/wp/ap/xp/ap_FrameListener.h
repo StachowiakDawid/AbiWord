@@ -18,14 +18,15 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_FRAMELISTENER_H
-#define AP_FRAMELISTENER_H
+#pragma once
 
-typedef enum _AP_FrameSignal
+#include <cstdint>
+
+enum AP_FrameSignal: uint8_t
 {
 	APF_ReplaceDocument = 0,
 	APF_ReplaceView
-} AP_FrameSignal;
+};
 
 class ABI_EXPORT AP_FrameListener
 {
@@ -33,5 +34,3 @@ public:
 	virtual ~AP_FrameListener() {}
 	virtual void signalFrame(AP_FrameSignal) = 0;
 };
-
-#endif // AP_FRAMELISTENER_H

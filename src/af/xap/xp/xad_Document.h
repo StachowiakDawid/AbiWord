@@ -20,9 +20,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef AD_DOCUMENT_H
-#define AD_DOCUMENT_H
+#pragma once
 
 #include <memory>
 #include <string>
@@ -80,7 +78,7 @@ class ABI_EXPORT AD_VersionData
 	UT_uint32   m_iTopXID;
 };
 
-enum AD_HISTORY_STATE
+enum AD_HISTORY_STATE: uint8_t
 {
 	ADHIST_FULL_RESTORE,
 	ADHIST_PARTIAL_RESTORE,
@@ -114,7 +112,7 @@ class ABI_EXPORT AD_Revision
 	UT_uint32     m_iVersion;
 };
 
-enum AD_DOCUMENT_TYPE
+enum AD_DOCUMENT_TYPE: uint8_t
 {
 	ADDOCUMENT_ABIWORD
 };
@@ -342,6 +340,3 @@ private:
 	std::string     m_sOrigUUIDString;
 	std::string     m_sPrintFilename;
 };
-
-
-#endif /* AD_DOCUMENT_H */

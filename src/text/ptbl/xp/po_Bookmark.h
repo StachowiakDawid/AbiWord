@@ -16,8 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301 USA.
  */
-#ifndef BOOKMARK_H
-#define BOOKMARK_H
+
+#pragma once
 
 #include "ut_types.h"
 #include "ut_xml.h"
@@ -37,12 +37,12 @@ class ABI_EXPORT po_Bookmark
 {
  public:
     // TBD: convention for naming
-    typedef enum
+    enum BookmarkType: uint8_t
 	{
 		POBOOKMARK_START,
 		POBOOKMARK_END,
 		__last_field_dont_use__
-	} BookmarkType;
+	};
 
     po_Bookmark(BookmarkType type, const gchar* name);
     virtual							~po_Bookmark(void);
@@ -63,9 +63,3 @@ class ABI_EXPORT po_Bookmark
     BookmarkType m_iBookmarkType;
     gchar * m_pName;
 };
-
-#endif
-
-
-
-

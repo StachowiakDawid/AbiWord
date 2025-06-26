@@ -61,7 +61,7 @@ static inline XAP_Menu_Id private_max(XAP_Menu_Id a, XAP_Menu_Id b)
 EV_Menu_Layout::EV_Menu_Layout(const std::string& stName, UT_uint32 nrLayoutItems)
     : m_stName(stName)
     , m_layoutTable(nrLayoutItems, nullptr)
-    , m_iMaxId(0)
+    , m_iMaxId((XAP_Menu_Id)0)
 {
 }
 
@@ -73,25 +73,25 @@ EV_Menu_Layout::~EV_Menu_Layout()
 void EV_Menu_Layout::addFakeLayoutItem(UT_uint32 indexLayoutItem, EV_Menu_LayoutFlags flags)
 {
     m_layoutTable.insert(m_layoutTable.begin() + indexLayoutItem,
-        new EV_Menu_LayoutItem(0, flags));
+        new EV_Menu_LayoutItem((XAP_Menu_Id)0, flags));
 }
 
 XAP_Menu_Id EV_Menu_Layout::addLayoutItem(UT_uint32 indexLayoutItem, EV_Menu_LayoutFlags flags)
 {
     auto iter = m_layoutTable.emplace(m_layoutTable.begin() + indexLayoutItem,
-        new EV_Menu_LayoutItem(++m_iMaxId, flags));
+        new EV_Menu_LayoutItem((XAP_Menu_Id)++m_iMaxId, flags));
 
     if (iter == m_layoutTable.end()) {
-        return 0;
+        return (XAP_Menu_Id)0;
     } else {
-        return m_iMaxId;
+        return (XAP_Menu_Id)m_iMaxId;
     }
 }
 
 bool EV_Menu_Layout::setLayoutItem(UT_uint32 indexLayoutItem, XAP_Menu_Id id, EV_Menu_LayoutFlags flags)
 {
     UT_ASSERT(indexLayoutItem < m_layoutTable.size());
-    m_iMaxId = private_max(m_iMaxId, id);
+    m_iMaxId = private_max((XAP_Menu_Id)m_iMaxId, id);
     EV_Menu_LayoutItem* pOld = nullptr;
     pOld = m_layoutTable[indexLayoutItem];
     m_layoutTable[indexLayoutItem] = new EV_Menu_LayoutItem(id, flags);

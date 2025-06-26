@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef FRAMELAYOUT_H
-#define FRAMELAYOUT_H
+#pragma once
 
 #include "ut_types.h"
 #include "ut_vector.h"
@@ -32,7 +31,7 @@
 
 class pf_Frag_Strux;
 
-enum FL_FrameFormatMode
+enum FL_FrameFormatMode: uint8_t
 {
 	FL_FRAME_POSITIONED_TO_BLOCK,
 	FL_FRAME_POSITIONED_TO_COLUMN,
@@ -40,7 +39,7 @@ enum FL_FrameFormatMode
 	FL_FRAME_POSITIONED_INLINE
 };
 
-enum FL_FrameWrapMode
+enum FL_FrameWrapMode: uint8_t
 {
 	FL_FRAME_ABOVE_TEXT,
 	FL_FRAME_BELOW_TEXT,
@@ -50,7 +49,7 @@ enum FL_FrameWrapMode
 	FL_FRAME_WRAPPED_TOPBOT
 };
 
-enum FL_FrameType
+enum FL_FrameType: uint8_t
 {
 	FL_FRAME_TEXTBOX_TYPE,
 	FL_FRAME_WRAPPER_IMAGE,
@@ -194,5 +193,3 @@ private:
 	UT_sint32               m_iMinHeight;
 	fl_ContainerLayout *    m_pParentContainer;
 };
-
-#endif /* FRAMELAYOUT_H */

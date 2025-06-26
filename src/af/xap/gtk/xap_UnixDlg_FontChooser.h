@@ -2,6 +2,7 @@
 
 /* AbiSource Application Framework
  * Copyright (C) 1998-2000 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,8 +20,9 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_UNIXDIALOG_FONTCHOOSER_H
-#define XAP_UNIXDIALOG_FONTCHOOSER_H
+#pragma once
+
+#include <cstdint>
 
 #include "xap_App.h"
 #include "xap_Dlg_FontChooser.h"
@@ -82,22 +84,20 @@ protected:
 
 	// Gtk sets up escape key to close a GtkDialog only when
 	// the one of the button responses is GTK_RESPONSE_CANCEL
-	typedef enum
-	  {
+	enum ResponseId: int8_t {
 	    BUTTON_OK = GTK_RESPONSE_OK,
 	    BUTTON_CANCEL = GTK_RESPONSE_CANCEL
-	  } ResponseId ;
+	};
 
 	// careful, these must be in the order the
 	// list box will show them (Windows order)
-	typedef enum
-	{
+	enum listStyle: int8_t {
 		LIST_STYLE_NONE = -1,
 		LIST_STYLE_NORMAL = 0,
 		LIST_STYLE_ITALIC,
 		LIST_STYLE_BOLD,
 		LIST_STYLE_BOLD_ITALIC
-	} listStyle;
+	};
 
 	virtual GtkWidget *             constructWindow(void);
 	GtkWidget *                     constructWindowContents(GtkWidget *);
@@ -109,5 +109,3 @@ protected:
 	GdkRGBA m_funkyColor;
 	bool m_currentBGColorTransparent;
 };
-
-#endif /* XAP_UNIXDIALOG_FONTCHOOSER_H */

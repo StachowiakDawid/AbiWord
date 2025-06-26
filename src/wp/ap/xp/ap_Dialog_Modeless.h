@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_MODELESS_H
-#define AP_DIALOG_MODELESS_H
+#pragma once
 
 #include <string>
 
@@ -61,9 +60,9 @@ public:
 
 	// these are kinda screwy now, but we never return anything but on
 	// "cancel" or "close"
-	typedef enum {
+	enum tAnswer: uint8_t {
 		a_CLOSE
-	} tAnswer;
+	};
 
 	AP_Dialog_Modeless::tAnswer getAnswer() const;
 	// These are called from edit methods or from dialogs
@@ -89,5 +88,3 @@ protected:
 
     FV_View_BubbleBlocker       m_bubbleBlocker;
 };
-
-#endif

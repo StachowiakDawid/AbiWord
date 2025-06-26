@@ -70,7 +70,7 @@ public:
 };
 
 //! PTStruxType tells the sub-type of a FragStrux.
-enum PTStruxType
+enum PTStruxType: uint8_t
 {
 	PTX_Section = 0,       	// 0 -- maker sure that we can cast into uint
 	PTX_Block,           	// 1
@@ -96,7 +96,7 @@ enum PTStruxType
 
 //! PTObjectType tells the sub-type of an FragObject.
 
-enum PTObjectType
+enum PTObjectType: uint8_t
 {
     PTO_Image = 0,
     PTO_Field,
@@ -109,9 +109,9 @@ enum PTObjectType
 };
 
 //! PieceTable states
-enum PTState { PTS_Create=0, PTS_Loading=1, PTS_Editing=2 };
+enum PTState: uint8_t { PTS_Create=0, PTS_Loading=1, PTS_Editing=2 };
 //! ChangeFormat types
-enum PTChangeFmt
+enum PTChangeFmt: uint8_t
 {
   PTC_AddFmt = 0,
   PTC_RemoveFmt = 1,
@@ -120,7 +120,7 @@ enum PTChangeFmt
   PTC_SetExactly = 4
 };
 
-enum PLListenerType
+enum PLListenerType: uint8_t
 {
 	PTL_UNKNOWN,
 	PTL_DocLayout,

@@ -51,7 +51,7 @@
 #include "ap_UnixDialog_Tab.h"
 
 //! Column indices for list-store
-enum {
+enum: uint8_t {
 	COLUMN_TAB = 0,
 	NUM_COLUMNS
 };

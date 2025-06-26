@@ -43,7 +43,7 @@ class GR_Graphics;
 /*****************************************************************/
 
 #define PROGRESS_CMD_MASK 0x3		/* 0,1,2,3 Operational values */
-enum _progress_flags {
+enum _progress_flags: uint8_t {
     PROGRESS_RESERVED1 	= 0x0,
     PROGRESS_STARTBAR  	= 0x1,		/* Start using the progress bar */
     PROGRESS_STOPBAR	= 0x2,		/* Stop using the progress bar */
@@ -120,13 +120,13 @@ protected:
 };
 
 // alignment/fill properties for the upper level gui
-enum _statusbar_element_fill_method {
+enum _statusbar_element_fill_method: uint8_t {
     REPRESENTATIVE_STRING,
 	PROGRESS_BAR,
     MAX_POSSIBLE
 };
 
-enum _statusbar_textelement_alignment_method {
+enum _statusbar_textelement_alignment_method: uint8_t {
     LEFT,
     CENTER
 };

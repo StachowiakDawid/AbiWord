@@ -1,7 +1,7 @@
 /* -*- mode: C++; tab-width: 4; c-basic-offset: 4; indent-tabs-mode:t -*- */
 /* AbiSource Application Framework
  * Copyright (C) 1998 AbiSource, Inc.
- * Copyright (C) 2019-2021 Hubert Figuière
+ * Copyright (C) 2019-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -82,7 +82,7 @@ public:
 
 	virtual XAP_UnixClipboard * getClipboard () = 0;
 
-	enum
+	enum : uint8_t
 	{
 		GEOMETRY_FLAG_POS = 	1 << 0,
 		GEOMETRY_FLAG_SIZE = 	1 << 1

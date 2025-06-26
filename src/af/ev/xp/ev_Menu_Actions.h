@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef EV_MENU_ACTIONS_H
-#define EV_MENU_ACTIONS_H
+#pragma once
 
 /****************************************************************
 *****************************************************************
@@ -52,14 +51,14 @@ class EV_Menu_Label;
 
 /*****************************************************************/
 
-typedef enum _ev_Menu_ItemState			/* values may be ORed */
+enum EV_Menu_ItemState: uint8_t			/* values may be ORed */
 {
 	EV_MIS_ZERO		= 0x00,				/* nothing is turned on */
 	EV_MIS_Gray		= 0x01,				/* item is or should be gray */
 	EV_MIS_Toggled 	= 0x02,				/* checkable item should be checked */
 	EV_MIS_Bold		= 0x04				/* item is or should be bold */
 
-} EV_Menu_ItemState;
+};
 
 typedef EV_Menu_ItemState ( EV_GetMenuItemState_Fn )(AV_View * pView, XAP_Menu_Id id);
 typedef EV_Menu_ItemState (*EV_GetMenuItemState_pFn)(AV_View * pView, XAP_Menu_Id id);
@@ -150,5 +149,3 @@ private:
 	UT_GenericVector<EV_Menu_Action *>	m_actionTable;
 	XAP_Menu_Id			m_first;
 };
-
-#endif /* EV_MENU_ACTIONS_H */

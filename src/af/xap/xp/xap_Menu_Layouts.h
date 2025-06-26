@@ -17,9 +17,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef XAP_MENU_LAYOUTS_H
-#define XAP_MENU_LAYOUTS_H
+#pragma once
 
 #include "ev_Menu_Layouts.h"
 /* #include "ev_Menu_Labels.h" */
@@ -45,21 +43,21 @@ public:
 									   const char * szLanguage,
 									   const XAP_Menu_Id afterID,
 									   EV_Menu_LayoutFlags flags,
-									   XAP_Menu_Id newID = 0);
+									   XAP_Menu_Id newID = (XAP_Menu_Id)0);
 	XAP_Menu_Id        addNewMenuAfter(const char * szMenu,
 									   const char * szLanguage,
 									   const char * szAfter,
 									   EV_Menu_LayoutFlags flags,
-									   XAP_Menu_Id menuID = 0);
+									   XAP_Menu_Id menuID = (XAP_Menu_Id)0);
 	XAP_Menu_Id			addNewMenuBefore(const char * szMenu,
 									   const char * szLanguage,
 									   const XAP_Menu_Id beforeID,
 									   EV_Menu_LayoutFlags flags,
-									   XAP_Menu_Id newID = 0);
+									   XAP_Menu_Id newID = (XAP_Menu_Id)0);
 	XAP_Menu_Id         addNewMenuBefore(const char * szMenu,
 										 const char * szLanguage,
 										 const char * szBefore,
-									   EV_Menu_LayoutFlags flags, XAP_Menu_Id menuID = 0);
+									   EV_Menu_LayoutFlags flags, XAP_Menu_Id menuID = (XAP_Menu_Id)0);
 	XAP_Menu_Id        getNewID(void);
     XAP_Menu_Id        removeMenuItem(const char * szMenu,
 									  const char * szLanguage,
@@ -91,8 +89,7 @@ private:
   XAP_App * m_pApp;
   EV_Menu_LabelSet * m_pLabelSet;
   EV_Menu_LabelSet * m_pEnglishLabelSet;
-  XAP_Menu_Id m_maxID;
+  uint16_t m_maxID;
   XAP_StringSet * m_pBSS;
   EV_EditMouseContext m_NextContext;
 };
-#endif /* XAP_MENU_LAYOUTS_H */

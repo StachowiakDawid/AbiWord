@@ -49,8 +49,8 @@
 *****************************************************************/
 
 #define BeginLayout(Name, Label, prefKey)		static struct XAP_Toolbar_Factory_lt s_ltTable_##Name[] = {
-#define ToolbarItem(id)			{ EV_TLF_Normal,		(id)					},
-#define Spacer()				{ EV_TLF_Spacer,		AP_TOOLBAR_ID__BOGUS1__	},
+#define ToolbarItem(id)			{ EV_TLF_Normal,		(XAP_Toolbar_Id)(id)					},
+#define Spacer()				{ EV_TLF_Spacer,		(XAP_Toolbar_Id)AP_TOOLBAR_ID__BOGUS1__	},
 #define EndLayout()				};
 
 #include "ap_Toolbar_Layouts_All.h"

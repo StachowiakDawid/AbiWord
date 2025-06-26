@@ -1,5 +1,6 @@
 /* AbiWord
  * Copyright (C) 2001 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,36 +18,26 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_DIALOG_IMAGE_H
-#define XAP_DIALOG_IMAGE_H
+#pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
-
 #include "xap_Frame.h"
 #include "xap_Dialog.h"
 
-typedef enum _WRAPPING_TYPE
-{
+enum WRAPPING_TYPE: uint8_t {
     WRAP_INLINE,
     WRAP_TEXTRIGHT,
     WRAP_TEXTLEFT,
     WRAP_TEXTBOTH,
     WRAP_NONE
-} WRAPPING_TYPE;
+};
 
 
-typedef enum _POSITION_TO
-{
+enum POSITION_TO: uint8_t {
     POSITION_TO_PARAGRAPH,
     POSITION_TO_COLUMN,
     POSITION_TO_PAGE
-} POSITION_TO;
+};
 
 /* #include "xav_View.h" */
 
@@ -55,7 +46,10 @@ class ABI_EXPORT XAP_Dialog_Image : public XAP_Dialog_NonPersistent
 {
 public:
 
-  typedef enum { a_OK, a_Cancel } tAnswer;
+	enum tAnswer: uint8_t {
+		a_OK,
+		a_Cancel
+	};
 
 	XAP_Dialog_Image(XAP_DialogFactory * pDlgFactory, XAP_Dialog_Id id);
 	virtual ~XAP_Dialog_Image(void);
@@ -154,5 +148,3 @@ public:
 	bool m_bInHdrFtr;
 	bool m_bTightWrap;
 };
-
-#endif /* XAP_DIALOG_IMAGE_H */

@@ -1,6 +1,7 @@
 /* AbiWord
  * Copyright (C) 2004 Luca Padovani <lpadovan@cs.unibo.it>
  * Copyright (C) 2005 Martin Sevior <msevior@physics.unimelb.edu.au>
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,15 +19,15 @@
  * 02110-1301 USA.
  */
 
-#ifndef __gr_EmbedManager_h__
-#define __gr_EmbedManager_h__
+#pragma once
+
 #include "ut_string_class.h"
 #include "ut_types.h"
 #include "ut_vector.h"
 #include "ev_EditBits.h"
 #include "gr_Graphics.h"
 
-enum AbiDisplayMode
+enum AbiDisplayMode: uint8_t
 {
 	ABI_DISPLAY_BLOCK,
 	ABI_DISPLAY_INLINE
@@ -100,5 +101,3 @@ private:
     GR_Graphics *               m_pG;
     UT_GenericVector<GR_EmbedView *>   m_vecSnapshots;
 };
-
-#endif // __gr_EmbedManager_h__

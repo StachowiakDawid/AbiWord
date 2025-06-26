@@ -1,5 +1,6 @@
 /* automatically generated, do no edit !*/
-typedef enum {
+#include <cstdint>
+typedef enum: uint16_t {
 	RTF_UNKNOWN_KEYWORD = 0,
 	RTF_KW_LF,
 	RTF_KW_CR,

@@ -1,6 +1,6 @@
 /* AbiSource Program Utilities
  * Copyright (C) 2003-2004 Tomas Frydrych <tomasfrydrych@yahoo.co.uk>
- * Copyright (C) 2022 Hubert Figuière
+ * Copyright (C) 2022-2025 Hubert Figuière
  *
  * Based on libuuid
  * Copyright (C) 1996, 1997, 1998 Theodore Ts'o.
@@ -31,11 +31,12 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <cstdint>
 
 #include "ut_types.h"
 
 /* UUID Variant definitions */
-enum UT_UUIDVariant
+enum UT_UUIDVariant: uint32_t
 {
 	UT_UUID_VARIANT_NCS = 0,
 	UT_UUID_VARIANT_DCE = 1,

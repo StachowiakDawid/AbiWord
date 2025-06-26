@@ -347,7 +347,7 @@ static UT_String sMapIcoToColor (UT_uint16 ico, bool bForeground)
 //
 // Field Ids that are useful later for mapping
 //
-typedef enum {
+enum Doc_Field_t: uint8_t {
 	F_TIME,
 	F_DATE,
 	F_EDITTIME,
@@ -367,7 +367,7 @@ typedef enum {
 	F_SPEICHERDAT,
 	F_MERGEFIELD,
 	F_OTHER
-} Doc_Field_t;
+};
 
 struct field
 {
@@ -479,7 +479,7 @@ s_mapPageIdToString (UT_uint16 id)
   MS documentation states happens to mention, so here I will put what I found
   out (later we will move it to some better place)
 */
-typedef enum
+enum MSWordListIdType: int8_t
 {
   WLNF_INVALID		   = -1,
   WLNF_EUROPEAN_ARABIC = 0,
@@ -490,7 +490,7 @@ typedef enum
   WLNF_ORDINAL		   = 5,
   WLNF_BULLETS		   = 23,
   WLNF_HEBREW_NUMBERS  = 45
-} MSWordListIdType;
+};
 
 typedef struct{
   UT_uint32 listId;
@@ -4180,11 +4180,11 @@ bool IE_Imp_MsWord_97::_handleCommandField (char *command)
 	return true;
 }
 
-typedef enum {
+enum MSWord_ImageType: uint8_t {
   MSWord_UnknownImage,
   MSWord_VectorImage,
   MSWord_RasterImage
-} MSWord_ImageType;
+};
 
 static MSWord_ImageType s_determineImageType ( Blip * b )
 {
@@ -4828,7 +4828,7 @@ void IE_Imp_MsWord_97::_row_close ()
 //--------------------------------------------------------------------------/
 
 // from fp_TableContainer.h
-enum
+enum: uint8_t
 {
   LS_OFF = 0,	        // No line style, which means no line is drawn
   LS_NORMAL = 1 	// A normal solid line

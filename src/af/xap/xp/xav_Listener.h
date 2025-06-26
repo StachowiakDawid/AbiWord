@@ -1,5 +1,6 @@
 /* AbiSource Application Framework
  * Copyright (C) 1998-2000 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,7 +27,7 @@ class AV_View;
 typedef UT_uint32 AV_ListenerId;
 
 
-typedef enum _AV_ListenerType
+enum AV_ListenerType: uint8_t
 {
     AV_LISTENER_MENU,
     AV_LISTENER_TOOLBAR,
@@ -39,7 +40,7 @@ typedef enum _AV_ListenerType
     AV_LISTENER_PLUGIN,
     AV_LISTENER_PLUGIN_EXTRA
 
-} AV_ListenerType;
+};
 
 // TODO how did we fill this mask so fast?
 // TODO next it'll need to become a 32-bit mask. YEP done! MES 2/10/2004

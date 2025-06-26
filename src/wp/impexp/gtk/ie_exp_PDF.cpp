@@ -58,12 +58,12 @@ ie_exp_cairo_write_func (void *closure, const unsigned char *data, unsigned int 
 class ABI_EXPORT IE_Exp_Cairo : public IE_Exp
 {
 public:
-  typedef enum
+	enum Format: uint8_t
     {
       BACKEND_PS,
       BACKEND_PDF,
 	  BACKEND_SVG
-    } Format;
+    };
   
   IE_Exp_Cairo::Format mFormat;
   

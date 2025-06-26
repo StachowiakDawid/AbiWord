@@ -34,7 +34,7 @@
 #include "ap_UnixDialog_Background.h"
 #include "ut_debugmsg.h"
 
-enum
+enum: uint8_t
 {
 	RED,
 	GREEN,

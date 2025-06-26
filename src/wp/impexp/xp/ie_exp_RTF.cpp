@@ -3344,7 +3344,7 @@ bool _rtf_font_info::init(const s_RTF_AttrPropAdapter & apa, bool bDoFieldFont)
 	bool tt;
 	GR_Font::s_getGenericFontProperties((char*)szName, &ff, &fp, &tt);
 
-	if ((ff >= 0) && (ff < (int)G_N_ELEMENTS(t_ff)))
+	if ((ff >= 0) && (ff < (int32_t)G_N_ELEMENTS(t_ff)))
 		szFamily = t_ff[ff];
 	else
 		szFamily = t_ff[GR_Font::FF_Unknown];

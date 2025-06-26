@@ -1,6 +1,6 @@
 /* AbiSource Application Framework
  * Copyright (C) 1998-2000 AbiSource, Inc.
- * Copyright (C) 2021 Hubert Figuière
+ * Copyright (C) 2021-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -40,7 +40,7 @@ class XAP_App;
 
 // TODO shouldn't these classes be xav_ prefixed ??
 
-enum AV_Focus
+enum AV_Focus: uint8_t
 {
 	AV_FOCUS_HERE,
 	AV_FOCUS_NEARBY,
@@ -48,7 +48,7 @@ enum AV_Focus
         AV_FOCUS_MODELESS
 };
 
-typedef enum _AV_ScrollCmd
+enum AV_ScrollCmd: uint8_t
 {
 	AV_SCROLLCMD_PAGEUP,
 	AV_SCROLLCMD_PAGEDOWN,
@@ -61,7 +61,7 @@ typedef enum _AV_ScrollCmd
 	AV_SCROLLCMD_TOTOP,
 	AV_SCROLLCMD_TOBOTTOM,
 	AV_SCROLLCMD_TOPOSITION
-} AV_ScrollCmd;
+};
 
 class ABI_EXPORT AV_ScrollObj
 {

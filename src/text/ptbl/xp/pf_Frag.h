@@ -18,9 +18,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef PF_FRAG_H
-#define PF_FRAG_H
+#pragma once
 
 #include <stdio.h>
 #include "ut_types.h"
@@ -49,7 +47,7 @@ class ABI_EXPORT pf_Frag
 {
   friend class            pf_Fragments;
 public:
-	enum PFType {
+	enum PFType: uint8_t {
 		PFT_Text = 0,
 		PFT_Object,
 		PFT_Strux,
@@ -159,5 +157,3 @@ private:
 // This is like pf->tryDownCastStrux() but you can pass a null pf as arg1
 // safely.
 pf_Frag_Strux* tryDownCastStrux( pf_Frag* pf, PTStruxType t);
-
-#endif /* PF_FRAG_H */

@@ -1375,7 +1375,7 @@ bool IE_Imp_RTF::HandleObject()
 	int nested = 1;           // nesting level	
 	RTF_KEYWORD_ID keywordID;
 	int beginResult = 0;     // carries the nesting level where the result is found
-	enum { 
+	enum: uint8_t {
 		OBJ_TYPE_NONE,
 		OBJ_TYPE_RTF,
 		OBJ_TYPE_PICT,

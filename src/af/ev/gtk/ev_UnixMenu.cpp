@@ -1018,7 +1018,7 @@ GtkWidget * EV_UnixMenuPopup::getMenuHandle() const
 bool EV_UnixMenuPopup::synthesizeMenuPopup()
 {
 	m_wMenuPopup = gtk_menu_new();
-	_wd * wd = new _wd(this, 0);
+	_wd * wd = new _wd(this, (XAP_Menu_Id)0);
 	UT_ASSERT(wd);
 	GtkAccelGroup *accelGroup = gtk_accel_group_new();
 	gtk_menu_set_accel_group(GTK_MENU(m_wMenuPopup),accelGroup);
@@ -1044,7 +1044,7 @@ bool EV_UnixMenuPopup::refreshMenu(AV_View * pView)
 	return true;
 }
 
-GtkWidget * EV_UnixMenu::s_createNormalMenuEntry(int 		id, 
+GtkWidget * EV_UnixMenu::s_createNormalMenuEntry(XAP_Menu_Id id,
 												 bool isCheckable, 
 												 bool isRadio, 
 												 bool isPopup,

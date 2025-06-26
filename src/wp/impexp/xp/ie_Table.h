@@ -20,8 +20,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef IE_TABLES
-#define IE_TABLES
+#pragma once
 
 #include <stack>
 #include <string>
@@ -283,7 +282,7 @@ private:
 #define USE_IE_IMP_TABLEHELPER 1
 
 #ifdef USE_IE_IMP_TABLEHELPER
-enum TableZone
+enum TableZone: uint8_t
 	{
 		/* tz_caption, */
 		tz_head,
@@ -440,5 +439,3 @@ private:
 };
 
 #endif /* USE_IE_IMP_TABLEHELPER */
-
-#endif /* IE_TABLE */

@@ -18,9 +18,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef FP_TEXTRUN_H
-#define FP_TEXTRUN_H
+#pragma once
 
 #include "fp_Run.h"
 
@@ -66,7 +64,7 @@ public:
 	void					mergeWithNext(void);
 	virtual bool findFirstNonBlankSplitPoint(fp_RunSplitInfo & splitInfo) override;
 	bool isOneItem(const fp_Run* pNext) const;
-	enum
+	enum: int8_t
 	{
 		Calculate_full_width = -1
 	};
@@ -174,7 +172,7 @@ protected:
 									  GR_Graphics * pG);
 
 private:
-	enum
+	enum: uint8_t
 	{
 		TEXT_POSITION_NORMAL,
 		TEXT_POSITION_SUPERSCRIPT,
@@ -203,5 +201,3 @@ private:
 	const GR_Item *               m_pItem;
 	GR_RenderInfo   *       m_pRenderInfo;
 };
-
-#endif /* FP_TEXTRUN_H */

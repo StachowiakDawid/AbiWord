@@ -19,8 +19,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_UNIXDIALOG_MERGECELLS_H
-#define AP_UNIXDIALOG_MERGECELLS_H
+#pragma once
 
 #include "xap_UnixDialog.h"
 #include "ap_Dialog_MergeCells.h"
@@ -48,10 +47,10 @@ public:
 	virtual void activate(void) override;
 	virtual void notifyActiveFrame(XAP_Frame * pFrame) override;
 protected:
-	typedef enum
+	enum ResponseId: int8_t
 	{
 	    BUTTON_CLOSE = GTK_RESPONSE_CLOSE
-	} ResponseId ;
+	};
 
 
 	virtual GtkWidget *		_constructWindow(void);
@@ -72,5 +71,3 @@ protected:
 	GtkWidget * m_lwMergeBelow;
 
 };
-
-#endif /* AP_UNIXDIALOG_MERGECELLS_H */

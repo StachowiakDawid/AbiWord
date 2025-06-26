@@ -1,5 +1,6 @@
 /* AbiSource Program Utilities
  * Copyright (C) 2001 Tomas Frydrych
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,18 +18,11 @@
  * 02110-1301 USA.
  */
 
-#ifndef UT_LANGUAGE_H
-#define UT_LANGUAGE_H
+#pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
-enum UT_LANGUAGE_DIR
+enum UT_LANGUAGE_DIR: uint8_t
 {
 	UTLANG_LTR,
 	UTLANG_RTL,
@@ -40,7 +34,7 @@ struct UT_LangRecord
 	const gchar * m_szLangCode;
 	const gchar * m_szLangName;
 	UT_uint32  m_nID;
-    UT_LANGUAGE_DIR m_eDir;
+	UT_LANGUAGE_DIR m_eDir;
 };
 
 
@@ -66,4 +60,4 @@ private:
 };
 
 ABI_EXPORT void UT_Language_updateLanguageNames();
-#endif
+

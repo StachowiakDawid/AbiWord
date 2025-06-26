@@ -19,8 +19,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef EV_TOOLBAR_ACTIONS_H
-#define EV_TOOLBAR_ACTIONS_H
+#pragma once
 
 /****************************************************************
 *****************************************************************
@@ -46,15 +45,14 @@ class EV_Toolbar_Label;
 
 /*****************************************************************/
 
-typedef enum _ev_Toolbar_ItemState			/* values may be ORed */
+enum  EV_Toolbar_ItemState: uint8_t			/* values may be ORed */
 {
 	EV_TIS_ZERO				= 0x00,
 	EV_TIS_Gray				= 0x01,			/* should be grayed */
 	EV_TIS_Toggled			= 0x02,			/* should be pressed down */
 	EV_TIS_UseString		= 0x04,			/* should reference pszState */
 	EV_TIS_Hidden           = 0x08          /* stronger version of Gray, you want to hide if possible */
-
-} EV_Toolbar_ItemState;
+};
 
 typedef EV_Toolbar_ItemState ( EV_GetToolbarItemState_Fn )(AV_View * pAV_View, XAP_Toolbar_Id id, const char ** pszState);
 typedef EV_Toolbar_ItemState (*EV_GetToolbarItemState_pFn)(AV_View * pAV_View, XAP_Toolbar_Id id, const char ** pszState);
@@ -71,7 +69,7 @@ typedef EV_Toolbar_ItemState (*EV_GetToolbarItemState_pFn)(AV_View * pAV_View, X
 
 /*****************************************************************/
 
-typedef enum _ev_Toolbar_ItemType
+enum EV_Toolbar_ItemType: uint8_t
 {
 	EV_TBIT_BOGUS			= 0,
 	EV_TBIT_PushButton		= 1,	/* simple push to fire */
@@ -85,8 +83,7 @@ typedef enum _ev_Toolbar_ItemType
 	EV_TBIT_ColorFore       = 9,    /* control to set the foreground color */
 	EV_TBIT_ColorBack       = 10,   /* control to set the background color */
 	EV_TBIT_MenuButton      = 11    /* Button that brings up a menu */
-
-} EV_Toolbar_ItemType;
+};
 
 /*****************************************************************/
 
@@ -135,5 +132,3 @@ protected:
 	XAP_Toolbar_Id			m_first;
 	XAP_Toolbar_Id			m_last;
 };
-
-#endif /* EV_TOOLBAR_ACTIONS_H */

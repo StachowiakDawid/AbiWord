@@ -60,14 +60,14 @@ struct fp_RunSplitInfo
 
 // TODO The break type is not used. Is it put here looking forward,
 // TODO or is it left from some earlier experiments?
-enum FP_RUN_BREAK_TYPE
+enum FP_RUN_BREAK_TYPE: uint8_t
 {
 	BREAK_AUTO			= 0,
 	BREAK_AVOID			= 1,
 	BREAK_ALWAYS		= 2
 };
 
-enum FP_RUN_TYPE
+enum FP_RUN_TYPE: uint8_t
 {
 	FPRUN__FIRST__					= 1,
 	FPRUN_TEXT						= 1,
@@ -90,7 +90,7 @@ enum FP_RUN_TYPE
 	FPRUN__LAST__					= 18
 };
 
-enum FP_HYPERLINK_TYPE
+enum FP_HYPERLINK_TYPE: uint8_t
 {
     HYPERLINK_NORMAL =1,
     HYPERLINK_ANNOTATION = 2,
@@ -98,7 +98,7 @@ enum FP_HYPERLINK_TYPE
 };
 
 // specifies how setX should handle screen clearing
-enum FPRUN_CLEAR_SCREEN
+enum FPRUN_CLEAR_SCREEN: uint8_t
 {
 	FP_CLEARSCREEN_AUTO,
 	FP_CLEARSCREEN_FORCE,
@@ -430,7 +430,7 @@ protected:
 //
 // Variables to draw underlines for all runs
 //
-	enum
+	enum: uint8_t
 	{
 		TEXT_DECOR_UNDERLINE = 		0x01,
 		TEXT_DECOR_OVERLINE = 		0x02,
@@ -833,7 +833,7 @@ private:
 #define  _FIELD(type,desc,tag)  /*nothing*/
 #define  _FIELDTYPE(type,desc)  FPFIELDTYPE_##type,
 
-enum fp_FieldTypesEnum { FPFIELDTYPE_START,
+enum fp_FieldTypesEnum: uint8_t { FPFIELDTYPE_START,
 
 #include "fp_Fields.h"
 
@@ -845,7 +845,7 @@ enum fp_FieldTypesEnum { FPFIELDTYPE_START,
 #define  _FIELD(type,desc,tag)  FPFIELD_##tag,
 #define  _FIELDTYPE(type,desc)  /*nothing*/
 
-enum fp_FieldsEnum { FPFIELD_start,
+enum fp_FieldsEnum: uint8_t { FPFIELD_start,
 
 #include "fp_Fields.h"
 
@@ -931,7 +931,7 @@ private:
 	UT_UCS4Char				m_sFieldValue[FPFIELD_MAX_LENGTH];
 	fp_FieldsEnum			m_iFieldType;
 	const gchar *		m_pParameter;
-	enum
+	enum: uint8_t
 	{
 		TEXT_POSITION_NORMAL,
 		TEXT_POSITION_SUPERSCRIPT,

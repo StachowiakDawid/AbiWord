@@ -484,7 +484,7 @@ Defun_EV_GetToolbarItemState_Fn(ap_ToolbarGetState_CharFmt)
 	EV_Toolbar_ItemState s = EV_TIS_ZERO;
 
 	// todo: rtl/ltr/dom-dir are legal
-	if(pView->getDocument()->areStylesLocked() && !(AP_TOOLBAR_ID_FMT_SUPERSCRIPT == id || AP_TOOLBAR_ID_FMT_SUBSCRIPT == id)) {
+	if(pView->getDocument()->areStylesLocked() && !((XAP_Toolbar_Id)AP_TOOLBAR_ID_FMT_SUPERSCRIPT == id || (XAP_Toolbar_Id)AP_TOOLBAR_ID_FMT_SUBSCRIPT == id)) {
 	  return EV_TIS_Gray;
 	}
 
@@ -644,7 +644,7 @@ Defun_EV_GetToolbarItemState_Fn(ap_ToolbarGetState_SectionFmt)
 	        return EV_TIS_Gray;
 	      }
 	  }
-	if(id == AP_TOOLBAR_ID_INSERT_TABLE)
+	if(id == (XAP_Toolbar_Id)AP_TOOLBAR_ID_INSERT_TABLE)
 	{
 		return EV_TIS_ZERO;
 	}
@@ -969,7 +969,7 @@ Defun_EV_GetToolbarItemState_Fn(ap_ToolbarGetState_CursorInSemItem)
  	UT_return_val_if_fail (pView, EV_TIS_Gray);
 
 	/* The editors aren't working yet. Remove if they do work. */
-	if (id == AP_TOOLBAR_ID_SEMITEM_EDIT) 
+	if (id == (XAP_Toolbar_Id)AP_TOOLBAR_ID_SEMITEM_EDIT)
 		return EV_TIS_Gray;
 
     xxx_UT_DEBUGMSG((" ap_ToolbarGetState_CursorInSemItem() pDoc:%p\n", pView->getDocument() ));

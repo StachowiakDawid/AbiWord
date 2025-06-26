@@ -17,9 +17,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef FG_GRAPHIC_H
-#define FG_GRAPHIC_H
+#pragma once
 
 #include <memory>
 #include <string>
@@ -38,7 +36,7 @@ class GR_Image;
 
 
 
-enum FGType {
+enum FGType: uint8_t {
 	FGT_Unknown,
 	FGT_Raster,
 	FGT_Vector
@@ -102,5 +100,3 @@ public:
 									  PTStruxType iStruxType,
 									  const char* szName) const = 0;
 };
-
-#endif /* FG_GRAPHIC_H */

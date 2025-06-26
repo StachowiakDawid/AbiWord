@@ -20,8 +20,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_BORDER_SHADING_H
-#define AP_DIALOG_BORDER_SHADING_H
+#pragma once
 
 #include "ut_types.h"
 #include "ut_misc.h"
@@ -81,11 +80,11 @@ public:
 
 	virtual void runModeless(XAP_Frame * pFrame) override = 0;
 
-	enum tAnswer {
+	enum tAnswer: uint8_t {
           a_OK,
           a_CLOSE
         };
-	enum toggle_button {
+	enum toggle_button: uint8_t {
           toggle_left,
           toggle_right,
           toggle_top,
@@ -164,5 +163,3 @@ private:
 	bool m_bDestroy_says_stopupdating;
 	bool m_bAutoUpdate_happening_now;
 };
-
-#endif /* AP_DIALOG_BORDER_SHADING_H */

@@ -17,23 +17,22 @@
  * 02110-1301 USA.
  */
 
-#ifndef FV_FRAME_EDIT_H
-#define FV_FRAME_EDIT_H
+#pragma once
 
 #include "pt_Types.h"
 #include "fl_FrameLayout.h"
 #include "fv_Base.h"
 
-typedef enum _FV_FrameEditMode
+enum FV_FrameEditMode: uint8_t
 {
 	FV_FrameEdit_NOT_ACTIVE,
 	FV_FrameEdit_WAIT_FOR_FIRST_CLICK_INSERT,
 	FV_FrameEdit_RESIZE_INSERT,
-    FV_FrameEdit_RESIZE_SELECTED_EXISTING,
+	FV_FrameEdit_RESIZE_SELECTED_EXISTING,
 	FV_FrameEdit_RESIZE_EXISTING,
 	FV_FrameEdit_DRAG_EXISTING,
 	FV_FrameEdit_EXISTING_SELECTED
-} FV_FrameEditMode;
+};
 
 struct fv_FrameStrings
 {
@@ -108,6 +107,3 @@ private:
 	UT_String             m_sMinHeight;
 	UT_String             m_sExpandHeight;
 };
-
-
-#endif /* FV_FRAME_EDIT_H */

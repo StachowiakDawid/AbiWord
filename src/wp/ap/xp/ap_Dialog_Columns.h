@@ -87,7 +87,7 @@ public:
 		return m_pColumnsPreview;
 	}
 
-	typedef enum { a_OK, a_CANCEL } tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
 	AP_Dialog_Columns::tAnswer getAnswer(void) const;
 	UT_uint32		   getColumns(void) const {return m_iColumns;}
 

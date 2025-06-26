@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_UNIXDIALOG_REPLACE_H
-#define AP_UNIXDIALOG_REPLACE_H
+#pragma once
 
 #include "xap_UnixDialog.h"
 #include "ap_Dialog_Replace.h"
@@ -56,7 +55,7 @@ public:
 	void			event_ReverseFindToggled(void);
 	void			event_Cancel(void);
 
-	enum
+	enum ResponseId: int8_t
 	  {
 	    BUTTON_CANCEL = GTK_RESPONSE_CANCEL,
 	    // enum GtkResponseType seems to only use negative integers, so we'll use positive ones to
@@ -64,7 +63,7 @@ public:
 	    BUTTON_FIND = 0,
 	    BUTTON_REPLACE = 1,
 	    BUTTON_REPLACE_ALL = 2
-	  } ResponseId;
+	  };
 
 protected:
 
@@ -93,5 +92,3 @@ private:
 	GtkWidget * m_checkbuttonWholeWord;
 	GtkWidget * m_checkbuttonReverseFind;
 };
-
-#endif /* AP_UNIXDIALOG_REPLACE_H */

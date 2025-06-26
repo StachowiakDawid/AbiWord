@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_DIALOG_LISTDOCS_H
-#define XAP_DIALOG_LISTDOCS_H
+#pragma once
 
 #include "xap_Dialog.h"
 #include "ut_assert.h"
@@ -66,7 +65,7 @@ class ABI_EXPORT XAP_Dialog_ListDocuments : public XAP_Dialog_NonPersistent
 
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK, a_CANCEL }	tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
 
 	XAP_Dialog_ListDocuments::tAnswer getAnswer(void) const {return m_answer;}
 
@@ -95,5 +94,3 @@ class ABI_EXPORT XAP_Dialog_ListDocuments : public XAP_Dialog_NonPersistent
 	UT_Vector                         m_vDocs;
 	bool                              m_bIncludeActiveDoc;
 };
-
-#endif /* XAP_DIALOG_WINDOWMORE_H */

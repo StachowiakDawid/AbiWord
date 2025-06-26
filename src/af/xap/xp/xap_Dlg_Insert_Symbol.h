@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_Dialog_Insert_Symbol_H
-#define XAP_Dialog_Insert_Symbol_H
+#pragma once
 
 /* #include "xap_Frame.h" */
 #include "xap_Dialog.h"
@@ -64,7 +63,7 @@ class ABI_EXPORT XAP_Dialog_Insert_Symbol : public XAP_Dialog_Modeless
 	// read these back
 	UT_UCSChar	     getInsertedSymbol(void);
 	char *     getInsertedFont(void);
-	typedef enum { a_OK, a_CANCEL} tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
 	XAP_Dialog_Insert_Symbol::tAnswer    getAnswer(void) const;
 	void setListener(XAP_Insert_symbol_listener *p_listener_in)
 	{
@@ -105,5 +104,3 @@ class ABI_EXPORT XAP_Dialog_Insert_Symbol : public XAP_Dialog_Modeless
 
 	XAP_Insert_symbol_listener*			m_pListener;
 };
-
-#endif /* XAP_Dialog_Insert_Symbol_H */
