@@ -416,16 +416,20 @@ void AP_UnixDialog_Replace::_populateWindowData(void)
 
 	// last used find string
 	{
-		append_string_to_model(getFindString(), m_comboFind, this);
-	}	
-	
+		auto str = getFindString();
+		append_string_to_model(str, m_comboFind, this);
+		FREEP(str);
+	}
+
 	// last used replace string
 	if (m_id == (XAP_Dialog_Id)AP_DIALOG_ID_REPLACE)
 	{
 		UT_ASSERT(m_comboReplace);
-		append_string_to_model(getReplaceString(), m_comboReplace, this);		
+		auto str = getReplaceString();
+		append_string_to_model(str, m_comboReplace, this);
+		FREEP(str);
 	}
-	
+
 	// update lists
 	_updateLists();
 

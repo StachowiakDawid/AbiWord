@@ -175,8 +175,7 @@ void AP_Dialog_Replace::setFindString(const UT_UCS4Char * string)
  */
 UT_UCS4Char * AP_Dialog_Replace::getFindString(void)
 {
-	UT_UCS4Char * string = nullptr;
-	string = getFvView()->findGetFindString();
+	UT_UCS4Char * string = getFvView()->findGetFindString();
 	if (string)
 	{
 		return string;
@@ -336,7 +335,10 @@ bool AP_Dialog_Replace::findReplace()
 	{
 		_updateLists();
 	}
-	
+
+	FREEP(findString);
+	FREEP(replaceString);
+
 	bool bDoneEntireDocument = false;
 	
 	// call view to do the work
