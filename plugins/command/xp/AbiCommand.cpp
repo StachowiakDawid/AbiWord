@@ -732,8 +732,8 @@ AbiCommand::parseTokens (UT_GenericVector<const UT_UTF8String*> * pToks)
 		{
 			bool bEOD = false;
 			const UT_UTF8String *pFind = pToks->getNthItem (1);
-			const UT_UCSChar *pUCSFind =
-				reinterpret_cast < UT_UCSChar * >(UT_calloc (pFind->size () + 1, sizeof (UT_UCSChar)));
+			const UT_UCS4Char *pUCSFind =
+				reinterpret_cast < UT_UCS4Char * >(UT_calloc (pFind->size () + 1, sizeof (UT_UCS4Char)));
 			static_cast < FV_View * >(m_pCurView)->findSetMatchCase (true);
 			static_cast < FV_View * >(m_pCurView)->findNext (pUCSFind, bEOD);
 			FREEP (pUCSFind);
@@ -1649,9 +1649,9 @@ AbiCommand::replaceAll (const UT_GenericVector<const UT_UTF8String*> * pToks)
 	{
 		const UT_UTF8String *pFind = pToks->getNthItem (1);
 		const UT_UTF8String *pReplace = pToks->getNthItem (2);
-		UT_UCSChar *pUCSFind =
-			reinterpret_cast < UT_UCSChar * >(UT_calloc (pFind->size () + 1, sizeof (UT_UCSChar)));
-		UT_UCSChar *pUCSReplace =	reinterpret_cast < UT_UCSChar *	>(UT_calloc (pReplace->size () + 1, sizeof (UT_UCSChar)));
+		UT_UCS4Char *pUCSFind =
+			reinterpret_cast < UT_UCS4Char * >(UT_calloc (pFind->size () + 1, sizeof (UT_UCS4Char)));
+		UT_UCS4Char *pUCSReplace =	reinterpret_cast < UT_UCS4Char *	>(UT_calloc (pReplace->size () + 1, sizeof (UT_UCS4Char)));
 
 		UT_UCS4_strcpy_char (pUCSFind, pFind->utf8_str ());
 		UT_UCS4_strcpy_char (pUCSReplace, pReplace->utf8_str ());
@@ -1738,10 +1738,10 @@ AbiCommand::replaceNext (const UT_GenericVector<const UT_UTF8String*> * pToks)
 	{
 		const UT_UTF8String *pFind = pToks->getNthItem (1);
 		const UT_UTF8String *pReplace = pToks->getNthItem (2);
-		UT_UCSChar *pUCSFind =
-			reinterpret_cast < UT_UCSChar *	>(UT_calloc (pFind->size () + 1, sizeof (UT_UCSChar)));
-		UT_UCSChar *pUCSReplace =
-			reinterpret_cast < UT_UCSChar *	>(UT_calloc (pReplace->size () + 1, sizeof (UT_UCSChar)));
+		UT_UCS4Char *pUCSFind =
+			reinterpret_cast < UT_UCS4Char *	>(UT_calloc (pFind->size () + 1, sizeof (UT_UCS4Char)));
+		UT_UCS4Char *pUCSReplace =
+			reinterpret_cast < UT_UCS4Char *	>(UT_calloc (pReplace->size () + 1, sizeof (UT_UCS4Char)));
 		bool bEOD = false;
 
 		UT_UCS4_strcpy_char (pUCSFind, pFind->utf8_str ());

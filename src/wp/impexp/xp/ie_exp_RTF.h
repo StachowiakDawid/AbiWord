@@ -17,9 +17,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef IE_EXP_RTF_H
-#define IE_EXP_RTF_H
+#pragma once
 
 #include "ie_exp.h"
 #include "ut_vector.h"
@@ -182,7 +180,7 @@ protected:
     void                            _output_SimpleListRTF(const ie_exp_RTF_MsWord97ListSimple& pSimple);
     void                            _output_OveridesRTF(const ie_exp_RTF_ListOveride& pOver, UT_uint32 i);
 	void                            _output_ListRTF(const fl_AutoNumConstPtr & pAuto, UT_uint32 iLevel);
-	void                            _output_LevelText(const fl_AutoNumConstPtr & pAuto, UT_uint32 iLevel,UT_UCSChar bulletsym);
+	void                            _output_LevelText(const fl_AutoNumConstPtr & pAuto, UT_uint32 iLevel, UT_UCS4Char bulletsym);
 	void                            _get_LeftRight_Side(UT_String & LeftSide, UT_String & RightSide);
 	void                            _generate_level_Text(const fl_AutoNumConstPtr & pAuto,UT_String & LevelText,UT_String &LevelNumbers, UT_uint32 & lenText, UT_uint32 & ifoundLevel);
 
@@ -300,11 +298,3 @@ private:
 	UT_uint32 m_OverideID;
 	fl_AutoNumConstPtr m_pAutoNum;
 };
-#endif /* IE_EXP_RTF_H */
-
-
-
-
-
-
-

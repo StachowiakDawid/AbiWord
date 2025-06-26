@@ -72,7 +72,7 @@ bool ImportStream::init(const char *szEncoding)
 	else
 		m_bRaw = true;
 
-	UT_UCSChar dummy;
+	UT_UCS4Char dummy;
 	return getChar(dummy);
 }
 
@@ -82,7 +82,7 @@ bool ImportStream::init(const char *szEncoding)
 
  Returns single character for CRLF combination
  */
-bool ImportStream::getChar(UT_UCSChar &ucs)
+bool ImportStream::getChar(UT_UCS4Char &ucs)
 {
 	if (!getRawChar(ucs))
 		return false;
@@ -97,7 +97,7 @@ bool ImportStream::getChar(UT_UCSChar &ucs)
 
  Get the next UCS character, converting from file's encoding
  */
-bool ImportStream::getRawChar(UT_UCSChar &ucs)
+bool ImportStream::getRawChar(UT_UCS4Char &ucs)
 {
 	UT_UCS4Char wc = 0;
 	unsigned char b;
@@ -811,7 +811,7 @@ UT_Error IE_Imp_Text::_parseStream(ImportStream * pStream)
 
 	bool bFirstChar = true;
 	UT_GrowBuf gbBlock(1024);
-	UT_UCSChar c;
+	UT_UCS4Char c;
 
 	if (!m_bExplicitlySetEncoding) {
 		std::string prop;

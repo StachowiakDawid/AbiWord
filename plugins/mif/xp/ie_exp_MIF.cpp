@@ -65,7 +65,7 @@ public:
 
 protected:
 	void				_closeBlock(void);
-	void				_outputData(const UT_UCSChar * p, UT_uint32 length);
+	void				_outputData(const UT_UCS4Char * p, UT_uint32 length);
 	
 	PD_Document *		m_pDocument;
 	IE_Exp_MIF *		m_pie;
@@ -149,7 +149,7 @@ void s_MIF_Listener::_closeBlock(void)
 	return;
 }
 
-void s_MIF_Listener::_outputData(const UT_UCSChar * /*data*/, UT_uint32 /*length*/)
+void s_MIF_Listener::_outputData(const UT_UCS4Char * /*data*/, UT_uint32 /*length*/)
 {
 }
 

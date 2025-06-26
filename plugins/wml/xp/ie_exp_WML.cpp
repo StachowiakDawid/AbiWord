@@ -1222,7 +1222,7 @@ void s_WML_Listener::_openSpan(PT_AttrPropIndex api)
 	}
 }
 
-void s_WML_Listener::_outputData(const UT_UCSChar * data, UT_uint32 length)
+void s_WML_Listener::_outputData(const UT_UCS4Char * data, UT_uint32 length)
 {
 	if (!m_bInBlock || (m_bInTable && (!m_bInRow || !m_bInCell)))
 	{
@@ -1232,13 +1232,13 @@ void s_WML_Listener::_outputData(const UT_UCSChar * data, UT_uint32 length)
 	_outputDataUnchecked(data, length);
 }
 
-void s_WML_Listener::_outputDataUnchecked(const UT_UCSChar * data, UT_uint32 length)	
+void s_WML_Listener::_outputDataUnchecked(const UT_UCS4Char * data, UT_uint32 length)	
 {
 	// TODO deal with unicode.
 	// TODO for now, just squish it into ascii.
 	
 	UT_UTF8String sBuf;
-	const UT_UCSChar * pData;
+	const UT_UCS4Char * pData;
 	m_bWasSpace = false;
 
 	sBuf.reserve(length);

@@ -66,7 +66,7 @@ public:
   
 private:
 
-  void _saveTOCData(const UT_UCSChar * data, UT_uint32 length);
+  void _saveTOCData(const UT_UCS4Char * data, UT_uint32 length);
   void _commitTOCData();
 
   bool mInHeading;
@@ -81,9 +81,9 @@ private:
 /*******************************************************************************/
 /*******************************************************************************/
 
-void TOC_Listener::_saveTOCData(const UT_UCSChar * data, UT_uint32 length)
+void TOC_Listener::_saveTOCData(const UT_UCS4Char * data, UT_uint32 length)
 {
-  const UT_UCSChar * pData;
+  const UT_UCS4Char * pData;
   
   UT_return_if_fail(sizeof(UT_Byte) == sizeof(char));
   

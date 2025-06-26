@@ -1808,7 +1808,7 @@ void AP_LeftRuler::drawImmediateLU(const UT_Rect *clip)
 				UT_uint32 n = k / tick.tickLabel * tick.tickScale;
 
 				char buf[12];
-				UT_UCSChar span[12];
+				UT_UCS4Char span[12];
 				UT_ASSERT(n < 10000);
 
 				sprintf(buf, "%d", n);
@@ -1849,7 +1849,7 @@ void AP_LeftRuler::drawImmediateLU(const UT_Rect *clip)
 				UT_uint32 n = k / tick.tickLabel * tick.tickScale;
 
 				char buf[12];
-				UT_UCSChar span[12];
+				UT_UCS4Char span[12];
 				UT_ASSERT(n < 10000);
 
 				sprintf(buf, "%d", n);

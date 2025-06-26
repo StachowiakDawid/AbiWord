@@ -46,7 +46,7 @@ typedef int32_t         UT_GrowBufElement;
 
 /* NOTA BENE: UT_UCSChar is deprecated; all new code must use
    UT_UCS4Char instead !!! */
-// [[deprecated("Use UT_UCS4Char instead")]]
+[[deprecated("Use UT_UCS4Char instead")]]
 typedef UT_UCS4Char		UT_UCSChar;	/* Unicode */
 
 typedef uint8_t       UT_uint8;
@@ -180,22 +180,22 @@ ABI_EXPORT void * UT_calloc ( UT_uint32 nmemb, UT_uint32 size );
 /* When objects (fields, etc) must be represented in unicode, use the
    BELL code and let UT_isWordDelimiter recognize it as a word
    character. See bug 223.  */
-#define UCS_ABI_OBJECT	((UT_UCSChar)0x0007)
+#define UCS_ABI_OBJECT	((UT_UCS4Char)0x0007)
 
-#define UCS_TAB			((UT_UCSChar)0x0009)
-#define UCS_LF			((UT_UCSChar)0x000a)
-#define UCS_VTAB		((UT_UCSChar)0x000b)
-#define UCS_FF			((UT_UCSChar)0x000c)
-#define UCS_CR			((UT_UCSChar)0x000d)
-#define UCS_SPACE		((UT_UCSChar)0x0020)
-#define UCS_NBSP		((UT_UCSChar)0x00a0)
-#define UCS_PILCROW		((UT_UCSChar)0x00b6)
-#define UCS_LINESEP		((UT_UCSChar)0x2028)			/* Unicode line separator */
-#define UCS_PARASEP		((UT_UCSChar)0x2029)			/* Unicode paragraph separator */
-#define UCS_BOM			((UT_UCSChar)0xFEFF)			/* Byte order mark */
-#define UCS_REPLACECHAR	((UT_UCSChar)0xFFFD)
-#define UCS_HYPHEN      ((UT_UCSChar)0x2010)
-#define UCS_MINUS       ((UT_UCSChar)0x2d)
+#define UCS_TAB			((UT_UCS4Char)0x0009)
+#define UCS_LF			((UT_UCS4Char)0x000a)
+#define UCS_VTAB		((UT_UCS4Char)0x000b)
+#define UCS_FF			((UT_UCS4Char)0x000c)
+#define UCS_CR			((UT_UCS4Char)0x000d)
+#define UCS_SPACE		((UT_UCS4Char)0x0020)
+#define UCS_NBSP		((UT_UCS4Char)0x00a0)
+#define UCS_PILCROW		((UT_UCS4Char)0x00b6)
+#define UCS_LINESEP		((UT_UCS4Char)0x2028)			/* Unicode line separator */
+#define UCS_PARASEP		((UT_UCS4Char)0x2029)			/* Unicode paragraph separator */
+#define UCS_BOM			((UT_UCS4Char)0xFEFF)			/* Byte order mark */
+#define UCS_REPLACECHAR	((UT_UCS4Char)0xFFFD)
+#define UCS_HYPHEN      ((UT_UCS4Char)0x2010)
+#define UCS_MINUS       ((UT_UCS4Char)0x2d)
 
 /* Note: the following are our interpretations, not Unicode's */
 /* Note: use Unicode Private Use Area 0xE000 - 0xF8FF         */
@@ -205,41 +205,41 @@ ABI_EXPORT void * UT_calloc ( UT_uint32 nmemb, UT_uint32 size );
 /* Note: special values are added.  We need to watch out for  */
 /* Note: them during import                                   */
 #define UCS_ABICONTROL_START	(UCS_FIELDSTART)
-#define UCS_FIELDSTART		((UT_UCSChar)0xF850)
-#define UCS_FIELDEND		((UT_UCSChar)0xF851)
-#define UCS_BOOKMARKSTART	((UT_UCSChar)0xF852)
-#define UCS_BOOKMARKEND		((UT_UCSChar)0xF853)
+#define UCS_FIELDSTART		((UT_UCS4Char)0xF850)
+#define UCS_FIELDEND		((UT_UCS4Char)0xF851)
+#define UCS_BOOKMARKSTART	((UT_UCS4Char)0xF852)
+#define UCS_BOOKMARKEND		((UT_UCS4Char)0xF853)
 #define UCS_LIGATURE_PLACEHOLDER ((UT_UCS4Char)0xF854)
 #define UCS_ABICONTROL_END	(UCS_LIGATURE_PLACEHOLDER)
 
 
 #if 1 /* try to use the unicode values for special chars */
-#define UCS_EN_SPACE		((UT_UCSChar)0x2002)
-#define UCS_EM_SPACE		((UT_UCSChar)0x2003)
-#define UCS_EN_DASH		((UT_UCSChar)0x2013)
-#define UCS_EM_DASH		((UT_UCSChar)0x2014)
-#define UCS_BULLET		((UT_UCSChar)0x2022)
+#define UCS_EN_SPACE		((UT_UCS4Char)0x2002)
+#define UCS_EM_SPACE		((UT_UCS4Char)0x2003)
+#define UCS_EN_DASH		((UT_UCS4Char)0x2013)
+#define UCS_EM_DASH		((UT_UCS4Char)0x2014)
+#define UCS_BULLET		((UT_UCS4Char)0x2022)
 /* TODO Quote marks need to be localized - not hard-coded */
-#define UCS_LQUOTE		((UT_UCSChar)0x2018)
-#define UCS_RQUOTE		((UT_UCSChar)0x2019)
-#define UCS_LDBLQUOTE		((UT_UCSChar)0x201c)
-#define UCS_RDBLQUOTE		((UT_UCSChar)0x201d)
+#define UCS_LQUOTE		((UT_UCS4Char)0x2018)
+#define UCS_RQUOTE		((UT_UCS4Char)0x2019)
+#define UCS_LDBLQUOTE		((UT_UCS4Char)0x201c)
+#define UCS_RDBLQUOTE		((UT_UCS4Char)0x201d)
 
 /* Note: the following is our interpretation, not Unicode's */
-#define UCS_UNKPUNK 		((UT_UCSChar)0xFFFF)  /* "unknown punctuation" used with UT_isWordDelimiter() */
+#define UCS_UNKPUNK 		((UT_UCS4Char)0xFFFF)  /* "unknown punctuation" used with UT_isWordDelimiter() */
 
 #else /* see bug 512 */
 
-#define UCS_EN_SPACE		((UT_UCSChar)0x0020)
-#define UCS_EM_SPACE		((UT_UCSChar)0x0020)
-#define UCS_EN_DASH		((UT_UCSChar)0x002d)
-#define UCS_EM_DASH		((UT_UCSChar)0x002d)
-#define UCS_BULLET		((UT_UCSChar)0x0095)
-#define UCS_LQUOTE		((UT_UCSChar)0x0027)
-#define UCS_RQUOTE		((UT_UCSChar)0x0027)
-#define UCS_LDBLQUOTE		((UT_UCSChar)0x0022)
-#define UCS_RDBLQUOTE		((UT_UCSChar)0x0022)
-#define UCS_UNKPUNK 		((UT_UCSChar)0x00FF)
+#define UCS_EN_SPACE		((UT_UCS4Char)0x0020)
+#define UCS_EM_SPACE		((UT_UCS4Char)0x0020)
+#define UCS_EN_DASH		((UT_UCS4Char)0x002d)
+#define UCS_EM_DASH		((UT_UCS4Char)0x002d)
+#define UCS_BULLET		((UT_UCS4Char)0x0095)
+#define UCS_LQUOTE		((UT_UCS4Char)0x0027)
+#define UCS_RQUOTE		((UT_UCS4Char)0x0027)
+#define UCS_LDBLQUOTE		((UT_UCS4Char)0x0022)
+#define UCS_RDBLQUOTE		((UT_UCS4Char)0x0022)
+#define UCS_UNKPUNK 		((UT_UCS4Char)0x00FF)
 
 #endif
 

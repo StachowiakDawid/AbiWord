@@ -17,19 +17,11 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef XAP_DICTIONARY_H
-#define XAP_DICTIONARY_H
+#pragma once
 
 #include <stdio.h>
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 #include "ut_hash.h"
 
 /*
@@ -47,11 +39,11 @@ public:
 
 	bool				load(void);
 	bool				save(void);
-	UT_uint32                       countCommonChars(UT_UCSChar * pszNeedle, UT_UCSChar *pszHaystack);
-	void                            suggestWord(UT_GenericVector<UT_UCSChar *> * pVecSuggestions, const UT_UCSChar * pWord, UT_uint32 len);
+	UT_uint32                       countCommonChars(UT_UCS4Char * pszNeedle, UT_UCS4Char *pszHaystack);
+	void                            suggestWord(UT_GenericVector<UT_UCS4Char *> * pVecSuggestions, const UT_UCS4Char * pWord, UT_uint32 len);
 	bool                            addWord(const char * pWord);
-	bool				addWord(const UT_UCSChar * pWord, UT_uint32 len);
-	bool				isWord(const UT_UCSChar * pWord, UT_uint32 len) const;
+	bool				addWord(const UT_UCS4Char * pWord, UT_uint32 len);
+	bool				isWord(const UT_UCS4Char * pWord, UT_uint32 len) const;
 
 protected:
 	bool				_openFile(const char * mode);
@@ -61,16 +53,13 @@ protected:
 	void				_abortFile(void);
 
 	bool				_parseUTF8(void);
-	void				_outputUTF8(const UT_UCSChar * data, UT_uint32 length);
+	void				_outputUTF8(const UT_UCS4Char * data, UT_uint32 length);
 
 	char *		m_szFilename;
 
 	bool				m_bDirty;
-	UT_GenericStringMap<UT_UCSChar *>	    m_hashWords;
+	UT_GenericStringMap<UT_UCS4Char *>	    m_hashWords;
 
 private:
 	FILE *				m_fp;
 };
-
-
-#endif /* XAP_DICTIONARY_H */

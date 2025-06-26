@@ -19,9 +19,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef PT_VARSET_H
-#define PT_VARSET_H
+#pragma once
 
 #include "ut_types.h"
 #include "ut_growbuf.h"
@@ -37,9 +35,9 @@ public:
 	~pt_VarSet();
 
 	void					setPieceTableState(PTState pts);
-	bool					appendBuf(const UT_UCSChar * pBuf, UT_uint32 length, PT_BufIndex * pbi);
+	bool					appendBuf(const UT_UCS4Char * pBuf, UT_uint32 length, PT_BufIndex * pbi);
 	bool					storeAP(const PP_PropertyVector & vecAttributes, PT_AttrPropIndex * papi);
-	inline const UT_UCSChar *getPointer(PT_BufIndex bi) const {  return (UT_UCSChar *)m_buffer[_varsetFromBufIndex(bi)].getPointer(_subscriptFromBufIndex(bi)); }
+	inline const UT_UCS4Char *getPointer(PT_BufIndex bi) const {  return (UT_UCS4Char *)m_buffer[_varsetFromBufIndex(bi)].getPointer(_subscriptFromBufIndex(bi)); }
 	inline PT_BufIndex		getBufIndex(PT_BufIndex bi, UT_uint32 offset) const
 	{     return _makeBufIndex(_varsetFromBufIndex(bi),
 	                           _subscriptFromBufIndex(bi)+offset);
@@ -56,7 +54,7 @@ public:
 									PT_AttrPropIndex * papiNew,
 									PD_Document * pDoc);
 	bool					addIfUniqueAP(PP_AttrProp * pAP, PT_AttrPropIndex * papi);
-    bool                 overwriteBuf(UT_UCSChar * pBuf, UT_uint32 length, PT_BufIndex * pbi);
+    bool                 overwriteBuf(UT_UCS4Char * pBuf, UT_uint32 length, PT_BufIndex * pbi);
 
 private:
 	inline UT_uint32 _subscriptFromBufIndex(PT_BufIndex bi) const
@@ -96,6 +94,3 @@ private:
 	UT_GrowBuf				m_buffer[2];
 	pp_TableAttrProp		m_tableAttrProp[2];
 };
-
-
-#endif /* PT_VARSET_H */

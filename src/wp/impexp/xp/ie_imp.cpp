@@ -134,7 +134,7 @@ bool IE_Imp::appendSpan ( const std::string& s )
 }
 
 
-bool IE_Imp::appendSpan (const UT_UCSChar * p, UT_uint32 length)
+bool IE_Imp::appendSpan (const UT_UCS4Char * p, UT_uint32 length)
 {
 	if (!m_isPaste)
 		return m_pDocument->appendSpan(p, length);

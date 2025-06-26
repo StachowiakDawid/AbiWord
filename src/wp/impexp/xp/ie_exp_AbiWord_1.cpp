@@ -177,7 +177,7 @@ protected:
 	void				_openTag(const char * szPrefix, bool bHasContent,
 								 PT_AttrPropIndex api, UT_uint32 iXID,
 								 bool bIgnoreProperties = false);
-	//void				_outputData(const UT_UCSChar * p, UT_uint32 length);
+	//void				_outputData(const UT_UCS4Char * p, UT_uint32 length);
 	//void				_outputXMLChar(const gchar * data, UT_uint32 length);
 	/*void                _outputXMLChar(const std::string & s)
 	{

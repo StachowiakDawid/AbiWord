@@ -154,9 +154,9 @@ public:
 	EV_Toolbar_ActionSet *				getToolbarActionSet();
 
 	// only used in ispell builds because aspell doesn't suck...
-	bool						addWordToDict(const UT_UCSChar * pWord, UT_uint32 len);
-	bool						isWordInDict(const UT_UCSChar * pWord, UT_uint32 len) const;
-	void						suggestWord(UT_GenericVector<UT_UCSChar*> * pVecSuggestions, const UT_UCSChar * pWord, UT_uint32 lenWord);
+	bool						addWordToDict(const UT_UCS4Char * pWord, UT_uint32 len);
+	bool						isWordInDict(const UT_UCS4Char * pWord, UT_uint32 len) const;
+	void						suggestWord(UT_GenericVector<UT_UCS4Char*> * pVecSuggestions, const UT_UCS4Char * pWord, UT_uint32 lenWord);
     XAP_Prefs *						getPrefs() const;
 	bool getPrefsValue(const std::string& key, std::string& value) const;
 	bool getPrefsValueBool(const std::string& key, bool& pbValue) const;

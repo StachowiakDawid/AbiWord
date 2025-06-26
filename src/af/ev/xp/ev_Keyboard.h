@@ -17,9 +17,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef EV_KEYBOARD_H
-#define EV_KEYBOARD_H
+#pragma once
 
 #include "ut_types.h"
 
@@ -35,12 +33,10 @@ public:
 
 	bool invokeKeyboardMethod(AV_View * pView,
 								 EV_EditMethod * pEM,
-								 const UT_UCSChar * pData,
+								 const UT_UCS4Char * pData,
 								 UT_uint32 dataLength);
 	void setEditEventMap(EV_EditEventMapper * pEEM);
 
 protected:
 	EV_EditEventMapper *	m_pEEM;
 };
-
-#endif /* EV_KEYBOARD_H */

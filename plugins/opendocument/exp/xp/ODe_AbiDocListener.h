@@ -21,9 +21,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef _ODE_ABIDOCLISTENER_H_
-#define _ODE_ABIDOCLISTENER_H_
+#pragma once
 
 // Internal includes
 #include "ODe_ListenerAction.h"
@@ -127,7 +125,7 @@ private:
 
     void _insertMath(PT_AttrPropIndex api);
 
-    void _outputData(const UT_UCSChar* pData, UT_uint32 length);
+    void _outputData(const UT_UCS4Char* pData, UT_uint32 length);
     void _appendSpaces(UT_UTF8String* sBuf, UT_uint32 count);
 
     const gchar* _getObjectKey(const PT_AttrPropIndex& api,
@@ -192,5 +190,3 @@ private:
 
     ODe_ListenerAction m_listenerImplAction;
 };
-
-#endif //_ODE_ABIDOCLISTENER_H_

@@ -1764,7 +1764,7 @@ void ODi_TextContent_ListenerState::_startParagraphElement (const gchar* /*pName
                     // standard say).
                     
                     // Append an empty paragraph with this one char
-                    UT_UCSChar ucs = UCS_FF;
+                    UT_UCS4Char ucs = UCS_FF;
                     m_pAbiDocument->appendStrux(PTX_Block, PP_NOPROPS);
                     m_pAbiDocument->appendSpan (&ucs, 1);
                     m_bOpenedBlock = true;
@@ -1772,7 +1772,7 @@ void ODi_TextContent_ListenerState::_startParagraphElement (const gchar* /*pName
                 }
             } else {
                 _insureInSection();
-                UT_UCSChar ucs;
+                UT_UCS4Char ucs;
                 if ((m_columnIndex <= m_columnsCount)){
                     
                     if((pStyle == nullptr) || (pStyle->getBreakBefore().empty()))
@@ -1888,7 +1888,7 @@ void ODi_TextContent_ListenerState::_startParagraphElement (const gchar* /*pName
             // But AbiWord works differently. So, we will put a <br/> instead
             // of adding a new paragraph.
 
-            UT_UCSChar ucs = UCS_LF;
+            UT_UCS4Char ucs = UCS_LF;
             m_pAbiDocument->appendSpan(&ucs,1);
                m_bContentWritten = true;
 
@@ -1977,7 +1977,7 @@ void ODi_TextContent_ListenerState::_startParagraphElement (const gchar* /*pName
 	        //
 	        // Now insert the tab after the anchor
 	        //
-	        UT_UCSChar ucs = UCS_TAB;
+	        UT_UCS4Char ucs = UCS_TAB;
 	        m_pAbiDocument->appendSpan (&ucs, 1);
 	        m_bContentWritten = true;
             UT_ASSERT(ok);
@@ -2085,13 +2085,13 @@ void ODi_TextContent_ListenerState::_flushPendingParagraphBreak() {
         
         if (m_pendingParagraphBreak == "page") {
             m_pAbiDocument->appendStrux(PTX_Block, PP_NOPROPS);
-            UT_UCSChar ucs = UCS_FF;
+            UT_UCS4Char ucs = UCS_FF;
             m_pAbiDocument->appendSpan (&ucs, 1);
             m_bOpenedBlock = true;
             m_bContentWritten = false;
         } else if (m_pendingParagraphBreak == "column") {
             m_pAbiDocument->appendStrux(PTX_Block, PP_NOPROPS);
-            UT_UCSChar ucs = UCS_VTAB;
+            UT_UCS4Char ucs = UCS_VTAB;
             m_pAbiDocument->appendSpan (&ucs, 1);
             m_bOpenedBlock = true;
             m_bContentWritten = false;

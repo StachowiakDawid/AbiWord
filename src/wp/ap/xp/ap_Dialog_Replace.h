@@ -58,11 +58,11 @@ public:
 	AV_View * 					getView(void);
 	FV_View * 					getFvView(void);
 
-	void						setFindString(const UT_UCSChar * string);
-	UT_UCSChar *				getFindString(void);
+	void						setFindString(const UT_UCS4Char * string);
+	UT_UCS4Char *				getFindString(void);
 
-	void						setReplaceString(const UT_UCSChar * string);
-	UT_UCSChar * 				getReplaceString(void);
+	void						setReplaceString(const UT_UCS4Char * string);
+	UT_UCS4Char * 				getReplaceString(void);
 
 	void						setMatchCase(bool match);
 	bool						getMatchCase(void);
@@ -89,8 +89,8 @@ public:
 	// these may point to are destroyed when useEnd()
 	// is done storing them away
 	FV_View * 					m_pView;
-	UT_UCSChar *				m_findString;
-	UT_UCSChar *				m_replaceString;
+	UT_UCS4Char *				m_findString;
+	UT_UCS4Char *				m_replaceString;
 
 	// Message boxes for events during search
 	XAP_Frame *					m_pFrame;
@@ -110,5 +110,5 @@ public:
 
  private:
 	// returns true when the internal list was changed
-	bool						_manageList(UT_GenericVector<UT_UCS4Char*>* list, UT_UCSChar* string);
+	bool						_manageList(UT_GenericVector<UT_UCS4Char*>* list, UT_UCS4Char* string);
 };

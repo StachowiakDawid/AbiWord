@@ -845,7 +845,7 @@ void s_DocBook_Listener :: _openSpan(PT_AttrPropIndex api)
 	}
 }
 
-void s_DocBook_Listener::_outputData(const UT_UCSChar * data, UT_uint32 length)
+void s_DocBook_Listener::_outputData(const UT_UCS4Char * data, UT_uint32 length)
 {
 	if ((!m_bInParagraph) && (!m_bInTitle))
 	{
@@ -854,7 +854,7 @@ void s_DocBook_Listener::_outputData(const UT_UCSChar * data, UT_uint32 length)
 	m_bWasSpace = false;
 	
 	UT_UTF8String sBuf = "";
-	const UT_UCSChar * pData;
+	const UT_UCS4Char * pData;
 
 	UT_ASSERT(sizeof(UT_Byte) == sizeof(char));
 

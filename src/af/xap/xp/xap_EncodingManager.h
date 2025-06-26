@@ -56,8 +56,8 @@ struct ABI_EXPORT XAP_LangInfo
 
 struct ABI_EXPORT XAP_SmartQuoteStyle
 {
-	UT_UCSChar leftQuote;
-	UT_UCSChar rightQuote;
+	UT_UCS4Char leftQuote;
+	UT_UCS4Char rightQuote;
 };
 
 
@@ -122,23 +122,23 @@ public:
     /*
 	This won't work for c>0xff. Use UT_Mbtowc!
     */
-    virtual UT_UCSChar try_nativeToU(UT_UCSChar c) const;
+    virtual UT_UCS4Char try_nativeToU(UT_UCS4Char c) const;
     /*
 	If returned value is > 0xff, then multibyte seq is returned by iconv
 	and return value mean nothing (except that it notes that singlebyte
 	encoding can't be used for this character.
     */
-    virtual UT_UCSChar try_UToNative(UT_UCSChar c)  const;
-    virtual UT_UCSChar try_UToLatin1(UT_UCSChar c)  const;
+    virtual UT_UCS4Char try_UToNative(UT_UCS4Char c)  const;
+    virtual UT_UCS4Char try_UToLatin1(UT_UCS4Char c)  const;
 
     /*these are used for reading/writing of doc and rtf files. */
-    virtual UT_UCSChar try_WindowsToU(UT_UCSChar c) const;
-    virtual UT_UCSChar try_UToWindows(UT_UCSChar c)  const;
+    virtual UT_UCS4Char try_WindowsToU(UT_UCS4Char c) const;
+    virtual UT_UCS4Char try_UToWindows(UT_UCS4Char c)  const;
 
 
 
 
-    virtual char fallbackChar(UT_UCSChar c) const;
+    virtual char fallbackChar(UT_UCS4Char c) const;
 	static XAP_EncodingManager *get_instance();
 	void Delete_instance();
 
@@ -151,7 +151,7 @@ public:
 	so there is no need to check whether there is enough g_free space in the
 	buffer.
     */
-    virtual UT_uint32  approximate(char* out,UT_uint32 max_length,UT_UCSChar c) const;
+    virtual UT_uint32  approximate(char* out, UT_uint32 max_length, UT_UCS4Char c) const;
 
     /*
        This should return 0 if it's unknown. Used only when exporting the
@@ -184,7 +184,7 @@ public:
 	    it returns 1. Under cjk locales, returns 1 if all chars <0xff
 	    in that range.
 	*/
-	virtual bool noncjk_letters(const UT_UCSChar* str,int len) const;
+	virtual bool noncjk_letters(const UT_UCS4Char* str,int len) const;
 
 	/*
 	 * Returns true if a break between c[0] and c[1] is permissible.
@@ -194,7 +194,7 @@ public:
 	/*
 	    This should be as precise as possible.
 	*/
-	virtual bool is_cjk_letter(UT_UCSChar c) const;
+	virtual bool is_cjk_letter(UT_UCS4Char c) const;
 
 	/*
 	    This is rather smart wrapper for wvLIDToCodePageConverter.
@@ -214,10 +214,10 @@ public:
 	virtual const char* WindowsCharsetName() const;
 
         /* these use try_ methods, and if they fail, fallbackChar() is returned*/
-	UT_UCSChar nativeToU(UT_UCSChar c) const;
-	UT_UCSChar UToNative(UT_UCSChar c)  const;
-	UT_UCSChar WindowsToU(UT_UCSChar c) const;
-	UT_UCSChar UToWindows(UT_UCSChar c)  const;
+	UT_UCS4Char nativeToU(UT_UCS4Char c) const;
+	UT_UCS4Char UToNative(UT_UCS4Char c)  const;
+	UT_UCS4Char WindowsToU(UT_UCS4Char c) const;
+	UT_UCS4Char UToWindows(UT_UCS4Char c)  const;
 
 	/*
 	  this will convert the string 'in' from charset 'charset' to

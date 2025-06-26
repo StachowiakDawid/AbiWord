@@ -136,7 +136,7 @@ void pf_Frag_Text::setField(fd_Field * pField)
 std::string pf_Frag_Text::toString() const
 {
     PT_BufIndex startidx = getBufIndex();
-    const UT_UCSChar* ucsstart = m_pPieceTable->getPointer( startidx );
+    const UT_UCS4Char* ucsstart = m_pPieceTable->getPointer( startidx );
 	UT_UTF8String ustr( ucsstart, getLength() );
     return ustr.utf8_str();
 }

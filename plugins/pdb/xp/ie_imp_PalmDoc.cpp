@@ -180,7 +180,7 @@ UT_Error IE_Imp_PalmDoc::_parseFile(GsfInput * pdfp)
 	UT_GrowBuf gbBlock(1024);
 	bool bEatLF = false;
 	bool bEmptyFile = true;
-	UT_UCSChar c;
+	UT_UCS4Char c;
 	UT_UCS4Char wc;
 
 	pdb_header	header;
@@ -249,19 +249,19 @@ UT_Error IE_Imp_PalmDoc::_parseFile(GsfInput * pdfp)
 			  }
 			if( !m_Mbtowc.mbtowc( wc, m_buf->buf[m_buf->position] ) )
 		 	   continue;
-			c = static_cast<UT_UCSChar>(wc);
+			c = static_cast<UT_UCS4Char>(wc);
 			switch (c)
 			{
-			case static_cast<UT_UCSChar>('\r'):
-			case static_cast<UT_UCSChar>('\n'):
+			case static_cast<UT_UCS4Char>('\r'):
+			case static_cast<UT_UCS4Char>('\n'):
 			
-				if ((c == static_cast<UT_UCSChar>('\n')) && bEatLF)
+				if ((c == static_cast<UT_UCS4Char>('\n')) && bEatLF)
 				{
 					bEatLF = false;
 					break;
 				}
 
-				if (c == static_cast<UT_UCSChar>('\r'))
+				if (c == static_cast<UT_UCS4Char>('\r'))
 				{
 					bEatLF = true;
 				}
@@ -274,7 +274,7 @@ UT_Error IE_Imp_PalmDoc::_parseFile(GsfInput * pdfp)
 				bEmptyFile = false;
 				if (gbBlock.getLength() > 0)
 				{
-					X_ReturnNoMemIfError(appendSpan(reinterpret_cast<const UT_UCSChar*>(gbBlock.getPointer(0)), gbBlock.getLength()));
+					X_ReturnNoMemIfError(appendSpan(reinterpret_cast<const UT_UCS4Char*>(gbBlock.getPointer(0)), gbBlock.getLength()));
 					gbBlock.truncate(0);
 				}
 				break;
@@ -296,7 +296,7 @@ UT_Error IE_Imp_PalmDoc::_parseFile(GsfInput * pdfp)
 		// create a paragraph and emit the text now.
 		X_ReturnNoMemIfError(appendStrux(PTX_Block, PP_NOPROPS));
 		if (gbBlock.getLength() > 0)
-			X_ReturnNoMemIfError(appendSpan(reinterpret_cast<const UT_UCSChar *>(gbBlock.getPointer(0)), gbBlock.getLength()));
+			X_ReturnNoMemIfError(appendSpan(reinterpret_cast<const UT_UCS4Char *>(gbBlock.getPointer(0)), gbBlock.getLength()));
 	}
 
 	return UT_OK;

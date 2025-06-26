@@ -94,7 +94,7 @@ public:
 
 	virtual bool appendStrux(PTStruxType pts, const PP_PropertyVector & attributes) override;
 	virtual bool appendFmt(const PP_PropertyVector & vecAttributes) override;
-	virtual bool appendSpan(const UT_UCSChar * p, UT_uint32 length) override;
+	virtual bool appendSpan(const UT_UCS4Char * p, UT_uint32 length) override;
 	virtual bool  appendObject(PTObjectType pto, const PP_PropertyVector & attributes);
 
 

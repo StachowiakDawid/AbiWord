@@ -60,8 +60,8 @@
 static UT_sint32 s_Insert_Symbol_first = 0;
 static std::string s_Prev_Font;
 
-static UT_UCSChar m_CurrentSymbol;
-static UT_UCSChar m_PreviousSymbol;
+static UT_UCS4Char m_CurrentSymbol;
+static UT_UCS4Char m_PreviousSymbol;
 
 XAP_Dialog * XAP_UnixDialog_Insert_Symbol::static_constructor(XAP_DialogFactory * pFactory,
 															  XAP_Dialog_Id id)
@@ -164,7 +164,7 @@ void XAP_UnixDialog_Insert_Symbol::runModeless(XAP_Frame * pFrame)
 	if ( s_Insert_Symbol_first == 0)
 	{
 		iDrawSymbol->setSelectedFont(DEFAULT_UNIX_SYMBOL_FONT);
-		UT_UCSChar c = iDrawSymbol->calcSymbol(0, 0);
+		UT_UCS4Char c = iDrawSymbol->calcSymbol(0, 0);
 		if (c)
 		{
 			m_PreviousSymbol = c;
@@ -235,7 +235,7 @@ void XAP_UnixDialog_Insert_Symbol::New_Font(void )
 
 	// we get strange things if the previous Symbol does not exists in the
 	// new font. Reset it
-	UT_UCSChar c = iDrawSymbol->calcSymbol(0, 0);
+	UT_UCS4Char c = iDrawSymbol->calcSymbol(0, 0);
 	if (c)
 	{
 		m_PreviousSymbol = c;
@@ -498,7 +498,7 @@ gboolean XAP_UnixDialog_Insert_Symbol::Key_Pressed(GdkEventKey * e)
 	{
 		XAP_Draw_Symbol * iDrawSymbol = _getCurrentSymbolMap();
 		UT_return_val_if_fail(iDrawSymbol,FALSE);
-		UT_UCSChar c = iDrawSymbol->calcSymbolFromCoords(ix, iy);
+		UT_UCS4Char c = iDrawSymbol->calcSymbolFromCoords(ix, iy);
 		if (c)
 		{ m_PreviousSymbol = m_CurrentSymbol;
 		  m_CurrentSymbol = c;
@@ -524,7 +524,7 @@ void XAP_UnixDialog_Insert_Symbol::SymbolMap_clicked( GdkEvent * event)
 
 	XAP_Draw_Symbol * iDrawSymbol = _getCurrentSymbolMap();
 	UT_return_if_fail(iDrawSymbol);
-	UT_UCSChar c = iDrawSymbol->calcSymbol(x, y);
+	UT_UCS4Char c = iDrawSymbol->calcSymbol(x, y);
 	if (c)
 	{
 		m_PreviousSymbol = m_CurrentSymbol;

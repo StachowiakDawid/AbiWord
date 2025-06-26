@@ -511,7 +511,7 @@ bool fp_TextRun::findFirstNonBlankSplitPoint(fp_RunSplitInfo& /*si*/ )
 
 	si.iOffset = -1;
 
-	const UT_UCSChar* pSpan;
+	const UT_UCS4Char* pSpan;
 	UT_uint32 lenSpan;
 	UT_uint32 offset = getBlockOffset();
 	UT_uint32 len = getLength();
@@ -2503,7 +2503,7 @@ void fp_TextRun::drawSquiggle(UT_uint32 iOffset, UT_uint32 iLen,FL_SQUIGGLE_TYPE
 }
 #endif
 
-UT_sint32 fp_TextRun::findCharacter(UT_uint32 startPosition, UT_UCSChar Character) const
+UT_sint32 fp_TextRun::findCharacter(UT_uint32 startPosition, UT_UCS4Char Character) const
 {
 	// NOTE: startPosition is run-relative
 	// NOTE: return value is block-relative (don't ask me why)
@@ -2524,7 +2524,7 @@ UT_sint32 fp_TextRun::findCharacter(UT_uint32 startPosition, UT_UCSChar Characte
 	return -1;
 }
 
-bool fp_TextRun::getCharacter(UT_uint32 run_offset, UT_UCSChar &Character) const
+bool fp_TextRun::getCharacter(UT_uint32 run_offset, UT_UCS4Char &Character) const
 {
 	if(getLength() == 0)
 		return false;
@@ -2541,9 +2541,9 @@ bool fp_TextRun::getCharacter(UT_uint32 run_offset, UT_UCSChar &Character) const
 	return true;
 }
 
-bool fp_TextRun::isLastCharacter(UT_UCSChar Character) const
+bool fp_TextRun::isLastCharacter(UT_UCS4Char Character) const
 {
-	UT_UCSChar c;
+	UT_UCS4Char c;
 
 	if (getCharacter(getLength() - 1, c))
 		return c == Character;
@@ -2553,9 +2553,9 @@ bool fp_TextRun::isLastCharacter(UT_UCSChar Character) const
 	return false;
 }
 
-bool fp_TextRun::isFirstCharacter(UT_UCSChar Character) const
+bool fp_TextRun::isFirstCharacter(UT_UCS4Char Character) const
 {
-	UT_UCSChar c;
+	UT_UCS4Char c;
 
 	if (getCharacter(0, c))
 		return c == Character;
@@ -2771,7 +2771,7 @@ bool fp_TextRun::_canContainPoint(void) const
 //size of str required if not not enough space, -1 otherwise
 //it further returns the len copied (or desired to be copied) into pStr in iMax
 
-UT_sint32 fp_TextRun::getStr(UT_UCSChar * pStr, UT_uint32 &iMax)
+UT_sint32 fp_TextRun::getStr(UT_UCS4Char * pStr, UT_uint32 &iMax)
 {
 	UT_uint32 len = getLength();
 

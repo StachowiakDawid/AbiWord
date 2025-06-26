@@ -17,9 +17,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef IE_EXP_DOCBOOK_H
-#define IE_EXP_DOCBOOK_H
+#pragma once
 
 #include	"ie_exp.h"
 #include	"pl_Listener.h"
@@ -144,7 +142,7 @@ protected:
 	bool				_inFormattedSpan(void);
 	bool				_inSectionStrux(void);
 
-	void				_outputData(const UT_UCSChar * p, UT_uint32 length);
+	void				_outputData(const UT_UCS4Char * p, UT_uint32 length);
 	void				_handleDataItems(void);
 	void				_convertFontSize(char* szDest, const char* pszFontSize);
 	void				_convertColor(char* szDest, const char* pszColor);
@@ -186,5 +184,3 @@ private:
 	UT_Vector		m_utvDataIDs;	// list of data ids for image enumeration
 	ie_Table mTableHelper;
 };
-
-#endif /* IE_EXP_DOCBOOK_H */

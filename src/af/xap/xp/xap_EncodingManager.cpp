@@ -170,14 +170,14 @@ const char* XAP_EncodingManager::getLanguageISOTerritory() const
 // TODO Do we need an equivalent function which can return
 // TODO U+FFFD "REPLACEMENT CHARACTER" or U+25A0 "BLACK SQUARE"
 // TODO for translating into Unicode?
-char XAP_EncodingManager::fallbackChar(UT_UCSChar) const 
+char XAP_EncodingManager::fallbackChar(UT_UCS4Char) const 
 { 
     return '?'; 
 }
 
 /* in fact this method should provide full implementation */
 
-UT_uint32 XAP_EncodingManager::approximate(char* out,UT_uint32 max_length,UT_UCSChar c) const
+UT_uint32 XAP_EncodingManager::approximate(char* out,UT_uint32 max_length,UT_UCS4Char c) const
 {
 	if (max_length==0)
 		return 0;
@@ -202,15 +202,15 @@ UT_uint32 XAP_EncodingManager::approximate(char* out,UT_uint32 max_length,UT_UCS
 	return 0;
 }
 
-UT_UCSChar XAP_EncodingManager::nativeToU(UT_UCSChar c) const
+UT_UCS4Char XAP_EncodingManager::nativeToU(UT_UCS4Char c) const
 {
-    UT_UCSChar ret = try_nativeToU(c);
-    return ret ? ret : (UT_UCSChar)fallbackChar(c);	
+    UT_UCS4Char ret = try_nativeToU(c);
+    return ret ? ret : (UT_UCS4Char)fallbackChar(c);	
 }
 
-UT_UCSChar XAP_EncodingManager::UToNative(UT_UCSChar c)  const
+UT_UCS4Char XAP_EncodingManager::UToNative(UT_UCS4Char c)  const
 {
-    UT_UCSChar ret = try_UToNative(c);
+    UT_UCS4Char ret = try_UToNative(c);
     if (!ret || ret>0xff) 
     {
     	char repl;
@@ -221,17 +221,17 @@ UT_UCSChar XAP_EncodingManager::UToNative(UT_UCSChar c)  const
     	return ret;
 }
 
-UT_UCSChar XAP_EncodingManager::WindowsToU(UT_UCSChar c) const
+UT_UCS4Char XAP_EncodingManager::WindowsToU(UT_UCS4Char c) const
 {
-    UT_UCSChar ret = try_WindowsToU(c);
-    return ret ? ret : (UT_UCSChar)fallbackChar(c);	
+    UT_UCS4Char ret = try_WindowsToU(c);
+    return ret ? ret : (UT_UCS4Char)fallbackChar(c);	
 }
 
 
-UT_UCSChar XAP_EncodingManager::UToWindows(UT_UCSChar c)  const
+UT_UCS4Char XAP_EncodingManager::UToWindows(UT_UCS4Char c)  const
 {
-    UT_UCSChar ret = try_UToWindows(c);
-    return ret && ret<=0xff ? ret : (UT_UCSChar)fallbackChar(c);	
+    UT_UCS4Char ret = try_UToWindows(c);
+    return ret && ret<=0xff ? ret : (UT_UCS4Char)fallbackChar(c);	
 }
 
 
@@ -361,7 +361,7 @@ static void init_values(const XAP_EncodingManager* that)
 }
 
 
-static UT_UCSChar try_CToU(UT_UCSChar c,UT_iconv_t iconv_handle)
+static UT_UCS4Char try_CToU(UT_UCS4Char c,UT_iconv_t iconv_handle)
 {
 	if (!UT_iconv_isValid (iconv_handle)) return 0;
 	UT_iconv_reset (iconv_handle);
@@ -386,29 +386,29 @@ static UT_UCSChar try_CToU(UT_UCSChar c,UT_iconv_t iconv_handle)
 
 	size_t donecnt = UT_iconv(iconv_handle,&iptr,&ibuflen,&optr,&obuflen);			
 
-	UT_UCSChar uval = 0;
+	UT_UCS4Char uval = 0;
 
 	if (donecnt!=(size_t)-1 && ibuflen==0) 
 	{
 		if (XAP_EncodingManager::swap_stou)
 			{
-				uval = static_cast<UT_UCSChar>(static_cast<unsigned char>(obuf[3]));
-				uval = static_cast<UT_UCSChar>(static_cast<unsigned char>(obuf[2])) | (uval<<8);
-				uval = static_cast<UT_UCSChar>(static_cast<unsigned char>(obuf[1])) | (uval<<8);
-				uval = static_cast<UT_UCSChar>(static_cast<unsigned char>(obuf[0])) | (uval<<8);
+				uval = static_cast<UT_UCS4Char>(static_cast<unsigned char>(obuf[3]));
+				uval = static_cast<UT_UCS4Char>(static_cast<unsigned char>(obuf[2])) | (uval<<8);
+				uval = static_cast<UT_UCS4Char>(static_cast<unsigned char>(obuf[1])) | (uval<<8);
+				uval = static_cast<UT_UCS4Char>(static_cast<unsigned char>(obuf[0])) | (uval<<8);
 			}
 		else
 			{
-				uval = static_cast<UT_UCSChar>(static_cast<unsigned char>(obuf[0]));
-				uval = static_cast<UT_UCSChar>(static_cast<unsigned char>(obuf[1])) | (uval<<8);
-				uval = static_cast<UT_UCSChar>(static_cast<unsigned char>(obuf[2])) | (uval<<8);
-				uval = static_cast<UT_UCSChar>(static_cast<unsigned char>(obuf[3])) | (uval<<8);
+				uval = static_cast<UT_UCS4Char>(static_cast<unsigned char>(obuf[0]));
+				uval = static_cast<UT_UCS4Char>(static_cast<unsigned char>(obuf[1])) | (uval<<8);
+				uval = static_cast<UT_UCS4Char>(static_cast<unsigned char>(obuf[2])) | (uval<<8);
+				uval = static_cast<UT_UCS4Char>(static_cast<unsigned char>(obuf[3])) | (uval<<8);
 			}
 	}
 	return uval;
 }
 
-static UT_UCSChar try_UToC(UT_UCSChar c,UT_iconv_t iconv_handle)
+static UT_UCS4Char try_UToC(UT_UCS4Char c,UT_iconv_t iconv_handle)
 {
 	if (!UT_iconv_isValid(iconv_handle)) return 0;
 	UT_iconv_reset (iconv_handle);
@@ -437,41 +437,41 @@ static UT_UCSChar try_UToC(UT_UCSChar c,UT_iconv_t iconv_handle)
 
 	size_t donecnt = UT_iconv (iconv_handle,&iptr,&ibuflen,&optr,&obuflen);
 
-	UT_UCSChar byte = 0;
+	UT_UCS4Char byte = 0;
 
 	if (donecnt!=(size_t)-1 && ibuflen==0) 
 	{
 		if (obuflen != 5) // grr... [TODO: ugh.]
 			{
 				UT_DEBUGMSG(("WARNING: character code %x received, substituting 'E'\n", c));
-				byte = static_cast<UT_UCSChar>(static_cast<unsigned char>('E'));
+				byte = static_cast<UT_UCS4Char>(static_cast<unsigned char>('E'));
 			}
-		else byte = static_cast<UT_UCSChar>(static_cast<unsigned char>(obuf[0]));
+		else byte = static_cast<UT_UCS4Char>(static_cast<unsigned char>(obuf[0]));
 	}
 	return byte;
 }
 
-UT_UCSChar XAP_EncodingManager::try_nativeToU(UT_UCSChar c) const
+UT_UCS4Char XAP_EncodingManager::try_nativeToU(UT_UCS4Char c) const
 {
 	return try_CToU(c,iconv_handle_N2U);
 }
 
-UT_UCSChar XAP_EncodingManager::try_UToNative(UT_UCSChar c)  const
+UT_UCS4Char XAP_EncodingManager::try_UToNative(UT_UCS4Char c)  const
 {
 	return try_UToC(c,iconv_handle_U2N);
 }
 
-UT_UCSChar XAP_EncodingManager::try_UToLatin1(UT_UCSChar c)  const
+UT_UCS4Char XAP_EncodingManager::try_UToLatin1(UT_UCS4Char c)  const
 {
 	return try_UToC(c,iconv_handle_U2Latin1);
 }
 
-UT_UCSChar XAP_EncodingManager::try_WindowsToU(UT_UCSChar c) const 
+UT_UCS4Char XAP_EncodingManager::try_WindowsToU(UT_UCS4Char c) const 
 { 
 	return try_CToU(c,iconv_handle_Win2U);
 }
 
-UT_UCSChar XAP_EncodingManager::try_UToWindows(UT_UCSChar c) const 
+UT_UCS4Char XAP_EncodingManager::try_UToWindows(UT_UCS4Char c) const 
 { 
 	return try_UToC(c,iconv_handle_U2Win);
 }
@@ -798,21 +798,21 @@ const XAP_SmartQuoteStyle XAP_EncodingManager::smartQuoteStyles[] =
 {
 	{ UCS_LDBLQUOTE, UCS_RDBLQUOTE }, // 0 English double quotes
 	{ UCS_LQUOTE, UCS_RQUOTE }, // 1 English single quotes
-	{ ((UT_UCSChar)0x00ab), ((UT_UCSChar)0x00bb) }, // 2 French double
-	{ ((UT_UCSChar)0x00bb), ((UT_UCSChar)0x00ab) }, // 3 Danish double
-	{ ((UT_UCSChar)0x00bb), ((UT_UCSChar)0x00bb) }, // 4
-	{ UCS_LQUOTE, ((UT_UCSChar)0x201a) }, // 5
+	{ ((UT_UCS4Char)0x00ab), ((UT_UCS4Char)0x00bb) }, // 2 French double
+	{ ((UT_UCS4Char)0x00bb), ((UT_UCS4Char)0x00ab) }, // 3 Danish double
+	{ ((UT_UCS4Char)0x00bb), ((UT_UCS4Char)0x00bb) }, // 4
+	{ UCS_LQUOTE, ((UT_UCS4Char)0x201a) }, // 5
 	{ UCS_RQUOTE, UCS_RQUOTE }, // 6
-	{ ((UT_UCSChar)0x201a), UCS_LQUOTE }, // 7 German single
-	{ ((UT_UCSChar)0x201a), UCS_RQUOTE }, // 8
-	{ UCS_LDBLQUOTE, ((UT_UCSChar)0x201e) }, // 9
+	{ ((UT_UCS4Char)0x201a), UCS_LQUOTE }, // 7 German single
+	{ ((UT_UCS4Char)0x201a), UCS_RQUOTE }, // 8
+	{ UCS_LDBLQUOTE, ((UT_UCS4Char)0x201e) }, // 9
 	{ UCS_RDBLQUOTE, UCS_RDBLQUOTE }, // 10
-	{ ((UT_UCSChar)0x201e), UCS_RDBLQUOTE }, // 11
-	{ ((UT_UCSChar)0x201e), UCS_LDBLQUOTE }, // 12 German double
-	{ ((UT_UCSChar)0x2039), ((UT_UCSChar)0x203a) }, // 13 French single
-	{ ((UT_UCSChar)0x203a), ((UT_UCSChar)0x2039) }, // 14 reverse French single
-	{ ((UT_UCSChar)0x300c), ((UT_UCSChar)0x300d) }, // 15 Dark corner bracket
-	{ ((UT_UCSChar)0x300e), ((UT_UCSChar)0x300f) }, // 16 White corner bracket
+	{ ((UT_UCS4Char)0x201e), UCS_RDBLQUOTE }, // 11
+	{ ((UT_UCS4Char)0x201e), UCS_LDBLQUOTE }, // 12 German double
+	{ ((UT_UCS4Char)0x2039), ((UT_UCS4Char)0x203a) }, // 13 French single
+	{ ((UT_UCS4Char)0x203a), ((UT_UCS4Char)0x2039) }, // 14 reverse French single
+	{ ((UT_UCS4Char)0x300c), ((UT_UCS4Char)0x300d) }, // 15 Dark corner bracket
+	{ ((UT_UCS4Char)0x300e), ((UT_UCS4Char)0x300f) }, // 16 White corner bracket
 	{ UCS_RDBLQUOTE, UCS_LDBLQUOTE }, // 17 - Same as English, but RTL for Hebrew
 	{ '\"', '\"' }, // 18 - ASCII double quote
 	{ '\'', '\'' }, // 19 - ASCII single quote
@@ -1435,14 +1435,14 @@ int XAP_EncodingManager__swap_stou,XAP_EncodingManager__swap_utos;
 */
 bool XAP_EncodingManager::single_case() const { return cjk_locale(); }
 
-bool XAP_EncodingManager::is_cjk_letter(UT_UCSChar c) const
+bool XAP_EncodingManager::is_cjk_letter(UT_UCS4Char c) const
 {
     if (!cjk_locale())
 	return 0;
     return (c>0xff);
 }
 
-bool XAP_EncodingManager::noncjk_letters(const UT_UCSChar* str,int len) const
+bool XAP_EncodingManager::noncjk_letters(const UT_UCS4Char* str,int len) const
 {
     if (!cjk_locale())
 	return 1;

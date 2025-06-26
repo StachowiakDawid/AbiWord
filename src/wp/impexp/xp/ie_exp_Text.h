@@ -132,7 +132,7 @@ protected:
 	int			_wctomb(char * pC, int & length, UT_UCS4Char wc) { return m_wctomb.wctomb(pC,length,wc); }
 	void				_genBOM(void);
 	void				_genLineBreak(void);
-	virtual void		_outputData(const UT_UCSChar * p, UT_uint32 length);
+	virtual void		_outputData(const UT_UCS4Char * p, UT_uint32 length);
 	void				_closeBlock(void);
 	void                _handleDirMarker(PT_AttrPropIndex apiSpan);
 

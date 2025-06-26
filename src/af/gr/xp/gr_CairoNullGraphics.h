@@ -52,7 +52,7 @@ public:
 	static const char *    graphicsDescriptor(void) { return "Cairo Null Graphics";}
 	static GR_Graphics *   graphicsAllocator(GR_AllocInfo&);
 
-	virtual void drawChars(const UT_UCSChar* pChars,
+	virtual void drawChars(const UT_UCS4Char* pChars,
 			       int iCharOffset, int iLength,
 			       UT_sint32 xoff, UT_sint32 yoff,
 			       int * pCharWidths = nullptr) override;

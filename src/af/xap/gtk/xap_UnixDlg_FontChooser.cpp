@@ -1116,7 +1116,7 @@ void XAP_UnixDialog_FontChooser::updatePreview(void)
 	// if a font has been set since this dialog was launched, draw things with it
 	if (m_doneFirstFont)
 	{
-		const UT_UCSChar * entryString = getDrawString ();
+		const UT_UCS4Char * entryString = getDrawString ();
 
 		if (!entryString) {
 			return;

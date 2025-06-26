@@ -149,7 +149,7 @@ EV_Menu::addMenuItem(const UT_String &path, const UT_String& description)
 
 bool EV_Menu::invokeMenuMethod(AV_View * pView,
 							   EV_EditMethod * pEM,
-							   UT_UCSChar * pData,
+							   UT_UCS4Char * pData,
 							   UT_uint32 dataLength) const
 {
 	UT_ASSERT(pView);

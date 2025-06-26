@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef UT_CASE_H
-#define UT_CASE_H
+#pragma once
 
 // this file is to be included in ut_string.cpp only !!!
 #ifndef UT_STRING_CPP
@@ -27,9 +26,9 @@
 
 struct case_entry
 {
-	UT_UCSChar code;
+	UT_UCS4Char code;
 	UT_Byte    type;
-	UT_UCSChar other;
+	UT_UCS4Char other;
 };
 
 /*  the following structure works this way: low indicates lower boundary, and high
@@ -50,8 +49,8 @@ struct case_entry
 #if 0
 struct case_entry2
 {
-    UT_UCSChar  low;
-    UT_UCSChar  high;
+    UT_UCS4Char  low;
+    UT_UCS4Char  high;
     UT_Byte     type;
     UT_sint32   diff;
 }
@@ -87,7 +86,7 @@ case_entry2 case_table2[] =
 
 static int s_cmp_case(const void * c1, const void * c2)
 {
-	const UT_UCSChar * C1 = (const UT_UCSChar *) c1;
+	const UT_UCS4Char * C1 = (const UT_UCS4Char *) c1;
 	const case_entry * C2 = (const case_entry *) c2;
 
 	return *C1 - C2->code;
@@ -1443,8 +1442,8 @@ case_entry case_table[] =
 
 struct ucs_range
 {
-	UT_UCSChar low;
-	UT_UCSChar high;
+	UT_UCS4Char low;
+	UT_UCS4Char high;
 };
 
 ucs_range whitespace_table[] =
@@ -1462,7 +1461,7 @@ ucs_range whitespace_table[] =
 
 static int s_cmp_digits(const void * c1, const void * c2)
 {
-	const UT_UCSChar * C1 = (const UT_UCSChar *) c1;
+	const UT_UCS4Char * C1 = (const UT_UCS4Char *) c1;
 	const ucs_range * C2 = (const ucs_range *) c2;
 
 	if (*C1 > C2->high) return +1;
@@ -1493,5 +1492,3 @@ ucs_range digits_table[] =
 	{0x0F20, 0x0F33}, // tibetan
 	{0xFF10, 0xFF19}  // full-width
 };
-
-#endif

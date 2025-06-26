@@ -17,9 +17,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef AP_PREVIEW_PARAGRAPH_H
-#define AP_PREVIEW_PARAGRAPH_H
+#pragma once
 
 #include "ut_misc.h"
 #include "ut_types.h"
@@ -45,7 +43,7 @@ class ABI_EXPORT AP_Preview_Paragraph_Block
 	virtual ~AP_Preview_Paragraph_Block();
 
 	// sets the vectors full of words and lengths
-	void setText(const UT_UCSChar * text);
+	void setText(const UT_UCS4Char * text);
 
 	void setFormat(const gchar * pageLeftMargin,
 				   const gchar * pageRightMargin,
@@ -81,9 +79,9 @@ class ABI_EXPORT AP_Preview_Paragraph_Block
 	GR_Graphics * m_gc;
 
 	// when a string is set, we break it into words for
-	// easy layout, and store the word content (UT_UCSChar *)
+	// easy layout, and store the word content (UT_UCS4Char *)
 	// and its measured length in pixels (UT_uint32)
-	UT_GenericVector<UT_UCSChar *> m_words;
+	UT_GenericVector<UT_UCS4Char *> m_words;
 	UT_NumberVector m_widths;
 };
 
@@ -91,14 +89,14 @@ class ABI_EXPORT AP_Preview_Paragraph : public XAP_Preview
 {
  public:
 
-	AP_Preview_Paragraph(GR_Graphics * gc, const UT_UCSChar * text,
+	AP_Preview_Paragraph(GR_Graphics * gc, const UT_UCS4Char * text,
 			     AP_Dialog_Paragraph * parent, const char * fontname = nullptr);
 
-	AP_Preview_Paragraph(GR_Graphics * gc, const UT_UCSChar * text,
+	AP_Preview_Paragraph(GR_Graphics * gc, const UT_UCS4Char * text,
 			     XAP_Dialog * parent);
 
 	AP_Preview_Paragraph(GR_Graphics * gc,
-			     const UT_UCSChar * text,
+			     const UT_UCS4Char * text,
 			     AP_Dialog_Lists * dlg);
 
 	virtual ~AP_Preview_Paragraph(void);
@@ -133,7 +131,7 @@ class ABI_EXPORT AP_Preview_Paragraph : public XAP_Preview
 	virtual void 	_drawPageBackground(void);
 	virtual void	_drawPageBorder(void);
 	virtual void 	_appendBlock(AP_Preview_Paragraph_Block * block);
-	virtual UT_uint32 _appendLine(UT_GenericVector<UT_UCSChar *> * words,
+	virtual UT_uint32 _appendLine(UT_GenericVector<UT_UCS4Char *> * words,
 								  UT_NumberVector * widths,
 								  UT_uint32 startWithWord,
 								  UT_uint32 left,
@@ -151,5 +149,3 @@ class ABI_EXPORT AP_Preview_Paragraph : public XAP_Preview
 	UT_uint32 m_fontHeight;
 	UT_BidiCharType m_dir;
 };
-
-#endif /* AP_PREVIEW_PARAGRAPH_H */

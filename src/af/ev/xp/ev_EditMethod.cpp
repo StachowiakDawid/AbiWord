@@ -59,11 +59,11 @@ EV_EditMethodCallData::EV_EditMethodCallData(const UT_String& stScriptName)
  flag is actually set, so covering this "failure" case may be pointless if other
  things don't play along.  Comment out this code just to see how well it would work.
 */
-EV_EditMethodCallData::EV_EditMethodCallData(const UT_UCSChar * pData, UT_uint32 dataLength)
+EV_EditMethodCallData::EV_EditMethodCallData(const UT_UCS4Char * pData, UT_uint32 dataLength)
 	: m_xPos(0),
 	  m_yPos(0)
 {
-	m_pData = new UT_UCSChar[std::max<UT_uint32>(dataLength, 1)];
+	m_pData = new UT_UCS4Char[std::max<UT_uint32>(dataLength, 1)];
 	if (m_pData)
 	{
 		if (dataLength == 0) {
@@ -87,7 +87,7 @@ EV_EditMethodCallData::EV_EditMethodCallData(const char * pChar, UT_uint32 dataL
 	: m_xPos(0),
 	  m_yPos(0)
 {
-	m_pData = new UT_UCSChar[std::max<UT_uint32>(dataLength, 1)];
+	m_pData = new UT_UCS4Char[std::max<UT_uint32>(dataLength, 1)];
 	if (m_pData)
 	{
 		if (dataLength == 0) {
@@ -327,7 +327,7 @@ bool ev_EditMethod_invoke (const char * methodName, const char * data)
   return ev_EditMethod_invoke ( methodName, UT_String(data) ) ;
 }
 
-bool ev_EditMethod_invoke (const char * methodName, const UT_UCSChar * data)
+bool ev_EditMethod_invoke (const char * methodName, const UT_UCS4Char * data)
 {
   UT_return_val_if_fail(data, false);
   return ev_EditMethod_invoke ( methodName, UT_UCS4String(data) ) ;

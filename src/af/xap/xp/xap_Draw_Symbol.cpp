@@ -32,8 +32,8 @@
 #include "xap_Draw_Symbol.h"
 
 
-static UT_UCSChar MaxWidthChar = 0;
-static UT_UCSChar MaxHeightChar = 0;
+static UT_UCS4Char MaxWidthChar = 0;
+static UT_UCS4Char MaxHeightChar = 0;
 
 XAP_Draw_Symbol::XAP_Draw_Symbol(GR_Graphics * gc)
 	: XAP_Preview(gc),
@@ -132,12 +132,12 @@ void XAP_Draw_Symbol::setFontToGC(GR_Graphics *p_gc, UT_uint32 MaxWidthAllowable
                         // this can take very long with large fonts
 		 	for (UT_sint32 i = m_start_base; i < m_vCharSet.size(); i += 2)
 			{
-				UT_UCSChar base = static_cast<UT_UCSChar>(m_vCharSet[i]);
+				UT_UCS4Char base = static_cast<UT_UCS4Char>(m_vCharSet[i]);
 				UT_sint32 nb_chars = m_vCharSet[i + 1];
 
 				for (UT_sint32 j = m_start_base == i? m_start_nb_char: 0; j < nb_chars; j++)
 				{
-					UT_UCSChar c = base + j;
+					UT_UCS4Char c = base + j;
 				        UT_uint32 width, height;
 		   			p_gc->getMaxCharacterDimension(&c, 1, width, height);
 					if (width > MaxWidth) 
@@ -262,10 +262,10 @@ void XAP_Draw_Symbol::drawImmediate(const UT_Rect *clip)
 
 	for (i = m_start_base; i < m_vCharSet.size(); i += 2)
 	{
-		UT_UCSChar base = static_cast<UT_UCSChar>(m_vCharSet[i]);
+		UT_UCS4Char base = static_cast<UT_UCS4Char>(m_vCharSet[i]);
 		UT_sint32 nb_chars = m_vCharSet[i + 1];
 
-		for (UT_UCSChar j = base + (m_start_base == i? m_start_nb_char: 0); j < base + nb_chars; ++j)
+		for (UT_UCS4Char j = base + (m_start_base == i? m_start_nb_char: 0); j < base + nb_chars; ++j)
 		{
 			UT_sint32 w = m_gc->measureUnRemappedChar(j);
 
@@ -304,7 +304,7 @@ void XAP_Draw_Symbol::drawImmediate(const UT_Rect *clip)
 	}
 }
 
-UT_UCSChar XAP_Draw_Symbol::calcSymbolFromCoords(UT_uint32 ix, UT_uint32 iy)
+UT_UCS4Char XAP_Draw_Symbol::calcSymbolFromCoords(UT_uint32 ix, UT_uint32 iy)
 {
 	UT_sint32 index,count;
 	index = iy * 32 + ix;
@@ -319,15 +319,15 @@ UT_UCSChar XAP_Draw_Symbol::calcSymbolFromCoords(UT_uint32 ix, UT_uint32 iy)
 		if (count > index)
 		{
 			UT_DEBUGMSG((" %u\n", static_cast<UT_uint32>(m_vCharSet[i] + index - count + m_vCharSet[i + 1])));
-			return static_cast<UT_UCSChar>(m_vCharSet[i] + index);
+			return static_cast<UT_UCS4Char>(m_vCharSet[i] + index);
 		}
 		index -= count;
 	}
 
-	return static_cast<UT_UCSChar>(0);
+	return static_cast<UT_UCS4Char>(0);
 }
 
-UT_UCSChar XAP_Draw_Symbol::calcSymbol(UT_uint32 x, UT_uint32 y)
+UT_UCS4Char XAP_Draw_Symbol::calcSymbol(UT_uint32 x, UT_uint32 y)
 {
 	UT_uint32 width = m_drawWidth;
 	UT_uint32 height = m_drawHeight;
@@ -335,14 +335,14 @@ UT_UCSChar XAP_Draw_Symbol::calcSymbol(UT_uint32 x, UT_uint32 y)
 	UT_uint32 iy;
 	
 	if (x > width || y > height)
-		return static_cast<UT_UCSChar>(0);
+		return static_cast<UT_UCS4Char>(0);
 
 	iy = m_gc->tlu(y) / (height / 7);
 	ix = m_gc->tlu(x) / (width / 32);
 	return calcSymbolFromCoords(ix, iy);
 }
 
-void XAP_Draw_Symbol::calculatePosition(UT_UCSChar c, UT_uint32 &x, UT_uint32 &y)
+void XAP_Draw_Symbol::calculatePosition(UT_UCS4Char c, UT_uint32 &x, UT_uint32 &y)
 {
 	UT_uint32 index = 0;
 
@@ -365,14 +365,14 @@ void XAP_Draw_Symbol::calculatePosition(UT_UCSChar c, UT_uint32 &x, UT_uint32 &y
 	UT_DEBUGMSG(("[%d] -> (%d, %d)\n", c, x, y));
 }
 
-void XAP_Draw_Symbol::setCurrent(UT_UCSChar c)
+void XAP_Draw_Symbol::setCurrent(UT_UCS4Char c)
 {
 	m_PreviousSymbol = m_CurrentSymbol;
 	m_CurrentSymbol = c;
 	drawarea(m_CurrentSymbol, m_PreviousSymbol);
 }
 
-void XAP_Draw_Symbol::drawarea(UT_UCSChar c, UT_UCSChar p)
+void XAP_Draw_Symbol::drawarea(UT_UCS4Char c, UT_UCS4Char p)
 	//
 	// This function displays the symbol c into the Selected Area.
 	// It also highlights the selected symbol in the Symbol Table.

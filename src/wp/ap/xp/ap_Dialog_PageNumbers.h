@@ -90,5 +90,5 @@ protected:
 	AP_Dialog_PageNumbers::tControl m_control;
 	AP_Dialog_PageNumbers::tAlign   m_align;
 
-	UT_UCSChar * m_str;
+	UT_UCS4Char * m_str;
 };

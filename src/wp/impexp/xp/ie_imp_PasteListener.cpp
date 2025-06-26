@@ -79,7 +79,7 @@ bool  IE_Imp_PasteListener::populate(fl_ContainerLayout* /* sfh */,
 		UT_uint32 len = pcrs->getLength();
   
 		PT_BufIndex bi = pcrs->getBufIndex();
-		const UT_UCSChar* pChars = 	m_pSourceDoc->getPointer(bi);
+		const UT_UCS4Char* pChars = 	m_pSourceDoc->getPointer(bi);
 		PP_AttrProp* pfAP = const_cast<PP_AttrProp *>(pAP);
 		m_pPasteDocument->insertSpan(m_insPoint,pChars,len,pfAP);
 		m_insPoint += len;

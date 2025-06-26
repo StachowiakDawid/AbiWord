@@ -592,7 +592,7 @@ GtkBox* EV_UnixToolbar::_getContainer()
 }
 
 bool EV_UnixToolbar::toolbarEvent(_wd 				* wd,
-								  const UT_UCSChar 	* pData,
+								  const UT_UCS4Char	* pData,
 								  UT_uint32 		  dataLength)
 
 {

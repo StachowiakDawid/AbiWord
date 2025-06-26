@@ -112,7 +112,7 @@ bool FV_View::_isSpaceBefore(PT_DocPosition pos) const
 		if (offset > 0)
 		{
 			block->getBlockBuf(&buffer);
-			return (UT_UCS4_isspace(*reinterpret_cast<UT_UCSChar *>(buffer.getPointer(offset - 1))));
+			return (UT_UCS4_isspace(*reinterpret_cast<UT_UCS4Char *>(buffer.getPointer(offset - 1))));
 		}
 		else
 		{
@@ -1056,7 +1056,7 @@ PT_DocPosition FV_View::_getDocPosFromPoint(PT_DocPosition iPoint, FV_DocPos dp,
 		UT_DebugOnly<bool> bRes = pBlock->getBlockBuf(&pgb);
 		UT_ASSERT(bRes);
 
-		const UT_UCSChar* pSpan = reinterpret_cast<UT_UCSChar*>(pgb.getPointer(0));
+		const UT_UCS4Char* pSpan = reinterpret_cast<UT_UCS4Char*>(pgb.getPointer(0));
 
 		UT_ASSERT(iPos >= pBlock->getPosition());
 		UT_uint32 offset = iPos - pBlock->getPosition();
@@ -1078,7 +1078,7 @@ PT_DocPosition FV_View::_getDocPosFromPoint(PT_DocPosition iPoint, FV_DocPos dp,
 			bRes = pBlock->getBlockBuf(&pgb);
 			UT_ASSERT(bRes);
 
-			pSpan = reinterpret_cast<UT_UCSChar*>(pgb.getPointer(0));
+			pSpan = reinterpret_cast<UT_UCS4Char*>(pgb.getPointer(0));
 			offset = pgb.getLength();
 
 			if (offset == 0)
@@ -1124,7 +1124,7 @@ PT_DocPosition FV_View::_getDocPosFromPoint(PT_DocPosition iPoint, FV_DocPos dp,
 		UT_DebugOnly<bool> bRes = pBlock->getBlockBuf(&pgb);
 		UT_ASSERT(bRes);
 
-		const UT_UCSChar* pSpan = reinterpret_cast<UT_UCSChar*>(pgb.getPointer(0));
+		const UT_UCS4Char* pSpan = reinterpret_cast<UT_UCS4Char*>(pgb.getPointer(0));
 
 		UT_ASSERT(iPos >= pBlock->getPosition());
 		UT_uint32 offset = iPos - pBlock->getPosition();
@@ -1146,7 +1146,7 @@ PT_DocPosition FV_View::_getDocPosFromPoint(PT_DocPosition iPoint, FV_DocPos dp,
 			bRes = pBlock->getBlockBuf(&pgb);
 			UT_ASSERT(bRes);
 
-			pSpan = reinterpret_cast<UT_UCSChar*>(pgb.getPointer(0));
+			pSpan = reinterpret_cast<UT_UCS4Char*>(pgb.getPointer(0));
 			offset = 0;
 
 			if (pgb.getLength() == 0)
@@ -1171,7 +1171,7 @@ PT_DocPosition FV_View::_getDocPosFromPoint(PT_DocPosition iPoint, FV_DocPos dp,
 
 		for (; offset < pgb.getLength(); offset++)
 		{
-			UT_UCSChar followChar, prevChar;
+			UT_UCS4Char followChar, prevChar;
 
 			followChar = ((offset + 1) < pgb.getLength()) ? pSpan[offset+1] : UCS_UNKPUNK;
 			prevChar = offset > 0 ? pSpan[offset - 1] : UCS_UNKPUNK;
@@ -1182,7 +1182,7 @@ PT_DocPosition FV_View::_getDocPosFromPoint(PT_DocPosition iPoint, FV_DocPos dp,
 
 		for (; offset < pgb.getLength(); offset++)
 		{
-			UT_UCSChar followChar, prevChar;
+			UT_UCS4Char followChar, prevChar;
 
 			followChar = ((offset + 1) < pgb.getLength()) ? pSpan[offset+1] : UCS_UNKPUNK;
 			prevChar = offset > 0 ? pSpan[offset - 1] : UCS_UNKPUNK;
@@ -1215,7 +1215,7 @@ PT_DocPosition FV_View::_getDocPosFromPoint(PT_DocPosition iPoint, FV_DocPos dp,
 		UT_DebugOnly<bool> bRes = pBlock->getBlockBuf(&pgb);
 		UT_ASSERT(bRes);
 
-		const UT_UCSChar* pSpan = reinterpret_cast<UT_UCSChar*>(pgb.getPointer(0));
+		const UT_UCS4Char* pSpan = reinterpret_cast<UT_UCS4Char*>(pgb.getPointer(0));
 
 		UT_ASSERT(iPos >= pBlock->getPosition());
 		UT_uint32 offset = iPos - pBlock->getPosition();
@@ -1237,7 +1237,7 @@ PT_DocPosition FV_View::_getDocPosFromPoint(PT_DocPosition iPoint, FV_DocPos dp,
 			bRes = pBlock->getBlockBuf(&pgb);
 			UT_ASSERT(bRes);
 
-			pSpan = reinterpret_cast<UT_UCSChar*>(pgb.getPointer(0));
+			pSpan = reinterpret_cast<UT_UCS4Char*>(pgb.getPointer(0));
 			offset = 0;
 
 			if (pgb.getLength() == 0)
@@ -1268,7 +1268,7 @@ PT_DocPosition FV_View::_getDocPosFromPoint(PT_DocPosition iPoint, FV_DocPos dp,
 		*/
 		for (; offset < pgb.getLength(); offset++)
 		{
-			UT_UCSChar followChar, prevChar;
+			UT_UCS4Char followChar, prevChar;
 
 			followChar = ((offset + 1) < pgb.getLength()) ? pSpan[offset+1] : UCS_UNKPUNK;
 			prevChar = offset > 0 ? pSpan[offset - 1] : UCS_UNKPUNK;
@@ -2662,7 +2662,7 @@ fp_Page* FV_View::_getPageForXY(UT_sint32 xPos, UT_sint32 yPos, UT_sint32& xClic
  \param bMatchCase True to match case, false to ignore case
 */
 UT_uint32*
-FV_View::_computeFindPrefix(const UT_UCSChar* pFind)
+FV_View::_computeFindPrefix(const UT_UCS4Char* pFind)
 {
 	UT_uint32 m = UT_UCS4_strlen(pFind);
 	UT_uint32 k = 0, q = 1;
@@ -2738,12 +2738,12 @@ FV_View::_findNext(UT_uint32* pPrefix,
 
 	fl_BlockLayout* block = _findGetCurrentBlock();
 	PT_DocPosition offset = _findGetCurrentOffset();
-	UT_UCSChar* buffer = nullptr;
+	UT_UCS4Char* buffer = nullptr;
 	UT_uint32 m = UT_UCS4_strlen(m_sFind);
 
 	// Clone the search string, converting it to lowercase is search
 	// should ignore case.
-	UT_UCSChar* pFindStr = (UT_UCSChar*) UT_calloc(m, sizeof(UT_UCSChar));
+	UT_UCS4Char* pFindStr = (UT_UCS4Char*) UT_calloc(m, sizeof(UT_UCS4Char));
 	UT_return_val_if_fail(pFindStr,false);
 
 	UT_uint32 j;
@@ -2765,7 +2765,7 @@ FV_View::_findNext(UT_uint32* pPrefix,
 		UT_sint32 foundAt = -1;
 		UT_uint32 i = 0, t = 0;
 
-		UT_UCSChar currentChar;
+		UT_UCS4Char currentChar;
 	
 		while ((currentChar = buffer[i]) /*|| foundAt == -1*/)
 		{
@@ -2841,12 +2841,12 @@ FV_View::_findPrev(UT_uint32* /*pPrefix*/,
 
 	fl_BlockLayout* block = _findGetCurrentBlock();
 	PT_DocPosition offset = _findGetCurrentOffset();
-	UT_UCSChar* buffer = nullptr;
+	UT_UCS4Char* buffer = nullptr;
 	UT_uint32 m = UT_UCS4_strlen(m_sFind);
 
 	// Clone the search string, converting it to lowercase is search
 	// should ignore case.
-	UT_UCSChar* pFindStr = (UT_UCSChar*) UT_calloc(m, sizeof(UT_UCSChar));
+	UT_UCS4Char* pFindStr = (UT_UCS4Char*) UT_calloc(m, sizeof(UT_UCS4Char));
 	UT_return_val_if_fail(pFindStr,false);
 
 	UT_uint32 j;
@@ -2881,7 +2881,7 @@ FV_View::_findPrev(UT_uint32* /*pPrefix*/,
 		}
 			
 		UT_uint32 t = 0;
-		UT_UCSChar currentChar;
+		UT_UCS4Char currentChar;
 
 		while (i!=UT_uint32(-1))
 		{
@@ -2961,7 +2961,7 @@ FV_View::_BlockOffsetToPos(fl_BlockLayout * block, PT_DocPosition offset) const
 	return block->getPosition(false) + offset;
 }
 
-UT_UCSChar*
+UT_UCS4Char*
 FV_View::_findGetNextBlockBuffer(fl_BlockLayout** pBlock,
 								 PT_DocPosition* pOffset)
 {
@@ -3119,14 +3119,14 @@ FV_View::_findGetNextBlockBuffer(fl_BlockLayout** pBlock,
 	}
 
 	// clone a buffer (this could get really slow on large buffers!)
-	UT_UCSChar* bufferSegment = nullptr;
+	UT_UCS4Char* bufferSegment = nullptr;
 
 	// remember, the caller gets to g_free this memory
-	bufferSegment = static_cast<UT_UCSChar*>(UT_calloc(bufferLength + 1, sizeof(UT_UCSChar)));
+	bufferSegment = static_cast<UT_UCS4Char*>(UT_calloc(bufferLength + 1, sizeof(UT_UCS4Char)));
 	UT_ASSERT(bufferSegment);
 
 	memmove(bufferSegment, pBuffer.getPointer(newOffset),
-			(bufferLength) * sizeof(UT_UCSChar));
+			(bufferLength) * sizeof(UT_UCS4Char));
 
 	// before we bail, hold up our block stuff for next round
 	*pBlock = newBlock;
@@ -3135,7 +3135,7 @@ FV_View::_findGetNextBlockBuffer(fl_BlockLayout** pBlock,
 	return bufferSegment;
 }
 
-UT_UCSChar*
+UT_UCS4Char*
 FV_View::_findGetPrevBlockBuffer(fl_BlockLayout** pBlock,
 								 PT_DocPosition* pOffset,
 								 UT_sint32& endIndex)
@@ -3248,14 +3248,14 @@ FV_View::_findGetPrevBlockBuffer(fl_BlockLayout** pBlock,
 	bufferLength = pBuffer.getLength() - blockStart;
 
 	// clone a buffer (this could get really slow on large buffers!)
-	UT_UCSChar* bufferSegment = nullptr;
+	UT_UCS4Char* bufferSegment = nullptr;
 
 	// remember, the caller gets to g_free this memory
-	bufferSegment = (UT_UCSChar*)UT_calloc(bufferLength + 1, sizeof(UT_UCSChar));
+	bufferSegment = (UT_UCS4Char*)UT_calloc(bufferLength + 1, sizeof(UT_UCS4Char));
 	UT_return_val_if_fail(bufferSegment, nullptr);
 
 	memmove(bufferSegment, pBuffer.getPointer(blockStart),
-			(bufferLength) * sizeof(UT_UCSChar));
+			(bufferLength) * sizeof(UT_UCS4Char));
 
 	// before we bail, hold up our block stuff for next round
 	*pBlock = newBlock;
@@ -3474,8 +3474,8 @@ FV_View::_findGetCurrentOffset() const
 
 // Any takers?
 UT_sint32
-FV_View::_findBlockSearchRegexp(const UT_UCSChar* /* haystack */,
-								const UT_UCSChar* /* needle */)
+FV_View::_findBlockSearchRegexp(const UT_UCS4Char* /* haystack */,
+								const UT_UCS4Char* /* needle */)
 {
 	UT_ASSERT_HARMLESS(UT_NOT_IMPLEMENTED);
 
@@ -5743,17 +5743,17 @@ void FV_View::_clearIfAtFmtMark(PT_DocPosition dpos)
 
 #ifdef ENABLE_SPELL
 // NB: returns a UCS string that the caller needs to FREEP
-UT_UCSChar * FV_View::_lookupSuggestion(fl_BlockLayout* pBL,
+UT_UCS4Char * FV_View::_lookupSuggestion(fl_BlockLayout* pBL,
 										const fl_PartOfBlockPtr& pPOB, UT_sint32 ndx)
 {
 	// mega caching - are these assumptions valid?
-	UT_UCSChar * szSuggest = nullptr;
+	UT_UCS4Char * szSuggest = nullptr;
 
 	// TODO these should really be static members, so we can properly
 	// clean up
 	static fl_BlockLayout * s_pLastBL = nullptr;
 	static fl_PartOfBlockPtr s_pLastPOB;
-	static const UT_GenericVector<UT_UCSChar*>* s_pvCachedSuggestions = nullptr;
+	static const UT_GenericVector<UT_UCS4Char*>* s_pvCachedSuggestions = nullptr;
 
 	// can we use the cached suggestions?
 	if (pBL != s_pLastBL || pPOB != s_pLastPOB)
@@ -5764,7 +5764,7 @@ UT_UCSChar * FV_View::_lookupSuggestion(fl_BlockLayout* pBL,
 			// clean up
 			for (UT_sint32 i = 0; i < s_pvCachedSuggestions->getItemCount(); i++)
 			{
-				const UT_UCSChar * sug = s_pvCachedSuggestions->getNthItem(i);
+				const UT_UCS4Char * sug = s_pvCachedSuggestions->getNthItem(i);
 				FREEP(sug);
 			}
 
@@ -5786,7 +5786,7 @@ UT_UCSChar * FV_View::_lookupSuggestion(fl_BlockLayout* pBL,
 		UT_UCS4String stMisspelledWord;
 		// convert smart quote apostrophe to ASCII single quote to be
 		// compatible with ispell
-		const UT_UCSChar * pWord;
+		const UT_UCS4Char * pWord;
 		UT_sint32 iLength, iPTLength, iBlockPos;
 
 		fl_BlockSpellIterator BSI(pBL, pPOB->getOffset());
@@ -5827,22 +5827,22 @@ UT_UCSChar * FV_View::_lookupSuggestion(fl_BlockLayout* pBL,
 		// lookup suggestions
 
 		// create an empty vector
-		UT_GenericVector<UT_UCSChar*>* pvFreshSuggestions = nullptr;
+		UT_GenericVector<UT_UCS4Char*>* pvFreshSuggestions = nullptr;
 		UT_ASSERT(!pvFreshSuggestions);
 
-		pvFreshSuggestions = new UT_GenericVector<UT_UCSChar*>();
+		pvFreshSuggestions = new UT_GenericVector<UT_UCS4Char*>();
 		UT_ASSERT(pvFreshSuggestions);
 
 		if (checker && (checker->checkWord(stMisspelledWord.ucs4_str(), iLength) == SpellChecker::LOOKUP_FAILED))
 		{
 			// get suggestions from spelling engine
-			std::unique_ptr<std::vector<UT_UCSChar*>> cpvEngineSuggestions;
+			std::unique_ptr<std::vector<UT_UCS4Char*>> cpvEngineSuggestions;
 
 			cpvEngineSuggestions = checker->suggestWord (stMisspelledWord.ucs4_str(), iLength);
 
 			for (UT_uint32 i = 0; i < cpvEngineSuggestions->size(); ++i)
 			{
-				UT_UCSChar *sug = cpvEngineSuggestions->at(i);
+				UT_UCS4Char *sug = cpvEngineSuggestions->at(i);
 				UT_ASSERT(sug);
 				pvFreshSuggestions->addItem(sug);
 			}
@@ -6185,7 +6185,7 @@ bool FV_View::_makePointLegal(void)
 		return bOK;
 }
 
-bool FV_View::_charInsert(const UT_UCSChar * text, UT_uint32 count, bool bForce)
+bool FV_View::_charInsert(const UT_UCS4Char * text, UT_uint32 count, bool bForce)
 {
 	// see if prefs specify we should set language based on kbd layout
 	UT_return_val_if_fail(m_pApp, false);

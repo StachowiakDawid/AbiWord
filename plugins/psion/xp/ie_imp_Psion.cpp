@@ -709,7 +709,7 @@ UT_Error IE_Imp_Psion::applyParagraphAttributes(const psiconv_paragraph_layout l
 
 	// HACK: there is no real setting to do this. Yet.
 	if (layout->on_next_page) {
-		UT_UCSChar ucs = UCS_FF;
+		UT_UCS4Char ucs = UCS_FF;
 		if (!(appendSpan(&ucs,1)))
 			return UT_IE_IMPORTERROR;
 	}
@@ -727,7 +727,7 @@ UT_Error IE_Imp_Psion::applyParagraphAttributes(const psiconv_paragraph_layout l
 		// See the Psiconv docs for the (ugly) details.
 		if ((!layout->bullet->indent && (layout->indent_first > 0)) || 
 			layout->bullet->indent) {
-			UT_UCSChar uc = (UT_UCSChar) UCS_TAB;
+			UT_UCS4Char uc = (UT_UCS4Char) UCS_TAB;
 			if (!(appendSpan(&uc,1)))
 				return UT_IE_IMPORTERROR;
 		}

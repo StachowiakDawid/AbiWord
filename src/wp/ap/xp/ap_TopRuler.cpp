@@ -515,7 +515,7 @@ void AP_TopRuler::_drawTickMark(const UT_Rect * pClipRect,
 			return;						// origin
 
 		char buf[12];
-		UT_UCSChar span[12];
+		UT_UCS4Char span[12];
 		UT_ASSERT_HARMLESS(n < 10000);
 
 		sprintf(buf, "%d", n);

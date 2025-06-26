@@ -48,7 +48,7 @@
 
 
 bool pt_PieceTable::insertSpan(PT_DocPosition dpos,
-							   const UT_UCSChar * p,
+							   const UT_UCS4Char * p,
 							   UT_uint32 length, fd_Field * pField,
 							   bool bAddChangeRec)
 {
@@ -356,7 +356,7 @@ bool pt_PieceTable::_lastUndoIsThisFmtMark(PT_DocPosition dpos)
 }
 
 bool pt_PieceTable::_realInsertSpan(PT_DocPosition dpos,
-									const UT_UCSChar * p,
+									const UT_UCS4Char * p,
 									UT_uint32 length,
 									const PP_PropertyVector & attributes,
 									const PP_PropertyVector & properties,

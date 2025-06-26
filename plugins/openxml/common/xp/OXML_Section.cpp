@@ -498,7 +498,7 @@ UT_Error OXML_Section::addToPT(PD_Document * pDocument)
 
 	//Appending page break to the section if necessary
 	if (m_breakType == NEXTPAGE_BREAK || m_breakType == ODDPAGE_BREAK || m_breakType == EVENPAGE_BREAK) {
-		UT_UCSChar ucs = UCS_FF;
+		UT_UCS4Char ucs = UCS_FF;
 		ret = pDocument->appendSpan(&ucs, 1) ? UT_OK : UT_ERROR;
 		UT_return_val_if_fail(ret == UT_OK, ret);
 	}

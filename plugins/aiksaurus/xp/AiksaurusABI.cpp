@@ -221,7 +221,7 @@ int abi_plugin_supports_version (UT_uint32 /*major*/, UT_uint32 /*minor*/, UT_ui
 //   to tell what word the user has selected when they invoke the thesaurus.
 //
 inline static char*
-AiksaurusABI_ucsToAscii(const UT_UCSChar* text)
+AiksaurusABI_ucsToAscii(const UT_UCS4Char* text)
 {
     // calculate length of text so that we can create a character
     // buffer of equal size.
@@ -257,7 +257,7 @@ AiksaurusABI_ucsToAscii(const UT_UCSChar* text)
 //   in order to be able to replace the user's word with their replacement
 //   word.
 //
-inline static UT_UCSChar* 
+inline static UT_UCS4Char* 
 AiksaurusABI_asciiToUcs(const char* text, int& length)
 {
   length = 0 ;
@@ -270,12 +270,12 @@ AiksaurusABI_asciiToUcs(const char* text, int& length)
     
     // allocate UCS-2 character buffer of same size, plus room for 
     // a null terminator.    
-        UT_UCSChar* ret = new UT_UCSChar[length+1];
+        UT_UCS4Char* ret = new UT_UCS4Char[length+1];
     
     // convert ascii to UCS-2.  This is simply a cast-loop really.
         for(int i = 0;i < length;++i)
         {
-            ret[i] = static_cast<UT_UCSChar>(text[i]);
+            ret[i] = static_cast<UT_UCS4Char>(text[i]);
         }
     
     // remember to null terminate the string.
@@ -338,7 +338,7 @@ AiksaurusABI_invoke(AV_View* /*v*/, EV_EditMethodCallData * /*d*/)
     {
         // Now that we have our replacement, we need to convert it to UCS-2. 
         int length;
-        UT_UCSChar* replacement = AiksaurusABI_asciiToUcs(response, length);
+        UT_UCS4Char* replacement = AiksaurusABI_asciiToUcs(response, length);
     
         // Now, if our replacement has length, we can go ahead and run the 
         // replacement.  If the replacement has no length, we will do nothing.

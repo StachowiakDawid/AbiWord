@@ -913,9 +913,9 @@ void AP_Dialog_Styles::_createCharPreviewFromGC(GR_Graphics * gc,
 //
 // Text for the Preview
 //
-	static UT_UCSChar szString[60];
-	UT_UCS4_strcpy_utf8_char( (UT_UCSChar *) szString, pSS->getValue(AP_STRING_ID_DLG_Styles_LBL_TxtMsg));
-	m_pCharPreview->setDrawString((const UT_UCSChar *) szString);
+	static UT_UCS4Char szString[60];
+	UT_UCS4_strcpy_utf8_char( (UT_UCS4Char *) szString, pSS->getValue(AP_STRING_ID_DLG_Styles_LBL_TxtMsg));
+	m_pCharPreview->setDrawString((const UT_UCS4Char *) szString);
 //
 // set our Vector of Character Properties into the preview class.
 //
@@ -974,17 +974,17 @@ void AP_Dialog_Styles::_populateAbiPreview(bool isNew)
 // Text for the Preview
 //
 
-	static UT_UCSChar szString[60];
-	static UT_UCSChar sz1[4];
-	static UT_UCSChar sz2[4];
-	static UT_UCSChar sz3[4];
-	static UT_UCSChar szSpace[4];
+	static UT_UCS4Char szString[60];
+	static UT_UCS4Char sz1[4];
+	static UT_UCS4Char sz2[4];
+	static UT_UCS4Char sz3[4];
+	static UT_UCS4Char szSpace[4];
 	const XAP_StringSet * pSS = m_pApp->getStringSet();
-	UT_UCS4_strcpy_utf8_char( (UT_UCSChar *) szString, pSS->getValue(AP_STRING_ID_DLG_Styles_LBL_TxtMsg));
-	UT_UCS4_strcpy_char( (UT_UCSChar *) sz1, " 1");
-	UT_UCS4_strcpy_char( (UT_UCSChar *) sz2, " 2");
-	UT_UCS4_strcpy_char( (UT_UCSChar *) sz3, " 3");
-	UT_UCS4_strcpy_char( (UT_UCSChar *) szSpace, "  ");
+	UT_UCS4_strcpy_utf8_char( (UT_UCS4Char *) szString, pSS->getValue(AP_STRING_ID_DLG_Styles_LBL_TxtMsg));
+	UT_UCS4_strcpy_char( (UT_UCS4Char *) sz1, " 1");
+	UT_UCS4_strcpy_char( (UT_UCS4Char *) sz2, " 2");
+	UT_UCS4_strcpy_char( (UT_UCS4Char *) sz3, " 3");
+	UT_UCS4_strcpy_char( (UT_UCS4Char *) szSpace, "  ");
 	UT_uint32 len =UT_UCS4_strlen(szString);
 	UT_uint32 len1 =UT_UCS4_strlen(sz1);
 	UT_uint32 lenSpace =UT_UCS4_strlen(szSpace);
@@ -1007,10 +1007,10 @@ void AP_Dialog_Styles::_populateAbiPreview(bool isNew)
 	UT_uint32 i=0;
 	for(i=0;i<15;i++)
 	{
-		getLView()->cmdCharInsert((UT_UCSChar *) szString,len);
-		getLView()->cmdCharInsert((UT_UCSChar *) szSpace,lenSpace);
+		getLView()->cmdCharInsert((UT_UCS4Char *) szString,len);
+		getLView()->cmdCharInsert((UT_UCS4Char *) szSpace,lenSpace);
 	}
-	getLView()->cmdCharInsert((UT_UCSChar *) sz1,len1);
+	getLView()->cmdCharInsert((UT_UCS4Char *) sz1,len1);
 
 	static std::string Grey;
 	static std::string szFGColor;
@@ -1113,10 +1113,10 @@ void AP_Dialog_Styles::_populateAbiPreview(bool isNew)
 
 	for(i=0; i<8; i++)
 	{
-		getLView()->cmdCharInsert((UT_UCSChar *) szString,len);
-		getLView()->cmdCharInsert((UT_UCSChar *) szSpace,lenSpace);
+		getLView()->cmdCharInsert((UT_UCS4Char *) szString,len);
+		getLView()->cmdCharInsert((UT_UCS4Char *) szSpace,lenSpace);
 	}
-	getLView()->cmdCharInsert((UT_UCSChar *) sz2,len1);
+	getLView()->cmdCharInsert((UT_UCS4Char *) sz2,len1);
 //
 // Third Paragraph
 //
@@ -1125,10 +1125,10 @@ void AP_Dialog_Styles::_populateAbiPreview(bool isNew)
 	getLView()->setCharFormat(GreyCol);
 	for(i=0; i<15; i++)
 	{
-		getLView()->cmdCharInsert((UT_UCSChar *) szString,len);
-		getLView()->cmdCharInsert((UT_UCSChar *) szSpace,lenSpace);
+		getLView()->cmdCharInsert((UT_UCS4Char *) szString,len);
+		getLView()->cmdCharInsert((UT_UCS4Char *) szSpace,lenSpace);
 	}
-	getLView()->cmdCharInsert((UT_UCSChar *) sz3,len1);
+	getLView()->cmdCharInsert((UT_UCS4Char *) sz3,len1);
 }
 
 /*!

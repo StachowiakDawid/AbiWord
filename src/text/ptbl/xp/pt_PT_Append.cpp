@@ -370,7 +370,7 @@ bool pt_PieceTable::appendFmt(const PP_PropertyVector & vecAttributes)
 	return true;
 }
 
-bool pt_PieceTable::appendSpan(const UT_UCSChar * pbuf, UT_uint32 length)
+bool pt_PieceTable::appendSpan(const UT_UCS4Char * pbuf, UT_uint32 length)
 {
 	// can only be used while loading the document
 	UT_return_val_if_fail (m_pts==PTS_Loading, false);
@@ -482,7 +482,7 @@ bool pt_PieceTable::insertStruxBeforeFrag(pf_Frag * pF, PTStruxType pts,
 }
 
 
-bool pt_PieceTable::insertSpanBeforeFrag(pf_Frag * pf, const UT_UCSChar * p, UT_uint32 length)
+bool pt_PieceTable::insertSpanBeforeFrag(pf_Frag * pf, const UT_UCS4Char * p, UT_uint32 length)
 {
 	// can only be used while loading the document
 	UT_return_val_if_fail (m_pts==PTS_Loading, false);

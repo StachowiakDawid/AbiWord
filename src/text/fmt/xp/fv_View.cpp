@@ -1804,8 +1804,8 @@ UT_RGBColor FV_View::getColorSelForeground () const
 #if 0
 // the code is not directly in the case function, as passing the
 // arguments is too awkward
-static void _toggleSentence (const UT_UCSChar * src,
-				 UT_UCSChar * dest, UT_uint32 len, const UT_UCSChar * prev)
+static void _toggleSentence (const UT_UCS4Char * src,
+				 UT_UCS4Char * dest, UT_uint32 len, const UT_UCS4Char * prev)
 {
 	if(!prev || (UT_UCS4_isSentenceSeparator(prev[0]) && UT_UCS4_isspace (prev[1])))
 	{
@@ -1828,8 +1828,8 @@ static void _toggleSentence (const UT_UCSChar * src,
 }
 #endif
 
-static void _toggleFirstCapital(const UT_UCSChar * src,
-				 UT_UCSChar * dest, UT_uint32 len, const UT_UCSChar * prev)
+static void _toggleFirstCapital(const UT_UCS4Char * src,
+				 UT_UCS4Char * dest, UT_uint32 len, const UT_UCS4Char * prev)
 {
 	if(!prev || UT_UCS4_isspace(prev[0]))
 	{
@@ -1850,8 +1850,8 @@ static void _toggleFirstCapital(const UT_UCSChar * src,
 }
 
 // all gets set to lowercase
-static void _toggleLower (const UT_UCSChar * src,
-			  UT_UCSChar * dest, UT_uint32 len)
+static void _toggleLower (const UT_UCS4Char * src,
+			  UT_UCS4Char * dest, UT_uint32 len)
 {
 	for (UT_uint32 i = 0; i < len; i++)
 	{
@@ -1860,8 +1860,8 @@ static void _toggleLower (const UT_UCSChar * src,
 }
 
 // all gets set to uppercase
-static void _toggleUpper (const UT_UCSChar * src,
-			  UT_UCSChar * dest, UT_uint32 len)
+static void _toggleUpper (const UT_UCS4Char * src,
+			  UT_UCS4Char * dest, UT_uint32 len)
 {
 	for (UT_uint32 i = 0; i < len; i++)
 	{
@@ -1876,13 +1876,13 @@ static void _toggleUpper (const UT_UCSChar * src,
 // and I see little need for it; so for now it is going to
 // be turned off
 #if 0
-static void _toggleTitle (const UT_UCSChar * src,
-			  UT_UCSChar * dest, UT_uint32 len,
+static void _toggleTitle (const UT_UCS4Char * src,
+			  UT_UCS4Char * dest, UT_uint32 len,
 						  bool spaceBeforeFirstChar)
 {
 	bool wasSpace = spaceBeforeFirstChar;
 
-	UT_UCSChar ch;
+	UT_UCS4Char ch;
 
 	for (UT_uint32 i = 0; i < len; i++)
 	{
@@ -1908,10 +1908,10 @@ static void _toggleTitle (const UT_UCSChar * src,
 // all gets set to its opposite
 // I have my doubts about usufulness of this, but the concensus on
 // the mailing list was to leave it, so it stays.
-static void _toggleToggle (const UT_UCSChar * src,
-			   UT_UCSChar * dest, UT_uint32 len)
+static void _toggleToggle (const UT_UCS4Char * src,
+			   UT_UCS4Char * dest, UT_uint32 len)
 {
-	UT_UCSChar ch;
+	UT_UCS4Char ch;
 	for (UT_uint32 i = 0; i < len; i++)
 	{
 		ch = src[i];
@@ -1990,13 +1990,13 @@ void FV_View::toggleCase (ToggleCase c)
 
 	// create a temp buffer of a reasonable size (will g_try_realloc if too small)
 	UT_sint32	 iTempLen = 150;
-	UT_UCSChar * pTemp = new UT_UCSChar[iTempLen];
+	UT_UCS4Char * pTemp = new UT_UCS4Char[iTempLen];
 	UT_ASSERT(pTemp);
 
 	_saveAndNotifyPieceTableChange();
 	m_pDoc->beginUserAtomicGlob();
 
-	UT_UCSChar * prev;
+	UT_UCS4Char * prev;
 
 	while(pBL && low < high)
 	{
@@ -2024,7 +2024,7 @@ void FV_View::toggleCase (ToggleCase c)
 		if(c == CASE_ROTATE)
 		{
 			// workout the current case
-			UT_UCSChar * pT = reinterpret_cast<UT_UCSChar*>(buffer.getPointer(offset));
+			UT_UCS4Char * pT = reinterpret_cast<UT_UCS4Char*>(buffer.getPointer(offset));
 			xxx_UT_DEBUGMSG(("pT 0x%x, pT + 1 0x%x\n", *pT, *(pT+1)));
 
 			if(pT && UT_UCS4_islower(*pT) && buffer.getLength() > 1 && UT_UCS4_islower (*(pT+1)))
@@ -2086,7 +2086,7 @@ void FV_View::toggleCase (ToggleCase c)
 			if(iLenToCopy > iTempLen)
 			{
 				delete[] pTemp;
-				pTemp = new UT_UCSChar[iLenToCopy];
+				pTemp = new UT_UCS4Char[iLenToCopy];
 				iTempLen = iLenToCopy;
 				UT_ASSERT(pTemp);
 			}
@@ -2149,7 +2149,7 @@ void FV_View::toggleCase (ToggleCase c)
 
 				UT_ASSERT(iLen + offset + pBL->getPosition(false) <= high);
 
-				memmove(pTemp, buffer.getPointer(offset), iLen * sizeof(UT_UCSChar));
+				memmove(pTemp, buffer.getPointer(offset), iLen * sizeof(UT_UCS4Char));
 
 				switch (c)
 				{
@@ -2157,7 +2157,7 @@ void FV_View::toggleCase (ToggleCase c)
 						if(offset == 0)
 							prev = nullptr;
 						else
-							prev = reinterpret_cast<UT_UCSChar*>(buffer.getPointer(offset - 1));
+							prev = reinterpret_cast<UT_UCS4Char*>(buffer.getPointer(offset - 1));
 						_toggleFirstCapital(pTemp,pTemp, iLen, prev);
 						break;
 
@@ -2171,7 +2171,7 @@ void FV_View::toggleCase (ToggleCase c)
 #endif
 				   {
 					   UT_uint32 iOffset = offset;
-					   UT_UCSChar * text = reinterpret_cast<UT_UCSChar*>(buffer.getPointer(0));
+					   UT_UCS4Char * text = reinterpret_cast<UT_UCS4Char*>(buffer.getPointer(0));
 					   UT_uint32 i = 1;
 
 					   // examine what preceedes this chunk of text
@@ -2401,7 +2401,7 @@ void FV_View:: getTextInDocument(UT_GrowBuf & buf) const
 	return TRUE;
 }
 
-UT_UCSChar FV_View::getChar(PT_DocPosition pos, UT_sint32 *x, UT_sint32 *y, UT_uint32 *width, UT_uint32 *height)
+UT_UCS4Char FV_View::getChar(PT_DocPosition pos, UT_sint32 *x, UT_sint32 *y, UT_uint32 *width, UT_uint32 *height)
 {
   if (x || y || height)
   {
@@ -2418,14 +2418,14 @@ UT_UCSChar FV_View::getChar(PT_DocPosition pos, UT_sint32 *x, UT_sint32 *y, UT_u
   pt_PieceTable *piece = getDocument()->getPieceTable();
   pf_Frag *p;
   PT_BlockOffset offset;
-  UT_UCSChar ret = 0;
+  UT_UCS4Char ret = 0;
   if (piece->getFragFromPosition(pos, &p, &offset))
   {
     if (p->getType() == 0) // PFT_Text)
     {
       pf_Frag_Text *pt = reinterpret_cast<pf_Frag_Text *>(p);
       PT_BufIndex bi = pt->getBufIndex();
-      const UT_UCSChar *c = piece->getPointer(bi);
+      const UT_UCS4Char *c = piece->getPointer(bi);
       ret = c[offset];
     }
   }
@@ -3244,7 +3244,7 @@ void FV_View::insertSectionBreak(BreakSectionType type)
 	// Signal PieceTable Changes have Started
 	m_pDoc->notifyPieceTableChangeStart();
 
-	UT_UCSChar c = UCS_FF;
+	UT_UCS4Char c = UCS_FF;
 	UT_uint32 iPageNum = 0;
 	switch(type)
 	{
@@ -6431,7 +6431,7 @@ void FV_View::getSelectionText(UT_UCS4Char * & pText) const
 	{
 		block->getBlockBuf(&buffer);
 
-		UT_UCSChar * bufferSegment = nullptr;
+		UT_UCS4Char * bufferSegment = nullptr;
 
 		PT_DocPosition offset = 0;
 		if( low >= block->getPosition(false) )
@@ -6454,7 +6454,7 @@ void FV_View::getSelectionText(UT_UCS4Char * & pText) const
 		{
 			selLength = 0;
 		}
-		bufferSegment = static_cast<UT_UCSChar *>(UT_calloc(selLength + 1, sizeof(UT_UCSChar)));
+		bufferSegment = static_cast<UT_UCS4Char *>(UT_calloc(selLength + 1, sizeof(UT_UCS4Char)));
 
 		if(!bufferSegment)
 		{
@@ -6463,7 +6463,7 @@ void FV_View::getSelectionText(UT_UCS4Char * & pText) const
 		}
 		
 		// copy it out
-		memmove(bufferSegment, buffer.getPointer(offset), selLength * sizeof(UT_UCSChar));
+		memmove(bufferSegment, buffer.getPointer(offset), selLength * sizeof(UT_UCS4Char));
 
 		pText = bufferSegment;
 		return;
@@ -6476,7 +6476,7 @@ void FV_View::getSelectionText(UT_UCS4Char * & pText) const
 
    The caller must delete [] the returned pointer !!!
  */
-UT_UCSChar * FV_View::getTextBetweenPos(PT_DocPosition pos1, PT_DocPosition pos2) const
+UT_UCS4Char * FV_View::getTextBetweenPos(PT_DocPosition pos1, PT_DocPosition pos2) const
 {
 	UT_return_val_if_fail(pos2 > pos1, nullptr);
 
@@ -6489,13 +6489,13 @@ UT_UCSChar * FV_View::getTextBetweenPos(PT_DocPosition pos1, PT_DocPosition pos2
 	// get the current block the insertion point is in
 	const fl_BlockLayout * pBlock = m_pLayout->findBlockAtPosition(curPos);
 
-	UT_UCSChar * bufferRet = new UT_UCSChar[iLength+1];
+	UT_UCS4Char * bufferRet = new UT_UCS4Char[iLength+1];
 
 	UT_ASSERT(bufferRet);
 	if(!bufferRet)
 		return nullptr;
 
-	UT_UCSChar * buff_ptr = bufferRet;
+	UT_UCS4Char * buff_ptr = bufferRet;
 
 	while(pBlock && curPos < pos2)
 	{
@@ -6509,7 +6509,7 @@ UT_UCSChar * FV_View::getTextBetweenPos(PT_DocPosition pos1, PT_DocPosition pos2
 		UT_uint32 iLenToCopy = UT_MIN(pos2 - curPos, buffer.getLength() - offset);
 		if(curPos < pos2 && (curPos < pBlock->getPosition(false) + pBlock->getLength()))
 		{
-			memmove(buff_ptr, buffer.getPointer(offset), iLenToCopy * sizeof(UT_UCSChar));
+			memmove(buff_ptr, buffer.getPointer(offset), iLenToCopy * sizeof(UT_UCS4Char));
 			offset	 += iLenToCopy;
 			buff_ptr += iLenToCopy;
 			curPos	 += iLenToCopy;
@@ -7312,7 +7312,7 @@ void FV_View::endDrag(UT_sint32 xPos, UT_sint32 yPos)
 }
 
 // ---------------- start goto ---------------
-bool FV_View::gotoTarget(AP_JumpTarget type, const UT_UCSChar *data)
+bool FV_View::gotoTarget(AP_JumpTarget type, const UT_UCS4Char *data)
 {
 	char * numberString = static_cast<char *>(UT_calloc(UT_UCS4_strlen(data)*6 + 1, sizeof(char)));
 	UT_return_val_if_fail(numberString, false);
@@ -7598,7 +7598,7 @@ book_mark_not_found:
  \return True if string was found, false otherwise
 */
 bool
-FV_View::findNext(const UT_UCSChar* pFind, bool& bDoneEntireDocument)
+FV_View::findNext(const UT_UCS4Char* pFind, bool& bDoneEntireDocument)
 
 {
 	findSetFindString(pFind);
@@ -7639,7 +7639,7 @@ FV_View::findNext(bool& bDoneEntireDocument)
 
 
 bool
-FV_View::findPrev(const UT_UCSChar* pFind, bool& bDoneEntireDocument)
+FV_View::findPrev(const UT_UCS4Char* pFind, bool& bDoneEntireDocument)
 {
 	findSetFindString(pFind);
 	return findPrev(bDoneEntireDocument);
@@ -7700,16 +7700,16 @@ FV_View::findSetStartAtInsPoint(void)
 
 
 void
-FV_View::findSetFindString(const UT_UCSChar* pFind)
+FV_View::findSetFindString(const UT_UCS4Char* pFind)
 {
 	FREEP(m_sFind);
 	UT_UCS4_cloneString(&m_sFind, pFind);
 }
 
-UT_UCSChar * 
+UT_UCS4Char * 
 FV_View::findGetFindString(void)
 {
-	UT_UCSChar * string = nullptr;
+	UT_UCS4Char * string = nullptr;
 	if (m_sFind)
 	{
 		if (UT_UCS4_cloneString(&string, m_sFind))
@@ -7725,16 +7725,16 @@ FV_View::findGetFindString(void)
 }
 
 void
-FV_View::findSetReplaceString(const UT_UCSChar* pReplace)
+FV_View::findSetReplaceString(const UT_UCS4Char* pReplace)
 {
 	FREEP(m_sReplace);
 	UT_UCS4_cloneString(&m_sReplace, pReplace);
 }
 
-UT_UCSChar * 
+UT_UCS4Char * 
 FV_View::findGetReplaceString(void)
 {
-	UT_UCSChar * string = nullptr;
+	UT_UCS4Char * string = nullptr;
 	if (m_sReplace)
 	{
 		if (UT_UCS4_cloneString(&string, m_sReplace))
@@ -7952,7 +7952,7 @@ FV_View::getCurrentBlock(void) const
 	return _findGetCurrentBlock();
 }
 
-void FV_View::insertSymbol(UT_UCSChar c, const gchar * symfont)
+void FV_View::insertSymbol(UT_UCS4Char c, const gchar * symfont)
 {
 
 	// First check to see if there is a selection already.
@@ -11012,7 +11012,7 @@ UT_uint32 FV_View::getCurrentPageNumForStatusBar(void) const
 
 #ifdef ENABLE_SPELL
 // ndx is one-based, not zero-based
-UT_UCSChar * FV_View::getContextSuggest(UT_uint32 ndx)
+UT_UCS4Char * FV_View::getContextSuggest(UT_uint32 ndx)
 {
 	// locate the squiggle
 	PT_DocPosition pos = 0 ;
@@ -11033,7 +11033,7 @@ UT_UCSChar * FV_View::getContextSuggest(UT_uint32 ndx)
 }
 #endif
 
-static bool s_notChar(UT_UCSChar c)
+static bool s_notChar(UT_UCS4Char c)
 {
     switch (c)
     {
@@ -11161,7 +11161,7 @@ FV_DocCount FV_View::countWords(bool bActuallyCountWords)
 		}
 		UT_GrowBuf gb(1024);
 		pBL->getBlockBuf(&gb);
-		const UT_UCSChar * pSpan = reinterpret_cast<UT_UCSChar*>(gb.getPointer(0));
+		const UT_UCS4Char * pSpan = reinterpret_cast<UT_UCS4Char*>(gb.getPointer(0));
 		UT_uint32 len = gb.getLength();
 
 		// Count lines and pages
@@ -11219,7 +11219,7 @@ FV_DocCount FV_View::countWords(bool bActuallyCountWords)
 						wCount.ch_no++;
 					}
 				}
-				UT_UCSChar followChar, prevChar;
+				UT_UCS4Char followChar, prevChar;
 				followChar = (static_cast<UT_uint32>(i+1) < len) ? pSpan[i+1] : UCS_UNKPUNK;
 				prevChar = i > 0 ? pSpan[i-1] : UCS_UNKPUNK;
 
@@ -13125,7 +13125,7 @@ bool FV_View::insertFootnote(bool bFootnote)
 	FanchEnd = FanchStart+1;
 	UT_DEBUGMSG(("insertFootnote: Inserting space after anchor field \n"));
 	//insert a TAB after the anchor
-	UT_UCSChar tab = UCS_TAB;
+	UT_UCS4Char tab = UCS_TAB;
 	const PP_AttrProp * pSpanAP = nullptr;
 	const PP_AttrProp * pBlockAP = nullptr;
 	getAttributes(&pSpanAP,&pBlockAP,FanchStart);

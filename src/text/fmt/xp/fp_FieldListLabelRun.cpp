@@ -33,9 +33,9 @@ fp_FieldListLabelRun::fp_FieldListLabelRun(fl_BlockLayout* pBL,UT_uint32 iOffset
 
 bool fp_FieldListLabelRun::calculateValue(void)
 {
-	UT_UCSChar sz_ucs_FieldValue[FPFIELD_MAX_LENGTH + 1];
+	UT_UCS4Char sz_ucs_FieldValue[FPFIELD_MAX_LENGTH + 1];
 	UT_uint32 i = 0;
-	const UT_UCSChar *  listlabel = nullptr;
+	const UT_UCS4Char *  listlabel = nullptr;
 	if(getBlock()->isContainedByTOC())
 	{
 		xxx_UT_DEBUGMSG(("!!!!!!------!!!! ListLabel in TOC!!!! \n"));
@@ -49,7 +49,7 @@ bool fp_FieldListLabelRun::calculateValue(void)
 		fl_BlockLayout * pBlockInDoc = pLayout->findBlockAtPosition(pos);
 		if(pBlockInDoc == nullptr)
 		{
-			sz_ucs_FieldValue[0] = static_cast<UT_UCSChar>(' ');
+			sz_ucs_FieldValue[0] = static_cast<UT_UCS4Char>(' ');
 			sz_ucs_FieldValue[1] = 0;
 			return _setValue(sz_ucs_FieldValue);
 		}

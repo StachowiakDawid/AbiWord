@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301 USA.
  */
-#ifndef IE_EXP_HTML_LISTENER_H
-#define	IE_EXP_HTML_LISTENER_H
+
+#pragma once
 
 // External includes
 #include <vector>
@@ -207,7 +207,7 @@ private:
     const gchar* _getObjectKey(const PT_AttrPropIndex& api,
             const gchar* key);
     virtual bool _beginOfDocument(const PT_AttrPropIndex& api);
-    void _outputData(const UT_UCSChar* pData, UT_uint32 length);
+    void _outputData(const UT_UCS4Char* pData, UT_uint32 length);
     void _openSpan(PT_AttrPropIndex api);
     void _closeSpan();
 
@@ -349,8 +349,3 @@ private:
     UT_GenericVector<double> m_vecDWidths;
     bool m_bHasMathMl;
 };
-
-
-
-#endif	/* IE_EXP_HTML_LISTENER_H */
-

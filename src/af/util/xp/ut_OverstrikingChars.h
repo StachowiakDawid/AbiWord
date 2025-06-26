@@ -17,16 +17,9 @@
  * 02110-1301 USA.
  */
 
-#ifndef UT_OVERCHARS_H
-#define UT_OVERCHARS_H
+#pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 /* for comments on signficance of these constants see the cpp file */
 
@@ -40,6 +33,5 @@
 #define UT_OVERSTRIKING_DIR    0x0fffffff
 #define UT_OVERSTRIKING_TYPE   0xf0000000
 
-UT_uint32 UT_isOverstrikingChar(UT_UCSChar c);
-#endif
+UT_uint32 UT_isOverstrikingChar(UT_UCS4Char c);
 

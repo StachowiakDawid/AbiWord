@@ -484,7 +484,7 @@ void IE_Imp_OPML::_createBullet(void)
 
 	X_CheckError(appendObject (PTO_Field, attr2));
 	X_CheckError(appendFmt (attr2));
-	UT_UCSChar ucs = UCS_TAB;
+	UT_UCS4Char ucs = UCS_TAB;
 	appendSpan(&ucs,1);
 	_popInlineFmt();
 	X_CheckError(appendFmt (PP_NOPROPS));

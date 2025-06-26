@@ -19,8 +19,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef GR_UNIX_PANGOGRAPHICS_H
-#define GR_UNIX_PANGOGRAPHICS_H
+#pragma once
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -180,9 +179,9 @@ public:
 
 	virtual GR_Capability  getCapability() override {return GRCAP_SCREEN_ONLY;}
 
-	virtual UT_sint32 measureUnRemappedChar(const UT_UCSChar c, UT_uint32 * height = nullptr) override;
+	virtual UT_sint32 measureUnRemappedChar(const UT_UCS4Char c, UT_uint32 * height = nullptr) override;
 
-	virtual void		   drawChars(const UT_UCSChar* pChars,
+	virtual void		   drawChars(const UT_UCS4Char* pChars,
 									 int iCharOffset, int iLength,
 									 UT_sint32 xoff, UT_sint32 yoff,
 									 int * pCharWidth) override;
@@ -190,7 +189,7 @@ public:
 	virtual void           drawGlyph(UT_uint32 glyph_idx,
 									 UT_sint32 xoff, UT_sint32 yoff) override;
 
-	virtual UT_uint32      measureString(const UT_UCSChar* s, int iOffset,
+	virtual UT_uint32      measureString(const UT_UCS4Char* s, int iOffset,
 										 int num,  UT_GrowBufElement* pWidths, UT_uint32 * height = nullptr) override;
 
 	virtual GR_Font*	   getDefaultFont(UT_String& fontFamily,
@@ -438,6 +437,3 @@ private:
 	/** common private init for pango called from the constructor */
 	void _initPango();
 };
-
-
-#endif

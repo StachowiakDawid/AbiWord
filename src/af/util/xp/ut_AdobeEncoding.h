@@ -17,18 +17,12 @@
  * 02110-1301 USA.
  */
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 struct encoding_pair
 {
 	const char *	adb;
-	UT_UCSChar		ucs;
+	UT_UCS4Char		ucs;
 };
 
 
@@ -37,8 +31,8 @@ class ABI_EXPORT UT_AdobeEncoding
 	public:
 		UT_AdobeEncoding(const encoding_pair *ep, UT_uint32 esize);
 
-		UT_UCSChar		adobeToUcs(const char * str)   const;
-		const char *	ucsToAdobe(const UT_UCSChar c);
+		UT_UCS4Char		adobeToUcs(const char * str)   const;
+		const char *	ucsToAdobe(const UT_UCS4Char c);
 	private:
 		char 			m_buff[12];
 		const encoding_pair *	m_pLUT;

@@ -2644,7 +2644,7 @@ inline void fp_Line::_calculateWidthOfRun(	UT_sint32 &iX,
 
 					case FL_TAB_DECIMAL:
 					{
-						UT_UCSChar *pDecimalStr =nullptr;
+						UT_UCS4Char *pDecimalStr =nullptr;
 						UT_uint32	runLen = 0;
 
 #if 1
@@ -3989,7 +3989,7 @@ UT_uint32 fp_Line::countJustificationPoints(void)
 }
 
 
-bool fp_Line::isLastCharacter(UT_UCSChar Character) const
+bool fp_Line::isLastCharacter(UT_UCS4Char Character) const
 {
 	UT_ASSERT(!isEmpty());
 

@@ -126,9 +126,9 @@ protected:
 	static Applix_mapping_t axwords[];
 	static Applix_tag_t     s_name_2_tag (const char *name, size_t n);
 	static Applix_tag_t     s_getTagName(const char *str, size_t len);
-	static short            s_8bitsToUCS (const char *str, size_t len, UT_UCSChar * c);
-	static short            s_16bitsToUCS (const char *str, size_t len, UT_UCSChar * c);
-	static short            s_decodeToUCS (const char *str, size_t len, UT_UCSChar * c);
+	static short            s_8bitsToUCS (const char *str, size_t len, UT_UCS4Char * c);
+	static short            s_16bitsToUCS (const char *str, size_t len, UT_UCS4Char * c);
+	static short            s_decodeToUCS (const char *str, size_t len, UT_UCS4Char * c);
 	bool                    _applixGetLine (const UT_ByteBufPtr & pBuf, GsfInput *fp);
 	void                    _applixDecodeText (const char * buf, size_t len);
 	void                    _applixNewPara (const char * buf, size_t len);

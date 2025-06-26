@@ -170,7 +170,7 @@ bool  IE_Exp_DocRangeListener::populate(fl_ContainerLayout* /* sfh */,
 		UT_uint32 len = pcrs->getLength();
 		xxx_UT_DEBUGMSG(("Insert span index AP %d \n",indexAP));
 		PT_BufIndex bi = pcrs->getBufIndex();
-		const UT_UCSChar* pChars = 	m_pSourceDoc->getPointer(bi);
+		const UT_UCS4Char* pChars = 	m_pSourceDoc->getPointer(bi);
 		if(bAppendFmt)
 		{
 		    getDoc()->appendFmt(allAtts);

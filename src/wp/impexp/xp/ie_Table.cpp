@@ -2523,7 +2523,7 @@ bool IE_Imp_TableHelper::BlockFormat (const PP_PropertyVector & attributes)
 	return true;
 }
 
-bool IE_Imp_TableHelper::Inline (const UT_UCSChar * ucs4_str, UT_sint32 length)
+bool IE_Imp_TableHelper::Inline (const UT_UCS4Char * ucs4_str, UT_sint32 length)
 {
 	if(!m_bBlockInsertedForCell)
 		{
@@ -2809,7 +2809,7 @@ bool IE_Imp_TableHelperStack::BlockFormat (const PP_PropertyVector & attributes)
 	return false;
 }
 
-bool IE_Imp_TableHelperStack::Inline (const UT_UCSChar * ucs4_str, UT_sint32 length)
+bool IE_Imp_TableHelperStack::Inline (const UT_UCS4Char * ucs4_str, UT_sint32 length)
 {
 	IE_Imp_TableHelper * th = top ();
 	if (th)

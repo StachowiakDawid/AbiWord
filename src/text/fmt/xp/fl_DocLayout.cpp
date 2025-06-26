@@ -4392,7 +4392,7 @@ enum sqThingAt: uint8_t
 };
 
 // TODO:  This function probably needs tuning for non-Anglo locales.
-static sqThingAt whatKindOfChar(UT_UCSChar thing)
+static sqThingAt whatKindOfChar(UT_UCS4Char thing)
 {
 	xxx_UT_DEBUGMSG(("what sort of character is %d 0x%x |%c|\n", thing, thing, thing));
 	switch (thing)
@@ -4424,9 +4424,9 @@ static sqThingAt whatKindOfChar(UT_UCSChar thing)
 struct sqTable
 {
 	sqThingAt before;
-	UT_UCSChar thing;
+	UT_UCS4Char thing;
 	sqThingAt after;
-	UT_UCSChar replacement;
+	UT_UCS4Char replacement;
 };
 // The idea of the table is to drive the algorithm without lots of
 // cluttery code.  Something using this table pre-computes what the
@@ -4550,7 +4550,7 @@ void FL_DocLayout::considerSmartQuoteCandidateAt(fl_BlockLayout *block, UT_uint3
 	block->getBlockBuf(&pgb);
 	// this is for the benefit of the UT_DEBUGMSG and should be changed to
 	// something other than '?' if '?' ever shows up as UT_isSmartQuotableCharacter()
-	UT_UCSChar c = '?';
+	UT_UCS4Char c = '?';
 	if (pgb.getLength() > offset) c = *pgb.getPointer(offset);
 	UT_DEBUGMSG(("FL_DocLayout::considerSmartQuoteCandidateAt(%p, %d)  |%c|\n", (void*)block, offset, c));
 
@@ -4629,7 +4629,7 @@ void FL_DocLayout::considerSmartQuoteCandidateAt(fl_BlockLayout *block, UT_uint3
 
 		// we now know what the before and after things are, so
 		// spin through the table.
-		UT_UCSChar replacement = UCS_UNKPUNK;  // means don't replace
+		UT_UCS4Char replacement = UCS_UNKPUNK;  // means don't replace
 		// TODO:  select a table based on default locale or on the locale
 		// TODO:  of the fragment of text we're working in (locale tagging
 		// TODO:  of text doesn't exist in Abi as of this writing)

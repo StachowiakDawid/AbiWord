@@ -21,7 +21,7 @@
 #include "ut_assert.h"
 #include <stdlib.h>
 
-typedef struct {UT_UCSChar min; UT_UCSChar max; UT_uint32 dir;} char_bounds;
+typedef struct {UT_UCS4Char min; UT_UCS4Char max; UT_uint32 dir;} char_bounds;
 
 // the following table is heuristic; we will add to it more characters
 // when we need to (we could try to generate this table for the whole
@@ -101,7 +101,7 @@ char_bounds overstr_lut[]=
 
 static UT_sint32 s_compare(const void * a, const void * b)
 {
-	const UT_UCSChar  * c  = static_cast<const UT_UCSChar *>(a);
+	const UT_UCS4Char  * c  = static_cast<const UT_UCS4Char *>(a);
 	const char_bounds * bn = static_cast<const char_bounds *>(b);
 
 	if(*c < bn->min)
@@ -113,7 +113,7 @@ static UT_sint32 s_compare(const void * a, const void * b)
 	return 0;
 }
 
-UT_uint32 UT_isOverstrikingChar(UT_UCSChar c)
+UT_uint32 UT_isOverstrikingChar(UT_UCS4Char c)
 {
 	char_bounds * e;
 	if((e = static_cast<char_bounds *>(bsearch(&c, overstr_lut, G_N_ELEMENTS(overstr_lut), sizeof(char_bounds), s_compare))))

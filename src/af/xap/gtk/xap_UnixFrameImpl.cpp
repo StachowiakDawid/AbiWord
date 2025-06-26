@@ -1633,7 +1633,7 @@ gint XAP_UnixFrameImpl::_imRetrieveSurrounding_cb (GtkIMContext *context,
 		return TRUE;
 	}
 
-	UT_UCSChar * text = nullptr;
+	UT_UCS4Char * text = nullptr;
 	if (end_p > begin_p)
 		text = pView->getTextBetweenPos (begin_p, end_p);
 

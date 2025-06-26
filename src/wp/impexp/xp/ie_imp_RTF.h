@@ -641,7 +641,7 @@ private:
 		RBT_END
 	};
 
-	bool AddChar(UT_UCSChar ch);
+	bool AddChar(UT_UCS4Char ch);
 public:
 	bool FlushStoredChars(bool forceInsertPara = false);
 private:
@@ -651,7 +651,7 @@ private:
 public:
 	bool PushRTFState();
 	bool PopRTFState();
-	bool ParseChar(UT_UCSChar ch,bool no_convert=1);
+	bool ParseChar(UT_UCS4Char ch,bool no_convert=1);
 	void setStruxImage(bool b)
 		{ m_bStruxImage = b;}
 	bool isStruxImage(void) const

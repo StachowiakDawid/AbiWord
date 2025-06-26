@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef GR_PAINTER_H
-#define GR_PAINTER_H
+#pragma once
 
 #include "xap_Features.h"
 #include "gr_Graphics.h"
@@ -56,14 +55,14 @@ public:
 	void polygon(const UT_RGBColor& c, const UT_Point *pts, UT_uint32 nPoints);
 	void polyLine(const UT_Point * pts, UT_uint32 nPoints);
 	void drawGlyph(UT_uint32 glyph_idx, UT_sint32 xoff, UT_sint32 yoff);
-	void drawChars(const UT_UCSChar* pChars,
+	void drawChars(const UT_UCS4Char* pChars,
 				   int iCharOffset,
 				   int iLength,
 				   UT_sint32 xoff,
 				   UT_sint32 yoff,
 				   int* pCharWidths = nullptr);
 
-	void drawCharsRelativeToBaseline(const UT_UCSChar* pChars,
+	void drawCharsRelativeToBaseline(const UT_UCS4Char* pChars,
 				   int iCharOffset,
 				   int iLength,
 				   UT_sint32 xoff,
@@ -94,5 +93,3 @@ private:
 	bool m_bDoubleBufferingToken;
 	bool m_bSuspendDrawingToken;
 };
-
-#endif // GR_PAINTER_H

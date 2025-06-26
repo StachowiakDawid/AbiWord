@@ -319,7 +319,7 @@ IE_Imp_Applix::s_getTagName(const char *str, size_t len)
   \return the number of bytes read
   \note '^' is invalid and must be handle before
  */
-short IE_Imp_Applix::s_decodeToUCS (const char *str, size_t len, UT_UCSChar * c)
+short IE_Imp_Applix::s_decodeToUCS (const char *str, size_t len, UT_UCS4Char * c)
 {
 	short ret;
 	
@@ -350,7 +350,7 @@ short IE_Imp_Applix::s_decodeToUCS (const char *str, size_t len, UT_UCSChar * c)
   \note the documentation is vague on this point, but I suspect that the charset
   \note is ISO-8859-1
  */
-short IE_Imp_Applix::s_8bitsToUCS (const char *str, size_t len, UT_UCSChar * c)
+short IE_Imp_Applix::s_8bitsToUCS (const char *str, size_t len, UT_UCS4Char * c)
 {
     short decoded = 0;
     
@@ -381,7 +381,7 @@ short IE_Imp_Applix::s_8bitsToUCS (const char *str, size_t len, UT_UCSChar * c)
   \return the number of bytes read
   \note the documentation is vague on this point, but I suspect that the charset is UNICODE encoded in UCS-2
  */
-short IE_Imp_Applix::s_16bitsToUCS (const char *str, size_t len, UT_UCSChar * c)
+short IE_Imp_Applix::s_16bitsToUCS (const char *str, size_t len, UT_UCS4Char * c)
 {
     short decoded = 0;
 	char x, y, z;
@@ -607,7 +607,7 @@ void IE_Imp_Applix::_applixDecodeText (const char *buf, size_t len)
 	size_t pos = 0;
 	UT_UCS4Char wc;
 	UT_Byte    ch;
-	UT_UCSChar c;	
+	UT_UCS4Char c;	
 
 	// be sure to discard buffer
 	m_textBuf.truncate(0);
@@ -650,7 +650,7 @@ void IE_Imp_Applix::_applixDecodeText (const char *buf, size_t len)
 		if (ch) 
 		{
 			m_mbtowc.mbtowc(wc, ch);
-			c = static_cast<UT_UCSChar>(wc);
+			c = static_cast<UT_UCS4Char>(wc);
 			m_textBuf.append(reinterpret_cast<const UT_GrowBufElement *>(&c), 1);
 		}
 		pos++;
@@ -661,7 +661,7 @@ void IE_Imp_Applix::_applixDecodeText (const char *buf, size_t len)
 
 	if (m_textBuf.getLength() > 0) 
 	{
-		appendSpan (reinterpret_cast<const UT_UCSChar *>(m_textBuf.getPointer (0)), m_textBuf.getLength ());
+		appendSpan (reinterpret_cast<const UT_UCS4Char *>(m_textBuf.getPointer (0)), m_textBuf.getLength ());
 		m_textBuf.truncate(0);
 	}
 }
@@ -682,7 +682,7 @@ void IE_Imp_Applix::_applixNewPara (const char* /*buf*/, size_t /*len*/)
 	if (runlen > 0) 
 	{
 		xxx_UT_DEBUGMSG(("applix: flushing\n"));
-		appendSpan (reinterpret_cast<const UT_UCSChar *>(m_textBuf.getPointer (0)), runlen);
+		appendSpan (reinterpret_cast<const UT_UCS4Char *>(m_textBuf.getPointer (0)), runlen);
 	}
 	
 	xxx_UT_DEBUGMSG(("applix: new para\n"));
@@ -700,10 +700,10 @@ void IE_Imp_Applix::_applixNewPara (const char* /*buf*/, size_t /*len*/)
 */
 void IE_Imp_Applix::_applixPageBreak (const char * /*buf*/, size_t /*len*/)
 {
-	UT_UCSChar c;
+	UT_UCS4Char c;
 	c = UCS_FF;
 	m_textBuf.append(reinterpret_cast<const UT_GrowBufElement *>(&c), 1);
-	appendSpan (reinterpret_cast<const UT_UCSChar *>(m_textBuf.getPointer (0)), m_textBuf.getLength ());
+	appendSpan (reinterpret_cast<const UT_UCS4Char *>(m_textBuf.getPointer (0)), m_textBuf.getLength ());
 	m_textBuf.truncate(0);
 }
 

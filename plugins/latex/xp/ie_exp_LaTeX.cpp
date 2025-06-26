@@ -175,7 +175,7 @@ IE_Exp_LaTeX::~IE_Exp_LaTeX()
 
 /*****************************************************************/
 /*****************************************************************/
-typedef UT_UCSChar U16;
+typedef UT_UCS4Char U16;
 static int wvConvertUnicodeToLaTeX(U16 char16, const char*& out);
 static bool _convertLettersToSymbols(char c, const char *& subst);
 
@@ -324,7 +324,7 @@ protected:
 	void				_openSpan(PT_AttrPropIndex api);
 	void				_openTable(PT_AttrPropIndex api);
 	void				_outputBabelPackage(void);
-	void				_outputData(const UT_UCSChar * p, UT_uint32 length);
+	void				_outputData(const UT_UCS4Char * p, UT_uint32 length);
 	void				_handleDataItems(void);
 	void				_convertFontSize(UT_String& szDest, const char* pszFontSize);
 	void				_convertColor(UT_String& szDest, const char* pszColor);
@@ -1172,7 +1172,7 @@ void s_LaTeX_Listener::_closeTable(void)
     m_pie->write("\\end{tabular}\n\\end{table}\n");
 }
 
-void s_LaTeX_Listener::_outputData(const UT_UCSChar * data, UT_uint32 length)
+void s_LaTeX_Listener::_outputData(const UT_UCS4Char * data, UT_uint32 length)
 {
 	if (!m_bInBlock)
 	{
@@ -1180,7 +1180,7 @@ void s_LaTeX_Listener::_outputData(const UT_UCSChar * data, UT_uint32 length)
 	}
 
 	UT_String sBuf;
-	const UT_UCSChar * pData;
+	const UT_UCS4Char * pData;
 
 	UT_ASSERT(sizeof(UT_Byte) == sizeof(char));
 

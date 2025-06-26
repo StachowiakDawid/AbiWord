@@ -45,7 +45,7 @@ UT_AdobeEncoding::UT_AdobeEncoding(const encoding_pair * ep, UT_uint32 esize)
 }
 
 
-UT_UCSChar UT_AdobeEncoding::adobeToUcs(const char * str) const
+UT_UCS4Char UT_AdobeEncoding::adobeToUcs(const char * str) const
 {
 	//first of all, see if the name is not of the uniXXXX type
 	if(!strncmp(str,"uni",3) && isxdigit(*(str+3)) && isxdigit(*(str+4)) && isxdigit(*(str+5)) && isxdigit(*(str+6)))
@@ -55,7 +55,7 @@ UT_UCSChar UT_AdobeEncoding::adobeToUcs(const char * str) const
 		UT_uint32 i;
 		sscanf(buff,"%x",&i);
 		//printf("%x ", i);
-		return static_cast<UT_UCSChar>(i);
+		return static_cast<UT_UCS4Char>(i);
 	};
 	
 	encoding_pair * ep;
@@ -69,7 +69,7 @@ UT_UCSChar UT_AdobeEncoding::adobeToUcs(const char * str) const
    	}
 }
 
-const char * UT_AdobeEncoding::ucsToAdobe(const UT_UCSChar c)
+const char * UT_AdobeEncoding::ucsToAdobe(const UT_UCS4Char c)
 {
 	UT_uint32 i;
 	

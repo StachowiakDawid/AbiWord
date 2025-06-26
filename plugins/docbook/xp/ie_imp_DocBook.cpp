@@ -972,7 +972,7 @@ void IE_Imp_DocBook::startElement(const gchar *name,
 
 		if(m_parseState == _PS_Block)
 		{
-			UT_UCSChar ucs = UCS_FF;
+			UT_UCS4Char ucs = UCS_FF;
 			appendSpan(&ucs,1);
 		}
 		else
@@ -988,7 +988,7 @@ void IE_Imp_DocBook::startElement(const gchar *name,
 		X_CheckError((m_parseState == _PS_Block) || (m_parseState = _PS_Meta));
 		if(m_parseState == _PS_Block)
 		{
-			UT_UCSChar ucs = UCS_LDBLQUOTE;
+			UT_UCS4Char ucs = UCS_LDBLQUOTE;
 			appendSpan(&ucs,1);
 		}
 		else
@@ -2002,7 +2002,7 @@ void IE_Imp_DocBook::endElement(const gchar *name)
 		X_CheckError((m_parseState == _PS_Block) || (m_parseState = _PS_Meta));
 		if(m_parseState == _PS_Block)
 		{
-			UT_UCSChar ucs = UCS_RDBLQUOTE;
+			UT_UCS4Char ucs = UCS_RDBLQUOTE;
 			appendSpan(&ucs,1);
 		}
 		else
@@ -2781,7 +2781,7 @@ void IE_Imp_DocBook :: createTitle (void)
 
 		X_CheckError ( appendObject (PTO_Field, attr));
 		X_CheckError ( appendFmt (attr));
-		UT_UCSChar ucs = UCS_TAB;
+		UT_UCS4Char ucs = UCS_TAB;
 		appendSpan(&ucs,1);
 		_popInlineFmt();
 	}

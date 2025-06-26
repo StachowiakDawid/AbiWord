@@ -129,7 +129,7 @@ public:
 
 protected:
 	void				_closeBlock(void);
-	void				_outputData(const UT_UCSChar * p, UT_uint32 length);
+	void				_outputData(const UT_UCS4Char * p, UT_uint32 length);
         void                            _write (const char *);
         void                            _write (const char * src, int len);
         void                            _writeln (const char *);
@@ -188,9 +188,9 @@ UT_Error IE_Exp_Applix::_writeDocument(void)
 /*****************************************************************/
 /*****************************************************************/
 
-void s_Applix_Listener::_outputData(const UT_UCSChar * data, UT_uint32 length)
+void s_Applix_Listener::_outputData(const UT_UCS4Char * data, UT_uint32 length)
 {
-	const UT_UCSChar * pData;
+	const UT_UCS4Char * pData;
 	UT_String sBuf;
 
 	UT_ASSERT(sizeof(char) == sizeof(UT_Byte));
@@ -219,7 +219,7 @@ void s_Applix_Listener::_outputData(const UT_UCSChar * data, UT_uint32 length)
 				Networks and mail transfers are 8bit clean
 				these days.  - VH
 				*/
-				UT_UCSChar c = XAP_EncodingManager::get_instance()->try_UToNative(*pData);
+				UT_UCS4Char c = XAP_EncodingManager::get_instance()->try_UToNative(*pData);
 				if (c==0 || c>255)
 				{
 					sBuf += UT_String_sprintf("&#x%x;",*pData++);

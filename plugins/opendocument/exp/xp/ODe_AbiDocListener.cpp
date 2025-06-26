@@ -1410,9 +1410,9 @@ void ODe_AbiDocListener::_insertMath(PT_AttrPropIndex api) {
 /**
  * 
  */
-void ODe_AbiDocListener::_outputData(const UT_UCSChar* pData, UT_uint32 length) {
+void ODe_AbiDocListener::_outputData(const UT_UCS4Char* pData, UT_uint32 length) {
     UT_UTF8String sBuf;
-    const UT_UCSChar* p;
+    const UT_UCS4Char* p;
     UT_uint32 nSpaces = 0;
 
     UT_ASSERT(sizeof(UT_Byte) == sizeof(char));

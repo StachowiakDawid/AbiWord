@@ -117,10 +117,10 @@ void IE_Exp_XML::addString(char const *id, std::string const &value)
 	gsf_xml_out_add_cstr(m_xml, id, value.c_str());
 }
 
-void IE_Exp_XML::addString(char const *id, UT_UCSChar const *data, int length)
+void IE_Exp_XML::addString(char const *id, UT_UCS4Char const *data, int length)
 {
 	UT_UTF8String sBuf;
-	const UT_UCSChar * pData;
+	const UT_UCS4Char * pData;
 
 	UT_return_if_fail(sizeof(UT_Byte) == sizeof(char));
 	sBuf.reserve(length);

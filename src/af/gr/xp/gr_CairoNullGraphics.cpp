@@ -80,7 +80,7 @@ GR_Font* CairoNull_Graphics::getGUIFont()
 	return nullptr;
 }
 
-void CairoNull_Graphics::drawChars(const UT_UCSChar* /*pChars*/, int /*iCharOffset*/,
+void CairoNull_Graphics::drawChars(const UT_UCS4Char* /*pChars*/, int /*iCharOffset*/,
 								  int /*iLength*/, UT_sint32 /*xoff*/, UT_sint32 /*yoff*/,
 								  int * /*pCharWidths*/)
 {

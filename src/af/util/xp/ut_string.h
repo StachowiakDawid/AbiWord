@@ -48,8 +48,8 @@ ABI_EXPORT bool  UT_isValidXML(const char *s);
  * This has moved to ut_xml.cpp as UT_XML::decode ()
  */
 
-ABI_EXPORT bool  UT_isSmartQuotableCharacter(UT_UCSChar c);
-ABI_EXPORT bool  UT_isSmartQuotedCharacter(UT_UCSChar c);
+ABI_EXPORT bool  UT_isSmartQuotableCharacter(UT_UCS4Char c);
+ABI_EXPORT bool  UT_isSmartQuotedCharacter(UT_UCS4Char c);
 
 ////////////////////////////////////////////////////////////////////////
 //

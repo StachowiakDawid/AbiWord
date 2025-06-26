@@ -61,7 +61,7 @@ void XAP_Dialog_Insert_Symbol::useEnd(void)
 }
 
 
-UT_UCSChar  XAP_Dialog_Insert_Symbol::getInsertedSymbol(void)
+UT_UCS4Char  XAP_Dialog_Insert_Symbol::getInsertedSymbol(void)
 {
 	return m_Inserted_Symbol;
 }
@@ -107,7 +107,7 @@ XAP_Draw_Symbol * XAP_Dialog_Insert_Symbol::_getCurrentSymbolMap( void)
 
 /************************************************************************/
 
-void XAP_Dialog_Insert_Symbol::_updateDrawSymbolarea(UT_UCSChar c, UT_UCSChar p)
+void XAP_Dialog_Insert_Symbol::_updateDrawSymbolarea(UT_UCS4Char c, UT_UCS4Char p)
 {
 	m_DrawSymbol->drawarea(c,p);
 }
@@ -125,14 +125,14 @@ void XAP_Dialog_Insert_Symbol::_createSymbolareaFromGC(GR_Graphics * gc,
 void XAP_Dialog_Insert_Symbol::_onInsertButton()
 {
 	// get the character to be inserted
-	UT_UCSChar c = getInsertedSymbol();
+	UT_UCS4Char c = getInsertedSymbol();
 	// get the font of the symbol to be inserted
 	gchar * symfont = (gchar *) getInsertedFont();
 	// do the actual insert
 	_insert(c, const_cast<const gchar*>(symfont));
 }
 
-void XAP_Dialog_Insert_Symbol::_insert(UT_UCSChar c, const char* symfont)
+void XAP_Dialog_Insert_Symbol::_insert(UT_UCS4Char c, const char* symfont)
 {
 	UT_return_if_fail(m_pListener);
 	UT_ASSERT(symfont);

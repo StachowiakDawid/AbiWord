@@ -368,12 +368,12 @@ UT_Error IE_Imp_MathML::_parseStream(ImportStream * pStream)
 	UT_return_val_if_fail(pStream, UT_ERROR);
 
 	UT_ByteBufPtr BB(new UT_ByteBuf);
-	UT_UCSChar c;
+	UT_UCS4Char c;
 	unsigned char uc;
 	while (pStream->getChar(c))
 	{
 		// Check to identify & ignore BOM
-		if(c!=((UT_UCSChar)0x00EF) && c!=((UT_UCSChar)0x00BB) && c!=((UT_UCSChar)0x00BF))
+		if(c!=((UT_UCS4Char)0x00EF) && c!=((UT_UCS4Char)0x00BB) && c!=((UT_UCS4Char)0x00BF))
 		{
 			uc = static_cast<unsigned char>(c);
 			BB->append(&uc,1);

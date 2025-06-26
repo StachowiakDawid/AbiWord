@@ -1449,7 +1449,7 @@ void IE_Imp_MsWord_97::_flush ()
   }
 }
 
-void IE_Imp_MsWord_97::_appendChar (UT_UCSChar ch)
+void IE_Imp_MsWord_97::_appendChar (UT_UCS4Char ch)
 {
   if (m_bInTable) {
     switch (ch) {
@@ -1868,7 +1868,7 @@ int IE_Imp_MsWord_97::_charProc (wvParseStruct *ps, U16 eachchar, U8 chartype, U
 	  _flush();
 	}
 	
-	this->_appendChar (static_cast<UT_UCSChar>(eachchar));
+	this->_appendChar (static_cast<UT_UCS4Char>(eachchar));
 
 	return 0;
 }
@@ -2638,7 +2638,7 @@ int IE_Imp_MsWord_97::_beginSect (wvParseStruct * /*ps*/, UT_uint32 /*tag*/,
 		}
 		m_bInPara = true;
 
-		UT_UCSChar ucs = UCS_FF;
+		UT_UCS4Char ucs = UCS_FF;
 		switch (asep->bkc) {
 			case 1:
 				ucs = UCS_VTAB;
@@ -2905,7 +2905,7 @@ int IE_Imp_MsWord_97::_beginPara (wvParseStruct *ps, UT_uint32 /*tag*/,
 		// moved into _generateParaProps()
 		UT_DEBUGMSG(("_beginPara: appending default block\n"));
 		_appendStrux(PTX_Block, PP_NOPROPS);
-		UT_UCSChar ucs = UCS_FF;
+		UT_UCS4Char ucs = UCS_FF;
 		_appendSpan(&ucs,1);
 	}
 
@@ -3177,13 +3177,13 @@ int IE_Imp_MsWord_97::_beginPara (wvParseStruct *ps, UT_uint32 /*tag*/,
 		if(apap->linfo.ixchFollow == 0) // tab
 		{
 			getDoc()->appendFmt(attribs);
-			UT_UCSChar tab = UCS_TAB;
+			UT_UCS4Char tab = UCS_TAB;
 			_appendSpan(&tab, 1);
 		}
 		else if(apap->linfo.ixchFollow == 1) // space
 		{
 			getDoc()->appendFmt(attribs);
-			UT_UCSChar space = UCS_SPACE;
+			UT_UCS4Char space = UCS_SPACE;
 			_appendSpan(&space, 1);
 		}
 		// else none
@@ -6518,7 +6518,7 @@ bool IE_Imp_MsWord_97::_appendObject(PTObjectType pto, const PP_PropertyVector &
 	return getDoc()->appendObject(pto, attributes);
 }
 
-bool IE_Imp_MsWord_97::_appendSpan(const UT_UCSChar * p, UT_uint32 length)
+bool IE_Imp_MsWord_97::_appendSpan(const UT_UCS4Char * p, UT_uint32 length)
 {
 	if(m_bInHeaders)
 	{
@@ -6606,7 +6606,7 @@ bool IE_Imp_MsWord_97::_appendObjectHdrFtr(PTObjectType pto, const PP_PropertyVe
 	return bRet;
 }
 
-bool IE_Imp_MsWord_97::_appendSpanHdrFtr(const UT_UCSChar * p, UT_uint32 length)
+bool IE_Imp_MsWord_97::_appendSpanHdrFtr(const UT_UCS4Char * p, UT_uint32 length)
 {
 	UT_return_val_if_fail(m_bInHeaders,false);
 	UT_return_val_if_fail(m_iCurrentHeader < m_iHeadersCount,false);

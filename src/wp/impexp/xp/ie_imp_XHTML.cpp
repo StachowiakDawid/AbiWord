@@ -962,7 +962,7 @@ void IE_Imp_XHTML::startElement(const gchar *name,
 			 */
 			if (_data_CharCount ())
 				{
-					UT_UCSChar ucs = UCS_LF;
+					UT_UCS4Char ucs = UCS_LF;
 					X_CheckError(appendSpan (&ucs, 1));
 					_data_NewBlock ();
 				}
@@ -1112,7 +1112,7 @@ void IE_Imp_XHTML::startElement(const gchar *name,
 
 			/* warn XML charData() handler of new block, but insert a tab first
 			 */
-			UT_UCSChar ucs = UCS_TAB;
+			UT_UCS4Char ucs = UCS_TAB;
 			X_CheckError(appendSpan (&ucs, 1));
 			_data_NewBlock ();
 		}
@@ -1138,7 +1138,7 @@ void IE_Imp_XHTML::startElement(const gchar *name,
 	  //UT_DEBUGMSG(("B %d\n", m_parseState));
 		if(m_parseState == _PS_Block)
 		{
-			UT_UCSChar ucs = UCS_LF;
+			UT_UCS4Char ucs = UCS_LF;
 			X_CheckError(appendSpan(&ucs,1));
 		}
 		return;
@@ -2051,7 +2051,7 @@ bool IE_Imp_XHTML::appendFmt(const PP_PropertyVector & attributes)
 	return true;
 }
 
-bool IE_Imp_XHTML::appendSpan(const UT_UCSChar * p, UT_uint32 length)
+bool IE_Imp_XHTML::appendSpan(const UT_UCS4Char * p, UT_uint32 length)
 {
 	if(!m_addedPTXSection)
 		{
@@ -2133,7 +2133,7 @@ static void s_pass_whitespace (const char *& csstr)
 #ifdef XHTML_UCS4
 			if (UT_UCS4_isspace (ucs4))
 #else
-			if ((ucs4 & 0x7fff) || UT_UCS_isspace (static_cast<UT_UCSChar>(ucs4 & 0xffff)))
+			if ((ucs4 & 0x7fff) || UT_UCS_isspace (static_cast<UT_UCS4Char>(ucs4 & 0xffff)))
 #endif
 			{
 				while (static_cast<unsigned char>(*++csstr) & 0x80) { }
@@ -2165,7 +2165,7 @@ static const char * s_pass_name (const char *& csstr)
 #ifdef XHTML_UCS4
 				if (UT_UCS4_isspace (ucs4))
 #else
-				if (UT_UCS_isspace (static_cast<UT_UCSChar>(ucs4 & 0xffff)))
+				if (UT_UCS_isspace (static_cast<UT_UCS4Char>(ucs4 & 0xffff)))
 #endif
 				{
 					name_end = csstr;
@@ -2201,7 +2201,7 @@ static const char * s_pass_value (const char *& csstr)
 				if (UT_UCS4_isspace (ucs4))
 #else
 			if (!bQuoted && ((ucs4 & 0x7fff) == 0))
-				if (UT_UCS_isspace (static_cast<UT_UCSChar>(ucs4 & 0xffff)))
+				if (UT_UCS_isspace (static_cast<UT_UCS4Char>(ucs4 & 0xffff)))
 #endif
 				{
 					bSpace = true;

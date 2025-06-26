@@ -768,7 +768,7 @@ void IE_Imp_WordPerfect::insertLineBreak()
 	if (m_bHdrFtrOpenCount) return; // HACK
 	UT_DEBUGMSG(("AbiWordPerfect: insertLineBreak\n"));
 
-	UT_UCSChar ucs = UCS_LF;
+	UT_UCS4Char ucs = UCS_LF;
 	X_CheckDocumentError(appendSpan(&ucs,1));
 }
 

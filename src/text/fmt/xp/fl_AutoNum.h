@@ -20,8 +20,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef FL_AUTONUM_H
-#define FL_AUTONUM_H
+#pragma once
 
 #include <algorithm>
 #include <functional>
@@ -109,7 +108,7 @@ public:
 
 	void						fixHierarchy(void);
 
-	const UT_UCSChar *			getLabel(const pf_Frag_Strux*) const;
+	const UT_UCS4Char *			getLabel(const pf_Frag_Strux*) const;
 	void						addItem(pf_Frag_Strux* pItem);
 	FL_ListType					getType() const;
 	UT_uint32					getValue(const pf_Frag_Strux*) const;
@@ -172,7 +171,7 @@ public:
 	bool						isIDSomeWhere(UT_uint32 ID) const;
 	static char *				dec2roman(UT_sint32 value, bool lower);
 	static char *				dec2ascii(UT_sint32 value, UT_uint32 offset);
-	static void					dec2hebrew(UT_UCSChar labelStr[], UT_uint32 * insPoint, UT_sint32 value);
+	static void					dec2hebrew(UT_UCS4Char labelStr[], UT_uint32 * insPoint, UT_sint32 value);
 	void                        getAttributes(std::vector<std::string>&v,
 											  bool bEscapeXML) const;
 	PD_Document *				getDoc(void) const
@@ -182,7 +181,7 @@ protected:
 	void                        _setParent(const fl_AutoNumPtr & pParent);
 	void                        _setParentID(UT_uint32 iParentID);
 	void						_calculateLabelStr(UT_uint32 depth);
-	void						_getLabelstr(	UT_UCSChar labelStr[],
+	void						_getLabelstr(	UT_UCS4Char labelStr[],
 												UT_uint32 * insPoint,
 												UT_uint32 depth,
 												const pf_Frag_Strux* pLayout) const;
@@ -210,5 +209,3 @@ protected:
 	bool						m_bWordMultiStyle;
 	pf_Frag_Strux*			m_pParentItem;
 };
-
-#endif

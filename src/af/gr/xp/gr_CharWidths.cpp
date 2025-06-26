@@ -37,7 +37,7 @@ void GR_CharWidths::zeroWidths(void)
 	m_vecHiByte.clear();
 }
 
-void GR_CharWidths::setWidth(UT_UCSChar cIndex, UT_sint32 width)
+void GR_CharWidths::setWidth(UT_UCS4Char cIndex, UT_sint32 width)
 {
 	// remember a width for the given character.
 	
@@ -69,7 +69,7 @@ void GR_CharWidths::setWidth(UT_UCSChar cIndex, UT_sint32 width)
 	return;
 }
 
-UT_sint32 GR_CharWidths::getWidth(UT_UCSChar cIndex) const
+UT_sint32 GR_CharWidths::getWidth(UT_UCS4Char cIndex) const
 {
 	// we only know the widths that we have been told.
 	// if we haven't been told anything for a char, we

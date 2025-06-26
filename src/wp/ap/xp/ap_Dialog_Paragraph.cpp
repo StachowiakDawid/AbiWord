@@ -587,11 +587,11 @@ void AP_Dialog_Paragraph::_createPreviewFromGC(GR_Graphics * gc,
 	UT_GrowBuf gb;
 	bool hadMem = bl->getBlockBuf(&gb);
 
-	UT_UCSChar * tmp = nullptr;
+	UT_UCS4Char * tmp = nullptr;
 	if (hadMem && gb.getLength() > 0)
 	{
 		gb.truncate(NUM_CHARS_FOR_SAMPLE);
-		UT_UCS4_cloneString(&tmp, (UT_UCSChar *) gb.getPointer(0));
+		UT_UCS4_cloneString(&tmp, (UT_UCS4Char *) gb.getPointer(0));
 	}
 	else
 	{

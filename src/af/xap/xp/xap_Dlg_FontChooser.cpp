@@ -71,7 +71,7 @@ XAP_Dialog_FontChooser::~XAP_Dialog_FontChooser(void)
 	DELETEP(m_pFontPreview);
 }
 
-void XAP_Dialog_FontChooser::setDrawString(const UT_UCSChar * str)
+void XAP_Dialog_FontChooser::setDrawString(const UT_UCS4Char * str)
 {
 	FREEP(m_drawString);
 	UT_sint32 len = UT_UCS4_strlen(str);
@@ -111,9 +111,9 @@ void XAP_Dialog_FontChooser::addOrReplaceVecProp(const std::string & sProp, cons
 /*!
  * This method updates the drawing area in the dialog.
  */
-void XAP_Dialog_FontChooser::event_previewInvalidate(const UT_UCSChar * pszChars)
+void XAP_Dialog_FontChooser::event_previewInvalidate(const UT_UCS4Char * pszChars)
 {
-	UT_UCSChar * pszNew = nullptr;
+	UT_UCS4Char * pszNew = nullptr;
 	if(!pszChars || UT_UCS4_strlen(pszChars) <= 0)
 	{
 		//FREEP(pszChars); // we should not g_free it here

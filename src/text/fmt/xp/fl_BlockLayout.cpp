@@ -159,7 +159,7 @@ fl_BlockLayout::_getSpellChecker (UT_uint32 blockPos) const
 }
 
 bool
-fl_BlockLayout::_spellCheckWord(const UT_UCSChar * word,
+fl_BlockLayout::_spellCheckWord(const UT_UCS4Char * word,
 								UT_uint32 len, UT_uint32 blockPos) const
 {
 	SpellChecker * checker = _getSpellChecker (blockPos);
@@ -1917,7 +1917,7 @@ UT_sint32 fl_BlockLayout::getMaxNonBreakableRun(void) const
 			GR_Font *pFont = pRun->getGraphics()->getGUIFont();
 			if(pFont)
 			{
-				iMax = pRun->getGraphics()->measureUnRemappedChar(static_cast<UT_UCSChar>('i'));
+				iMax = pRun->getGraphics()->measureUnRemappedChar(static_cast<UT_UCS4Char>('i'));
 			}
 		}
 #endif
@@ -4847,7 +4847,7 @@ fl_BlockLayout::_recalcPendingWord(UT_uint32 iOffset, UT_sint32 chg) const
 	UT_UNUSED(bRes);
 	UT_ASSERT(bRes);
 
-	const UT_UCSChar* pBlockText = reinterpret_cast<UT_UCSChar*>(pgb.getPointer(0));
+	const UT_UCS4Char* pBlockText = reinterpret_cast<UT_UCS4Char*>(pgb.getPointer(0));
 	if (pBlockText == nullptr)
 	{
 		return;
@@ -4883,7 +4883,7 @@ fl_BlockLayout::_recalcPendingWord(UT_uint32 iOffset, UT_sint32 chg) const
 	UT_uint32 iBlockSize = pgb.getLength();
 	while ((iFirst + iLen < iBlockSize))
 	{
-		UT_UCSChar followChar, prevChar;
+		UT_UCS4Char followChar, prevChar;
 		followChar = ((iFirst + iLen + 1) < iBlockSize)  ?	pBlockText[iFirst + iLen + 1]  : UCS_UNKPUNK;
 		prevChar = (iFirst == 0) ? UCS_UNKPUNK : pBlockText[iFirst + iLen - 1];
 
@@ -4897,7 +4897,7 @@ fl_BlockLayout::_recalcPendingWord(UT_uint32 iOffset, UT_sint32 chg) const
 		// Insertion - look for any completed words by finding the
 		// first word delimiter from the end.
 		UT_uint32 iLast = iOffset + chg;
-		UT_UCSChar followChar = UCS_UNKPUNK, currentChar, prevChar = iLast > 2 ? pBlockText[iLast - 2] : UCS_UNKPUNK;
+		UT_UCS4Char followChar = UCS_UNKPUNK, currentChar, prevChar = iLast > 2 ? pBlockText[iLast - 2] : UCS_UNKPUNK;
 		while (iLast > iFirst)
 		{
 			currentChar = pBlockText[--iLast];
@@ -4931,10 +4931,10 @@ fl_BlockLayout::_recalcPendingWord(UT_uint32 iOffset, UT_sint32 chg) const
 	UT_uint32 eor = pgb.getLength();
 	while (iLen > 0 && iFirst < eor)
 	{
-		UT_UCSChar currentChar = pBlockText[iFirst];
-		UT_UCSChar followChar = (((iFirst + 1) < eor) ?
+		UT_UCS4Char currentChar = pBlockText[iFirst];
+		UT_UCS4Char followChar = (((iFirst + 1) < eor) ?
 								 pBlockText[iFirst + + 1]  : UCS_UNKPUNK);
-		UT_UCSChar prevChar = iFirst > 0 ? pBlockText[iFirst - 1] : UCS_UNKPUNK;
+		UT_UCS4Char prevChar = iFirst > 0 ? pBlockText[iFirst - 1] : UCS_UNKPUNK;
 
 		if (!isWordDelimiter(currentChar, followChar, prevChar,iFirst)) break;
 		iFirst++;
@@ -5046,7 +5046,7 @@ fl_BlockLayout::_checkMultiWord(UT_sint32 iStart,
 
 	fl_BlockSpellIterator wordIterator(this, iStart);
 
-	const UT_UCSChar* pWord;
+	const UT_UCS4Char* pWord;
 	UT_sint32 iLength, iBlockPos, iPTLength;
 
 	while (wordIterator.nextWordForSpellChecking(pWord, iLength, iBlockPos, iPTLength))
@@ -5112,7 +5112,7 @@ fl_BlockLayout::_checkMultiWord(UT_sint32 iStart,
 
 bool
 fl_BlockLayout::_doCheckWord(const fl_PartOfBlockPtr& pPOB,
-							 const UT_UCSChar* pWord,
+							 const UT_UCS4Char* pWord,
 							 UT_sint32 iLength,
 							 bool bAddSquiggle /* = true */,
 							 bool bClearScreen /* = true */) const
@@ -5171,7 +5171,7 @@ fl_BlockLayout::checkWord(const fl_PartOfBlockPtr & pPOB) const
     // is just the editing limits).
     fl_BlockSpellIterator wordIterator(this, pPOB->getOffset());
 
-	const UT_UCSChar* pWord;
+	const UT_UCS4Char* pWord;
 	UT_sint32 iLength, iBlockPos, iPTLength;
 
     // The word iterator may be unable to find a word within the
@@ -5204,7 +5204,7 @@ bool fl_BlockLayout::doclistener_populateSpan(const PX_ChangeRecord_Span * pcrs,
 		xxx_UT_DEBUGMSG(("getPrev = %d this = %d \n",getPrev(),this));
 		//			UT_ASSERT(UT_SHOULD_NOT_HAPPEN);
 	}
-	const UT_UCSChar* pChars = m_pDoc->getPointer(bi);
+	const UT_UCS4Char* pChars = m_pDoc->getPointer(bi);
 	xxx_UT_DEBUGMSG(("fl_BlockLayout:: populateSpan BlockOffset %d NO chars %d \n",blockOffset,len));
 	/*
 	  walk through the characters provided and find any
@@ -6460,7 +6460,7 @@ bool fl_BlockLayout::doclistener_insertSpan(const PX_ChangeRecord_Span * pcrs)
 	UT_ASSERT(len>0);
 
 	PT_BufIndex bi = pcrs->getBufIndex();
-	const UT_UCSChar* pChars = m_pDoc->getPointer(bi);
+	const UT_UCS4Char* pChars = m_pDoc->getPointer(bi);
 
 	/*
 	  walk through the characters provided and find any
@@ -9902,7 +9902,7 @@ fl_BlockLayout::recheckIgnoredWords(void)
 	bool bRes = getBlockBuf(&pgb);
 	UT_UNUSED(bRes);
 	UT_ASSERT(bRes);
-	const UT_UCSChar* pBlockText = reinterpret_cast<UT_UCSChar*>(pgb.getPointer(0));
+	const UT_UCS4Char* pBlockText = reinterpret_cast<UT_UCS4Char*>(pgb.getPointer(0));
 
 	bool bUpdate = m_pSpellSquiggles->recheckIgnoredWords(pBlockText);
 
@@ -10969,7 +10969,7 @@ void fl_BlockLayout::_createListLabel(void)
 	PT_DocPosition diff = 1;
 	if(m_pDoc->isDoingPaste() == false)
 	{
-		UT_UCSChar c = UCS_TAB;
+		UT_UCS4Char c = UCS_TAB;
 		const PP_AttrProp * pSpanAP = nullptr;
 		getSpanAP(1, false, pSpanAP);
 		bResult = m_pDoc->insertSpan(getPosition()+1,&c,1,const_cast< PP_AttrProp *>(pSpanAP));
@@ -11062,7 +11062,7 @@ void fl_BlockLayout::_deleteListLabel(void)
 	}
 }
 
-const UT_UCSChar * fl_BlockLayout::getListLabel(void) const
+const UT_UCS4Char * fl_BlockLayout::getListLabel(void) const
 {
 	//	UT_ASSERT(m_pAutoNum);
 	//
@@ -11537,7 +11537,7 @@ typedef struct
     iPTLenth -- the lenth of the word in the Piece Table (can be > iLength)
 */
 bool
-fl_BlockSpellIterator::nextWordForSpellChecking(const UT_UCSChar*& pWord, UT_sint32& iLength,
+fl_BlockSpellIterator::nextWordForSpellChecking(const UT_UCS4Char*& pWord, UT_sint32& iLength,
 												UT_sint32& iBlockPos, UT_sint32& iPTLength)
 {
 	// For empty blocks, there will be no buffer
@@ -11556,7 +11556,7 @@ fl_BlockSpellIterator::nextWordForSpellChecking(const UT_UCSChar*& pWord, UT_sin
 		// seperately to avoid in loop below
 		if (0 == m_iWordOffset)
 		{
-			UT_UCSChar followChar = (((m_iWordOffset + 1) < m_iLength)  
+			UT_UCS4Char followChar = (((m_iWordOffset + 1) < m_iLength)  
 									 ?  m_pText[m_iWordOffset+1] : UCS_UNKPUNK);
 			if (!m_pBL->isWordDelimiter( m_pText[m_iWordOffset], followChar, UCS_UNKPUNK, m_iWordOffset))
 			{
@@ -11733,7 +11733,7 @@ fl_BlockSpellIterator::nextWordForSpellChecking(const UT_UCSChar*& pWord, UT_sin
 		bool bNeedsMutation = false;
 		for (UT_uint32 i=0; i < static_cast<UT_uint32>(iWordLength); i++)
 		{
-			UT_UCSChar currentChar = m_pText[m_iWordOffset + i];
+			UT_UCS4Char currentChar = m_pText[m_iWordOffset + i];
 			
 			if (currentChar == UCS_ABI_OBJECT || currentChar == UCS_RQUOTE)
 			{
@@ -11769,7 +11769,7 @@ fl_BlockSpellIterator::nextWordForSpellChecking(const UT_UCSChar*& pWord, UT_sin
 		if (bNeedsMutation || bRevised)
 		{
 			// Generate the mutated word in a new buffer pointed to by m_pMutatedString
-			m_pMutatedString = static_cast<UT_UCSChar*>(UT_calloc(iWordLength, sizeof(UT_UCSChar)));
+			m_pMutatedString = static_cast<UT_UCS4Char*>(UT_calloc(iWordLength, sizeof(UT_UCS4Char)));
 			UT_ASSERT(m_pMutatedString);
 			pWord = m_pMutatedString;
 			iNewLength = 0;
@@ -11778,7 +11778,7 @@ fl_BlockSpellIterator::nextWordForSpellChecking(const UT_UCSChar*& pWord, UT_sin
 			{
 				for (UT_uint32 i=0; i < static_cast<UT_uint32>(iWordLength); i++)
 				{
-					UT_UCSChar currentChar = m_pText[m_iWordOffset + i];
+					UT_UCS4Char currentChar = m_pText[m_iWordOffset + i];
 			
 					// Remove UCS_ABI_OBJECT from the word
 					if (currentChar == UCS_ABI_OBJECT) continue;
@@ -11992,7 +11992,7 @@ fl_BlockSpellIterator::updateSentenceBoundaries(void)
   \result iLength Length of string.
   \return Pointer to word.
 */
-const UT_UCSChar*
+const UT_UCS4Char*
 fl_BlockSpellIterator::getCurrentWord(UT_sint32& iLength) const
 {
 	iLength = m_iWordLength;
@@ -12012,7 +12012,7 @@ fl_BlockSpellIterator::getCurrentWord(UT_sint32& iLength) const
   \result iLength Length of string. If 0, nullptr will be returned.
   \return Pointer to sentence prior to current word, or nullptr
 */
-const UT_UCSChar*
+const UT_UCS4Char*
 fl_BlockSpellIterator::getPreWord(UT_sint32& iLength) const
 {
 	iLength = m_iWordOffset - m_iSentenceStart;
@@ -12024,7 +12024,7 @@ fl_BlockSpellIterator::getPreWord(UT_sint32& iLength) const
 	if (0 >= iLength)
 		return nullptr;
 
-	return reinterpret_cast<UT_UCSChar*>(m_pgb->getPointer(m_iSentenceStart));
+	return reinterpret_cast<UT_UCS4Char*>(m_pgb->getPointer(m_iSentenceStart));
 }
 
 /*!
@@ -12032,7 +12032,7 @@ fl_BlockSpellIterator::getPreWord(UT_sint32& iLength) const
   \result iLength Length of string. If 0, nullptr will be returned.
   \return Pointer to sentence following current word, or nullptr
 */
-const UT_UCSChar*
+const UT_UCS4Char*
 fl_BlockSpellIterator::getPostWord(UT_sint32& iLength) const
 {
 	iLength = m_iSentenceEnd - m_iStartIndex + 1;
@@ -12044,7 +12044,7 @@ fl_BlockSpellIterator::getPostWord(UT_sint32& iLength) const
 	if (0 >= iLength)
 		return nullptr;
 
-	return reinterpret_cast<UT_UCSChar*>(m_pgb->getPointer(m_iStartIndex));
+	return reinterpret_cast<UT_UCS4Char*>(m_pgb->getPointer(m_iStartIndex));
 }
 
 /*!
@@ -12058,7 +12058,7 @@ fl_BlockSpellIterator::revertToPreviousWord()
 }
 
 bool
-fl_BlockSpellIterator::_ignoreFirstWordCharacter(const UT_UCSChar c) const
+fl_BlockSpellIterator::_ignoreFirstWordCharacter(const UT_UCS4Char c) const
 {
     switch (c) {
     case '\'':
@@ -12072,7 +12072,7 @@ fl_BlockSpellIterator::_ignoreFirstWordCharacter(const UT_UCSChar c) const
 }
 
 bool
-fl_BlockSpellIterator::_ignoreLastWordCharacter(const UT_UCSChar c) const
+fl_BlockSpellIterator::_ignoreLastWordCharacter(const UT_UCS4Char c) const
 {
     switch (c) {
     case '\'':

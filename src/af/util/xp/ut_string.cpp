@@ -285,7 +285,7 @@ void UT_decodeUTF8string(const gchar * pString, UT_uint32 len, UT_GrowBuf * pRes
 		if (p[k] < 0x80)						// plain us-ascii part of latin-1
 		{
 			UT_ASSERT(bytesInSequence == 0);
-			UT_UCSChar c = p[k];
+			UT_UCS4Char c = p[k];
 			pResult->append(reinterpret_cast<UT_GrowBufElement *>(&c),1);
 		}
 		else if ((p[k] & 0xf0) == 0xf0)			// lead byte in 4-byte surrogate pair
@@ -316,7 +316,7 @@ void UT_decodeUTF8string(const gchar * pString, UT_uint32 len, UT_GrowBuf * pRes
 			buf[bytesInSequence++] = p[k];
 			if (bytesInSequence == bytesExpectedInSequence)		// final byte in multi-byte sequence
 			{
-				UT_UCSChar c = g_utf8_get_char(buf);
+				UT_UCS4Char c = g_utf8_get_char(buf);
 				pResult->append(reinterpret_cast<UT_GrowBufElement *>(&c),1);
 				bytesInSequence = 0;
 				bytesExpectedInSequence = 0;
@@ -812,14 +812,14 @@ UT_UCS2Char * UT_UCS2_strnrev(UT_UCS2Char * src, UT_uint32 n)
 
 ////////////////////////////////////////////////////////////////////////
 //
-//  UCS string (UT_UCSChar)
+//  UCS string (UT_UCS4Char)
 //
-//  String is built of units based on UT_UCSChar, which used to be
+//  String is built of units based on UT_UCS4Char, which used to be
 //   UT_UCS2Char and is now UT_UCS4Char
 //
 ////////////////////////////////////////////////////////////////////////
 
-bool UT_isSmartQuotableCharacter(UT_UCSChar c)
+bool UT_isSmartQuotableCharacter(UT_UCS4Char c)
 {
 	// TODO:  this is anglo-centric; really need a locale argument or
 	// TODO:  something to get smart quote rules for the rest of the world
@@ -838,7 +838,7 @@ bool UT_isSmartQuotableCharacter(UT_UCSChar c)
 	return (result);
 }
 
-bool UT_isSmartQuotedCharacter(UT_UCSChar c)
+bool UT_isSmartQuotedCharacter(UT_UCS4Char c)
 {
 	bool result;
 	switch (c)
@@ -958,8 +958,8 @@ UT_UCS4Char * UT_UCS4_strncpy(UT_UCS4Char * dest, const UT_UCS4Char * src, UT_ui
 	UT_ASSERT(dest);
 	UT_ASSERT(src);
 
-	UT_UCSChar * d = dest;
-	const UT_UCSChar * s = static_cast<const UT_UCS4Char *>(src);
+	UT_UCS4Char * d = dest;
+	const UT_UCS4Char * s = static_cast<const UT_UCS4Char *>(src);
 
 	for (; d < static_cast<UT_UCS4Char *>(dest) + n;)
 		*d++ = *s++;

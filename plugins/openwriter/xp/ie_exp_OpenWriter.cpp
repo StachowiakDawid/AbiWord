@@ -118,10 +118,10 @@ static void writeUTF8String (GsfOutput * output, const UT_UTF8String & str)
   oo_gsf_output_write (output, str.byteLength(), reinterpret_cast<const guint8*>(str.utf8_str()));
 }
 
-static void outputCharData (GsfOutput * output, const UT_UCSChar * data, UT_uint32 length)
+static void outputCharData (GsfOutput * output, const UT_UCS4Char * data, UT_uint32 length)
 {
    UT_UTF8String sBuf;
-   const UT_UCSChar * pData;
+   const UT_UCS4Char * pData;
    
    UT_ASSERT(sizeof(UT_Byte) == sizeof(char));
    
@@ -256,7 +256,7 @@ OO_WriterImpl::~OO_WriterImpl()
     oo_gsf_output_close(m_pContentStream);
 }
 
-void OO_WriterImpl::insertText(const UT_UCSChar * data, UT_uint32 length)
+void OO_WriterImpl::insertText(const UT_UCS4Char * data, UT_uint32 length)
 {
    outputCharData(m_pContentStream, data, length);
 }

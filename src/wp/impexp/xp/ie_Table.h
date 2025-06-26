@@ -336,7 +336,7 @@ public:
 	bool	           Block (PTStruxType pts, const PP_PropertyVector & attributes);
 	bool	           BlockFormat (const PP_PropertyVector & attributes);
 
-	bool	           Inline (const UT_UCSChar * ucs4_str, UT_sint32 length);
+	bool	           Inline (const UT_UCS4Char * ucs4_str, UT_sint32 length);
 	bool	           InlineFormat (const PP_PropertyVector & attributes);
 
 	bool	           Object (PTObjectType pto, const PP_PropertyVector & attributes);
@@ -420,7 +420,7 @@ public:
 	bool					Block (PTStruxType pts, const PP_PropertyVector & attributes);
 	bool					BlockFormat (const PP_PropertyVector & attributes);
 
-	bool					Inline (const UT_UCSChar * ucs4_str, UT_sint32 length);
+	bool					Inline (const UT_UCS4Char * ucs4_str, UT_sint32 length);
 	bool					InlineFormat (const PP_PropertyVector & attributes);
 
 	bool					Object (PTObjectType pto, const PP_PropertyVector & attributes);

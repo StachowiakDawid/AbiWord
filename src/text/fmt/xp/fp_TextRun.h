@@ -74,10 +74,10 @@ public:
 	void					justify(UT_sint32 iAmount, UT_uint32 iSpacesInRun);
 	UT_sint32				countJustificationPoints(bool bLast) const;
 
-	bool					getCharacter(UT_uint32 run_offset, UT_UCSChar &Character) const;
-	UT_sint32				findCharacter(UT_uint32 startPosition, UT_UCSChar Character) const;
-	bool					isFirstCharacter(UT_UCSChar Character) const;
-	bool					isLastCharacter(UT_UCSChar Character) const;
+	bool					getCharacter(UT_uint32 run_offset, UT_UCS4Char &Character) const;
+	UT_sint32				findCharacter(UT_uint32 startPosition, UT_UCS4Char Character) const;
+	bool					isFirstCharacter(UT_UCS4Char Character) const;
+	bool					isLastCharacter(UT_UCS4Char Character) const;
 	virtual bool	doesContainNonBlankData(void) const override;
 	virtual bool isSuperscript(void) const override;
 	virtual bool isSubscript(void) const override;
@@ -86,7 +86,7 @@ public:
 	const gchar *			getLanguage() const;
 
 
-	UT_sint32				getStr(UT_UCSChar * str, UT_uint32 &iMax);
+	UT_sint32				getStr(UT_UCS4Char * str, UT_uint32 &iMax);
 
 	// applies provided values of direction and override to the run
 	void					setDirection(UT_BidiCharType dir, UT_BidiCharType override);

@@ -1436,7 +1436,7 @@ fetchAttributesFromAbiProps(const PP_AttrProp& rAP) {
                     // decimal tab character. See fp_Line::_calculateWidthOfRun()
                     // for details.
 					lconv *loc = localeconv();
-                    UT_UCSChar *pDecimalStr = nullptr;
+                    UT_UCS4Char *pDecimalStr = nullptr;
 					UT_UCS4_cloneString_char(&pDecimalStr, loc->decimal_point);
                     
                     tabStop.m_type = "char";

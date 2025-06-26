@@ -98,7 +98,7 @@ protected:
 											  pf_Frag_Object ** ppfo );
 
 	bool					_realInsertSpan(PT_DocPosition dpos,
-											const UT_UCSChar * p,
+											const UT_UCS4Char * p,
 											UT_uint32 length,
 											const PP_PropertyVector & attributes,
 											const PP_PropertyVector & properties,
@@ -114,7 +114,7 @@ protected:
 #if 0
 	// this is for fields and so should not be needed with revisions
 	bool					_realInsertSpan_norec(PT_DocPosition dpos,
-											 const UT_UCSChar * p,
+											 const UT_UCS4Char * p,
 											 UT_uint32 length, fd_Field * pField = nullptr);
 	bool                	_realDeleteFieldFrag(pf_Frag * pf);
 #endif
@@ -166,7 +166,7 @@ public:
 										 const PP_PropertyVector & properties, pf_Frag_Object ** ppfo );
 
 	bool					insertSpan(PT_DocPosition dpos,
-									   const UT_UCSChar * p,
+									   const UT_UCS4Char * p,
 									   UT_uint32 length, fd_Field * pField = nullptr,
 									   bool bAddChangeRec = true);
 
@@ -279,7 +279,7 @@ public:
 											   bool bSkipEmbededSections);
 
 	bool					appendFmt(const PP_PropertyVector & vecAttributes);
-	bool					appendSpan(const UT_UCSChar * p, UT_uint32 length);
+	bool					appendSpan(const UT_UCS4Char * p, UT_uint32 length);
 	bool					appendObject(PTObjectType pto, const PP_PropertyVector & attributes);
 	bool					appendFmtMark(void);
 	bool					appendStyle(const PP_PropertyVector & attributes);
@@ -287,7 +287,7 @@ public:
 	bool					insertStruxBeforeFrag(pf_Frag * pF, PTStruxType pts,
 												  const PP_PropertyVector & attributes,
                                                   pf_Frag_Strux ** ppfs_ret = nullptr);
-	bool					insertSpanBeforeFrag(pf_Frag * pF, const UT_UCSChar * p, UT_uint32 length);
+	bool					insertSpanBeforeFrag(pf_Frag * pF, const UT_UCS4Char * p, UT_uint32 length);
 	bool					insertObjectBeforeFrag(pf_Frag * pF, PTObjectType pto,
 												   const PP_PropertyVector & attributes);
 	bool					insertFmtMarkBeforeFrag(pf_Frag * pF);
@@ -309,7 +309,7 @@ public:
 	bool					getSpanAttrProp(pf_Frag_Strux* sdh, UT_uint32 offset, bool bLeftSide,
 											const PP_AttrProp ** ppAP) const;
 
-	inline const UT_UCSChar *getPointer(PT_BufIndex bi) const
+	inline const UT_UCS4Char *getPointer(PT_BufIndex bi) const
 		{
 			// the pointer that we return is NOT a zero-terminated
 			// string.  the caller is responsible for knowing how

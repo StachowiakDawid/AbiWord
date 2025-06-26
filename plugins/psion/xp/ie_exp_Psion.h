@@ -20,8 +20,7 @@
 
 /* This exporter is written by Frodo Looijaard <frodol@dds.nl> */
 
-#ifndef IE_EXP_PSION_H
-#define IE_EXP_PSION_H
+#pragma once
 
 #include "ie_exp.h"
 #include "ie_impexp_Psion.h"
@@ -123,7 +122,7 @@ private:
 	psiconv_s16 m_currentParagraphStyle;
 
 	// New methods
-	bool _writeText(const UT_UCSChar *p, UT_uint32 inlength,
+	bool _writeText(const UT_UCS4Char *p, UT_uint32 inlength,
 	                UT_uint32 &outlength);
 	bool _openParagraph(const PT_AttrPropIndex api);
 	bool _closeParagraph(void);
@@ -254,6 +253,3 @@ protected:
 	// Overriding methods from the base class
 	virtual PL_Psion_Listener *_constructListener(void) override;
 };
-
-
-#endif /* IE_EXP_PSION_H */

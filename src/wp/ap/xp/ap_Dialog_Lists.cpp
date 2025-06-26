@@ -707,11 +707,11 @@ void  AP_Dialog_Lists::generateFakeLabels(void)
  * Little convienence method to get the List label from the FakeAutoNum used in the
  * Preview.
  */
-UT_UCSChar * AP_Dialog_Lists::getListLabel(UT_sint32 itemNo)
+UT_UCS4Char * AP_Dialog_Lists::getListLabel(UT_sint32 itemNo)
 {
 	UT_ASSERT_HARMLESS(itemNo < 4);
-	static UT_UCSChar lab[80];
-	const UT_UCSChar * tmp  = m_pFakeAuto->getLabel(m_pFakeSdh[itemNo]);
+	static UT_UCS4Char lab[80];
+	const UT_UCS4Char * tmp  = m_pFakeAuto->getLabel(m_pFakeSdh[itemNo]);
 	if(tmp == nullptr)
 	{
 		return nullptr;
@@ -990,7 +990,7 @@ void AP_Dialog_Lists::PopulateDialogData(void)
 	}
 	if(m_isListAtPoint == true)
 	{
-		const UT_UCSChar * tmp1 =  getBlock()->getListLabel();
+		const UT_UCS4Char * tmp1 =  getBlock()->getListLabel();
 		if(tmp1 != nullptr)
 		{
 			UT_sint32 cnt = UT_MIN(UT_UCS4_strlen(tmp1),80);
@@ -1141,7 +1141,7 @@ void AP_Lists_preview::drawImmediate(const UT_Rect* clip)
 	UT_RGBColor clrBlack = UT_RGBColor(0,0,0);
 	UT_sint32 iWidth = m_gc->tlu(getWindowWidth());
 	UT_sint32 iHeight = m_gc->tlu(getWindowHeight());
-	UT_UCSChar ucs_label[50];
+	UT_UCS4Char ucs_label[50];
 
 	UT_sint32 iDescent = m_gc->getFontDescent();
 	UT_sint32 iAscent = m_gc->getFontAscent();
@@ -1174,7 +1174,7 @@ void AP_Lists_preview::drawImmediate(const UT_Rect* clip)
 	maxw = 0;
 	for(i=0; i<4; i++)
 	{
-		UT_UCSChar * lv = getLists()->getListLabel(i);
+		UT_UCS4Char * lv = getLists()->getListLabel(i);
 		UT_sint32 len =0;
 
 		if(lv != nullptr)
@@ -1242,7 +1242,7 @@ void AP_Lists_preview::drawImmediate(const UT_Rect* clip)
 			//
 			// Draw the text
 			//
-			UT_UCSChar * lv = getLists()->getListLabel(i/2);
+			UT_UCS4Char * lv = getLists()->getListLabel(i/2);
 			UT_sint32 len =0;
 
 			if(lv != nullptr)

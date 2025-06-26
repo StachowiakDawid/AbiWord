@@ -51,16 +51,16 @@ public:
 
 	enum tAnswer: uint8_t { a_OK, a_CANCEL, a_YES, a_NO };
 
-	void setDrawString (const UT_UCSChar * str);
+	void setDrawString (const UT_UCS4Char * str);
 
-	const UT_UCSChar * getDrawString () const
+	const UT_UCS4Char * getDrawString () const
 	  {
 	    return m_drawString;
 	  }
 
 	void                            addOrReplaceVecProp(const std::string & pszProp,
 														const std::string & pszVal);
-	void event_previewInvalidate(const UT_UCSChar * pszChars);
+	void event_previewInvalidate(const UT_UCS4Char * pszChars);
 	void event_previewDrawImmediate();
 	void                            event_previewClear(void);
 	std::string                     getVal(const std::string & sProp) const;
@@ -147,7 +147,7 @@ protected:
 	bool                            m_bChangedSubScript;	/* output */
 	bool                            m_bChangedTextTransform;	/* output */
 
-	UT_UCSChar *                    m_drawString;
+	UT_UCS4Char *                    m_drawString;
 };
 
 class ABI_EXPORT XAP_Preview_FontPreview  : public XAP_Preview
@@ -158,14 +158,14 @@ public:
 	void setVecProperties( const XAP_Dialog_FontChooser::PropMap * vFontProps);
 	std::string getVal(const std::string &) const;
 	void drawImmediate(const UT_Rect* clip = nullptr) override;
-	void setDrawString( const UT_UCSChar * pszChars) {m_pszChars = pszChars;}
+	void setDrawString( const UT_UCS4Char * pszChars) {m_pszChars = pszChars;}
 	void clearScreen(void);
 
 
 protected:
 	const XAP_Dialog_FontChooser::PropMap * m_mapProps;
 	UT_RGBColor m_clrBackground;
-	const UT_UCSChar * m_pszChars;
+	const UT_UCS4Char * m_pszChars;
 
 private:
 	XAP_Preview_FontPreview(const XAP_Preview_FontPreview &other) = delete;

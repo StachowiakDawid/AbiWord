@@ -6020,7 +6020,7 @@ static bool s_doBookmarkDlg(FV_View * pView, bool /*bInsert*/)
 UT_return_val_if_fail(pDialog, false);
 	if (!pView->isSelectionEmpty())
 	{
-		UT_UCSChar * buffer;
+		UT_UCS4Char * buffer;
 		pView->getSelectionText(buffer);
 		pDialog->setSuggestedBM(buffer);
 		FREEP(buffer);
@@ -6321,7 +6321,7 @@ Defun1(insertTab)
 	CHECK_FRAME;
 	ABIWORD_VIEW;
 	UT_return_val_if_fail(pView, false);
-	UT_UCSChar c = UCS_TAB;
+	UT_UCS4Char c = UCS_TAB;
 	if(!pView->isInTable())
 	{
 		pView->cmdCharInsert(&c,1);
@@ -6339,7 +6339,7 @@ Defun1(insertTabCTL)
 	CHECK_FRAME;
 	ABIWORD_VIEW;
 	UT_return_val_if_fail(pView, false);
-	UT_UCSChar c = UCS_TAB;
+	UT_UCS4Char c = UCS_TAB;
 	pView->cmdCharInsert(&c,1);
 	return true;
 }
@@ -6367,7 +6367,7 @@ Defun1(insertLineBreak)
 	CHECK_FRAME;
 	ABIWORD_VIEW;
 	UT_return_val_if_fail(pView, false);
-	UT_UCSChar c = UCS_LF;
+	UT_UCS4Char c = UCS_LF;
 	pView->cmdCharInsert(&c,1);
 	return true;
 }
@@ -6401,7 +6401,7 @@ Defun1(insertColumnBreak)
 		return true;
 	}
 
-	UT_UCSChar c = UCS_VTAB;
+	UT_UCS4Char c = UCS_VTAB;
 	pView->cmdCharInsert(&c,1);
 	return true;
 }
@@ -6717,7 +6717,7 @@ Defun1(insertPageBreak)
 
 	UT_return_val_if_fail(pView, false);
 
-	UT_UCSChar c = UCS_FF;
+	UT_UCS4Char c = UCS_FF;
 //
 // No page breaks in header/Footers
 //
@@ -6750,7 +6750,7 @@ Defun1(insertSpace)
 	CHECK_FRAME;
 	ABIWORD_VIEW;
 	UT_return_val_if_fail(pView, false);
-	UT_UCSChar c = UCS_SPACE;
+	UT_UCS4Char c = UCS_SPACE;
 	pView->cmdCharInsert(&c,1);
 	return true;
 }
@@ -6760,7 +6760,7 @@ Defun1(insertNBSpace)
 	CHECK_FRAME;
 	ABIWORD_VIEW;
 	UT_return_val_if_fail(pView, false);
-	UT_UCSChar c = UCS_NBSP;			// decimal 160 is NBS
+	UT_UCS4Char c = UCS_NBSP;			// decimal 160 is NBS
 	pView->cmdCharInsert(&c,1);
 	return true;
 }
@@ -6771,7 +6771,7 @@ Defun1(insertNBZWSpace)
 	CHECK_FRAME;
 	ABIWORD_VIEW;
 	UT_return_val_if_fail(pView, false);
-	UT_UCSChar c = 0xFEFF;
+	UT_UCS4Char c = 0xFEFF;
 	pView->cmdCharInsert(&c,1);
 	return true;
 }
@@ -6782,7 +6782,7 @@ Defun1(insertZWJoiner)
 	CHECK_FRAME;
 	ABIWORD_VIEW;
 	UT_return_val_if_fail(pView, false);
-	UT_UCSChar c = 0x200D;
+	UT_UCS4Char c = 0x200D;
 	pView->cmdCharInsert(&c,1);
 	return true;
 }
@@ -6809,7 +6809,7 @@ Defun(insertGraveData)
 	// "insertData(0x00c0)", for example.
 
 	UT_return_val_if_fail (pCallData->m_dataLength==1, false);
-	UT_UCSChar graveChar = 0x0000;
+	UT_UCS4Char graveChar = 0x0000;
 	switch (pCallData->m_pData[0])
 	{
 	case 0x41:		graveChar=0x00c0;	break;	// Agrave
@@ -6845,7 +6845,7 @@ Defun(insertAcuteData)
 	// See note in Defun(insertGraveData)
 
 	UT_return_val_if_fail (pCallData->m_dataLength==1, false);
-	UT_UCSChar acuteChar = 0x0000;
+	UT_UCS4Char acuteChar = 0x0000;
 	switch (pCallData->m_pData[0])
 	{
 	case 0x41:		acuteChar=0x00c1;	break;	// Aacute
@@ -6899,7 +6899,7 @@ Defun(insertCircumflexData)
 	// See note in Defun(insertGraveData)
 
 	UT_return_val_if_fail (pCallData->m_dataLength==1, false);
-	UT_UCSChar circumflexChar = 0x0000;
+	UT_UCS4Char circumflexChar = 0x0000;
 	switch (pCallData->m_pData[0])
 	{
 	case 0x41:		circumflexChar=0x00c2;	break;	// Acircumflex
@@ -6949,7 +6949,7 @@ Defun(insertTildeData)
 	// See note in Defun(insertGraveData)
 
 	UT_return_val_if_fail (pCallData->m_dataLength==1, false);
-	UT_UCSChar tildeChar = 0x0000;
+	UT_UCS4Char tildeChar = 0x0000;
 	switch (pCallData->m_pData[0])
 	{
 	case 0x41:		tildeChar=0x00c3;	break;	// Atilde
@@ -6989,7 +6989,7 @@ Defun(insertMacronData)
 	// See note in Defun(insertGraveData)
 
 	UT_return_val_if_fail (pCallData->m_dataLength==1, false);
-	UT_UCSChar macronChar = 0x0000;
+	UT_UCS4Char macronChar = 0x0000;
 
 	switch (pCallData->m_pData[0])
 	{
@@ -7028,7 +7028,7 @@ Defun(insertBreveData)
 	// See note in Defun(insertGraveData)
 
 	UT_return_val_if_fail(pCallData->m_dataLength==1, false);
-	UT_UCSChar breveChar = 0x0000;
+	UT_UCS4Char breveChar = 0x0000;
 
 	switch (pCallData->m_pData[0])
 	{
@@ -7063,7 +7063,7 @@ Defun(insertAbovedotData)
 	// See note in Defun(insertGraveData)
 
 	UT_return_val_if_fail(pCallData->m_dataLength==1, false);
-	UT_UCSChar abovedotChar = 0x0000;
+	UT_UCS4Char abovedotChar = 0x0000;
 
 	switch (pCallData->m_pData[0])
 	{
@@ -7102,7 +7102,7 @@ Defun(insertDiaeresisData)
 	// See note in Defun(insertGraveData)
 
 	UT_return_val_if_fail(pCallData->m_dataLength==1, false);
-	UT_UCSChar diaeresisChar = 0x0000;
+	UT_UCS4Char diaeresisChar = 0x0000;
 	switch (pCallData->m_pData[0])
 	{
 	case 0x41:		diaeresisChar=0x00c4;	break;	// Adiaeresis
@@ -7140,7 +7140,7 @@ Defun(insertDoubleacuteData)
 	// See note in Defun(insertGraveData)
 
 	UT_return_val_if_fail(pCallData->m_dataLength==1, false);
-	UT_UCSChar doubleacuteChar = 0x0000;
+	UT_UCS4Char doubleacuteChar = 0x0000;
 
 	switch (pCallData->m_pData[0])
 	{
@@ -7173,7 +7173,7 @@ Defun(insertCaronData)
 	// See note in Defun(insertGraveData)
 
 	UT_return_val_if_fail(pCallData->m_dataLength==1, false);
-	UT_UCSChar caronChar = 0x0000;
+	UT_UCS4Char caronChar = 0x0000;
 
 	switch (pCallData->m_pData[0])
 	{
@@ -7220,7 +7220,7 @@ Defun(insertCedillaData)
 	// See note in Defun(insertGraveData)
 
 	UT_return_val_if_fail(pCallData->m_dataLength==1, false);
-	UT_UCSChar cedillaChar = 0x0000;
+	UT_UCS4Char cedillaChar = 0x0000;
 	switch (pCallData->m_pData[0])
 	{
 	case 0x43:		cedillaChar=0x00c7; break;	// Ccedilla
@@ -7265,7 +7265,7 @@ Defun(insertOgonekData)
 	// See note in Defun(insertGraveData)
 
 	UT_return_val_if_fail(pCallData->m_dataLength==1, false);
-	UT_UCSChar ogonekChar = 0x0000;
+	UT_UCS4Char ogonekChar = 0x0000;
 
 	switch (pCallData->m_pData[0])
 	{
@@ -7580,7 +7580,7 @@ UT_return_val_if_fail(pDialog, false);
 	// current selection.
 	if (!pView->isSelectionEmpty())
 	{
-		UT_UCSChar * buffer;
+		UT_UCS4Char * buffer;
 		pView->getSelectionText(buffer);
 		if(buffer != nullptr)
 		{
@@ -9232,7 +9232,7 @@ static bool s_doBreakDlg(FV_View * pView)
 
 	if (bOK)
 	{
-		UT_UCSChar c;
+		UT_UCS4Char c;
 		switch(pDialog->getBreakType())
 		{
 		// special cases
@@ -9588,7 +9588,7 @@ class ABI_EXPORT FV_View_Insert_symbol_listener : public XAP_Insert_symbol_liste
 			{
 			p_view = static_cast<FV_View *>(pJustFocussedView) ;
 			}
-		virtual bool insertSymbol(UT_UCSChar Char, const char *p_font_name) override
+		virtual bool insertSymbol(UT_UCS4Char Char, const char *p_font_name) override
 		{
 			UT_return_val_if_fail (p_view != nullptr, false);
 
@@ -10372,7 +10372,7 @@ UT_return_val_if_fail(pDialog, false);
 	{
 		time_t	tim = time(nullptr);
 		struct tm *pTime = localtime(&tim);
-		UT_UCSChar *CurrentDateTime = nullptr;
+		UT_UCS4Char *CurrentDateTime = nullptr;
 		char szCurrentDateTime[CURRENT_DATE_TIME_SIZE];
 
 		strftime(szCurrentDateTime,CURRENT_DATE_TIME_SIZE,pDialog->GetDateTimeFormat(),pTime);

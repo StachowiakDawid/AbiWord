@@ -643,7 +643,7 @@ void IE_Imp_AbiWord_1::startElement(const gchar *name,
 		// TODO just inherit everything from the surrounding
 		// TODO spans.
 		{
-			UT_UCSChar ucs = UCS_LF;
+			UT_UCS4Char ucs = UCS_LF;
 			X_CheckError(appendSpan(&ucs,1));
 		}
 		return;
@@ -657,7 +657,7 @@ void IE_Imp_AbiWord_1::startElement(const gchar *name,
 		// TODO just inherit everything from the surrounding
 		// TODO spans.
 		{
-			UT_UCSChar ucs = UCS_VTAB;
+			UT_UCS4Char ucs = UCS_VTAB;
 			X_CheckError(appendSpan(&ucs,1));
 		}
 		return;
@@ -670,7 +670,7 @@ void IE_Imp_AbiWord_1::startElement(const gchar *name,
 		// TODO just inherit everything from the surrounding
 		// TODO spans.
 		{
-			UT_UCSChar ucs = UCS_FF;
+			UT_UCS4Char ucs = UCS_FF;
 			X_CheckError(appendSpan(&ucs,1));
 		}
 		return;

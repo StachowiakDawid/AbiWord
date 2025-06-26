@@ -1266,7 +1266,7 @@ public:
 	  // append an empty paragraph with this one char
 	  if (abi_sty->getColBreakBefore () || abi_sty->getPageBreakBefore ()) {
 	    _insureInBlock(nullptr);
-	    UT_UCSChar ucs = (abi_sty->getColBreakBefore () ? UCS_VTAB : UCS_FF);
+	    UT_UCS4Char ucs = (abi_sty->getColBreakBefore () ? UCS_VTAB : UCS_FF);
 	    getDocument()->appendSpan (&ucs, 1);
 	  }
 	  

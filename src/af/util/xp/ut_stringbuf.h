@@ -2,8 +2,7 @@
 
 // ut_stringbuf.h
 //
-#ifndef UT_STRINGBUF_H
-#define UT_STRINGBUF_H
+#pragma once
 
 //
 // Copyright (C) 2001 Mike Nordell <tamlin@algonet.se>
@@ -30,13 +29,7 @@
 #include <string>
 #include <algorithm>
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 #include "ut_assert.h"
 #include "ut_unicode.h"
 
@@ -92,7 +85,7 @@ class UT_UTF8String;
 class ABI_EXPORT UT_UTF8Stringbuf
 {
 public:
-	typedef UT_UCSChar   UCS2Char;
+	typedef UT_UCS4Char   UCS2Char;
 	typedef unsigned int UCS4Char;
 
 	static UCS4Char charCode (const char * str);
@@ -360,6 +353,3 @@ void UT_StringImpl<char_type>::copy(char_type* pDest, const char_type* pSrc, siz
 	if (pDest && pSrc && n)
 		memcpy(pDest, pSrc, n * sizeof(char_type));
 }
-
-
-#endif	// UT_STRINGBUF_H

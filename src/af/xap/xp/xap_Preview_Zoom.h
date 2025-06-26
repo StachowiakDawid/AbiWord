@@ -46,7 +46,7 @@ public:
 
 	// set the string you'd like to display
 	bool	setString(const char * string);
-	bool	setString(UT_UCSChar * string);
+	bool	setString(UT_UCS4Char * string);
 
     // where all the zoom-specific drawing happens
 	virtual void drawImmediate(const UT_Rect* clip = nullptr) override;
@@ -57,7 +57,7 @@ protected:
 	XAP_Preview_Zoom::tFont m_previewFont;
 	UT_uint32				m_zoomPercent;
 
-	UT_UCSChar * 			m_string;
+	UT_UCS4Char * 			m_string;
 
 	GR_Font *				m_pFont;	// so we can delete it
 };

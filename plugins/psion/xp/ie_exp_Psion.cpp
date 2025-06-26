@@ -893,7 +893,7 @@ bool PL_Psion_Listener::populateStrux(pf_Frag_Strux* /*sdh*/,
  * because some input characters may need to be represented by more than one
  * output character, and because we may ignore some input characters.
  */
-bool PL_Psion_Listener::_writeText(const UT_UCSChar *p, UT_uint32 inLength,
+bool PL_Psion_Listener::_writeText(const UT_UCS4Char *p, UT_uint32 inLength,
                                   UT_uint32 &outLength)
 {
 	UT_uint32 i;

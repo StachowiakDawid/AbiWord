@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_FONTPREVIEW_H
-#define XAP_FONTPREVIEW_H
+#pragma once
 
 #include <string>
 #include <map>
@@ -56,8 +55,6 @@ protected:
 	UT_sint32						m_height;
 private:
 	XAP_Preview_FontPreview *       m_pFontPreview;
-	UT_UCSChar *                    m_drawString;
+	UT_UCS4Char *                    m_drawString;
 	PropMap 						m_mapProps;
 };
-
-#endif /* XAP_FONTPREVIEW_H */

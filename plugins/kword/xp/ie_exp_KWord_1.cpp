@@ -82,7 +82,7 @@ protected:
 	void                _handleAttributes(PT_AttrPropIndex api);
 	void				_handleStyles(void);
 	void				_handleDataItems(void);
-	void                _outputData(const UT_UCSChar * data, UT_uint32 length);
+	void                _outputData(const UT_UCS4Char * data, UT_uint32 length);
 
 	void				_convertFontSize(UT_String& szDest, const char* szFontSize);
 	void                _convertColor(UT_String& szDest, const char* pszColor);
@@ -1162,10 +1162,10 @@ void s_KWord_1_Listener::_convertFontSize(UT_String& szDest, const char* pszFont
 /*****************************************************************/
 /*****************************************************************/
 
-void s_KWord_1_Listener::_outputData(const UT_UCSChar * data, UT_uint32 length)
+void s_KWord_1_Listener::_outputData(const UT_UCS4Char * data, UT_uint32 length)
 {
 	UT_UTF8String sBuf;
-	const UT_UCSChar * pData;
+	const UT_UCS4Char * pData;
 
 	UT_ASSERT(sizeof(UT_Byte) == sizeof(char));
 

@@ -136,7 +136,7 @@ void GR_Painter::drawGlyph(UT_uint32 glyph_idx, UT_sint32 xoff, UT_sint32 yoff)
 	m_pGr->drawGlyph (glyph_idx, xoff, yoff);
 }
 
-void GR_Painter::drawChars(const UT_UCSChar* pChars,
+void GR_Painter::drawChars(const UT_UCS4Char* pChars,
 						   int iCharOffset,
 						   int iLength,
 						   UT_sint32 xoff,
@@ -146,7 +146,7 @@ void GR_Painter::drawChars(const UT_UCSChar* pChars,
 	m_pGr->drawChars (pChars, iCharOffset, iLength, xoff, yoff, pCharWidths);
 }
 
-void GR_Painter::drawCharsRelativeToBaseline(const UT_UCSChar* pChars,
+void GR_Painter::drawCharsRelativeToBaseline(const UT_UCS4Char* pChars,
 						   int iCharOffset,
 						   int iLength,
 						   UT_sint32 xoff,

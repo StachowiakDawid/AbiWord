@@ -897,7 +897,7 @@ bool XAP_App::findAbiSuiteAppFile(std::string& path, const char* filename, const
 	return bFound;
 }
 
-bool XAP_App::addWordToDict(const UT_UCSChar * pWord, UT_uint32 len)
+bool XAP_App::addWordToDict(const UT_UCS4Char * pWord, UT_uint32 len)
 {
 	if (!m_pDict)
 		return false;
@@ -905,7 +905,7 @@ bool XAP_App::addWordToDict(const UT_UCSChar * pWord, UT_uint32 len)
 	return m_pDict->addWord(pWord, len);
 }
 
-bool XAP_App::isWordInDict(const UT_UCSChar * pWord, UT_uint32 len) const
+bool XAP_App::isWordInDict(const UT_UCS4Char * pWord, UT_uint32 len) const
 {
 	if (!m_pDict)
 		return false;
@@ -916,7 +916,7 @@ bool XAP_App::isWordInDict(const UT_UCSChar * pWord, UT_uint32 len) const
 /*!
  * Look up the custom dictionary for suggested words
  */
-void XAP_App::suggestWord(UT_GenericVector<UT_UCSChar*> * pVecSuggestions, const UT_UCSChar * pWord, UT_uint32 lenWord)
+void XAP_App::suggestWord(UT_GenericVector<UT_UCS4Char*> * pVecSuggestions, const UT_UCS4Char * pWord, UT_uint32 lenWord)
 {
 	if(m_pDict)
 	{

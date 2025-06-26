@@ -85,7 +85,7 @@ bool IE_Exp_OpenXML_Listener::populate(fl_ContainerLayout* /* sfh */, const PX_C
 		{
 			const PX_ChangeRecord_Span* pcrs = static_cast<const PX_ChangeRecord_Span*>(pcr);
 			PT_BufIndex buffer = pcrs->getBufIndex();
-			const UT_UCSChar* pData = pdoc->getPointer(buffer);
+			const UT_UCS4Char* pData = pdoc->getPointer(buffer);
 
 			if(*pData == UCS_FF)
 			{

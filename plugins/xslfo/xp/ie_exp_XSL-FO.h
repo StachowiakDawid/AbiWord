@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef IE_EXP_XSL_FO_H
-#define IE_EXP_XSL_FO_H
+#pragma once
 
 #include "ut_std_string.h"
 #include "ie_exp.h"
@@ -116,7 +115,7 @@ public:
 
 				case BULLETED_LIST:
 				{
-					symbol[0] = (UT_UCSChar) (unsigned char) 0xb7;
+					symbol[0] = (UT_UCS4Char) (unsigned char) 0xb7;
 					bullet.appendUCS4(symbol);
 					break;
 				}
@@ -129,63 +128,63 @@ public:
 
 				case SQUARE_LIST:
 				{
-					symbol[0] = (UT_UCSChar) (unsigned char) 0x6E;
+					symbol[0] = (UT_UCS4Char) (unsigned char) 0x6E;
 					bullet.appendUCS4(symbol);
 					break;
 				}
 
 				case TRIANGLE_LIST:
 				{
-					symbol[0] = (UT_UCSChar) (unsigned char) 0x73;
+					symbol[0] = (UT_UCS4Char) (unsigned char) 0x73;
 					bullet.appendUCS4(symbol);
 					break;
 				}
 
 				case DIAMOND_LIST:
 				{
-					symbol[0] = (UT_UCSChar) (unsigned char) 0xA9;
+					symbol[0] = (UT_UCS4Char) (unsigned char) 0xA9;
 					bullet.appendUCS4(symbol);
 					break;
 				}
 
 				case STAR_LIST:
 				{
-					symbol[0] = (UT_UCSChar) (unsigned char) 0x53;
+					symbol[0] = (UT_UCS4Char) (unsigned char) 0x53;
 					bullet.appendUCS4(symbol);
 					break;
 				}
 
 				case IMPLIES_LIST:
 				{
-					symbol[0] = (UT_UCSChar) (unsigned char) 0xDE;
+					symbol[0] = (UT_UCS4Char) (unsigned char) 0xDE;
 					bullet.appendUCS4(symbol);
 					break;
 				}
 
 				case TICK_LIST:
 				{
-					symbol[0] = (UT_UCSChar) (unsigned char) 0x33;
+					symbol[0] = (UT_UCS4Char) (unsigned char) 0x33;
 					bullet.appendUCS4(symbol);
 					break;
 				}
 
 				case BOX_LIST:
 				{
-					symbol[0] = (UT_UCSChar) (unsigned char) 0x72;
+					symbol[0] = (UT_UCS4Char) (unsigned char) 0x72;
 					bullet.appendUCS4(symbol);
 					break;
 				}
 
 				case HAND_LIST:
 				{
-					symbol[0] = (UT_UCSChar) (unsigned char) 0x2B;
+					symbol[0] = (UT_UCS4Char) (unsigned char) 0x2B;
 					bullet.appendUCS4(symbol);
 					break;
 				}
 
 				case HEART_LIST:
 				{
-					symbol[0] = (UT_UCSChar) (unsigned char) 0xAA;
+					symbol[0] = (UT_UCS4Char) (unsigned char) 0xAA;
 					bullet.appendUCS4(symbol);
 					break;
 				}
@@ -283,7 +282,7 @@ protected:
 	void				_handleImage(PT_AttrPropIndex api);
 	void				_handleMath(PT_AttrPropIndex api);
 	void				_handlePositionedImage(PT_AttrPropIndex api);
-	void                _outputData(const UT_UCSChar * data, UT_uint32 length);
+	void                _outputData(const UT_UCS4Char * data, UT_uint32 length);
 
 	void				_closeSection(void);
 	void				_closeBlock(void);
@@ -335,5 +334,3 @@ private:
 	UT_NumberStack		m_utnsTagStack;
 	std::vector<ListHelper *> m_Lists;
 };
-
-#endif /* IE_EXP_XSL_FO_H */

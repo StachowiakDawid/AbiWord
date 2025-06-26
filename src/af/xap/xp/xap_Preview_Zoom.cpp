@@ -107,7 +107,7 @@ bool XAP_Preview_Zoom::setString(const char * string)
 	return foo;
 }
 
-bool XAP_Preview_Zoom::setString(UT_UCSChar * string)
+bool XAP_Preview_Zoom::setString(UT_UCS4Char * string)
 {
 	UT_ASSERT(m_gc);
 	UT_ASSERT(string);

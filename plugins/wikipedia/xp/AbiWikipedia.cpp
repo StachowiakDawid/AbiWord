@@ -52,7 +52,7 @@ ABI_PLUGIN_DECLARE ("Wikipedia")
 //   NOTE: you must call delete[] on the returned text!!!
 //
 inline static char*
-_ucsToAscii(const UT_UCSChar* text)
+_ucsToAscii(const UT_UCS4Char* text)
 {
   UT_return_val_if_fail(text, nullptr);
 

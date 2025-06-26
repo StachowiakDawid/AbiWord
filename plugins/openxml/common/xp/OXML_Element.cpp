@@ -134,14 +134,14 @@ UT_Error OXML_Element::addToPT(PD_Document * pDocument)
 	switch (m_tag) {
 	case PG_BREAK:
 	{
-		UT_UCSChar ucs = UCS_FF;
+		UT_UCS4Char ucs = UCS_FF;
 		ret = pDocument->appendSpan(&ucs, 1) ? UT_OK : UT_ERROR;
 		UT_return_val_if_fail(ret == UT_OK, ret);
 	}
 		break;
 	case CL_BREAK:
 	{
-		UT_UCSChar ucs = UCS_VTAB;
+		UT_UCS4Char ucs = UCS_VTAB;
 		ret = pDocument->appendSpan(&ucs, 1) ? UT_OK : UT_ERROR;
 		UT_return_val_if_fail(ret == UT_OK, ret);
 	}
@@ -149,7 +149,7 @@ UT_Error OXML_Element::addToPT(PD_Document * pDocument)
 	
 	case LN_BREAK:
 	{
-		UT_UCSChar ucs = UCS_LF;
+		UT_UCS4Char ucs = UCS_LF;
 		ret = pDocument->appendSpan(&ucs, 1) ? UT_OK : UT_ERROR;
 		UT_return_val_if_fail(ret == UT_OK, ret);
 	}

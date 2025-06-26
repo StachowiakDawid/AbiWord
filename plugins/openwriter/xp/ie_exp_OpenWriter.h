@@ -62,7 +62,7 @@ class OO_ListenerImpl
 public:
    OO_ListenerImpl() {}
    virtual ~OO_ListenerImpl() {}
-   virtual void insertText(const UT_UCSChar * data, UT_uint32 length) = 0;
+   virtual void insertText(const UT_UCS4Char * data, UT_uint32 length) = 0;
    virtual void openBlock(const std::string & styleAtts, const std::string & styleProps,
                           const std::string & font, bool bIsHeading = false) = 0;
    virtual void closeBlock() = 0;
@@ -141,7 +141,7 @@ class OO_AccumulatorImpl : public OO_ListenerImpl
 {
 public:
    OO_AccumulatorImpl(OO_StylesContainer *pStylesContainer) : OO_ListenerImpl() { m_pStylesContainer = pStylesContainer; }
-   virtual void insertText(const UT_UCSChar * /*data*/, UT_uint32 /*length*/) override {}
+   virtual void insertText(const UT_UCS4Char * /*data*/, UT_uint32 /*length*/) override {}
    virtual void openBlock(const std::string & styleAtts, const std::string & styleProps,
                           const std::string & font, bool bIsHeading = false) override;
    virtual void closeBlock() override {};
@@ -163,7 +163,7 @@ class OO_WriterImpl : public OO_ListenerImpl
 public:
    OO_WriterImpl(GsfOutfile *pOutfile, OO_StylesContainer *pStylesContainer);
    ~OO_WriterImpl();
-   virtual void insertText(const UT_UCSChar * data, UT_uint32 length) override;
+   virtual void insertText(const UT_UCS4Char * data, UT_uint32 length) override;
    virtual void openBlock(const std::string & styleAtts, const std::string & styleProps,
                           const std::string & font, bool bIsHeading = false) override;
    virtual void closeBlock() override;

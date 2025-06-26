@@ -579,7 +579,7 @@ UT_uint32 GR_CairoGraphics::getDeviceResolution(void) const
 }
 
 
-UT_sint32 GR_CairoGraphics::measureUnRemappedChar(const UT_UCSChar c, UT_uint32 * height)
+UT_sint32 GR_CairoGraphics::measureUnRemappedChar(const UT_UCS4Char c, UT_uint32 * height)
 {
         if (height) { 
 		*height = 0;
@@ -2211,7 +2211,7 @@ void GR_CairoGraphics::positionToXY(const GR_RenderInfo & ri,
 	x2 = x;
 }
 
-void GR_CairoGraphics::drawChars(const UT_UCSChar* pChars,
+void GR_CairoGraphics::drawChars(const UT_UCS4Char* pChars,
 									int iCharOffset, int iLength,
 									UT_sint32 xoff, UT_sint32 yoff,
 									 int * pCharWidth)
@@ -2347,7 +2347,7 @@ void GR_CairoGraphics::drawChars(const UT_UCSChar* pChars,
 	}
 }
 
-UT_uint32 GR_CairoGraphics::measureString(const UT_UCSChar * pChars,
+UT_uint32 GR_CairoGraphics::measureString(const UT_UCS4Char * pChars,
 											  int iCharOffset,
 											  int iLength,
 											  UT_GrowBufElement* pWidths,

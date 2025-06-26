@@ -41,7 +41,7 @@
 
 #include "ut_string_class.h"
 
-#define CONV_TO_UCS (UT_UCSChar) (unsigned char)
+#define CONV_TO_UCS (UT_UCS4Char) (unsigned char)
 
 class pf_Frag;
 
@@ -349,7 +349,7 @@ void    fl_AutoNum::findAndSetParentItem(void)
  * depth is the level of recursion
  * pLayout is a pointer to the Layout item containing the current list item
  */
-void    fl_AutoNum::_getLabelstr( UT_UCSChar labelStr[], UT_uint32 * insPoint,
+void    fl_AutoNum::_getLabelstr( UT_UCS4Char labelStr[], UT_uint32 * insPoint,
 								  UT_uint32 depth, const pf_Frag_Strux* pLayout) const
 {
 	// Keep these arrays the same length to prevent overflows; see Bug 10580
@@ -587,19 +587,19 @@ void    fl_AutoNum::_getLabelstr( UT_UCSChar labelStr[], UT_uint32 * insPoint,
 	return;
 }
 
-const UT_UCSChar * fl_AutoNum::getLabel(const pf_Frag_Strux* pItem)  const
+const UT_UCS4Char * fl_AutoNum::getLabel(const pf_Frag_Strux* pItem)  const
 {
-	static UT_UCSChar label[100];
+	static UT_UCS4Char label[100];
 	UT_uint32 insPoint = 0;
 	UT_uint32 depth = 0;
 	_getLabelstr( label, &insPoint, depth , pItem);
 	if(insPoint == 0 )
 	{
-		return static_cast<const UT_UCSChar *>(nullptr);
+		return static_cast<const UT_UCS4Char *>(nullptr);
 	}
 	else
 	{
-		return static_cast<const UT_UCSChar *>(label);
+		return static_cast<const UT_UCS4Char *>(label);
 	}
 }
 
@@ -1288,9 +1288,9 @@ char * fl_AutoNum::dec2ascii(UT_sint32 value, UT_uint32 offset)
 	return g_strdup(ascii);
 }
 
-void fl_AutoNum::dec2hebrew(UT_UCSChar labelStr[], UT_uint32 * insPoint, UT_sint32 value)
+void fl_AutoNum::dec2hebrew(UT_UCS4Char labelStr[], UT_uint32 * insPoint, UT_sint32 value)
 {
-	UT_UCSChar gHebrewDigit[22] =
+	UT_UCS4Char gHebrewDigit[22] =
 	{
 		//   1       2       3       4       5       6       7       8       9
 		0x05D0, 0x05D1, 0x05D2, 0x05D3, 0x05D4, 0x05D5, 0x05D6, 0x05D7, 0x05D8,
@@ -1301,7 +1301,7 @@ void fl_AutoNum::dec2hebrew(UT_UCSChar labelStr[], UT_uint32 * insPoint, UT_sint
 	};
 
 	bool outputSep = false;
-	UT_UCSChar digit;
+	UT_UCS4Char digit;
 	do
  	{
 		UT_sint32 n3 = value % 1000;

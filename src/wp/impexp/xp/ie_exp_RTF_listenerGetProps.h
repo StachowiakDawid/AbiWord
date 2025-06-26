@@ -17,8 +17,8 @@
  * 02110-1301 USA.
  */
 
-#ifndef IE_EXP_RTF_LISTENERGETPROPS
-#define IE_EXP_RTF_LISTENERGETPROPS
+#pragma once
+
 #include "ie_exp_RTF.h"
 
 /******************************************************************
@@ -61,7 +61,7 @@ protected:
 	void				_closeBlock(void);
 	void				_closeSpan(void);
 	void				_openSpan(PT_AttrPropIndex apiSpan);
-	void				_outputData(const UT_UCSChar * p, UT_uint32 length);
+	void				_outputData(const UT_UCS4Char * p, UT_uint32 length);
 	void				_compute_span_properties(const PP_AttrProp * pSpanAP,
 												 const PP_AttrProp * pBlockAP,
 												 const PP_AttrProp * pSectionAP);
@@ -90,5 +90,3 @@ protected:
 	/*! true if we have a multi-block paste. */
 	bool				m_bHasBlock;
 };
-
-#endif /* IE_EXP_RTF_LISTENERGETPROPS */

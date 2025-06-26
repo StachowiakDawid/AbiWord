@@ -1505,10 +1505,10 @@ void s_RTF_ListenerWriteDoc::_openSpan(PT_AttrPropIndex apiSpan,  const PP_AttrP
 	
 }
 
-void s_RTF_ListenerWriteDoc::_outputData(const UT_UCSChar * data, UT_uint32 length, PT_DocPosition pos, bool bIgnorePosition)
+void s_RTF_ListenerWriteDoc::_outputData(const UT_UCS4Char * data, UT_uint32 length, PT_DocPosition pos, bool bIgnorePosition)
 {
 	UT_String sBuf;
-	const UT_UCSChar * pData;
+	const UT_UCS4Char * pData;
 	char mbbuf[30];
 	int mblen;
 
@@ -1660,7 +1660,7 @@ void s_RTF_ListenerWriteDoc::_outputData(const UT_UCSChar * data, UT_uint32 leng
 					// TODO if so, we may need to begin a sub-brace level to avoid
 					// TODO polluting the global context w/r/t \uc.
 
-					UT_UCSChar lc = XAP_EncodingManager::get_instance()->try_UToWindows(*pData);
+					UT_UCS4Char lc = XAP_EncodingManager::get_instance()->try_UToWindows(*pData);
 					m_pie->_rtf_keyword("uc",lc && lc<256 ? 1 : 0);
 					unsigned short ui = ((unsigned short)(*pData));	// RTF is limited to +/-32K ints
 					signed short si = *((signed short *)(&ui));		// so we need to write negative
@@ -1690,8 +1690,8 @@ void s_RTF_ListenerWriteDoc::_outputData(const UT_UCSChar * data, UT_uint32 leng
 				    wordpad (and probably word6/7) don't understand
 				    \uc0\u<UUUU> format at all.
 				*/
-				UT_UCSChar c = *pData++;
-				UT_UCSChar lc = XAP_EncodingManager::get_instance()->try_UToWindows(c);
+				UT_UCS4Char c = *pData++;
+				UT_UCS4Char lc = XAP_EncodingManager::get_instance()->try_UToWindows(c);
 				if (lc==0 || lc >255)
 				{
 					/*
@@ -1844,7 +1844,7 @@ bool s_RTF_ListenerWriteDoc::populate(fl_ContainerLayout* /*sfh*/,
 			PT_AttrPropIndex api = pcr->getIndexAP();
 
 			PT_BufIndex bi = pcrs->getBufIndex();
-			const UT_UCSChar * pData = m_pDocument->getPointer(bi);
+			const UT_UCS4Char * pData = m_pDocument->getPointer(bi);
 //
 // Code to deal with the tab following a list label. Eat it!!
 //
@@ -2064,7 +2064,7 @@ void s_RTF_ListenerWriteDoc::_writeFieldPreamble(const PP_AttrProp * pSpanAP)
  */
 void s_RTF_ListenerWriteDoc::_writeFieldTrailer(void)
 {
-	const UT_UCSChar * szFieldValue = _getFieldValue();
+	const UT_UCS4Char * szFieldValue = _getFieldValue();
 	if(szFieldValue == nullptr)
 	{
 		m_pie->_rtf_close_brace();
@@ -2087,7 +2087,7 @@ void s_RTF_ListenerWriteDoc::_writeFieldTrailer(void)
  * This method returns the field value at the current document location.
  * If there is not a field at the current document location return nullptr.
  */
-const UT_UCSChar * s_RTF_ListenerWriteDoc::_getFieldValue(void)
+const UT_UCS4Char * s_RTF_ListenerWriteDoc::_getFieldValue(void)
 {
 //
 // Grab the first format handle in the PieceTable and turn it into a layout class.

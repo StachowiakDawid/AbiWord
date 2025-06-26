@@ -86,7 +86,7 @@ bool fd_Field::update(void)
        }
        else if (m_iFieldType == FD_Test)
        {
-              UT_UCSChar testUCSFieldText[256];
+              UT_UCS4Char testUCSFieldText[256];
 	      char testChars[256];
 	      sprintf(testChars,
 		      "test field text (%d updates)",
@@ -122,7 +122,7 @@ bool fd_Field::update(void)
        else if (m_iFieldType == FD_MartinTest)
        {
 
-              UT_UCSChar testUCSFieldText[1024];
+              UT_UCS4Char testUCSFieldText[1024];
 	      char testChars[256];
 	      sprintf(testChars,
 		      "test field text (%d updates)",
@@ -133,7 +133,7 @@ bool fd_Field::update(void)
 		      "Martin field text (%d updates)",
 		      m_updateCount);
 
-              //UT_UCSChar * curpos;
+              //UT_UCS4Char * curpos;
 	      char lineno[26];
 	      UT_UCS4_strcpy_char(testUCSFieldText,
 				 testChars);

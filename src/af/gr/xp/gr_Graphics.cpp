@@ -77,7 +77,7 @@ const std::string & GR_Font::hashKey(void) const
 	Return the char width from the cache.
 	Compute the width if needed, and cache it.
  */
-UT_sint32 GR_Font::getCharWidthFromCache (UT_UCSChar c) const
+UT_sint32 GR_Font::getCharWidthFromCache (UT_UCS4Char c) const
 {
 	// the way GR_CharWidthsCache is implemented will cause problems
 	// fro any graphics plugin that wants to use the cache -- we will
@@ -558,7 +558,7 @@ void GR_Graphics::setLineProperties ( double    /*inWidthPixels*/,
   UT_ASSERT(UT_SHOULD_NOT_HAPPEN);
 }
 
-void GR_Graphics::getMaxCharacterDimension(const UT_UCSChar*s, UT_uint32 length, UT_uint32 &width, UT_uint32 &height)
+void GR_Graphics::getMaxCharacterDimension(const UT_UCS4Char*s, UT_uint32 length, UT_uint32 &width, UT_uint32 &height)
 {
 	UT_GrowBufElement *pWidths = new UT_GrowBufElement[length];
 
@@ -582,7 +582,7 @@ void GR_Graphics::getMaxCharacterDimension(const UT_UCSChar*s, UT_uint32 length,
 	}
 }
 
-UT_uint32 GR_Graphics::measureString(const UT_UCSChar* s, int iOffset,
+UT_uint32 GR_Graphics::measureString(const UT_UCS4Char* s, int iOffset,
 										 int num,  UT_GrowBufElement* pWidths, 
 									 UT_uint32 * /*height*/)
 {
@@ -593,7 +593,7 @@ UT_uint32 GR_Graphics::measureString(const UT_UCSChar* s, int iOffset,
 	UT_sint32 stringWidth = 0, charWidth;
 	for (int i = 0; i < num; i++)
     {
-		UT_UCSChar currentChar = s[i + iOffset];
+		UT_UCS4Char currentChar = s[i + iOffset];
 
 		{
 			charWidth = measureUnRemappedChar(currentChar);
@@ -695,7 +695,7 @@ void GR_Graphics::drawImage(GR_Image* pImg, UT_sint32 xDest, UT_sint32 yDest)
     draw on the screen. As a result, the characters end up positioned slightly higher than
     they should and this has proved a problem in the math plugin (see screen shots in #9500)
 */
-void GR_Graphics::drawCharsRelativeToBaseline(const UT_UCSChar* pChars,
+void GR_Graphics::drawCharsRelativeToBaseline(const UT_UCS4Char* pChars,
 								 int iCharOffset,
 								 int iLength,
 								 UT_sint32 xoff,
@@ -1064,7 +1064,7 @@ static UT_UCS4Char s_remapGlyph(UT_UCS4Char g)
 
 // if the character has a mirror form, returns the mirror form,
 // otherwise returns the character itself
-static UT_UCSChar s_getMirrorChar(UT_UCSChar c)
+static UT_UCS4Char s_getMirrorChar(UT_UCS4Char c)
 {
 	//got to do this, otherwise bsearch screws up
 	UT_UCS4Char mc;

@@ -204,7 +204,7 @@ protected:
 	void				_openTag(PT_AttrPropIndex api);
 	void				_openSection(PT_AttrPropIndex api);
 	void				_openSpan(PT_AttrPropIndex api);
-	void				_outputData(const UT_UCSChar * p, UT_uint32 length);
+	void				_outputData(const UT_UCS4Char * p, UT_uint32 length);
 	void				_handleDataItems(void);
 	void				_convertFontSize(char* szDest, const char* pszFontSize);
 	void				_convertColor(char* szDest, const char* pszColor);
@@ -455,10 +455,10 @@ void s_HRText_Listener::_closeSpan(void)
 	return;
 }
 
-void s_HRText_Listener::_outputData(const UT_UCSChar * data, UT_uint32 length)
+void s_HRText_Listener::_outputData(const UT_UCS4Char * data, UT_uint32 length)
 {
 	UT_String sBuf;
-	const UT_UCSChar * pData;
+	const UT_UCS4Char * pData;
 	
 	int mbLen;
 	char pC[MB_LEN_MAX];

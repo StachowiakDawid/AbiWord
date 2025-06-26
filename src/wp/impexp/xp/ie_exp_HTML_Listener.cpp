@@ -712,11 +712,11 @@ bool IE_Exp_HTML_Listener::endOfDocument()
     return true;
 }
 
-void IE_Exp_HTML_Listener::_outputData(const UT_UCSChar* pData, 
+void IE_Exp_HTML_Listener::_outputData(const UT_UCS4Char* pData, 
 									   UT_uint32 length)
 {
     UT_UTF8String sBuf;
-    const UT_UCSChar* p;
+    const UT_UCS4Char* p;
 
     UT_ASSERT(sizeof (UT_Byte) == sizeof (char));
     sBuf.reserve(length);

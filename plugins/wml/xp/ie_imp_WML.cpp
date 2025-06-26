@@ -448,7 +448,7 @@ void IE_Imp_WML::startElement(const gchar *name,
 
 		if(m_parseState == _PS_Block) //AbiWord doesn't allow breaks in tables
 		{
-			UT_UCSChar ucs = UCS_LF;
+			UT_UCS4Char ucs = UCS_LF;
 			X_CheckError(appendSpan(&ucs,1));
 		}
 		return;

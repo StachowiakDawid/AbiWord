@@ -206,7 +206,7 @@ UT_Error IE_Imp_Component::_parseStream(ImportStream * pStream)
 	XAP_Frame *pFrame = XAP_App::getApp()->getLastFocussedFrame();
     FV_View* pView = static_cast<FV_View*>(pFrame->getCurrentView());
 
-	UT_UCSChar c;
+	UT_UCS4Char c;
 	unsigned char uc;
 	while (pStream->getChar(c))
 	{

@@ -85,12 +85,12 @@ AP_Preview_Paragraph_Block::~AP_Preview_Paragraph_Block()
 	// all at once.
 	if (m_words.getItemCount() > 0)
 	{
-		UT_UCSChar * word = m_words.getNthItem(0);
+		UT_UCS4Char * word = m_words.getNthItem(0);
 		FREEP(word);
 	}
 }
 
-void AP_Preview_Paragraph_Block::setText(const UT_UCSChar * text)
+void AP_Preview_Paragraph_Block::setText(const UT_UCS4Char * text)
 {
 	UT_return_if_fail (text);
 
@@ -98,7 +98,7 @@ void AP_Preview_Paragraph_Block::setText(const UT_UCSChar * text)
 	// word (see the destructor for notes)
 	if (m_words.getItemCount() > 0)
 	{
-		UT_UCSChar * word = m_words.getNthItem(0);
+		UT_UCS4Char * word = m_words.getNthItem(0);
 		FREEP(word);
 		m_words.clear();
 	}
@@ -107,10 +107,10 @@ void AP_Preview_Paragraph_Block::setText(const UT_UCSChar * text)
 	m_widths.clear();
 
 	// dup the string for harmful chunkification
-	UT_UCSChar * clone = nullptr;
+	UT_UCS4Char * clone = nullptr;
 	UT_UCS4_cloneString(&clone, text);
 
-	UT_UCSChar * i = clone;
+	UT_UCS4Char * i = clone;
 
 	while (*i != 0)
 	{
@@ -263,7 +263,7 @@ void AP_Preview_Paragraph_Block::setFormat(const gchar * pageLeftMargin,
 /************************************************************************/
 
 AP_Preview_Paragraph::AP_Preview_Paragraph(GR_Graphics * gc,
-										   const UT_UCSChar * text,
+										   const UT_UCS4Char * text,
 										   AP_Dialog_Lists * dlg)
   : XAP_Preview(gc), m_dir(UT_BIDI_LTR)
 {
@@ -346,7 +346,7 @@ AP_Preview_Paragraph::AP_Preview_Paragraph(GR_Graphics * gc,
 }
 
 AP_Preview_Paragraph::AP_Preview_Paragraph(GR_Graphics * gc,
-					   const UT_UCSChar * text,
+					   const UT_UCS4Char * text,
 										   XAP_Dialog * dlg) : XAP_Preview(gc), m_dir(UT_BIDI_LTR)
 {
   // this method heavily relies upon the parent dlg to call setFormat()
@@ -402,7 +402,7 @@ AP_Preview_Paragraph::AP_Preview_Paragraph(GR_Graphics * gc,
 }
 
 AP_Preview_Paragraph::AP_Preview_Paragraph(GR_Graphics * gc,
-					   const UT_UCSChar * text,
+					   const UT_UCS4Char * text,
 					   AP_Dialog_Paragraph * dlg,
 					   const char * fontname)
 	: XAP_Preview(gc),m_dir(UT_BIDI_LTR)
@@ -661,7 +661,7 @@ void AP_Preview_Paragraph::_appendBlock(AP_Preview_Paragraph_Block * block)
 }
 
 // returns number of words it plotted
-UT_uint32 AP_Preview_Paragraph::_appendLine(UT_GenericVector<UT_UCSChar*> * words,
+UT_uint32 AP_Preview_Paragraph::_appendLine(UT_GenericVector<UT_UCS4Char*> * words,
 											UT_NumberVector * widths,
 											UT_uint32 startWithWord,
 											UT_uint32 left,

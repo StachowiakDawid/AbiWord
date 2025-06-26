@@ -61,11 +61,11 @@ XAP_Dictionary::~XAP_Dictionary()
 
 	FREEP(m_szFilename);
 
-  	//UT_HASH_PURGEDATA(UT_UCSChar *, (&m_hashWords), g_free);
+  	//UT_HASH_PURGEDATA(UT_UCS4Char *, (&m_hashWords), g_free);
 	m_hashWords.freeData();
 #if 0
 	UT_StringPtrMap::UT_Cursor _hc1(&m_hashWords);
-	for (UT_UCSChar * _hval1 = const_cast<UT_UCSChar *>(reinterpret_cast<const UT_UCSChar *>(_hc1.first())); _hc1.is_valid(); _hval1 = const_cast<UT_UCSChar *>(reinterpret_cast<const UT_UCSChar *>(_hc1.next())) )
+	for (UT_UCS4Char * _hval1 = const_cast<UT_UCS4Char *>(reinterpret_cast<const UT_UCS4Char *>(_hc1.first())); _hc1.is_valid(); _hval1 = const_cast<UT_UCS4Char *>(reinterpret_cast<const UT_UCS4Char *>(_hc1.next())) )
 	{ 
 		if (_hval1)
 			g_free (_hval1);
@@ -194,7 +194,7 @@ bool XAP_Dictionary::_parseUTF8(void)
 			if (len > 1) {
 				fread (buf + 1, len - 1, sizeof (gchar), m_fp);
 			}
-			UT_UCSChar uc = g_utf8_get_char(buf);
+			UT_UCS4Char uc = g_utf8_get_char(buf);
 			X_ReturnIfFail(gbBlock.ins(gbBlock.getLength(),reinterpret_cast<UT_GrowBufElement*>(&uc),1));
 			break;
 		}
@@ -219,14 +219,14 @@ bool XAP_Dictionary::save(void)
 	if (!_openFile("w"))
 		return false;
 
-	UT_GenericVector<UT_UCSChar *> * pVec = m_hashWords.enumerate();
+	UT_GenericVector<UT_UCS4Char *> * pVec = m_hashWords.enumerate();
 	UT_ASSERT(pVec);
 
 	UT_uint32 size = pVec->size();
 
 	for (UT_uint32 i = 0; i < size; i++)
 	{
-		UT_UCSChar * pWord = pVec->getNthItem(i);
+		UT_UCS4Char * pWord = pVec->getNthItem(i);
 		_outputUTF8(pWord, UT_UCS4_strlen(pWord));
 		_writeBytes(reinterpret_cast<const UT_Byte *>("\n"));
 	}
@@ -239,10 +239,10 @@ bool XAP_Dictionary::save(void)
 	return true;
 }
 
-void XAP_Dictionary::_outputUTF8(const UT_UCSChar * data, UT_uint32 length)
+void XAP_Dictionary::_outputUTF8(const UT_UCS4Char * data, UT_uint32 length)
 {
 	UT_String buf;
-	const UT_UCSChar * pData;
+	const UT_UCS4Char * pData;
 
 	for (pData = data; (pData<data+length); /**/)
 	{
@@ -264,10 +264,10 @@ void XAP_Dictionary::_outputUTF8(const UT_UCSChar * data, UT_uint32 length)
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 
-bool XAP_Dictionary::addWord(const UT_UCSChar * pWord, UT_uint32 len)
+bool XAP_Dictionary::addWord(const UT_UCS4Char * pWord, UT_uint32 len)
 {
 	char * key = static_cast<char *>(UT_calloc(len+1, sizeof(char)));
-	UT_UCSChar * copy = static_cast<UT_UCSChar *>(UT_calloc(len+1, sizeof(UT_UCSChar)));
+	UT_UCS4Char * copy = static_cast<UT_UCS4Char *>(UT_calloc(len+1, sizeof(UT_UCS4Char)));
     if (!key || !copy)
 	{
 		UT_DEBUGMSG(("mem failure adding word to dictionary\n"));
@@ -278,7 +278,7 @@ bool XAP_Dictionary::addWord(const UT_UCSChar * pWord, UT_uint32 len)
 	UT_uint32 i = 0;
 	for (i = 0; i < len; i++)
 	{
-		UT_UCSChar currentChar;
+		UT_UCS4Char currentChar;
 		currentChar = pWord[i];
 		// map smart quote apostrophe to ASCII right single quote
 		if (currentChar == UCS_RQUOTE) currentChar = '\'';
@@ -324,7 +324,7 @@ bool XAP_Dictionary::addWord(const char * word)
 	{
 		return false;
 	}
-	UT_UCSChar * ucs_dup = static_cast<UT_UCSChar *>(UT_calloc(len+1, sizeof(UT_UCSChar)));
+	UT_UCS4Char * ucs_dup = static_cast<UT_UCS4Char *>(UT_calloc(len+1, sizeof(UT_UCS4Char)));
 	UT_UCS4_strcpy_char(ucs_dup, word);
 	addWord(ucs_dup,len);
 	FREEP(ucs_dup);
@@ -334,24 +334,24 @@ bool XAP_Dictionary::addWord(const char * word)
 
 /*!
  * Returns true if the word given is found in the users custom dictionary.
-\param const UT_UCSChar * pWord the word to look for suggestion for
+\param const UT_UCS4Char * pWord the word to look for suggestion for
 \param UT_uint32 len the length of the word
 \returns UT_Vector * pVecSuggestions this a vector of suggestions.
 The returner is responsible for deleting these words. 
 */
-void XAP_Dictionary::suggestWord(UT_GenericVector<UT_UCSChar *> * pVecSuggestions, const UT_UCSChar * pWord, UT_uint32 len)
+void XAP_Dictionary::suggestWord(UT_GenericVector<UT_UCS4Char *> * pVecSuggestions, const UT_UCS4Char * pWord, UT_uint32 len)
 {
   //
   // Get the words in the local dictionary
   //
-  UT_GenericVector<UT_UCSChar *> * pVec = m_hashWords.enumerate();
+  UT_GenericVector<UT_UCS4Char *> * pVec = m_hashWords.enumerate();
   UT_ASSERT(pVec);
   UT_uint32 i=0;
   UT_uint32 count = pVec->getItemCount();
   //
   // Turn our word into a NUL teminated string
   //
-  UT_UCSChar * pszWord = static_cast<UT_UCSChar*>(UT_calloc(len+1, sizeof(UT_UCSChar)));
+  UT_UCS4Char * pszWord = static_cast<UT_UCS4Char*>(UT_calloc(len+1, sizeof(UT_UCS4Char)));
   for(i=0; i< len; i++)
   {
     pszWord[i] = pWord[i];
@@ -363,8 +363,8 @@ void XAP_Dictionary::suggestWord(UT_GenericVector<UT_UCSChar *> * pVecSuggestion
   //
   for(i=0; i< count; i++)
   {
-    UT_UCSChar * pszDict = pVec->getNthItem(i);
-    UT_UCSChar * pszReturn = nullptr;
+    UT_UCS4Char * pszDict = pVec->getNthItem(i);
+    UT_UCS4Char * pszReturn = nullptr;
     float lenDict = static_cast<float>(UT_UCS4_strlen(pszDict));
     UT_uint32 wordInDict = countCommonChars(pszDict,pszWord);
     UT_uint32 dictInWord = countCommonChars(pszWord,pszDict);
@@ -387,10 +387,10 @@ void XAP_Dictionary::suggestWord(UT_GenericVector<UT_UCSChar *> * pVecSuggestion
  * pszHaystack. Every time character in pszNeedle is found in pszHaystack the 
  * score is incremented by 1.
  */
-UT_uint32 XAP_Dictionary::countCommonChars( UT_UCSChar *pszHaystack,UT_UCSChar * pszNeedle)
+UT_uint32 XAP_Dictionary::countCommonChars( UT_UCS4Char *pszHaystack,UT_UCS4Char * pszNeedle)
 {
     UT_uint32 lenNeedle =  UT_UCS4_strlen(pszNeedle);
-    UT_UCSChar oneChar[2];
+    UT_UCS4Char oneChar[2];
     oneChar[1] = 0;
     UT_uint32 i=0;
     UT_uint32 score =0;
@@ -405,7 +405,7 @@ UT_uint32 XAP_Dictionary::countCommonChars( UT_UCSChar *pszHaystack,UT_UCSChar *
     return score;
 }
 
-bool XAP_Dictionary::isWord(const UT_UCSChar * pWord, UT_uint32 len) const
+bool XAP_Dictionary::isWord(const UT_UCS4Char * pWord, UT_uint32 len) const
 {
 	char * key = static_cast<char*>(UT_calloc(len+1, sizeof(char)));
 	if (!key)

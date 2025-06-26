@@ -239,7 +239,7 @@ public:
     virtual void        markDirtyOverlappingRuns(const UT_Rect& recScreen) override;
 
 	virtual void		_draw(dg_DrawArgs*) = 0;
-    void                _drawTextLine(UT_sint32, UT_sint32, UT_uint32, UT_uint32, UT_UCSChar *);
+    void                _drawTextLine(UT_sint32, UT_sint32, UT_uint32, UT_uint32, UT_UCS4Char *);
 	virtual void       	_clearScreen(bool bFullLineHeightRect) = 0;
 	virtual bool		canBreakAfter(void) const = 0;
 	virtual bool		canBreakBefore(void) const = 0;
@@ -905,10 +905,10 @@ public:
 	virtual bool			isSuperscript(void) const override;
 	virtual bool			isSubscript(void) const override;
 
-	bool					_setValue(const UT_UCSChar *p_new_value);
+	bool					_setValue(const UT_UCS4Char *p_new_value);
 
 	virtual bool			calculateValue(void);
-	virtual const UT_UCSChar *    getValue(void) const { return reinterpret_cast<const UT_UCS4Char *>(m_sFieldValue);}
+	virtual const UT_UCS4Char *    getValue(void) const { return reinterpret_cast<const UT_UCS4Char *>(m_sFieldValue);}
 	virtual UT_uint32		needsFrequentUpdates() {return 0;}
 
 protected:

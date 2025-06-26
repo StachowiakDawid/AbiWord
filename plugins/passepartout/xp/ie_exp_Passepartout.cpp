@@ -83,7 +83,7 @@ public:
 	virtual bool signal(UT_uint32 iSignal) override;
 
 protected:
-	virtual void		_outputData(const UT_UCSChar * p, UT_uint32 length);
+	virtual void		_outputData(const UT_UCS4Char * p, UT_uint32 length);
 	void				_closeBlock(void);
 	void				_openBlock(PT_AttrPropIndex api);
 	void				_closeFont(void);
@@ -178,13 +178,13 @@ UT_Error IE_Exp_Passepartout::_writeDocument(void)
  \param data Buffer to output
  \param length Size of buffer
  */
-void Passepartout_Listener::_outputData(const UT_UCSChar * data, UT_uint32 length)
+void Passepartout_Listener::_outputData(const UT_UCS4Char * data, UT_uint32 length)
 {
   if (!m_bInBlock)
     return;
   
   UT_UTF8String sBuf;
-  const UT_UCSChar * pData;
+  const UT_UCS4Char * pData;
   
   sBuf.reserve(length);
   for (pData=data; (pData<data+length); /**/)

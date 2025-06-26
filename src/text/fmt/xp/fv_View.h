@@ -384,7 +384,7 @@ public:
 	void            getTextInCurrentSection(UT_GrowBuf & buf) const;
 	void            getTextInDocument(UT_GrowBuf & buf) const;
 	bool            getLineBounds(PT_DocPosition pos, PT_DocPosition *start, PT_DocPosition *end);
-	UT_UCSChar getChar(PT_DocPosition pos, UT_sint32 *x = nullptr, UT_sint32 *y = nullptr, UT_uint32 *width = nullptr, UT_uint32 *height = nullptr);
+	UT_UCS4Char getChar(PT_DocPosition pos, UT_sint32 *x = nullptr, UT_sint32 *y = nullptr, UT_uint32 *width = nullptr, UT_uint32 *height = nullptr);
 
 // ----------------------
 	FL_DocLayout*	getLayout() const;
@@ -472,7 +472,7 @@ public:
 	void	insertParagraphBreaknoListUpdate(void);
 	void	insertSectionBreak( BreakSectionType type);
 	void	insertSectionBreak(void);
-	void	insertSymbol(UT_UCSChar c, const gchar * symfont);
+	void	insertSymbol(UT_UCS4Char c, const gchar * symfont);
 
 	// ----------------------
 	bool			isLeftMargin(UT_sint32 xPos, UT_sint32 yPos) const;
@@ -487,13 +487,13 @@ public:
 	void			cmdSelect(PT_DocPosition dpBeg, PT_DocPosition dpEnd);
 	void			cmdSelect( const std::pair< PT_DocPosition, PT_DocPosition >& range );
 	void			cmdCharMotion(bool bForward, UT_uint32 count);
-	bool			cmdCharInsert(const UT_UCSChar * text, UT_uint32 count, bool bForce = false);
+	bool			cmdCharInsert(const UT_UCS4Char * text, UT_uint32 count, bool bForce = false);
 	bool			cmdCharInsert(const std::string& s, bool bForce = false);
 	void			cmdCharDelete(bool bForward, UT_uint32 count);
 	void			delTo(FV_DocPos dp);
 	void            getSelectionText(UT_UCS4Char *& text) const;
 
-	UT_UCSChar *	getTextBetweenPos(PT_DocPosition pos1, PT_DocPosition pos2) const;
+	UT_UCS4Char *	getTextBetweenPos(PT_DocPosition pos1, PT_DocPosition pos2) const;
 	inline PT_DocPosition  getInsPoint () const { return m_iInsPoint; }
 	void			warpInsPtToXY(UT_sint32 xPos, UT_sint32 yPos, bool bClick);
 	void			moveInsPtTo(FV_DocPos dp, bool bClearSelection = true);
@@ -590,7 +590,7 @@ public:
 // ----------------------
 // Stuff for spellcheck context menu
 //
-	UT_UCSChar *	getContextSuggest(UT_uint32 ndx);
+	UT_UCS4Char *	getContextSuggest(UT_uint32 ndx);
 	void			cmdContextSuggest(UT_uint32 ndx, fl_BlockLayout * ppBL = nullptr, const fl_PartOfBlockPtr& ppPOB = fl_PartOfBlockPtr());
 	void			cmdContextIgnoreAll(void);
 	void			cmdContextAdd(void);
@@ -680,7 +680,7 @@ public:
     bool                  bubblesAreBlocked() const;
 // ----------------------
 
-	bool		gotoTarget(AP_JumpTarget type, const UT_UCSChar * data);
+	bool		gotoTarget(AP_JumpTarget type, const UT_UCS4Char * data);
 	bool		gotoTarget(AP_JumpTarget type, const char *numberString);
 
 	void			changeNumColumns(UT_uint32 iNumColumns);
@@ -689,13 +689,13 @@ public:
 
 	// find and replace
 
-	void			findSetFindString	(const UT_UCSChar* string);
-	void			findSetReplaceString(const UT_UCSChar* string);
+	void			findSetFindString	(const UT_UCS4Char* string);
+	void			findSetReplaceString(const UT_UCS4Char* string);
 	void			findSetReverseFind	(bool newValue);
 	void			findSetMatchCase	(bool newValue);
 	void			findSetWholeWord	(bool newValue);
-	UT_UCSChar *	findGetFindString   (void);
-	UT_UCSChar *	findGetReplaceString(void);
+	UT_UCS4Char *	findGetFindString   (void);
+	UT_UCS4Char *	findGetReplaceString(void);
 	bool			findGetReverseFind	();
 	bool			findGetMatchCase	();
 	bool			findGetWholeWord	();
@@ -706,15 +706,15 @@ public:
 	void			findSetStartAtInsPoint(void);
 
 	bool			findNext(bool& bDoneEntireDocument);
-	bool			findNext(const UT_UCSChar* pFind, bool& bDoneEntireDocument);
+	bool			findNext(const UT_UCS4Char* pFind, bool& bDoneEntireDocument);
 
-	UT_uint32*		_computeFindPrefix(const UT_UCSChar* pFind);
+	UT_uint32*		_computeFindPrefix(const UT_UCS4Char* pFind);
 
 	bool			_findNext(UT_uint32* pPrefix,
 							 bool& bDoneEntireDocument);
 
 	bool			findPrev(bool& bDoneEntireDocument);
-	bool			findPrev(const UT_UCSChar* pFind, bool& bDoneEntireDocument);
+	bool			findPrev(const UT_UCS4Char* pFind, bool& bDoneEntireDocument);
 
 	bool			_findPrev(UT_uint32* pPrefix,
 							  bool& bDoneEntireDocument);
@@ -975,7 +975,7 @@ protected:
 	UT_Error			_insertGraphic(const FG_ConstGraphicPtr&, const char*);
 	UT_Error			_insertGraphic(const FG_ConstGraphicPtr&, const char*, PT_DocPosition pos);
 
-	UT_UCSChar *		_lookupSuggestion(fl_BlockLayout* pBL, const fl_PartOfBlockPtr& pPOB, UT_sint32 ndx);
+	UT_UCS4Char *		_lookupSuggestion(fl_BlockLayout* pBL, const fl_PartOfBlockPtr& pPOB, UT_sint32 ndx);
 
 	static void 		_autoScroll(UT_Worker * pTimer);
 	static void 		_actuallyScroll(UT_Worker * pTimer);
@@ -1003,7 +1003,7 @@ protected:
 	UT_Error			_deleteXMLID( const std::string& xmlid, bool bSignal );
 	fp_HyperlinkRun *   _getHyperlinkInRange(PT_DocPosition &posStart,
 											 PT_DocPosition &posEnd);
-	bool			    _charInsert(const UT_UCSChar * text, UT_uint32 count, bool bForce = false);
+	bool			    _charInsert(const UT_UCS4Char * text, UT_uint32 count, bool bForce = false);
 
 	void                _adjustDeletePosition(UT_uint32 &iDocPos, UT_uint32 &iCount);
 
@@ -1074,16 +1074,16 @@ private:
 
 	fl_BlockLayout *	_findGetCurrentBlock(void) const;
 	PT_DocPosition		_findGetCurrentOffset(void) const;
-	UT_UCSChar *		_findGetNextBlockBuffer(fl_BlockLayout ** block, PT_DocPosition *offset);
-	UT_UCSChar *		_findGetPrevBlockBuffer(fl_BlockLayout ** block, PT_DocPosition *offset, UT_sint32& endIndex);
+	UT_UCS4Char *		_findGetNextBlockBuffer(fl_BlockLayout ** block, PT_DocPosition *offset);
+	UT_UCS4Char *		_findGetPrevBlockBuffer(fl_BlockLayout ** block, PT_DocPosition *offset, UT_sint32& endIndex);
 
 	bool				m_bReverseFind;
 	bool				m_bWholeWord;
 	bool				m_bMatchCase;
-	UT_UCSChar *		m_sFind;
-	UT_UCSChar *		m_sReplace;
+	UT_UCS4Char *		m_sFind;
+	UT_UCS4Char *		m_sReplace;
 
-	UT_sint32			_findBlockSearchRegexp(const UT_UCSChar * haystack, const UT_UCSChar * needle);
+	UT_sint32			_findBlockSearchRegexp(const UT_UCS4Char * haystack, const UT_UCS4Char * needle);
 
 	// prefs listener - to change cursor blink on/off (and possibly others)
 	static void _prefsListener( XAP_Prefs *, const XAP_PrefsChangeSet*, void *);

@@ -17,8 +17,8 @@
  * 02110-1301 USA.
  */
 
-#ifndef IE_EXP_RTF_LISTENERWRITEDOC
-#define IE_EXP_RTF_LISTENERWRITEDOC
+#pragma once
+
 #include "ie_exp_RTF.h"
 #include "ut_wctomb.h"
 #include "ut_stack.h"
@@ -77,7 +77,7 @@ protected:
 	void				_openSpan(PT_AttrPropIndex apiSpan,const PP_AttrProp * pSpanAP = nullptr );
 	void				_openTag(const char * szPrefix, const char * szSuffix,
 								 bool bNewLineAfter, PT_AttrPropIndex api);
-	void				_outputData(const UT_UCSChar * p, UT_uint32 length, PT_DocPosition pos, bool bIgnorePos);
+	void				_outputData(const UT_UCS4Char * p, UT_uint32 length, PT_DocPosition pos, bool bIgnorePos);
 	void                _writeTOC(PT_AttrPropIndex api);
 	bool                _isListBlock(void) const { return m_bIsListBlock;}
 	bool                _isTabEaten(void) const { return m_bIsTabEaten;}
@@ -98,7 +98,7 @@ protected:
 	void				_writeEmbedData(const std::string & Name,
                                                          const UT_ConstByteBufPtr & pbb,
                                                          const std::string & mime_type);
-	const UT_UCSChar *  _getFieldValue(void);
+	const UT_UCS4Char *  _getFieldValue(void);
 	void                _writeFieldTrailer(void);
 	void                _close_cell(void);
 	void                _close_table(void);
@@ -166,8 +166,3 @@ protected:
 
     std::list< std::string > m_rdfAnchorStack;
 };
-
-#endif /* IE_EXP_RTF_LISTENERWRITEDOC */
-
-
-

@@ -104,8 +104,8 @@ protected:
 	void				_closeCell(void);
 	void				_closeRow(void);
 
-	void				_outputData(const UT_UCSChar * p, UT_uint32 length);
-	void				_outputDataUnchecked(const UT_UCSChar * p, UT_uint32 length);
+	void				_outputData(const UT_UCS4Char * p, UT_uint32 length);
+	void				_outputDataUnchecked(const UT_UCS4Char * p, UT_uint32 length);
 	void				_handleDataItems(void);
 	void				_handleBookmark(PT_AttrPropIndex api);
 	void				_handleEmbedded(PT_AttrPropIndex api);

@@ -3,8 +3,7 @@
 // A simple string class for use where templates are not
 // allowed.
 //
-#ifndef UT_STRING_CLASS_H
-#define UT_STRING_CLASS_H
+#pragma once
 
 //
 // Copyright (C) 2001 Mike Nordell <tamlin@algonet.se>
@@ -39,13 +38,7 @@
 
 #include <string>
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 #include "ut_string.h"
 #include "ut_stringbuf.h"
 #include "ut_bytebuf.h"
@@ -182,7 +175,7 @@ public:
 
 	UT_UTF8String (const UT_UTF8String & rhs);
 	UT_UTF8String (const UT_UCS4String & rhs);
-	UT_UTF8String (const UT_UCSChar * sz, size_t n = 0 /* 0 == zero-terminate */);
+	UT_UTF8String (const UT_UCS4Char * sz, size_t n = 0 /* 0 == zero-terminate */);
 
 	~UT_UTF8String ();
 
@@ -393,7 +386,3 @@ bool operator!=(const UT_UCS4Char *  s1, const UT_UCS4String& s2);
 bool operator<(const UT_UCS4String& s1, const UT_UCS4String& s2);
 
 UT_UCS4String operator+(const UT_UCS4String& s1, const UT_UCS4String& s2);
-
-
-
-#endif	// UT_STRING_CLASS_H

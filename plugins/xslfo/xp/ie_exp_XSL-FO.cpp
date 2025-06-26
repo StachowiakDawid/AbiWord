@@ -1744,10 +1744,10 @@ void s_XSL_FO_Listener::_popListToDepth(UT_sint32 depth)
 /*****************************************************************/
 /*****************************************************************/
 
-void s_XSL_FO_Listener::_outputData(const UT_UCSChar * data, UT_uint32 length)
+void s_XSL_FO_Listener::_outputData(const UT_UCS4Char * data, UT_uint32 length)
 {
 	UT_UTF8String sBuf;
-	const UT_UCSChar * pData;
+	const UT_UCS4Char * pData;
 
 	UT_ASSERT(sizeof(UT_Byte) == sizeof(char));
 

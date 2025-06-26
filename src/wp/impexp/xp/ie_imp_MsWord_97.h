@@ -205,7 +205,7 @@ private:
 	bool	   _handleFieldEnd (char * command, UT_uint32 iPos);
 	int 	   _fieldProc (wvParseStruct *ps, UT_uint16 eachchar,
 						   UT_Byte chartype, UT_uint16 lid);
-	void	   _appendChar (UT_UCSChar ch);
+	void	   _appendChar (UT_UCS4Char ch);
 	void	   _flush ();
 
 	void		_table_open();
@@ -232,10 +232,10 @@ private:
 	bool        _ensureInBlock();
 	bool        _appendStrux(PTStruxType pts, const PP_PropertyVector & attributes);
 	bool        _appendObject(PTObjectType pto, const PP_PropertyVector & attributes);
-	bool        _appendSpan(const UT_UCSChar * p, UT_uint32 length);
+	bool        _appendSpan(const UT_UCS4Char * p, UT_uint32 length);
 	bool        _appendStruxHdrFtr(PTStruxType pts, const PP_PropertyVector & attributes);
 	bool        _appendObjectHdrFtr(PTObjectType pto, const PP_PropertyVector & attributes);
-	bool        _appendSpanHdrFtr(const UT_UCSChar * p, UT_uint32 length);
+	bool        _appendSpanHdrFtr(const UT_UCS4Char * p, UT_uint32 length);
 	bool		_appendFmt(const PP_PropertyVector & attributes);
 	void        _handleHeaders(const wvParseStruct *ps);
 	bool        _handleHeadersText(UT_uint32 iPos, bool bDoBlockIns);

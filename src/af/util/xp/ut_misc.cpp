@@ -200,7 +200,7 @@ bool UT_addOrReplacePathSuffix(std::string & sPath, const char * sSuffix)
 }
  
 
-bool UT_isWordDelimiter(UT_UCSChar currentChar, UT_UCSChar followChar, UT_UCSChar prevChar)
+bool UT_isWordDelimiter(UT_UCS4Char currentChar, UT_UCS4Char followChar, UT_UCS4Char prevChar)
 {
 	// fast track Ascii letters
 	if('a' <= currentChar && currentChar <= 'z')

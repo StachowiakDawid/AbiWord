@@ -36,7 +36,7 @@ class ABI_EXPORT XAP_Insert_symbol_listener
 		virtual ~XAP_Insert_symbol_listener() {}
 
 		virtual void setView( AV_View * /*pJustPocussedView*/) {};
-		virtual bool insertSymbol(UT_UCSChar Char, const char *p_font_name) = 0;
+		virtual bool insertSymbol(UT_UCS4Char Char, const char *p_font_name) = 0;
 	};
 
 class ABI_EXPORT XAP_Dialog_Insert_Symbol : public XAP_Dialog_Modeless
@@ -61,7 +61,7 @@ class ABI_EXPORT XAP_Dialog_Insert_Symbol : public XAP_Dialog_Modeless
 
         void             ConstructWindowName(void);
 	// read these back
-	UT_UCSChar	     getInsertedSymbol(void);
+	UT_UCS4Char	     getInsertedSymbol(void);
 	char *     getInsertedFont(void);
 	enum tAnswer: uint8_t { a_OK, a_CANCEL };
 	XAP_Dialog_Insert_Symbol::tAnswer    getAnswer(void) const;
@@ -79,13 +79,13 @@ class ABI_EXPORT XAP_Dialog_Insert_Symbol : public XAP_Dialog_Modeless
 							   UT_uint32 height);
 
 	// handle the XP-job of drawing our symbol onto the preview area.
-	void   _updateDrawSymbolarea( UT_UCSChar c, UT_UCSChar p);
+	void   _updateDrawSymbolarea( UT_UCS4Char c, UT_UCS4Char p);
 
 	// handle the XP-job of constructing the preview area
 	void   _createSymbolareaFromGC(GR_Graphics * gc, UT_uint32 width,
 								   UT_uint32 height);
 	void   _onInsertButton();
-	void   _insert(UT_UCSChar c, const char* symfont);
+	void   _insert(UT_UCS4Char c, const char* symfont);
 
 	// This function returns the current Symbol Map class
 	XAP_Draw_Symbol *  _getCurrentSymbolMap();
@@ -98,7 +98,7 @@ class ABI_EXPORT XAP_Dialog_Insert_Symbol : public XAP_Dialog_Modeless
 	char			   m_FontName[50];
         char                       m_WindowName[100];
 	// This is character selected.
-	UT_UCSChar	       m_Inserted_Symbol;
+	UT_UCS4Char	       m_Inserted_Symbol;
 
 	XAP_Dialog_Insert_Symbol::tAnswer   m_answer;
 

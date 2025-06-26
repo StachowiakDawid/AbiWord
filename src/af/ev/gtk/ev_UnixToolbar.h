@@ -19,8 +19,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef EV_UNIXTOOLBAR_H
-#define EV_UNIXTOOLBAR_H
+#pragma once
 
 #include <gtk/gtk.h>
 #include "ut_types.h"
@@ -48,7 +47,7 @@ public:
 
 	virtual ~EV_UnixToolbar(void);
 
-	bool toolbarEvent(_wd * wd, const UT_UCSChar * pData, UT_uint32 dataLength);
+	bool toolbarEvent(_wd * wd, const UT_UCS4Char * pData, UT_uint32 dataLength);
 	virtual bool synthesize(void) override;
 	bool bindListenerToView(AV_View * pView);
 	virtual bool refreshToolbar(AV_View * pView, AV_ChangeMask mask);
@@ -82,5 +81,3 @@ protected:
 	GtkSizeGroup *					m_wVSizeGroup;
 	UT_GenericVector<_wd*>			m_vecToolbarWidgets;
 };
-
-#endif /* EV_UNIXTOOLBAR_H */

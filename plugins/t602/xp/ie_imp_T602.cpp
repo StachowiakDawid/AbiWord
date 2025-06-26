@@ -445,7 +445,7 @@ UT_Error IE_Imp_T602::_write_fh(UT_String & fh, UT_uint32 id, bool hea)
 
 UT_Error IE_Imp_T602::_ins(UT_uint16 c)
 {
-  UT_UCSChar ch = static_cast<UT_UCSChar >(c);
+  UT_UCS4Char ch = static_cast<UT_UCS4Char >(c);
   X_CheckDocError(appendSpan(&ch,1))
   return UT_OK;
 }

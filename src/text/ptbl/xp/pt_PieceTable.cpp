@@ -485,7 +485,7 @@ bool pt_PieceTable::getSpanAttrProp(pf_Frag_Strux* sdh, UT_uint32 offset, bool b
 // I will leave the code here for now to aid in debugging any problems
 // with the new iterator (should there be any, that is) Tomas, Nov 15, 2003
 bool pt_PieceTable::getSpanPtr(pf_Frag_Strux* sdh, UT_uint32 offset,
-								  const UT_UCSChar ** ppSpan, UT_uint32 * pLength) const
+								  const UT_UCS4Char ** ppSpan, UT_uint32 * pLength) const
 {
 	// note: offset zero refers to the strux.  the first character is at
 	// note: (0 + pfsBlock->getLength()).
@@ -537,7 +537,7 @@ bool pt_PieceTable::getSpanPtr(pf_Frag_Strux* sdh, UT_uint32 offset,
 				return false;
 			}
 			pf_Frag_Text * pfText = static_cast<pf_Frag_Text *> (pfTemp);
-			const UT_UCSChar * p = getPointer(pfText->getBufIndex());
+			const UT_UCS4Char * p = getPointer(pfText->getBufIndex());
 			UT_uint32 delta = offset - cumOffset;
 			*ppSpan = p + delta;
 			*pLength = pfText->getLength() - delta;
@@ -651,7 +651,7 @@ bool pt_PieceTable::getBlockBuf(pf_Frag_Strux* sdh,
         case pf_Frag::PFT_Text:
         {
             pf_Frag_Text * pft = static_cast<pf_Frag_Text *>(pfTemp);
-            const UT_UCSChar * pSpan = getPointer(pft->getBufIndex());
+            const UT_UCS4Char * pSpan = getPointer(pft->getBufIndex());
             UT_uint32 length = pft->getLength();
 
             bool bAppended;
@@ -692,7 +692,7 @@ bool pt_PieceTable::getBlockBuf(pf_Frag_Strux* sdh,
             // TODO the pgb.  **or** investigate the cost of this
             // TODO g_try_malloc and what happens when it fails....
 
-            UT_UCSChar* pSpaces = new UT_UCSChar[length];
+            UT_UCS4Char* pSpaces = new UT_UCS4Char[length];
             for (UT_uint32 i=0; i<length; i++)
             {
                 pSpaces[i] = UCS_ABI_OBJECT;

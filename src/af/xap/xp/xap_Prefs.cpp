@@ -1246,7 +1246,7 @@ bool XAP_Prefs::savePrefsFile(void)
 					fprintf(fp, "\t\t%s=\"", entry.first.c_str());
 					for (UT_uint32 udex=0; udex<length; ++udex)
 					{
-						UT_UCSChar ch = *(gb.getPointer(udex));
+						UT_UCS4Char ch = *(gb.getPointer(udex));
 						switch (ch)
 						{
 						case '&':   fputs("&amp;", fp);  break;
@@ -1296,7 +1296,7 @@ bool XAP_Prefs::savePrefsFile(void)
 					fprintf(fp, "\t\t%s=\"", entry.first.c_str());
 					for (UT_uint32 udex=0; udex<length; ++udex)
 					{
-						UT_UCSChar ch = *(gb.getPointer(udex));
+						UT_UCS4Char ch = *(gb.getPointer(udex));
 						switch (ch)
 						{
 						case '&':   fputs("&amp;", fp);  break;

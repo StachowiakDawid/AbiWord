@@ -185,7 +185,7 @@ public:
 	void		justify(UT_sint32 iAmount);
 	UT_uint32	countJustificationPoints(void);
 
-	bool		isLastCharacter(UT_UCSChar Character) const;
+	bool		isLastCharacter(UT_UCS4Char Character) const;
 
 	bool		findNextTabStop(UT_sint32 iStartX, UT_sint32& iPosition, eTabType& iType, eTabLeader& iLeader );
 	bool		findPrevTabStop(UT_sint32 iStartX, UT_sint32& iPosition, eTabType& iType, eTabLeader& iLeader );

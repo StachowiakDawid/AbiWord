@@ -38,7 +38,7 @@ fp_FieldTOCNumRun::fp_FieldTOCNumRun(fl_BlockLayout* pBL,UT_uint32 iOffsetFirst,
 
 bool fp_FieldTOCNumRun::calculateValue(void)
 {
-	UT_UCSChar sz_ucs_FieldValue[FPFIELD_MAX_LENGTH + 1];
+	UT_UCS4Char sz_ucs_FieldValue[FPFIELD_MAX_LENGTH + 1];
 //
 // First Find page number.
 //
@@ -49,7 +49,7 @@ bool fp_FieldTOCNumRun::calculateValue(void)
 	fl_BlockLayout * pBlockInDoc = pLayout->findBlockAtPosition(pos);
 	if(pBlockInDoc == nullptr)
 	{
-		sz_ucs_FieldValue[0] = static_cast<UT_UCSChar>(' ');
+		sz_ucs_FieldValue[0] = static_cast<UT_UCS4Char>(' ');
 		sz_ucs_FieldValue[1] = 0;
 		return _setValue(sz_ucs_FieldValue);
 	}
@@ -73,7 +73,7 @@ bool fp_FieldTOCNumRun::calculateValue(void)
 	}
 	if(pLine == nullptr)
 	{
-		sz_ucs_FieldValue[0] = static_cast<UT_UCSChar>(' ');
+		sz_ucs_FieldValue[0] = static_cast<UT_UCS4Char>(' ');
 		sz_ucs_FieldValue[1] = 0;
 		return _setValue(sz_ucs_FieldValue);
 	}
@@ -93,7 +93,7 @@ bool fp_FieldTOCNumRun::calculateValue(void)
 	    b_hasSetFieldPageNumber = true;
 	    if (iPage < 0)
 	    {
-		sz_ucs_FieldValue[0] = static_cast<UT_UCSChar>(' ');
+		sz_ucs_FieldValue[0] = static_cast<UT_UCS4Char>(' ');
 		sz_ucs_FieldValue[1] = 0;
 		return _setValue(sz_ucs_FieldValue);
 	    }
@@ -111,10 +111,10 @@ bool fp_FieldTOCNumRun::calculateValue(void)
 	}
 	bool bStop = false;
 	UT_sint32 i = 0;
-	sz_ucs_FieldValue[0] = static_cast<UT_UCSChar>(' ');
+	sz_ucs_FieldValue[0] = static_cast<UT_UCS4Char>(' ');
 	for(i=1; (i<FPFIELD_MAX_LENGTH) && !bStop; i++)
 	{
-		sz_ucs_FieldValue[i] = static_cast<UT_UCSChar>(*psz);
+		sz_ucs_FieldValue[i] = static_cast<UT_UCS4Char>(*psz);
 		if(*psz == 0)
 		{
 			bStop = true;
@@ -152,7 +152,7 @@ fp_FieldTOCListLabelRun::fp_FieldTOCListLabelRun(fl_BlockLayout* pBL,UT_uint32 i
 
 bool fp_FieldTOCListLabelRun::calculateValue(void)
 {
-	UT_UCSChar sz_ucs_FieldValue[FPFIELD_MAX_LENGTH + 1];
+	UT_UCS4Char sz_ucs_FieldValue[FPFIELD_MAX_LENGTH + 1];
 //
 // First get owning TOC.
 //
@@ -169,7 +169,7 @@ bool fp_FieldTOCListLabelRun::calculateValue(void)
 	bool bStop = false;
 	for(i=0; (i<FPFIELD_MAX_LENGTH) && !bStop; i++)
 	{
-		sz_ucs_FieldValue[i] = static_cast<UT_UCSChar>(str[i]);
+		sz_ucs_FieldValue[i] = static_cast<UT_UCS4Char>(str[i]);
 		if(str[i] == 0)
 		{
 			bStop = true;
@@ -204,7 +204,7 @@ fp_FieldTOCHeadingRun::fp_FieldTOCHeadingRun(fl_BlockLayout* pBL,UT_uint32 iOffs
 
 bool fp_FieldTOCHeadingRun::calculateValue(void)
 {
-	UT_UCSChar sz_ucs_FieldValue[FPFIELD_MAX_LENGTH + 1];
+	UT_UCS4Char sz_ucs_FieldValue[FPFIELD_MAX_LENGTH + 1];
 //
 // First get owning TOC.
 //
@@ -222,7 +222,7 @@ bool fp_FieldTOCHeadingRun::calculateValue(void)
 	
 	for(i=0; (i<FPFIELD_MAX_LENGTH) && !bStop; i++)
 	{
-		sz_ucs_FieldValue[i] = static_cast<UT_UCSChar>(str[i]);
+		sz_ucs_FieldValue[i] = static_cast<UT_UCS4Char>(str[i]);
 		if(str[i] == 0)
 		{
 			bStop = true;

@@ -1471,7 +1471,7 @@ void IE_Exp_RTF::_write_parafmt(const PP_AttrProp * pSpanAP, const PP_AttrProp *
 		}
 		else
 		{
-			const UT_UCSChar * lab = pAuto->getLabel(sdh);
+			const UT_UCS4Char * lab = pAuto->getLabel(sdh);
 
 			if(lab != nullptr)
 			{
@@ -2769,7 +2769,7 @@ void IE_Exp_RTF::_output_MultiLevelRTF(const ie_exp_RTF_MsWord97ListMulti& pMult
 /*!
  * This method outputs the RTF defintion of the list pointed to by pAuto
  */
-void IE_Exp_RTF::_output_LevelText(const fl_AutoNumConstPtr & pAuto, UT_uint32 iLevel, UT_UCSChar bulletsym)
+void IE_Exp_RTF::_output_LevelText(const fl_AutoNumConstPtr & pAuto, UT_uint32 iLevel, UT_UCS4Char bulletsym)
 {
 	UT_String LevelText;
 	UT_String LevelNumbers;
@@ -2961,7 +2961,7 @@ void IE_Exp_RTF::_output_ListRTF(const fl_AutoNumConstPtr & pAuto, UT_uint32 iLe
 {
 // List Type
 	UT_sint32 Param = 0;
-	UT_UCSChar bulletsym=0;
+	UT_UCS4Char bulletsym=0;
 	FL_ListType lType = NUMBERED_LIST;
 	if(pAuto != nullptr)
 	{

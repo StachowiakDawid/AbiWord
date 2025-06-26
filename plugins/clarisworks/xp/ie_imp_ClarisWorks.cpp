@@ -279,7 +279,7 @@ UT_Error IE_Imp_ClarisWorks::_parseFile(GsfInput * fp)
            bEmptyFile = false;
            if (gbBlock.getLength() > 0)
            {
-               X_ReturnNoMemIfError(appendSpan(reinterpret_cast<const UT_UCSChar *>(gbBlock.getPointer(0)), gbBlock.getLength()));
+               X_ReturnNoMemIfError(appendSpan(reinterpret_cast<const UT_UCS4Char *>(gbBlock.getPointer(0)), gbBlock.getLength()));
                gbBlock.truncate(0);
            }
            break;
@@ -292,7 +292,7 @@ UT_Error IE_Imp_ClarisWorks::_parseFile(GsfInput * fp)
            
            // TODO consider scanning for UTF8...
            
-           UT_GrowBufElement gbe = static_cast<UT_GrowBufElement>(static_cast<UT_UCSChar>(c));
+           UT_GrowBufElement gbe = static_cast<UT_GrowBufElement>(static_cast<UT_UCS4Char>(c));
            X_ReturnNoMemIfError(gbBlock.ins(gbBlock.getLength(),&gbe,1));
            break;
        }
@@ -305,7 +305,7 @@ UT_Error IE_Imp_ClarisWorks::_parseFile(GsfInput * fp)
        // create a paragraph and emit the text now.
        X_ReturnNoMemIfError(appendStrux(PTX_Block, PP_NOPROPS));
        if (gbBlock.getLength() > 0)
-           X_ReturnNoMemIfError(appendSpan(reinterpret_cast<const UT_UCSChar *>(gbBlock.getPointer(0)), gbBlock.getLength()));
+           X_ReturnNoMemIfError(appendSpan(reinterpret_cast<const UT_UCS4Char *>(gbBlock.getPointer(0)), gbBlock.getLength()));
    }
    
    

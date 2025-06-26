@@ -19,8 +19,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef IE_IMP_ISCII_H
-#define IE_IMP_ISCII_H
+#pragma once
 
 #include "ie_imp_Text.h"
 
@@ -39,7 +38,7 @@ public:
 	ImportISCIIStreamFile(GsfInput *pFile);
 	~ImportISCIIStreamFile() {}
 protected:
-	virtual bool getRawChar(UT_UCSChar &b) override;
+	virtual bool getRawChar(UT_UCS4Char &b) override;
 private:
 	unsigned char m_cLookAhead;
 	bool m_bNeedByte;
@@ -76,5 +75,3 @@ public:
 protected:
 	virtual UT_Error	_constructStream(ImportStream *& pStream, GsfInput * fp) override;
 };
-
-#endif /* IE_IMP_ISCII_H */

@@ -127,7 +127,7 @@ void IE_Imp_KWord_1::charData(const gchar *s, int len)
   X_EatIfAlreadyError();	// xml parser keeps running until buffer consumed
 
   UT_ASSERT(sizeof(gchar) == sizeof(UT_Byte));
-  UT_ASSERT(sizeof(gchar) != sizeof(UT_UCSChar));
+  UT_ASSERT(sizeof(gchar) != sizeof(UT_UCS4Char));
 
   if(!m_bInText)
     return;
@@ -727,7 +727,7 @@ void IE_Imp_KWord_1::_appendText()
 {
   if (m_szTextBuffer.size())
     {
-      if (!appendSpan(static_cast<const UT_UCSChar *>(m_szTextBuffer.ucs4_str()), m_szTextBuffer.size()))
+      if (!appendSpan(static_cast<const UT_UCS4Char *>(m_szTextBuffer.ucs4_str()), m_szTextBuffer.size()))
       {
         UT_DEBUGMSG(("Error appending text run\n"));
         return;

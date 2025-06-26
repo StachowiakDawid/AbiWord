@@ -17,17 +17,9 @@
  * 02110-1301 USA.
  */
 
+#pragma once
 
-#ifndef XAP_DRAW_SYMBOL_H
-#define XAP_DRAW_SYMBOL_H
-
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 #include "ut_misc.h"
 
 #include "xap_Preview.h"
@@ -58,16 +50,16 @@ public:
     // where all the Symbol-specific drawing happens
 
 	virtual void drawImmediate(const UT_Rect* clip = nullptr) override;
-	void						drawarea(UT_UCSChar c, UT_UCSChar p);
+	void						drawarea(UT_UCS4Char c, UT_UCS4Char p);
 
-	UT_UCSChar					calcSymbol(UT_uint32 x, UT_uint32 y);
-	UT_UCSChar                  calcSymbolFromCoords(UT_uint32 x, UT_uint32 y);
-	void						setCurrent(UT_UCSChar c);
-	UT_UCSChar					getCurrent() const
+	UT_UCS4Char					calcSymbol(UT_uint32 x, UT_uint32 y);
+	UT_UCS4Char                  calcSymbolFromCoords(UT_uint32 x, UT_uint32 y);
+	void						setCurrent(UT_UCS4Char c);
+	UT_UCS4Char					getCurrent() const
 	{ return m_CurrentSymbol; }
 
 	void onLeftButtonDown(UT_sint32 x, UT_sint32 y) override;
-	void						calculatePosition(UT_UCSChar c, UT_uint32 &x, UT_uint32 &y);
+	void						calculatePosition(UT_UCS4Char c, UT_uint32 &x, UT_uint32 &y);
 	virtual GR_Graphics* getGraphics(void) const override
 	{ return m_areagc; }
 
@@ -82,26 +74,11 @@ protected:
 	UT_sint32                   m_start_base;
 	UT_sint32		    m_start_nb_char;
 
-	UT_UCSChar					m_CurrentSymbol;
-	UT_UCSChar					m_PreviousSymbol;
+	UT_UCS4Char					m_CurrentSymbol;
+	UT_UCS4Char					m_PreviousSymbol;
 
 private:
 
 	UT_NumberVector				m_vCharSet;
 	std::string				m_stFont;
 };
-
-#endif /* XAP_Draw_Symbol_H */
-
-
-
-
-
-
-
-
-
-
-
-
-

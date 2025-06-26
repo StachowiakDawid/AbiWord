@@ -2624,7 +2624,7 @@ abi_widget_invoke_ex (AbiWidget * w, const char * mthdName,
 
 	// construct the call data
 	UT_UCS4String ucs4String = data ? UT_UTF8String(data).ucs4_str() : UT_UCS4String();
-	const UT_UCSChar* actualData = data ? ucs4String.ucs4_str() : nullptr;
+	const UT_UCS4Char* actualData = data ? ucs4String.ucs4_str() : nullptr;
 	EV_EditMethodCallData calldata(actualData, (actualData ? ucs4String.size() : 0));
 	calldata.m_xPos = x;
 	calldata.m_yPos = y;
@@ -2775,7 +2775,7 @@ abi_widget_set_current_page(AbiWidget * w, guint32 curpage)
 	UT_DEBUGMSG(("Telling the view to jump to page %u!\n", curpage));
 	
 	UT_UCS4String pageUCS4Str( UT_UTF8String_sprintf( "%u", curpage ).utf8_str(), 0 );
-	pView->gotoTarget( AP_JUMPTARGET_PAGE, (UT_UCSChar*) pageUCS4Str.ucs4_str() );
+	pView->gotoTarget( AP_JUMPTARGET_PAGE, (UT_UCS4Char*) pageUCS4Str.ucs4_str() );
 }
 
 extern "C" guint32

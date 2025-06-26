@@ -272,7 +272,7 @@ UT_Error OXML_Element_Paragraph::addToPT(PD_Document * pDocument)
 
 	if(pageBreak)
 	{
-		UT_UCSChar ucs = UCS_FF;
+		UT_UCS4Char ucs = UCS_FF;
 		ret = pDocument->appendSpan(&ucs, 1) ? UT_OK : UT_ERROR;
 		if(ret != UT_OK) 
 		{

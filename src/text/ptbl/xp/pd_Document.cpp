@@ -1292,7 +1292,7 @@ bool PD_Document::insertSpan( PT_DocPosition dpos,
  * If pAttrProp is set to nullptr, the text will be set to exactly
  * the properties of the style of the current paragraph.
  */
-bool PD_Document::insertSpan(PT_DocPosition dpos, const UT_UCSChar * pbuf,
+bool PD_Document::insertSpan(PT_DocPosition dpos, const UT_UCS4Char * pbuf,
 							 UT_uint32 length, PP_AttrProp *p_AttrProp,
 							 UT_uint32 *insertedSpanLength)
 {
@@ -2100,7 +2100,7 @@ bool PD_Document::appendFmt(const PP_PropertyVector & vecAttributes)
 	return m_pPieceTable->appendFmt(vecAttributes);
 }
 
-bool PD_Document::appendSpan(const UT_UCSChar * pbuf, UT_uint32 length)
+bool PD_Document::appendSpan(const UT_UCS4Char * pbuf, UT_uint32 length)
 {
 	UT_return_val_if_fail (m_pPieceTable, false);
 	checkForSuspect();
@@ -4661,7 +4661,7 @@ bool PD_Document::getAttrProp(PT_AttrPropIndex indexAP, const PP_AttrProp ** ppA
 	return m_pPieceTable->getAttrProp(indexAP,ppAP);
 }
 
-const UT_UCSChar * PD_Document::getPointer(PT_BufIndex bi) const
+const UT_UCS4Char * PD_Document::getPointer(PT_BufIndex bi) const
 {
 	// the pointer that we return is NOT a zero-terminated
 	// string.  the caller is responsible for knowing how
@@ -6631,7 +6631,7 @@ bool PD_Document::insertStruxBeforeFrag(pf_Frag * pF, PTStruxType pts,
 	return m_pPieceTable->insertStruxBeforeFrag(pF,pts,attributes,ppfs_ret);
 }
 
-bool PD_Document::insertSpanBeforeFrag(pf_Frag * pF, const UT_UCSChar * pbuf, UT_uint32 length)
+bool PD_Document::insertSpanBeforeFrag(pf_Frag * pF, const UT_UCS4Char * pbuf, UT_uint32 length)
 {
 	UT_return_val_if_fail (m_pPieceTable, false);
 	if(pF->getType() == pf_Frag::PFT_Strux)

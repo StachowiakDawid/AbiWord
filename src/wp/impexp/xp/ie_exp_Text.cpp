@@ -399,14 +399,14 @@ void Text_Listener::_genBOM(void)
 void Text_Listener::_genLineBreak(void)
 {
 	char *pMB = static_cast<char *>(m_mbLineBreak);
-	const UT_UCSChar *pWC = nullptr;
+	const UT_UCS4Char *pWC = nullptr;
 	int mbLen = 0;
 
 	// TODO Old Mac should use "\r".  Mac OSX should Use U+2028 or U+2029.
 #ifdef _WIN32
-	static const UT_UCSChar wcLineBreak[3] = {'\r', '\n', 0};
+	static const UT_UCS4Char wcLineBreak[3] = {'\r', '\n', 0};
 #else
-	static const UT_UCSChar wcLineBreak[3] = {'\n', 0, 0};
+	static const UT_UCS4Char wcLineBreak[3] = {'\n', 0, 0};
 #endif
 
 	for (pWC = wcLineBreak; *pWC; ++pWC)
@@ -431,10 +431,10 @@ void Text_Listener::_genLineBreak(void)
  \param data Buffer to output
  \param length Size of buffer
  */
-void Text_Listener::_outputData(const UT_UCSChar * data, UT_uint32 length)
+void Text_Listener::_outputData(const UT_UCS4Char * data, UT_uint32 length)
 {
 	UT_ByteBuf bBuf;
-	const UT_UCSChar * pData;
+	const UT_UCS4Char * pData;
 
 	int mbLen;
 	char pC[MY_MB_LEN_MAX];

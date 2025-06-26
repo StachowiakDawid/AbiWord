@@ -50,8 +50,8 @@ void XAP_Log::log(const std::string &method_name, AV_View * /*pAV_View*/, EV_Edi
 		if (pCallData->m_pData != nullptr)
 		{
 			fprintf(m_pOutput, ">");
-			UT_UCSChar *orig_data;
-			UT_UCSChar *data = orig_data = pCallData->m_pData;
+			UT_UCS4Char *orig_data;
+			UT_UCS4Char *data = orig_data = pCallData->m_pData;
 			UT_uint32 data_length = pCallData->m_dataLength;
 			gchar outbuf[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 			g_unichar_to_utf8(*data++, outbuf);
@@ -73,7 +73,7 @@ void XAP_Log::log(const std::string &method_name, AV_View * /*pAV_View*/, EV_Edi
 	else
 		fprintf(m_pOutput, "/>\n");
 /*
-	UT_UCSChar *		m_pData;
+	UT_UCS4Char *		m_pData;
 	UT_uint32			m_dataLength;
 	bool				m_bAllocatedData;
 	UT_sint32			m_xPos;

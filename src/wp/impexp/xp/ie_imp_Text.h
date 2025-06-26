@@ -36,20 +36,20 @@ class ABI_EXPORT ImportStream
 	ImportStream();
 	virtual ~ImportStream();
 	bool init(const char *szEncoding);
-	bool getChar(UT_UCSChar &b);
-	UT_UCSChar peekChar() { return m_ucsLookAhead; }
+	bool getChar(UT_UCS4Char &b);
+	UT_UCS4Char peekChar() { return m_ucsLookAhead; }
  protected:
 	virtual bool _getByte(unsigned char &b) = 0;
-	virtual bool getRawChar(UT_UCSChar &b);
+	virtual bool getRawChar(UT_UCS4Char &b);
 
 	bool _get_eof () const { return m_bEOF; }
 	void _set_eof (bool b) { m_bEOF = b; }
-	UT_UCSChar _lookAhead () const { return m_ucsLookAhead; }
-	void _lookAhead ( UT_UCSChar c ) { m_ucsLookAhead = c; }
+	UT_UCS4Char _lookAhead () const { return m_ucsLookAhead; }
+	void _lookAhead ( UT_UCS4Char c ) { m_ucsLookAhead = c; }
 
  private:
 	UT_UCS4_mbtowc m_Mbtowc;
-	UT_UCSChar m_ucsLookAhead;
+	UT_UCS4Char m_ucsLookAhead;
 	bool m_bEOF;
 	bool m_bRaw;
 };

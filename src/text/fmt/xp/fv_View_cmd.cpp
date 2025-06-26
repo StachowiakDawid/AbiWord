@@ -906,7 +906,7 @@ bool FV_View::cmdTableToText(PT_DocPosition posSource,UT_sint32 iSepType)
 		}
 		if (buf.getPointer(0))
 		{
-			cmdCharInsert(reinterpret_cast<UT_UCSChar *>(buf.getPointer(0)),buf.getLength());
+			cmdCharInsert(reinterpret_cast<UT_UCS4Char *>(buf.getPointer(0)),buf.getLength());
 		}
 	  }
 	  if (i < numRows - 1)
@@ -2986,7 +2986,7 @@ FV_View::cmdCharInsert(const std::string& s, bool bForce)
 }
 
 
-bool FV_View::cmdCharInsert(const UT_UCSChar * text, UT_uint32 count, bool bForce)
+bool FV_View::cmdCharInsert(const UT_UCS4Char * text, UT_uint32 count, bool bForce)
 {
 	STD_DOUBLE_BUFFERING_FOR_THIS_FUNCTION
 
@@ -5875,7 +5875,7 @@ void FV_View::cmdContextSuggest(UT_uint32 ndx, fl_BlockLayout * ppBL,
 	UT_ASSERT(pPOB);
 
 	// grab the suggestion
-	UT_UCSChar * replace = _lookupSuggestion(pBL, pPOB, ndx);
+	UT_UCS4Char * replace = _lookupSuggestion(pBL, pPOB, ndx);
 
 	if (!replace)
 		return;
@@ -5886,7 +5886,7 @@ void FV_View::cmdContextSuggest(UT_uint32 ndx, fl_BlockLayout * ppBL,
 	moveInsPtTo(static_cast<PT_DocPosition>(pBL->getPosition() + pPOB->getOffset()));
 	extSelHorizontal(true, pPOB->getPTLength());
 
-	UT_UCSChar * selection;
+	UT_UCS4Char * selection;
 	getSelectionText(selection);
 	getDictForSelection ()->correctWord (selection, UT_UCS4_strlen (selection),
 										 replace, UT_UCS4_strlen (replace));
@@ -5917,14 +5917,14 @@ void FV_View::cmdContextIgnoreAll(void)
 					   __FILE__, __LINE__));
 	}
 
-	const UT_UCSChar * pBuf;
+	const UT_UCS4Char * pBuf;
 	UT_sint32 iLength, iPTLength, iBlockPos;
 
 	fl_BlockSpellIterator BSI(pBL, pPOB->getOffset());
 	BSI.nextWordForSpellChecking(pBuf, iLength, iBlockPos, iPTLength);
 	
 	// make the change
-	getDictForSelection ()->ignoreWord ((const UT_UCSChar *)pBuf, (size_t)iLength);
+	getDictForSelection ()->ignoreWord ((const UT_UCS4Char *)pBuf, (size_t)iLength);
 	{
 		// remove the squiggles, too
 		fl_DocSectionLayout * pSL = m_pLayout->getFirstSection();
@@ -5964,7 +5964,7 @@ void FV_View::cmdContextAdd(void)
 					   __FILE__, __LINE__));
 	}
 
-	const UT_UCSChar * pBuf;
+	const UT_UCS4Char * pBuf;
 	UT_sint32 iLength, iPTLength, iBlockPos;
 
 	fl_BlockSpellIterator BSI(pBL, pPOB->getOffset());

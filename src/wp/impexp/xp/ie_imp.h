@@ -204,7 +204,7 @@ public:
 
 	virtual bool appendStrux (PTStruxType pts, const PP_PropertyVector & attributes);
 	virtual bool appendStruxFmt(pf_Frag_Strux * pfs, const PP_PropertyVector & attributes);
-	virtual bool appendSpan (const UT_UCSChar * p, UT_uint32 length);
+	virtual bool appendSpan (const UT_UCS4Char * p, UT_uint32 length);
 	virtual bool appendSpan ( const std::string& s );
 	virtual bool appendObject (PTObjectType pto,
                                const PP_PropertyVector & attribs,

@@ -2823,7 +2823,7 @@ bool IE_Imp_RTF::StartNewSection()
 // add a new character.  Characters are actually cached and
 // inserted into the document in batches - see FlushStoredChars
 //
-bool IE_Imp_RTF::AddChar(UT_UCSChar ch)
+bool IE_Imp_RTF::AddChar(UT_UCS4Char ch)
 {
 	if(!m_gbBlock.ins(m_gbBlock.getLength(), reinterpret_cast<UT_GrowBufElement*>(&ch), 1))
 		return false;
@@ -3042,7 +3042,7 @@ UT_sint32 IE_Imp_RTF::GetNthTableBgColour(UT_sint32 colNum)
 
 // Process a single character from the RTF stream
 //
-bool IE_Imp_RTF::ParseChar(UT_UCSChar ch,bool no_convert)
+bool IE_Imp_RTF::ParseChar(UT_UCS4Char ch,bool no_convert)
 {
     // Have we reached the end of the binary skip?
 	if (m_currentRTFState.m_internalState == RTFStateStore::risBin  && --m_cbBin <= 0)
@@ -5617,11 +5617,11 @@ bool IE_Imp_RTF::TranslateKeywordID(RTF_KEYWORD_ID keywordID,
 		{
 			buf += (UT_UCS4Char) param;
 			buf -= 0xDC00;
-			bResult = ParseChar(static_cast<UT_UCSChar>(buf));
+			bResult = ParseChar(static_cast<UT_UCS4Char>(buf));
 			buf = 0x10000;
 		}
 		else
-			bResult = ParseChar(static_cast<UT_UCSChar>(param));
+			bResult = ParseChar(static_cast<UT_UCS4Char>(param));
 		m_currentRTFState.m_unicodeInAlternate = m_currentRTFState.m_unicodeAlternateSkipCount;
 		return bResult;
 	}
@@ -7600,7 +7600,7 @@ bool IE_Imp_RTF::ApplyParagraphAttributes(bool bDontInsert)
 				fielddef.push_back("text-decoration:none");
 			}
 			bret =   getDoc()->appendObject(PTO_Field,fielddef);
-			UT_UCSChar cTab = UCS_TAB;
+			UT_UCS4Char cTab = UCS_TAB;
 //
 // Put the tab back in.
 //
@@ -7647,7 +7647,7 @@ bool IE_Imp_RTF::ApplyParagraphAttributes(bool bDontInsert)
 			//
 			// Put the tab back in.
 			//
-			UT_UCSChar cTab = UCS_TAB;
+			UT_UCS4Char cTab = UCS_TAB;
 			getDoc()->insertSpan(m_dposPaste,&cTab,1);
 			m_newParaFlagged = false;
 			m_bSectionHasPara = true;

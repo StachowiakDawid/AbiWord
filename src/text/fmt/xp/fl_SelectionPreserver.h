@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef FL_SELECTION_PRESERVER_H
-#define FL_SELECTION_PRESERVER_H
+#pragma once
 
 #include "pt_Types.h"
 
@@ -31,7 +30,7 @@ public:
 	explicit FL_SelectionPreserver (FV_View * pView);
 	~FL_SelectionPreserver ();
 
-	bool cmdCharInsert(const UT_UCSChar * text, UT_uint32 count, bool bForce = false);
+	bool cmdCharInsert(const UT_UCS4Char * text, UT_uint32 count, bool bForce = false);
 private:
 	FL_SelectionPreserver ();
 	FL_SelectionPreserver (const FL_SelectionPreserver & other);
@@ -41,5 +40,3 @@ private:
 	bool m_bHadSelection;
 	PD_DocumentRange m_docRange;
 };
-
-#endif /* FL_SELECTION_PRESERVER_H */

@@ -53,7 +53,7 @@ ImportISCIIStreamFile::ImportISCIIStreamFile(GsfInput *pFile)
 
  Get the next UCS character, converting from file's encoding
  */
-bool ImportISCIIStreamFile::getRawChar(UT_UCSChar &ucs)
+bool ImportISCIIStreamFile::getRawChar(UT_UCS4Char &ucs)
 {
 	UT_UCS4Char wc = 0;
 	unsigned char c;

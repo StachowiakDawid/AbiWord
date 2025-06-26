@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef EV_EDITMETHOD_H
-#define EV_EDITMETHOD_H
+#pragma once
 
 #include "ut_types.h"
 #include "ut_vector.h"
@@ -80,7 +79,7 @@ class ABI_EXPORT EV_EditMethodCallData
 {
 public:
 	EV_EditMethodCallData();
-	EV_EditMethodCallData(const UT_UCSChar * pData, UT_uint32 dataLength);
+	EV_EditMethodCallData(const UT_UCS4Char * pData, UT_uint32 dataLength);
 	EV_EditMethodCallData(const char * pChar, UT_uint32 dataLength);
 	EV_EditMethodCallData(const UT_String& stScriptName);
 	~EV_EditMethodCallData();
@@ -90,7 +89,7 @@ public:
 	const UT_String&	getScriptName() const { return m_stScriptName; }
 
 // private:
-	UT_UCSChar *		m_pData;
+	UT_UCS4Char *		m_pData;
 	UT_uint32			m_dataLength;
 	bool				m_bAllocatedData;
 	UT_sint32			m_xPos;
@@ -171,11 +170,9 @@ ABI_EXPORT bool ev_EditMethod_invoke (const EV_EditMethod * pEM, const UT_UCS4St
 ABI_EXPORT bool ev_EditMethod_invoke (const char * methodName, const UT_String & data);
 ABI_EXPORT bool ev_EditMethod_invoke (const char * methodName, const UT_UCS4String & data);
 ABI_EXPORT bool ev_EditMethod_invoke (const char * methodName, const char * data);
-ABI_EXPORT bool ev_EditMethod_invoke (const char * methodName, const UT_UCSChar * data);
+ABI_EXPORT bool ev_EditMethod_invoke (const char * methodName, const UT_UCS4Char * data);
 ABI_EXPORT bool ev_EditMethod_invoke (const UT_String& methodName, const UT_String & data);
 ABI_EXPORT bool ev_EditMethod_invoke (const UT_String& methodName, const UT_UCS4String & data);
 
 ABI_EXPORT EV_EditMethod* ev_EditMethod_lookup (const char * methodName);
 ABI_EXPORT EV_EditMethod* ev_EditMethod_lookup (const UT_String & methodName);
-
-#endif /* EV_EDITMETHOD_H */

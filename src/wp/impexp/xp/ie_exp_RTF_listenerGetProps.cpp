@@ -90,12 +90,12 @@ void s_RTF_ListenerGetProps::_openSpan(PT_AttrPropIndex apiSpan)
 	return;
 }
 
-void s_RTF_ListenerGetProps::_outputData(const UT_UCSChar * data, UT_uint32 length)
+void s_RTF_ListenerGetProps::_outputData(const UT_UCS4Char * data, UT_uint32 length)
 {
 	if (m_pie->m_bNeedUnicodeText)		/* we already have an answer */
 		return;
 	
-	const UT_UCSChar * pData;
+	const UT_UCS4Char * pData;
 	for (pData=data; (pData<data+length); pData++)
 	{
 		if (*pData > 0x00ff)

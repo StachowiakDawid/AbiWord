@@ -156,9 +156,9 @@ FV_View * AP_Dialog_Replace::getFvView(void)
 	return static_cast<FV_View *>(getView());
 }
 
-void AP_Dialog_Replace::setFindString(const UT_UCSChar * string)
+void AP_Dialog_Replace::setFindString(const UT_UCS4Char * string)
 {
-	UT_UCSChar *findString = getFvView()->findGetFindString();  // caller must FREEP
+	UT_UCS4Char *findString = getFvView()->findGetFindString();  // caller must FREEP
 	if (string && findString && UT_UCS4_strcmp(string, findString) != 0)
 	{
 		// When search parameters change, clear any existing selection to
@@ -173,9 +173,9 @@ void AP_Dialog_Replace::setFindString(const UT_UCSChar * string)
 /*!
 	Caller must FREEP() return value
  */
-UT_UCSChar * AP_Dialog_Replace::getFindString(void)
+UT_UCS4Char * AP_Dialog_Replace::getFindString(void)
 {
-	UT_UCSChar * string = nullptr;
+	UT_UCS4Char * string = nullptr;
 	string = getFvView()->findGetFindString();
 	if (string)
 	{
@@ -190,17 +190,17 @@ UT_UCSChar * AP_Dialog_Replace::getFindString(void)
 	return nullptr;
 }
 
-void AP_Dialog_Replace::setReplaceString(const UT_UCSChar * string)
+void AP_Dialog_Replace::setReplaceString(const UT_UCS4Char * string)
 {
 	UT_DEBUGMSG(("AP_dlg_replace::setReplaceString()\n"));
 
 	getFvView()->findSetReplaceString(string);
 }
 
-UT_UCSChar * AP_Dialog_Replace::getReplaceString(void)
+UT_UCS4Char * AP_Dialog_Replace::getReplaceString(void)
 {
-	UT_UCSChar * string = nullptr;
-	UT_UCSChar * replaceString = getFvView()->findGetReplaceString();
+	UT_UCS4Char * string = nullptr;
+	UT_UCS4Char * replaceString = getFvView()->findGetReplaceString();
 	
 	if (replaceString)
 	{
@@ -283,8 +283,8 @@ bool AP_Dialog_Replace::findNext()
 {
 	
 	// manage the list of find strings
-	UT_UCSChar* findString = getFindString();
-	UT_UCSChar* replaceString = getReplaceString();
+	UT_UCS4Char* findString = getFindString();
+	UT_UCS4Char* replaceString = getReplaceString();
 
 	bool var1 = _manageList(&m_findList, findString);
 	bool var2 = _manageList(&m_replaceList, replaceString);
@@ -326,8 +326,8 @@ bool AP_Dialog_Replace::findReplace()
 {
 	
 	// manage the list of find strings
-	UT_UCSChar* findString = getFindString();
-	UT_UCSChar* replaceString = getReplaceString();
+	UT_UCS4Char* findString = getFindString();
+	UT_UCS4Char* replaceString = getReplaceString();
 
 	// manage the list of find & replace strings
 	bool var1 = _manageList(&m_findList, findString);
@@ -352,8 +352,8 @@ bool AP_Dialog_Replace::findReplaceAll()
 {
 
 	// manage the list of find & replace strings
-	UT_UCSChar* findString = getFindString();
-	UT_UCSChar* replaceString = getReplaceString();
+	UT_UCS4Char* findString = getFindString();
+	UT_UCS4Char* replaceString = getReplaceString();
 
 	bool var1 = _manageList(&m_findList, findString);
 	bool var2 = _manageList(&m_replaceList, replaceString);
@@ -390,7 +390,7 @@ void AP_Dialog_Replace::_messageFinishedReplace(UT_uint32 numReplaced)
 	getActiveFrame()->showMessageBox(message);
 }
 
-bool AP_Dialog_Replace::_manageList(UT_GenericVector<UT_UCS4Char*>* list, UT_UCSChar* string)
+bool AP_Dialog_Replace::_manageList(UT_GenericVector<UT_UCS4Char*>* list, UT_UCS4Char* string)
 {
 	UT_UCS4String us(string);
 	UT_sint32 i = 0;
@@ -408,7 +408,7 @@ bool AP_Dialog_Replace::_manageList(UT_GenericVector<UT_UCS4Char*>* list, UT_UCS
 		}
 	}
 
-	UT_UCSChar * clone = nullptr;
+	UT_UCS4Char * clone = nullptr;
 	if (UT_UCS4_cloneString(&clone, string))
 	{
 		if (!found)
@@ -419,7 +419,7 @@ bool AP_Dialog_Replace::_manageList(UT_GenericVector<UT_UCS4Char*>* list, UT_UCS
 			return true;
 		} else {
 			// g_free the old string
-			UT_UCSChar* temp = static_cast<UT_UCSChar*>(list->getNthItem(i));
+			UT_UCS4Char* temp = static_cast<UT_UCS4Char*>(list->getNthItem(i));
 			if (temp) FREEP(temp);
 			// remove the reference from the list
 			list->deleteNthItem(i);

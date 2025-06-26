@@ -122,9 +122,9 @@ class ABI_EXPORT GR_Font
 		Measure the unremapped char to be put into the cache.
 		That means measuring it for a font size of 120
 	 */
-	virtual UT_sint32 measureUnremappedCharForCache(UT_UCSChar cChar) const = 0;
+	virtual UT_sint32 measureUnremappedCharForCache(UT_UCS4Char cChar) const = 0;
 	virtual const std::string & hashKey(void) const;
-	UT_sint32 getCharWidthFromCache (UT_UCSChar c) const;
+	UT_sint32 getCharWidthFromCache (UT_UCS4Char c) const;
 
 	/*reimplement if you want to instanciate something else */
 	virtual GR_CharWidths* newFontWidths(void) const;
@@ -441,12 +441,12 @@ class ABI_EXPORT GR_Graphics
 	virtual UT_uint32 getFontHeight() = 0;
 	void              invalidateCache(void);
 	virtual bool      canQuickPrint(void) const { return false;}
-	virtual UT_uint32 measureString(const UT_UCSChar*s,
+	virtual UT_uint32 measureString(const UT_UCS4Char*s,
 									int iOffset,
 									int num,
 									UT_GrowBufElement* pWidths, UT_uint32 *height = nullptr);
 
-	virtual UT_sint32 measureUnRemappedChar(const UT_UCSChar c, UT_uint32 * height = nullptr) = 0;
+	virtual UT_sint32 measureUnRemappedChar(const UT_UCS4Char c, UT_uint32 * height = nullptr) = 0;
 	virtual void getCoverage(UT_NumberVector& coverage) = 0;
 
 	/* GR_Font versions of the above -- TODO: should I add drawChar* methods too? */
@@ -455,7 +455,7 @@ class ABI_EXPORT GR_Graphics
 	virtual UT_uint32 getFontHeight(const GR_Font *)  = 0;
 	virtual double    getResolutionRatio(void) const {return 1.0;}
 
-	void         getMaxCharacterDimension (const UT_UCSChar*s, UT_uint32 Length, UT_uint32 &width, UT_uint32 &height);
+	void         getMaxCharacterDimension (const UT_UCS4Char*s, UT_uint32 Length, UT_uint32 &width, UT_uint32 &height);
 
 	virtual void      setColor(const UT_RGBColor& clr) = 0;
 	virtual void      getColor(UT_RGBColor& clr) = 0;
@@ -814,14 +814,14 @@ class ABI_EXPORT GR_Graphics
 	virtual void polygon(const UT_RGBColor& c, const UT_Point *pts, UT_uint32 nPoints);
 	virtual void polyLine(const UT_Point * pts, UT_uint32 nPoints) = 0;
 	virtual void drawGlyph(UT_uint32 glyph_idx, UT_sint32 xoff, UT_sint32 yoff) = 0;
-	virtual void drawChars(const UT_UCSChar* pChars,
+	virtual void drawChars(const UT_UCS4Char* pChars,
 						   int iCharOffset,
 						   int iLength,
 						   UT_sint32 xoff,
 						   UT_sint32 yoff,
 						   int* pCharWidths = nullptr) = 0;
 
-	virtual void drawCharsRelativeToBaseline(const UT_UCSChar* pChars,
+	virtual void drawCharsRelativeToBaseline(const UT_UCS4Char* pChars,
 											 int iCharOffset,
 											 int iLength,
 											 UT_sint32 xoff,

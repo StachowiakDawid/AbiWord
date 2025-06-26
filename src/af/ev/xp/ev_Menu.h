@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef EV_MENU_H
-#define EV_MENU_H
+#pragma once
 
 /*****************************************************************/
 /*****************************************************************/
@@ -51,7 +50,7 @@ public:
 
 	bool invokeMenuMethod(AV_View * pView,
 						  EV_EditMethod * pEM,
-						  UT_UCSChar * pData,
+						  UT_UCS4Char * pData,
 						  UT_uint32 dataLength) const;
 
 	bool invokeMenuMethod(AV_View* pView,
@@ -83,5 +82,3 @@ private:
 };
 
 XAP_Menu_Id EV_searchMenuLabel(const EV_Menu_LabelSet* labels, const UT_String &label);
-
-#endif /* EV_MENU_H */

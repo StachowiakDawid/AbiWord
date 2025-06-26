@@ -882,8 +882,8 @@ void AP_UnixDialog_Options::_setupSmartQuotesCombos(  GtkWidget *optionmenu  )
 
 	XAP_makeGtkComboBoxText(combo, G_TYPE_INT);
 
-    UT_UCSChar wszDisplayString[4];
-	for (size_t i = 0; XAP_EncodingManager::smartQuoteStyles[i].leftQuote != (UT_UCSChar)0; ++i)
+    UT_UCS4Char wszDisplayString[4];
+	for (size_t i = 0; XAP_EncodingManager::smartQuoteStyles[i].leftQuote != (UT_UCS4Char)0; ++i)
 	{
 		wszDisplayString[0] = XAP_EncodingManager::smartQuoteStyles[i].leftQuote;
 		wszDisplayString[1] = (gunichar)'O';

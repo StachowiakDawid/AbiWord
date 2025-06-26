@@ -17,9 +17,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef IE_EXP_XML_H
-#define IE_EXP_XML_H
+#pragma once
 
 #include "ie_exp.h"
 #include <string>
@@ -44,7 +42,7 @@ public:
 	void addLuint(char const *id, unsigned long value);
 	void addString(char const *id, char const *value);
 	void addString(char const *id, std::string const &value);
-	void addString(char const *id, UT_UCSChar const *data, int length);
+	void addString(char const *id, UT_UCS4Char const *data, int length);
 	void addStringUnchecked(char const *id, char const *value);
 	void addStringUnchecked(char const *id, std::string const &value);
 	void addUint(char const *id, unsigned value);
@@ -56,5 +54,3 @@ private:
     GsfOutput *m_zip;
     GsfXMLOut *m_xml;
 };
-
-#endif /* IE_EXP_XML_H */

@@ -397,7 +397,7 @@ GtkWidget * AP_UnixDialog_Replace::_constructWindow(void)
 	return m_windowMain;
 }
 
-static void append_string_to_model(const UT_UCSChar* str, GtkWidget* combo, AP_UnixDialog_Replace* pThis)
+static void append_string_to_model(const UT_UCS4Char* str, GtkWidget* combo, AP_UnixDialog_Replace* pThis)
 {
 	GtkTreeIter iter;
 	GtkListStore* model = GTK_LIST_STORE(gtk_combo_box_get_model(GTK_COMBO_BOX(combo)));

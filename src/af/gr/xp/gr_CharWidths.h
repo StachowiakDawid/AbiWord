@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef GR_CHARWIDTHS_H
-#define GR_CHARWIDTHS_H
+#pragma once
 
 #include "ut_types.h"
 #include "ut_vector.h"
@@ -66,8 +65,8 @@ public:
 	virtual ~GR_CharWidths(void);
 
 	void			zeroWidths(void);
-	void			setWidth(UT_UCSChar cIndex, UT_sint32 width);
-	UT_sint32		getWidth(UT_UCSChar cIndex) const;
+	void			setWidth(UT_UCS4Char cIndex, UT_sint32 width);
+	UT_sint32		getWidth(UT_UCS4Char cIndex) const;
 
 private:
 	GR_CharWidths(GR_CharWidths &cp); // no impl
@@ -77,5 +76,3 @@ private:
 	Array256		m_aLatin1;		// for speed, we don't use vector
 	UT_GenericVector<Array256*>	m_vecHiByte;	// sparse vector<Array256 *>[hibyte]
 };
-
-#endif /* GR_CHARWIDTHS_H */

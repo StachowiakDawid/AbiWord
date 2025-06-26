@@ -43,7 +43,7 @@ FL_SelectionPreserver::~FL_SelectionPreserver ()
 	}
 }
 
-bool FL_SelectionPreserver::cmdCharInsert(const UT_UCSChar * text, UT_uint32 count, bool bForce)
+bool FL_SelectionPreserver::cmdCharInsert(const UT_UCS4Char * text, UT_uint32 count, bool bForce)
 {
 	// TODO: how to handle bForce???
 	m_docRange.m_pos2 += count;

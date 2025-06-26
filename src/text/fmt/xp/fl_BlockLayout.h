@@ -212,7 +212,7 @@ public:
 
 	void StopListInBlock(void);
 	void deleteListLabel(void);
-	const UT_UCSChar * getListLabel(void) const;
+	const UT_UCS4Char * getListLabel(void) const;
 	void transferListFlags(void);
 	UT_uint32 getLevel(void) const;
 	void setStarting( bool bValue);
@@ -440,13 +440,13 @@ protected:
 
 	void					_recalcPendingWord(UT_uint32 iOffset, UT_sint32 chg) const;
 	bool					_doCheckWord(const fl_PartOfBlockPtr& pPOB,
-										 const UT_UCSChar* pBlockText,
+										 const UT_UCS4Char* pBlockText,
 										 UT_sint32 iLength,
 										 bool bAddSquiggle = true,
 										 bool bClearScreen = true) const;
 
 #ifdef ENABLE_SPELL
-	bool					_spellCheckWord(const UT_UCSChar * word, UT_uint32 len, UT_uint32 blockPos) const;
+	bool					_spellCheckWord(const UT_UCS4Char * word, UT_uint32 len, UT_uint32 blockPos) const;
 	SpellChecker * _getSpellChecker (UT_uint32 blockPos) const;
 #endif
 
@@ -622,22 +622,22 @@ class ABI_EXPORT fl_BlockSpellIterator
 
 	UT_sint32       m_iStartIndex;
 	UT_sint32       m_iPrevStartIndex;
-	UT_UCSChar*     m_pText;
+	UT_UCS4Char*     m_pText;
 	UT_sint32       m_iLength;
 
-	UT_UCSChar*     m_pMutatedString;
+	UT_UCS4Char*     m_pMutatedString;
 
 	UT_sint32       m_iSentenceStart;
 	UT_sint32       m_iSentenceEnd;
 
-    bool            _ignoreFirstWordCharacter(const UT_UCSChar c) const;
-    bool            _ignoreLastWordCharacter(const UT_UCSChar c) const;
+    bool            _ignoreFirstWordCharacter(const UT_UCS4Char c) const;
+    bool            _ignoreLastWordCharacter(const UT_UCS4Char c) const;
 
 public:
 	fl_BlockSpellIterator(const fl_BlockLayout* pBL, UT_sint32 iPos = 0);
 	~fl_BlockSpellIterator();
 
-	bool            nextWordForSpellChecking(const UT_UCSChar*& pWord,
+	bool            nextWordForSpellChecking(const UT_UCS4Char*& pWord,
 											 UT_sint32& iLength,
 											 UT_sint32& iBlockPos,
 											 UT_sint32& iPTLength);
@@ -648,9 +648,9 @@ public:
 
 	void              revertToPreviousWord(void);
 
-    const UT_UCSChar* getCurrentWord(UT_sint32& iLength) const;
-    const UT_UCSChar* getPreWord(UT_sint32& iLength) const;
-    const UT_UCSChar* getPostWord(UT_sint32& iLength) const;
+    const UT_UCS4Char* getCurrentWord(UT_sint32& iLength) const;
+    const UT_UCS4Char* getPreWord(UT_sint32& iLength) const;
+    const UT_UCS4Char* getPostWord(UT_sint32& iLength) const;
 };
 #endif
 

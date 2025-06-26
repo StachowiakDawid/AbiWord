@@ -315,7 +315,7 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh);
 										 const PP_PropertyVector & properties, fd_Field ** pField );
 
 	bool					insertSpan(PT_DocPosition dpos,
-									   const UT_UCSChar * p,
+									   const UT_UCS4Char * p,
 									   UT_uint32 length,
 									   PP_AttrProp *p_AttrProp = nullptr,
 									   UT_uint32 * insertedSpanLength = nullptr);
@@ -401,14 +401,14 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh);
 	bool                    appendLastStruxFmt(PTStruxType pts, const PP_PropertyVector & attrs, const std::string & props,
 											   bool bSkipEmbededSections);
 	bool					appendFmt(const PP_PropertyVector & vecAttributes);
-	bool					appendSpan(const UT_UCSChar * p, UT_uint32 length);
+	bool					appendSpan(const UT_UCS4Char * p, UT_uint32 length);
 	bool					appendObject(PTObjectType pto, const PP_PropertyVector & attributes);
 	bool					appendFmtMark(void);
 	bool					appendStyle(const PP_PropertyVector & attributes);
 	bool                    changeStruxFormatNoUpdate(PTChangeFmt ptc, pf_Frag_Strux* sdh, const PP_PropertyVector & attributes);
 	bool					insertStruxBeforeFrag(pf_Frag * pF, PTStruxType pts,
 												  const PP_PropertyVector & attributes, pf_Frag_Strux ** ppfs_ret = nullptr);
-	bool					insertSpanBeforeFrag(pf_Frag * pF, const UT_UCSChar * p, UT_uint32 length);
+	bool					insertSpanBeforeFrag(pf_Frag * pF, const UT_UCS4Char * p, UT_uint32 length);
 	bool					insertObjectBeforeFrag(pf_Frag * pF, PTObjectType pto,
 												   const PP_PropertyVector & attributes);
 	bool					insertFmtMarkBeforeFrag(pf_Frag * pF);
@@ -451,7 +451,7 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh);
 											bool bShowRevisions, UT_uint32 iRevisionId,
 											bool &bHiddenRevision) const;
 
-	const UT_UCSChar *		getPointer(PT_BufIndex bi) const; /* see warning on this function */
+	const UT_UCS4Char *		getPointer(PT_BufIndex bi) const; /* see warning on this function */
 	bool					getBlockBuf(pf_Frag_Strux* sdh, UT_GrowBuf * pgb) const;
 
 	bool					getBounds(bool bEnd, PT_DocPosition & docPos) const;

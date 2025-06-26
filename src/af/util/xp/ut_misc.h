@@ -66,7 +66,7 @@ struct ABI_EXPORT UT_Point
 std::string UT_pathSuffix(std::string path);
 bool         UT_addOrReplacePathSuffix(std::string & sPath, const char* sSuffix);
 
-bool UT_isWordDelimiter(UT_UCSChar currentChar, UT_UCSChar followChar, UT_UCSChar prevChar);
+bool UT_isWordDelimiter(UT_UCS4Char currentChar, UT_UCS4Char followChar, UT_UCS4Char prevChar);
 
 /**
  * Get the attribute "name" from atts or nullptr if no such attribute is in atts
