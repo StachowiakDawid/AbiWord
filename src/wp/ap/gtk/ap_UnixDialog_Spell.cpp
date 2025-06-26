@@ -348,7 +348,7 @@ AP_UnixDialog_Spell::_updateWindow (void)
 	// Empty buffer
 	gtk_text_buffer_set_text(buffer, "", -1);
 
-	const UT_UCSChar *p;
+	const UT_UCS4Char *p;
 	UT_sint32 iLength;
 	// insert start of sentence
 	p = m_pWordIterator->getPreWord(iLength);
@@ -425,7 +425,7 @@ AP_UnixDialog_Spell::_updateWindow (void)
 		gchar * suggest = nullptr;
 		for (UT_sint32 i = 0; i < m_Suggestions->getItemCount(); i++)
 		{
-			suggest = (gchar*) _convertToMB((UT_UCSChar*)m_Suggestions->getNthItem(i));
+			suggest = (gchar*) _convertToMB((UT_UCS4Char*)m_Suggestions->getNthItem(i));
 			gtk_list_store_append (GTK_LIST_STORE (model), &iter);
 			gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 								COLUMN_SUGGESTION, suggest,
@@ -434,7 +434,7 @@ AP_UnixDialog_Spell::_updateWindow (void)
 			FREEP(suggest);
 		}
 		// put the first suggestion in the entry
-		suggest = (gchar*) _convertToMB((UT_UCSChar*)m_Suggestions->getNthItem(0));
+		suggest = (gchar*) _convertToMB((UT_UCS4Char*)m_Suggestions->getNthItem(0));
 		g_signal_handler_block(G_OBJECT(m_eChange), m_replaceHandlerID);
 		XAP_gtk_entry_set_text(GTK_ENTRY(m_eChange), suggest);
 		g_signal_handler_unblock(G_OBJECT(m_eChange), m_replaceHandlerID);
@@ -469,7 +469,7 @@ void
 AP_UnixDialog_Spell::onChangeClicked ()
 {
 	UT_DEBUGMSG (("ROB: AP_UnixDialog_Spell::onChangeClicked()\n"));
-	UT_UCSChar * replace = nullptr;
+	UT_UCS4Char * replace = nullptr;
 	replace = _convertFromMB((char*)XAP_gtk_entry_get_text(GTK_ENTRY(m_eChange)));
 	if (!replace || !UT_UCS4_strlen(replace))
 	{
@@ -488,7 +488,7 @@ void
 AP_UnixDialog_Spell::onChangeAllClicked ()
 {
 	UT_DEBUGMSG (("ROB: AP_UnixDialog_Spell::onChangeAllClicked()\n"));
-	UT_UCSChar * replace = nullptr;
+	UT_UCS4Char * replace = nullptr;
 	replace = _convertFromMB((char*)XAP_gtk_entry_get_text(GTK_ENTRY(m_eChange)));
 	if (!replace || !UT_UCS4_strlen(replace))
 	{
@@ -601,7 +601,7 @@ AP_UnixDialog_Spell::onSuggestionChanged ()
 * Conversion helper.
 */
 char * 
-AP_UnixDialog_Spell::_convertToMB (const UT_UCSChar *wword)
+AP_UnixDialog_Spell::_convertToMB (const UT_UCS4Char *wword)
 {
 	UT_UCS4String ucs4(wword);
 	return g_strdup(ucs4.utf8_str());
@@ -611,7 +611,7 @@ AP_UnixDialog_Spell::_convertToMB (const UT_UCSChar *wword)
 * Conversion helper.
 */
 char * 
-AP_UnixDialog_Spell::_convertToMB (const UT_UCSChar *wword, 
+AP_UnixDialog_Spell::_convertToMB (const UT_UCS4Char *wword, 
 								   UT_sint32 iLength)
 {
 	UT_UCS4String ucs4(wword, iLength);
@@ -621,7 +621,7 @@ AP_UnixDialog_Spell::_convertToMB (const UT_UCSChar *wword,
 /*!
 * Conversion helper.
 */
-UT_UCSChar * 
+UT_UCS4Char * 
 AP_UnixDialog_Spell::_convertFromMB (const char *word)
 {
 	UT_UCS4Char * str = nullptr;

@@ -87,7 +87,7 @@ bool BarbarismChecker::load(const char * szLang)
 /**
  * True if word is a barbarsim, false if not
  */
-bool BarbarismChecker::checkWord(const UT_UCSChar * word32, size_t length)
+bool BarbarismChecker::checkWord(const UT_UCS4Char * word32, size_t length)
 {
 	UT_UTF8String stUTF8;
 	stUTF8.appendUCS4(word32, length);
@@ -103,7 +103,7 @@ bool BarbarismChecker::checkWord(const UT_UCSChar * word32, size_t length)
 	Looks for an exact case match of the suggestion
 	Returns true if word is a barbarism
 */
-bool BarbarismChecker::suggestExactWord(const UT_UCSChar *word32, size_t length, const std::unique_ptr<std::vector<UT_UCSChar*>>& pVecsugg)
+bool BarbarismChecker::suggestExactWord(const UT_UCS4Char *word32, size_t length, const std::unique_ptr<std::vector<UT_UCS4Char*>>& pVecsugg)
 {
 	const char* pUTF8;
 	const UT_UCS4Char *pWord;
@@ -146,13 +146,13 @@ bool BarbarismChecker::suggestExactWord(const UT_UCSChar *word32, size_t length,
 
 	Returns true if word is a barbarism
 */
-bool BarbarismChecker::suggestWord(const UT_UCSChar *word32, size_t length, const std::unique_ptr<std::vector<UT_UCSChar*>>& pVecsugg)
+bool BarbarismChecker::suggestWord(const UT_UCS4Char *word32, size_t length, const std::unique_ptr<std::vector<UT_UCS4Char*>>& pVecsugg)
 {
 	bool bIsBarbarism = false;
 	bool bIsLower = true;
 	bool bIsUpperLower = false;
 	size_t len;
-	UT_UCSChar* pStr;
+	UT_UCS4Char* pStr;
 
 	if (!length)
 		return false;
@@ -161,7 +161,7 @@ bool BarbarismChecker::suggestWord(const UT_UCSChar *word32, size_t length, cons
 		If the word is lower case we just look at the lower case
 	*/
 	len=length;
-	pStr = const_cast<UT_UCSChar *>(word32);
+	pStr = const_cast<UT_UCS4Char *>(word32);
 	for (; len; pStr++, len--)
 	{
 		if (!UT_UCS4_islower(*pStr))
@@ -178,7 +178,7 @@ bool BarbarismChecker::suggestWord(const UT_UCSChar *word32, size_t length, cons
 	*/
 	if (UT_UCS4_isupper(*word32))
 	{
-		UT_UCSChar* pStr2 = const_cast<UT_UCSChar *>(word32);
+		UT_UCS4Char* pStr2 = const_cast<UT_UCS4Char *>(word32);
 		pStr2++;
 		len=length;
 		if (len)
@@ -205,7 +205,7 @@ bool BarbarismChecker::suggestWord(const UT_UCSChar *word32, size_t length, cons
 		if ((bIsBarbarism = suggestExactWord(wordsearch,  length, pVecsugg)))
 		{
 			const UT_uint32 nItems = pVecsugg->size();
-			UT_UCSChar* pSug;
+			UT_UCS4Char* pSug;
 
 			/* Make the first letter of all the results uppercase */
 			for (UT_uint32 iItem = nItems; iItem; --iItem)
@@ -226,7 +226,7 @@ bool BarbarismChecker::suggestWord(const UT_UCSChar *word32, size_t length, cons
 	Called by the parser. We build the barbarism list here
 
 	Barbarism (the index of the map) is stored in UTF-8 because the map index
-	and the suggestions are in UT_UCSChar
+	and the suggestions are in UT_UCS4Char
 
 */
 void BarbarismChecker::startElement(const gchar *name, const gchar **atts)

@@ -923,7 +923,7 @@ fl_Squiggles::findRange(UT_sint32 iStart, UT_sint32 iEnd,
  \return True if any words squiggled, false otherwise
 */
 bool
-fl_Squiggles::recheckIgnoredWords(const UT_UCSChar* pBlockText)
+fl_Squiggles::recheckIgnoredWords(const UT_UCS4Char* pBlockText)
 {
 	xxx_UT_DEBUGMSG(("fl_Squiggles::recheckIgnoredWords(%p)\n", pBlockText));
 

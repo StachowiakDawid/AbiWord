@@ -34,10 +34,10 @@ public:
 
 	bool load(const char *szLang);
 
-	bool checkWord(const UT_UCSChar * word32, size_t length);
+	bool checkWord(const UT_UCS4Char * word32, size_t length);
 
-	bool suggestWord(const UT_UCSChar *word32, size_t length,
-                         const std::unique_ptr<std::vector<UT_UCSChar*>>& pVecsugg);
+	bool suggestWord(const UT_UCS4Char *word32, size_t length,
+                         const std::unique_ptr<std::vector<UT_UCS4Char*>>& pVecsugg);
 
 	/*
 		Implementation of UT_XML::Listener
@@ -48,8 +48,8 @@ public:
 
 private:
 
-	bool suggestExactWord(const UT_UCSChar *word32, size_t length,
-                              const std::unique_ptr<std::vector<UT_UCSChar*>>& pVecsugg);
+	bool suggestExactWord(const UT_UCS4Char *word32, size_t length,
+                              const std::unique_ptr<std::vector<UT_UCS4Char*>>& pVecsugg);
 
 	UT_GenericStringMap<UT_GenericVector<UT_UCS4Char *>*>	m_map;
 	UT_GenericVector<UT_UCS4Char *>*		m_pCurVector;

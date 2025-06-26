@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_UNIXDIALOG_SPELL_H
-#define AP_UNIXDIALOG_SPELL_H
+#pragma once
 
 #include "ap_Dialog_Spell.h"
 
@@ -57,10 +56,10 @@ protected:
 
 private:
 
-   char 	  * _convertToMB   (const UT_UCSChar *wword);
-   char 	  * _convertToMB   (const UT_UCSChar *wword,
+   char 	  * _convertToMB   (const UT_UCS4Char *wword);
+   char 	  * _convertToMB   (const UT_UCS4Char *wword,
 								UT_sint32 iLength);
-   UT_UCSChar * _convertFromMB (const char *word);
+   UT_UCS4Char * _convertFromMB (const char *word);
 
    // pointers to widgets we need to query/set
    GtkWidget * m_wDialog;
@@ -73,5 +72,3 @@ private:
    guint m_listHandlerID;
    guint m_replaceHandlerID;
 };
-
-#endif /* AP_UNIXDIALOG_SPELL_H */

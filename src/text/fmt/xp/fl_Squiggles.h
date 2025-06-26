@@ -67,7 +67,7 @@ virtual	~fl_Squiggles(void);
 									  UT_sint32& iFirst,
 									  UT_sint32& iLast, bool bDontExpand = false) const;
 
-	bool					recheckIgnoredWords(const UT_UCSChar* pBlockText);
+	bool					recheckIgnoredWords(const UT_UCS4Char* pBlockText);
 
 #ifdef FMT_TEST
 	void					__dump(FILE * fp) const;

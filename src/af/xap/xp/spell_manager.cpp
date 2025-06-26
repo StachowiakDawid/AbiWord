@@ -61,7 +61,7 @@ bool SpellChecker::requestDictionary (const char * szLang)
 	return bSuccess;
 }
 
-SpellChecker::SpellCheckResult SpellChecker::checkWord(const UT_UCSChar* word, size_t len)
+SpellChecker::SpellCheckResult SpellChecker::checkWord(const UT_UCS4Char* word, size_t len)
 {
 	UT_return_val_if_fail( word, SpellChecker::LOOKUP_SUCCEEDED );
 	
@@ -129,7 +129,7 @@ SpellChecker::SpellCheckResult SpellChecker::checkWord(const UT_UCSChar* word, s
 	return ret;
 }
 
-std::unique_ptr<std::vector<UT_UCSChar*>> SpellChecker::suggestWord(const UT_UCSChar* word, size_t len)
+std::unique_ptr<std::vector<UT_UCS4Char*>> SpellChecker::suggestWord(const UT_UCS4Char* word, size_t len)
 {
 	auto pvSugg = _suggestWord(word, len);
 
@@ -138,13 +138,13 @@ std::unique_ptr<std::vector<UT_UCSChar*>> SpellChecker::suggestWord(const UT_UCS
 	return pvSugg;
 }
 
-bool SpellChecker::addToCustomDict (const UT_UCSChar *word, size_t len)
+bool SpellChecker::addToCustomDict (const UT_UCS4Char *word, size_t len)
 {
 	return XAP_App::getApp()->addWordToDict (word, len);
 }
 
-void SpellChecker::correctWord (const UT_UCSChar * /*toCorrect*/, size_t /*toCorrectLen*/,
-								const UT_UCSChar * /*correct*/, size_t /*correctLen*/)
+void SpellChecker::correctWord (const UT_UCS4Char * /*toCorrect*/, size_t /*toCorrectLen*/,
+								const UT_UCS4Char * /*correct*/, size_t /*correctLen*/)
 {
 }
 

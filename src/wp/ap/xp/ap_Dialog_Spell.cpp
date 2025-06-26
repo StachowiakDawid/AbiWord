@@ -49,7 +49,7 @@ AP_Dialog_Spell::_getDict (void)
 }
 
 bool
-AP_Dialog_Spell::_spellCheckWord (const UT_UCSChar * word, UT_uint32 len)
+AP_Dialog_Spell::_spellCheckWord (const UT_UCS4Char * word, UT_uint32 len)
 {
 	SpellChecker * checker = _getDict();
 
@@ -102,7 +102,7 @@ AP_Dialog_Spell::~AP_Dialog_Spell(void)
 	DELETEP(m_pPreserver);
 
 	m_pChangeAll->freeData();
-//	UT_HASH_PURGEDATA(UT_UCSChar*,m_pChangeAll, g_free);
+//	UT_HASH_PURGEDATA(UT_UCS4Char*,m_pChangeAll, g_free);
 	DELETEP(m_pChangeAll);
 	DELETEP(m_pIgnoreAll);
 	DELETEP(m_pWordIterator);
@@ -162,8 +162,8 @@ void AP_Dialog_Spell::runModal(XAP_Frame * pFrame)
 
    m_pWordIterator = new fl_BlockSpellIterator(m_pCurrBlock, 0);
    
-   m_pChangeAll = new UT_GenericStringMap<UT_UCSChar*>(7); // is 7 buckets adequate? too much?
-   m_pIgnoreAll = new UT_GenericStringMap<UT_UCSChar*>(7);
+   m_pChangeAll = new UT_GenericStringMap<UT_UCS4Char*>(7); // is 7 buckets adequate? too much?
+   m_pIgnoreAll = new UT_GenericStringMap<UT_UCS4Char*>(7);
 
    m_bSkipWord = false;
 }
@@ -246,14 +246,14 @@ bool AP_Dialog_Spell::nextMisspelledWord(void)
 					// create an empty vector
 					UT_ASSERT_HARMLESS(!m_Suggestions);
 
-					m_Suggestions = new UT_GenericVector<UT_UCSChar*>();
+					m_Suggestions = new UT_GenericVector<UT_UCS4Char*>();
 					UT_return_val_if_fail (m_Suggestions, false);
 
 					// get suggestions from spelling engine
 
 					if (checker->checkWord(m_pWord, m_iWordLength) == SpellChecker::LOOKUP_FAILED)
 					{
-						std::unique_ptr<std::vector<UT_UCSChar*>> cpvEngineSuggestions;
+						std::unique_ptr<std::vector<UT_UCS4Char*>> cpvEngineSuggestions;
 						cpvEngineSuggestions = checker->suggestWord(m_pWord, m_iWordLength);
 
 						for (UT_uint32 i = 0; i < cpvEngineSuggestions->size(); ++i)
@@ -353,32 +353,32 @@ void AP_Dialog_Spell::ignoreWord(void)
 bool AP_Dialog_Spell::inChangeAll(void)
 {
 	UT_sint32 iLength;
-	const UT_UCSChar * bufferUnicode = m_pWordIterator->getCurrentWord(iLength);
+	const UT_UCS4Char * bufferUnicode = m_pWordIterator->getCurrentWord(iLength);
 	UT_return_val_if_fail (bufferUnicode, false);
 	char * bufferNormal = static_cast<char *>(UT_calloc(iLength + 1, sizeof(char)));
 	UT_UCS4_strncpy_to_char(bufferNormal, bufferUnicode, iLength);
-	const UT_UCSChar * ent = m_pChangeAll->pick(bufferNormal);
+	const UT_UCS4Char * ent = m_pChangeAll->pick(bufferNormal);
 	FREEP(bufferNormal);
 
 	if (ent == nullptr)
 		return false;
 	else {
 		makeWordVisible();
-		bool bRes = changeWordWith( (UT_UCSChar*) (ent) ); 
+		bool bRes = changeWordWith( (UT_UCS4Char*) (ent) ); 
 		return bRes;
 	}
 }
 
-bool AP_Dialog_Spell::addChangeAll(const UT_UCSChar * newword)
+bool AP_Dialog_Spell::addChangeAll(const UT_UCS4Char * newword)
 {
 	UT_sint32 iLength;
-	const UT_UCSChar * bufferUnicode = m_pWordIterator->getCurrentWord(iLength);
+	const UT_UCS4Char * bufferUnicode = m_pWordIterator->getCurrentWord(iLength);
 	UT_return_val_if_fail (bufferUnicode, false);
 	char * bufferNormal = static_cast<char *>(UT_calloc(iLength + 1, sizeof(char)));
 	UT_UCS4_strncpy_to_char(bufferNormal, bufferUnicode, iLength);
 
    // make a copy of the word for storage
-   UT_UCSChar * newword2 = static_cast<UT_UCSChar*>(UT_calloc(UT_UCS4_strlen(newword) + 1, sizeof(UT_UCSChar)));
+   UT_UCS4Char * newword2 = static_cast<UT_UCS4Char*>(UT_calloc(UT_UCS4_strlen(newword) + 1, sizeof(UT_UCS4Char)));
    UT_UCS4_strcpy(newword2, newword);
    
    m_pChangeAll->insert(bufferNormal, newword2);
@@ -388,7 +388,7 @@ bool AP_Dialog_Spell::addChangeAll(const UT_UCSChar * newword)
    return true;
 }
 
-bool AP_Dialog_Spell::changeWordWith(const UT_UCSChar * newword)
+bool AP_Dialog_Spell::changeWordWith(const UT_UCS4Char * newword)
 {
    bool result = true;
 
@@ -400,7 +400,7 @@ bool AP_Dialog_Spell::changeWordWith(const UT_UCSChar * newword)
    UT_sint32 iOldLength;
 
    // have the spell checker learn about our misspellings
-   const UT_UCSChar * oldWord = m_pWordIterator->getCurrentWord(iOldLength);
+   const UT_UCS4Char * oldWord = m_pWordIterator->getCurrentWord(iOldLength);
    _getDict()->correctWord (oldWord, iOldLength, newword, iNewLength);
 
    result = m_pPreserver->cmdCharInsert(newword, iNewLength);

@@ -50,20 +50,20 @@ public:
 		LOOKUP_ERROR = 2      // internal error
 	};
 
-	SpellCheckResult	checkWord(const UT_UCSChar* word, size_t len);
-	std::unique_ptr<std::vector<UT_UCSChar*>> suggestWord(const UT_UCSChar* word, size_t len);
+	SpellCheckResult	checkWord(const UT_UCS4Char* word, size_t len);
+	std::unique_ptr<std::vector<UT_UCS4Char*>> suggestWord(const UT_UCS4Char* word, size_t len);
 
 	// vector of DictionaryMapping*
 	virtual	const std::vector<DictionaryMapping> & getMapping() const {return m_vecEmpty;};
 	virtual bool doesDictionaryExist (const char * /*szLang*/) {return false;};
-	virtual bool addToCustomDict (const UT_UCSChar *word, size_t len);
+	virtual bool addToCustomDict (const UT_UCS4Char *word, size_t len);
 
-	virtual void correctWord (const UT_UCSChar *toCorrect, size_t toCorrectLen,
-							  const UT_UCSChar *correct, size_t correctLen);
+	virtual void correctWord (const UT_UCS4Char *toCorrect, size_t toCorrectLen,
+							  const UT_UCS4Char *correct, size_t correctLen);
 
-	virtual void ignoreWord (const UT_UCSChar *toCorrect, size_t toCorrectLen) = 0;
+	virtual void ignoreWord (const UT_UCS4Char *toCorrect, size_t toCorrectLen) = 0;
 
-	virtual bool isIgnored (const UT_UCSChar * pWord, size_t len) const = 0;
+	virtual bool isIgnored (const UT_UCS4Char * pWord, size_t len) const = 0;
 
 	const std::string& getLanguage() const
 	{
@@ -102,8 +102,8 @@ private:
     void operator=(const SpellChecker&) = delete;
 
 	virtual bool				_requestDictionary (const char * szLang) = 0;
-	virtual SpellCheckResult	_checkWord(const UT_UCSChar* word, size_t len) = 0;
-	virtual std::unique_ptr<std::vector<UT_UCSChar*>> _suggestWord(const UT_UCSChar* word, size_t len) = 0;
+	virtual SpellCheckResult	_checkWord(const UT_UCS4Char* word, size_t len) = 0;
+	virtual std::unique_ptr<std::vector<UT_UCS4Char*>> _suggestWord(const UT_UCS4Char* word, size_t len) = 0;
 };
 
 class ABI_EXPORT SpellManager

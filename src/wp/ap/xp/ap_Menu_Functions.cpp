@@ -710,7 +710,7 @@ Defun_EV_GetMenuItemState_Fn(ap_GetState_Suggest)
 
 	EV_Menu_ItemState s = EV_MIS_Gray;
 
-	const UT_UCSChar *p = pView->getContextSuggest(ndx);
+	const UT_UCS4Char *p = pView->getContextSuggest(ndx);
 
 	if (p)
 	{
@@ -741,7 +741,7 @@ Defun_EV_GetMenuItemComputedLabel_Fn(ap_GetLabel_Suggest)
 	UT_return_val_if_fail(pView != nullptr, nullptr);
 
 	UT_uint32 ndx = (id - AP_MENU_ID_SPELL_SUGGEST_1 + 1);
-	UT_UCSChar *p = pView->getContextSuggest(ndx);
+	UT_UCS4Char *p = pView->getContextSuggest(ndx);
 	gchar * c = nullptr;
 	if (p && *p) {
 		c = g_ucs4_to_utf8(p, -1, nullptr, nullptr, nullptr);

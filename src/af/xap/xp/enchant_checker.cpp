@@ -86,7 +86,7 @@ EnchantChecker::~EnchantChecker()
 }
 
 SpellChecker::SpellCheckResult
-EnchantChecker::_checkWord (const UT_UCSChar * ucszWord, size_t len)
+EnchantChecker::_checkWord (const UT_UCS4Char * ucszWord, size_t len)
 {
 	UT_return_val_if_fail (m_dict, SpellChecker::LOOKUP_ERROR);
 	UT_return_val_if_fail (ucszWord, SpellChecker::LOOKUP_ERROR);
@@ -105,13 +105,13 @@ EnchantChecker::_checkWord (const UT_UCSChar * ucszWord, size_t len)
 	}
 }
 
-std::unique_ptr<std::vector<UT_UCSChar*>>
-EnchantChecker::_suggestWord (const UT_UCSChar *ucszWord, size_t len)
+std::unique_ptr<std::vector<UT_UCS4Char*>>
+EnchantChecker::_suggestWord (const UT_UCS4Char *ucszWord, size_t len)
 {
 	UT_return_val_if_fail(m_dict, nullptr);
 	UT_return_val_if_fail(ucszWord && len, nullptr);
 
-	std::unique_ptr<std::vector<UT_UCSChar*>> pvSugg(new std::vector<UT_UCSChar*>());
+	std::unique_ptr<std::vector<UT_UCS4Char*>> pvSugg(new std::vector<UT_UCS4Char*>());
 
 	UT_UTF8String utf8 (ucszWord, len);
 
@@ -122,7 +122,7 @@ EnchantChecker::_suggestWord (const UT_UCSChar *ucszWord, size_t len)
 
 	if (suggestions && n_suggestions) {
 		for (size_t i = 0; i < n_suggestions; i++) {
-			UT_UCSChar *ucszSugg = utf8_to_utf32(suggestions[i]);
+			UT_UCS4Char *ucszSugg = utf8_to_utf32(suggestions[i]);
 			if (ucszSugg)
 				pvSugg->push_back(ucszSugg);
 		}
@@ -133,7 +133,7 @@ EnchantChecker::_suggestWord (const UT_UCSChar *ucszWord, size_t len)
 	return pvSugg;
 }
 
-bool EnchantChecker::addToCustomDict (const UT_UCSChar *word, size_t len)
+bool EnchantChecker::addToCustomDict (const UT_UCS4Char *word, size_t len)
 {
 	UT_return_val_if_fail (m_dict, false);
 
@@ -145,7 +145,7 @@ bool EnchantChecker::addToCustomDict (const UT_UCSChar *word, size_t len)
 	return false;
 }
 
-bool EnchantChecker::isIgnored (const UT_UCSChar *toCorrect, size_t toCorrectLen) const
+bool EnchantChecker::isIgnored (const UT_UCS4Char *toCorrect, size_t toCorrectLen) const
 {
 	UT_return_val_if_fail (m_dict, false);
 
@@ -153,7 +153,7 @@ bool EnchantChecker::isIgnored (const UT_UCSChar *toCorrect, size_t toCorrectLen
 	return enchant_dict_is_added(m_dict, ignore.utf8_str(), ignore.byteLength()) != 0;
 }
 
-void EnchantChecker::ignoreWord (const UT_UCSChar *toCorrect, size_t toCorrectLen)
+void EnchantChecker::ignoreWord (const UT_UCS4Char *toCorrect, size_t toCorrectLen)
 {
 	UT_return_if_fail (m_dict);
 	UT_return_if_fail (toCorrect && toCorrectLen);
@@ -163,8 +163,8 @@ void EnchantChecker::ignoreWord (const UT_UCSChar *toCorrect, size_t toCorrectLe
 	enchant_dict_add_to_session (m_dict, ignore.utf8_str(), ignore.byteLength());
 }
    
-void EnchantChecker::correctWord (const UT_UCSChar *toCorrect, size_t toCorrectLen,
-								  const UT_UCSChar *correct, size_t correctLen)
+void EnchantChecker::correctWord (const UT_UCS4Char *toCorrect, size_t toCorrectLen,
+								  const UT_UCS4Char *correct, size_t correctLen)
 {
 	UT_return_if_fail (m_dict);
 

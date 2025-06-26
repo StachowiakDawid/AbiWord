@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_SPELL_H
-#define AP_DIALOG_SPELL_H
+#pragma once
 
 #include "xap_Frame.h"
 #include "xap_Dialog.h"
@@ -48,7 +47,7 @@ class ABI_EXPORT AP_Dialog_Spell : public XAP_Dialog_NonPersistent
 
  protected:
 
-	bool _spellCheckWord (const UT_UCSChar * word, UT_uint32 len);
+	bool _spellCheckWord (const UT_UCS4Char * word, UT_uint32 len);
 	SpellChecker * _getDict();
 
    void _purgeSuggestions(void);
@@ -62,8 +61,8 @@ class ABI_EXPORT AP_Dialog_Spell : public XAP_Dialog_NonPersistent
    void ignoreWord(void);
 
    bool inChangeAll(void);
-   bool addChangeAll(const UT_UCSChar * newword);
-   bool changeWordWith(const UT_UCSChar * newword);
+   bool addChangeAll(const UT_UCS4Char * newword);
+   bool changeWordWith(const UT_UCS4Char * newword);
 
    // make the word visible in the document behind the dialog
    bool makeWordVisible(void);
@@ -74,8 +73,8 @@ class ABI_EXPORT AP_Dialog_Spell : public XAP_Dialog_NonPersistent
    bool m_bIsSelection;
 
    // change/ignore all hash tables
-   UT_GenericStringMap<UT_UCSChar*> * m_pChangeAll;
-   UT_GenericStringMap<UT_UCSChar*> * m_pIgnoreAll;
+   UT_GenericStringMap<UT_UCS4Char*> * m_pChangeAll;
+   UT_GenericStringMap<UT_UCS4Char*> * m_pIgnoreAll;
 
    // these variables keep track of the current
    // location/state of the search through the
@@ -83,7 +82,7 @@ class ABI_EXPORT AP_Dialog_Spell : public XAP_Dialog_NonPersistent
    fl_BlockSpellIterator* m_pWordIterator;
    UT_sint32 m_iWordOffset;
    UT_sint32 m_iWordLength;
-   const UT_UCSChar* m_pWord;
+   const UT_UCS4Char* m_pWord;
    bool m_bSkipWord;
 
    // section & block pairs for start, end,
@@ -105,10 +104,8 @@ class ABI_EXPORT AP_Dialog_Spell : public XAP_Dialog_NonPersistent
 
    // current suggested corrections to the
    // most recently misspelled word
-   UT_GenericVector<UT_UCSChar*> * m_Suggestions;
+   UT_GenericVector<UT_UCS4Char*> * m_Suggestions;
 
    bool	m_bCancelled;
    short m_iSelectedRow;
 };
-
-#endif /* AP_DIALOG_SPELL_H */
