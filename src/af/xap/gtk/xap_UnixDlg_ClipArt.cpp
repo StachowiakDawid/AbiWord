@@ -177,6 +177,9 @@ void XAP_UnixDialog_ClipArt::runModal(XAP_Frame * pFrame)
 	gtk_icon_view_set_columns (GTK_ICON_VIEW (this->icon_view), -1);
 	gtk_container_add (GTK_CONTAINER (scroll), this->icon_view);
 	g_signal_connect (this->icon_view, "item_activated", G_CALLBACK (item_activated), (gpointer) this);
+	gtk_icon_view_set_model (GTK_ICON_VIEW (this->icon_view),
+							 GTK_TREE_MODEL (this->store));
+	g_object_unref (G_OBJECT (this->store));
 
 	gtk_widget_show_all (this->dlg);
 
@@ -296,9 +299,6 @@ next:
 	}
 	clipartCount = _count;
 
-	gtk_icon_view_set_model (GTK_ICON_VIEW (this->icon_view), 
-							 GTK_TREE_MODEL (this->store));
-	g_object_unref (G_OBJECT (this->store));
 	gtk_widget_hide (this->progress);
 
 	return TRUE;
