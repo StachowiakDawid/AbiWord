@@ -16,8 +16,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_COLLABORATIONJOIN_H
-#define AP_DIALOG_COLLABORATIONJOIN_H
+#pragma once
 
 #include "ut_types.h"
 #include "xap_Frame.h"
@@ -40,7 +39,7 @@ public:
 
 	virtual void signal(const Event& event, BuddyPtr pSource) override;
 
-	typedef enum { a_CANCEL, a_OPEN } tAnswer;
+	enum tAnswer: uint8_t { a_CANCEL, a_OPEN };
 
 	AP_Dialog_CollaborationJoin::tAnswer	getAnswer(void) const
 		{ return m_answer; }
@@ -65,5 +64,3 @@ protected:
 	virtual void		_enableBuddyAddition(bool bEnabled) = 0;
 	virtual void		_addDocument(BuddyPtr pBuddy, DocHandle* pDocHandle) = 0;
 };
-
-#endif /* AP_DIALOG_COLLABORATIONJOIN_H */

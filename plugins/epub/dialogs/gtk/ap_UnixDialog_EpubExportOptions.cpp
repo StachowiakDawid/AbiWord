@@ -48,13 +48,13 @@ AP_UnixDialog_EpubExportOptions::~AP_UnixDialog_EpubExportOptions()
     
 }
 
-typedef enum
+enum ResponseId: uint8_t
 {
 	BUTTON_OK,
 	BUTTON_SAVE_SETTINGS,
 	BUTTON_RESTORE_SETTINGS,
 	BUTTON_CANCEL
-} ResponseId;
+};
 
 void AP_UnixDialog_EpubExportOptions::runModal (XAP_Frame * pFrame)
 {

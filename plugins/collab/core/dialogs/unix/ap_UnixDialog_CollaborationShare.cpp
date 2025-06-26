@@ -27,7 +27,7 @@
 
 #include "ap_UnixDialog_CollaborationShare.h"
 
-enum
+enum: uint8_t
 {
 	SHARE_COLUMN = 0,
 	DESC_COLUMN,

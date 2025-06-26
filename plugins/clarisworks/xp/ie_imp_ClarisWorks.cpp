@@ -107,7 +107,7 @@ int abi_plugin_supports_version (UT_uint32 /*major*/, UT_uint32 /*minor*/,
   Import ClarisWorks/AppleWorks file
 */
 
-enum {
+enum: uint8_t {
     CW_HANDLED_VERSION = 5
 };
 

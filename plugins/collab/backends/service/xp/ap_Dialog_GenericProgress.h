@@ -16,9 +16,6 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_GENERICPROGRESS_H
-#define AP_DIALOG_GENERICPROGRESS_H
-
 #include "ut_types.h"
 #include "xap_Dialog.h"
 
@@ -47,7 +44,7 @@ public:
 	virtual void					close(bool cancel = false) = 0;
 	virtual void					setProgress(UT_uint32 progress) = 0;
 
-	typedef enum { a_OK, a_CANCEL } tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
 
 	AP_Dialog_GenericProgress::tAnswer	getAnswer(void) const
 		{ return m_answer; }
@@ -59,5 +56,3 @@ private:
 	UT_UTF8String		m_sTitle;
 	UT_UTF8String		m_sInformation;
 };
-
-#endif /* AP_DIALOG_GENERICPROGRESS_H */

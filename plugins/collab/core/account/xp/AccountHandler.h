@@ -16,8 +16,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef __ACCOUNTHANDLER_H__
-#define __ACCOUNTHANDLER_H__
+#pragma once
 
 #include <map>
 #include <string>
@@ -37,7 +36,7 @@
 
 class AbiCollab;
 
-typedef enum _ConnectResult
+enum ConnectResult: uint8_t
 {
 	CONNECT_SUCCESS = 0,
 	CONNECT_FAILED,
@@ -45,7 +44,7 @@ typedef enum _ConnectResult
 	CONNECT_AUTHENTICATION_FAILED,
 	CONNECT_ALREADY_CONNECTED,
 	CONNECT_INTERNAL_ERROR
-} ConnectResult;
+};
 
 typedef AccountHandler* (*AccountHandlerConstructor)();
 
@@ -171,7 +170,7 @@ public:
 	virtual void signal(const Event& event, BuddyPtr pSource) override;
 
 	// protocol error management
-	enum
+	enum: uint8_t
 	{
 		PE_Invalid_Version 		= 1,	// only possible error atm ^_^
 	};
@@ -195,6 +194,3 @@ private:
 	bool									m_bCanOffer;
 	std::vector<BuddyPtr>					m_vBuddies;
 };
-
-
-#endif /* ACCOUNTHANDLER_H */

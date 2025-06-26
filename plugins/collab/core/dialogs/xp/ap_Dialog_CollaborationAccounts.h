@@ -16,8 +16,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_COLLABORATIONACCOUNTS_H
-#define AP_DIALOG_COLLABORATIONACCOUNTS_H
+#pragma once
 
 #include "ut_types.h"
 #include "xap_Frame.h"
@@ -42,7 +41,7 @@ public:
 	void				createNewAccount();
 	void				createEditAccount(AccountHandler* pHandler);
 
-	typedef enum { a_CLOSE } tAnswer;
+	enum tAnswer: uint8_t { a_CLOSE };
 
 	AP_Dialog_CollaborationAccounts::tAnswer	getAnswer(void) const;
 
@@ -52,5 +51,3 @@ protected:
 
 	AP_Dialog_CollaborationAccounts::tAnswer	m_answer;
 };
-
-#endif /* AP_DIALOG_COLLABORATIONACCOUNTS_H */

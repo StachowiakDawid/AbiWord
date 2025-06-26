@@ -101,8 +101,6 @@
                   <object class="GtkAlignment" id="alignment2">
                     <property name="visible">1</property>
                     <property name="valign">start</property>
-                    <property name="xscale">0</property>
-                    <property name="yscale">0</property>
                     <child>
                       <object class="GtkBox" id="hbox3">
                         <property name="visible">1</property>

@@ -16,8 +16,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_COLLABORATIONADDBUDDY_H
-#define AP_DIALOG_COLLABORATIONADDBUDDY_H
+#pragma once
 
 #include <string>
 #include "ut_types.h"
@@ -38,7 +37,7 @@ public:
 
 	virtual void runModal(XAP_Frame * pFrame) override = 0;
 
-	typedef enum { a_OK, a_CANCEL } tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
 
 	AP_Dialog_CollaborationAddBuddy::tAnswer	getAnswer(void) const
 		{ return m_answer; }
@@ -59,5 +58,3 @@ protected:
 private:
 	UT_UTF8String		m_name;
 };
-
-#endif /* AP_DIALOG_COLLABORATIONADDBUDDY_H */

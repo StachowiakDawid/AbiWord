@@ -28,7 +28,7 @@
 
 #include "ap_UnixDialog_CollaborationJoin.h"
 
-enum
+enum: uint8_t
 {
 	DESCRIPTION_COLUMN = 0,
 	DOCHANDLE_COLUMN,

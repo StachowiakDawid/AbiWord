@@ -16,8 +16,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_COLLABORATIONSHARE_H
-#define AP_DIALOG_COLLABORATIONSHARE_H
+#pragma once
 
 #include "ut_types.h"
 #include "xap_Frame.h"
@@ -53,7 +52,7 @@ public:
 
 	virtual void signal(const Event& event, BuddyPtr pSource) override;
 
-	typedef enum { a_OK, a_CANCEL } tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
 
 	AP_Dialog_CollaborationShare::tAnswer	getAnswer(void) const
 		{ return m_answer; }
@@ -85,5 +84,3 @@ protected:
 private:
 	bool						_inAcl(const std::vector<std::string>& vAcl, BuddyPtr pBuddy);
 };
-
-#endif /* AP_DIALOG_COLLABORATIONSHARE_H */

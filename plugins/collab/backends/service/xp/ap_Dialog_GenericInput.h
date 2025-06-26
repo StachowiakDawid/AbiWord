@@ -16,8 +16,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef AP_DIALOG_GENERICINPUT_H
-#define AP_DIALOG_GENERICINPUT_H
+#pragma once
 
 #include "ut_types.h"
 #include "xap_Dialog.h"
@@ -63,7 +62,7 @@ public:
 	UT_uint32						getMinLenght()
 		{ return m_iMinLength; }
 
-	typedef enum { a_OK, a_CANCEL } tAnswer;
+	enum tAnswer: uint8_t { a_OK, a_CANCEL };
 
 	AP_Dialog_GenericInput::tAnswer	getAnswer(void) const
 		{ return m_answer; }
@@ -86,5 +85,3 @@ private:
 	bool				m_bIsPassword;
 	UT_UTF8String		m_input;
 };
-
-#endif /* AP_DIALOG_GENERICINPUT_H */

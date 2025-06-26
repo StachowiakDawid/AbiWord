@@ -26,7 +26,7 @@
 
 #include "ap_UnixDialog_CollaborationAccounts.h"
 
-enum
+enum: uint8_t
 {
 	ONLINE_COLUMN = 0,
 	DESC_COLUMN,

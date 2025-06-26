@@ -20,9 +20,7 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef IE_IMP_APPLIX_H
-#define IE_IMP_APPLIX_H
+#pragma once
 
 #include <stdio.h>
 #include "ie_imp.h"
@@ -70,7 +68,7 @@ protected:
 	UT_UCS4_mbtowc	m_mbtowc;
 
 	// the applix tags that i know about && maybe handle
-	typedef enum {
+	enum Applix_tag_t: uint8_t {
 	    APPLIX_T,
 	    GLOBALS_T,
 	    START_STYLES_T,
@@ -96,26 +94,26 @@ protected:
 		FIELD_VALUE_T,
 	    NOT_A_TAG,
 	    tag_Unknown
-	} Applix_tag_t;
+	};
 
 	// container
-	typedef enum {
+	enum Applix_content_t: uint8_t {
 		axCtnNone,
 		axCtnText,
 		axCtnField,
 		axCtnGlossary
-	} Applix_content_t;
+	};
 
 	// context in the file
 	// because T tag have different meanings.
-	typedef enum {
+	enum Applix_context_t: uint8_t {
 		axCtxNone,
 		axCtxDef,
 		axCtxFlow,
 		axCtxHdrFtr,
 		axCtxFootnote,
 		axCtxVar
-	} Applix_context_t;
+	};
 
 	Applix_context_t        m_axContext;
 
@@ -136,5 +134,3 @@ protected:
 	void                    _applixNewPara (const char * buf, size_t len);
 	void                    _applixPageBreak (const char * buf, size_t len);
 };
-
-#endif /* IE_IMP_APPLIX_H */

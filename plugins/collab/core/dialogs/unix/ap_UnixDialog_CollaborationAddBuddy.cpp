@@ -27,7 +27,7 @@
 
 #include "ap_UnixDialog_CollaborationAddBuddy.h"
 
-enum
+enum: uint8_t
 {
 	DESC_COLUMN = 0,
 	HANDLER_COLUMN
