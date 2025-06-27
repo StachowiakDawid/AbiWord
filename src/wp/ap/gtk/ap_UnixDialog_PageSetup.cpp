@@ -35,27 +35,11 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-// include the 3 pixmaps that we use in this dialog
-#include "orient-vertical.xpm"
-#include "orient-horizontal.xpm"
-#include "margin.xpm"
-
 #include "ut_debugmsg.h"
 
 /*********************************************************************************/
 
 // static helper functions
-
-static GtkWidget *
-create_pixmap (const char **data)
-{
-	GtkWidget *pixmap;
-	GdkPixbuf *pixbuf = gdk_pixbuf_new_from_xpm_data(data);
-	pixmap = gtk_image_new_from_pixbuf(pixbuf);
-	g_object_unref (pixbuf);
-	return pixmap;
-}
-
 static char *
 _ev_convert (char * bufResult,
 	     const char * szString)
@@ -215,9 +199,9 @@ void AP_UnixDialog_PageSetup::event_LandscapeChanged(void)
 	gtk_container_remove(GTK_CONTAINER(gtk_widget_get_parent(customPreview)),
 			     customPreview);
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(m_radioPageLandscape))) {
-		customPreview = create_pixmap(orient_horizontal_xpm);
+		customPreview = gtk_image_new_from_resource("/com/abisource/AbiWord/orient_horizontal_xpm");
 	} else {
-		customPreview = create_pixmap(orient_vertical_xpm);
+		customPreview = gtk_image_new_from_resource("/com/abisource/AbiWord/orient_vertical_xpm");
 	}
 	gtk_widget_show(customPreview);
 	gtk_box_pack_start(GTK_BOX (m_PageHbox), customPreview, FALSE, FALSE, 0);
@@ -646,8 +630,8 @@ GtkWidget * AP_UnixDialog_PageSetup::_constructWindow (void)
 	last_margin_unit = getMarginUnits ();
 	XAP_comboBoxSetActiveFromIntCol(combo, 1, last_margin_unit);
 
-	/* add margin XPM image to the margin window */
-	customPreview = create_pixmap (margin_xpm);
+	/* add margin image to the margin window */
+	customPreview = gtk_image_new_from_resource("/com/abisource/AbiWord/margin_xpm");
 	gtk_widget_show (customPreview);
 	gtk_grid_attach (GTK_GRID (m_MarginHbox), customPreview, 2, 0, 1, 8);
 
@@ -655,11 +639,11 @@ GtkWidget * AP_UnixDialog_PageSetup::_constructWindow (void)
 	if (getPageOrientation() == PORTRAIT) {
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(m_radioPagePortrait), TRUE);
 
-		customPreview = create_pixmap(orient_vertical_xpm);
+		customPreview = gtk_image_new_from_resource("/com/abisource/AbiWord/orient_vertical_xpm");
 	} else {
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(m_radioPageLandscape), TRUE);
 
-		customPreview = create_pixmap(orient_horizontal_xpm);
+		customPreview = gtk_image_new_from_resource("/com/abisource/AbiWord/orient_horizontal_xpm");
 	}
 	gtk_widget_show(customPreview);
 	gtk_box_pack_start(GTK_BOX(m_PageHbox), customPreview, FALSE, FALSE, 0);
