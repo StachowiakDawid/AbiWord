@@ -38,7 +38,7 @@
 #include "xap_Dlg_ClipArt.h"
 #include "xap_UnixDlg_ClipArt.h"
 
-enum {
+enum: uint8_t {
   COL_PATH,
   COL_DISPLAY_NAME,
   COL_PIXBUF,
