@@ -574,10 +574,12 @@ GtkWidget * AP_UnixDialog_PageSetup::_constructWindow (void)
 	glist = gtk_container_get_children (GTK_CONTAINER (m_radioPagePortrait));
 	orientation = GTK_LABEL (g_list_nth_data (glist, 0));
 	gtk_label_set_text (GTK_LABEL (orientation), _(AP, DLG_PageSetup_Portrait));
+	g_list_free(glist);
 
 	glist = gtk_container_get_children (GTK_CONTAINER (m_radioPageLandscape));
 	orientation = GTK_LABEL (g_list_nth_data (glist, 0));
 	gtk_label_set_text (GTK_LABEL (orientation), _(AP, DLG_PageSetup_Landscape));
+	g_list_free(glist);
 
 	Markup (_getWidget("lbScale"), pSS, _(AP, DLG_PageSetup_Scale));
 	gtk_label_set_text (GTK_LABEL (_getWidget("lbAdjust")), _(AP, DLG_PageSetup_Adjust));
