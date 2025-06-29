@@ -322,7 +322,7 @@ IEGraphicFileType IE_ImpGraphic::fileTypeForContents(const char * szBuf, UT_uint
 		UT_Confidence_t confidence = s->recognizeContents(input);
 		if ((confidence > 0) && ((IEGFT_Unknown == best) || (confidence >= best_confidence)))
 		{
-		        best_confidence = confidence;
+			best_confidence = confidence;
 			for (UT_sint32 a = 0; a < static_cast<int>(nrElements); a++)
 			{
 				if (s->supportsType((IEGraphicFileType) (a+1)))
@@ -330,8 +330,10 @@ IEGraphicFileType IE_ImpGraphic::fileTypeForContents(const char * szBuf, UT_uint
 				    best = static_cast<IEGraphicFileType>(a+1);
 				    
 				    // short-circuit if we're 100% sure
-				    if ( UT_CONFIDENCE_PERFECT == best_confidence )
-				      return best;
+					if ( UT_CONFIDENCE_PERFECT == best_confidence ) {
+						g_object_unref (G_OBJECT (input));
+						return best;
+					}
 				    break;
 				  }
 			}
