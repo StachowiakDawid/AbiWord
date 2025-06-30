@@ -1,5 +1,6 @@
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copryight (C) 2025 Hubert Figuière
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -148,18 +149,17 @@ GtkWidget * AP_UnixStatusBar::createWidget(void)
 			gtk_frame_set_shadow_type(GTK_FRAME(pStatusBarElement), GTK_SHADOW_IN);
 			
 			GtkWidget *pStatusBarElementLabel = gtk_label_new(pf_TextInfo->getRepresentativeString());
+			gtk_widget_set_margin_top(pStatusBarElementLabel, 3);
+			gtk_widget_set_margin_bottom(pStatusBarElementLabel, 3);
+			gtk_widget_set_margin_start(pStatusBarElementLabel, 3);
+			gtk_widget_set_margin_end(pStatusBarElementLabel, 3);
 			pf->setListener((AP_StatusBarFieldListener *)(new ap_usb_TextListener(pf_TextInfo, pStatusBarElementLabel)));
 			gtk_container_add(GTK_CONTAINER(pStatusBarElement), pStatusBarElementLabel);
 
 			// align
 			if (pf_TextInfo->getAlignmentMethod() == LEFT) {
-				GValue val = G_VALUE_INIT;
-				g_value_init(&val, G_TYPE_FLOAT);
-				g_value_set_float(&val, 0.0);
-				g_object_set_property(G_OBJECT(pStatusBarElementLabel),
-						"xalign", &val);
-				g_object_set_property(G_OBJECT(pStatusBarElementLabel),
-						"yalign", &val);
+				gtk_label_set_xalign(GTK_LABEL(pStatusBarElementLabel), 0.0);
+				gtk_label_set_yalign(GTK_LABEL(pStatusBarElementLabel), 0.0);
 			}
 
 			// size and place
