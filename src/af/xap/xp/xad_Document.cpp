@@ -647,22 +647,8 @@ const AD_Revision * AD_Document::getHighestRevision() const
 	return r;
 }
 
-bool AD_Document::addRevision(UT_uint32 iId, UT_UCS4Char * pDesc, time_t tStart, UT_uint32 iVer, bool bGenCR)
-{
-	for (UT_uint32 i = 0; i < m_vRevisions.size(); i++)
-	{
-		const AD_Revision& r = m_vRevisions[i];
-		if (r.getId() == iId)
-			return false;
-	}
-
-	addRevision(AD_Revision(iId, pDesc, tStart, iVer), bGenCR);
-	m_iRevisionID = iId;
-	return true;
-}
-
 bool AD_Document::addRevision(UT_uint32 iId,
-							  const UT_UCS4Char * pDesc, UT_uint32 iLen,
+							  const UT_UCS4Char * pDesc,
 							  time_t tStart, UT_uint32 iVer,bool bGenCR)
 {
 	for (UT_uint32 i = 0; i < m_vRevisions.size(); i++)
@@ -672,16 +658,7 @@ bool AD_Document::addRevision(UT_uint32 iId,
 			return false;
 	}
 
-	UT_UCS4Char * pD = nullptr;
-	
-	if(pDesc)
-	{
-		pD = new UT_UCS4Char [iLen + 1];
-		UT_UCS4_strncpy(pD,pDesc,iLen);
-		pD[iLen] = 0;
-	}
-
-	addRevision(AD_Revision(iId, pD, tStart, iVer), bGenCR);
+	addRevision(AD_Revision(iId, pDesc, tStart, iVer), bGenCR);
 	m_iRevisionID = iId;
 	return true;
 }
@@ -795,7 +772,7 @@ void AD_Document::setAutoRevisioning(bool b)
 				UT_uint32 iId = getRevisionId() + 1;
 
 				setRevisionId(iId);
-				addRevision(iId, ucs4.ucs4_str(),ucs4.length(),t, m_iVersion);
+				addRevision(iId, ucs4.ucs4_str(), t, m_iVersion);
 			}
 			else if(getHighestRevisionId() != getRevisionId())
 			{
@@ -806,7 +783,7 @@ void AD_Document::setAutoRevisioning(bool b)
 				UT_UCS4String ucs4(pSS->getValue(XAP_STRING_ID_MSG_AutoRevision));
 
 				UT_uint32 iId = getRevisionId();
-				addRevision(iId, ucs4.ucs4_str(),ucs4.length(),t, m_iVersion);
+				addRevision(iId, ucs4.ucs4_str(), t, m_iVersion);
 			}
 			
 				
@@ -954,7 +931,7 @@ void AD_Document::_adjustHistoryOnSave()
 
 		UT_uint32 iId = getRevisionId()+1;
 		setRevisionId(iId);
-		addRevision(iId, ucs4.ucs4_str(),ucs4.length(),time(nullptr), m_iVersion);
+		addRevision(iId, ucs4.ucs4_str(), time(nullptr), m_iVersion);
 	}
 }
 

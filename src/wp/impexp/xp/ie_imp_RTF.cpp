@@ -8864,7 +8864,7 @@ bool IE_Imp_RTF::ReadRevisionTable()
 		if(i == 1 && (!UT_UCS4_strcmp(s.ucs4_str(), u1) || !UT_UCS4_strcmp(s.ucs4_str(), u2)))
 			continue;
 		
-		getDoc()->addRevision(i,s.ucs4_str(),s.length(),0,0);
+		getDoc()->addRevision(i, s.ucs4_str(), 0, 0);
 		++i;
 	}
 

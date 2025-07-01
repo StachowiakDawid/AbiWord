@@ -3,6 +3,7 @@
 /* AbiSource Application Framework
  * Copyright (C) 1998,1999 AbiSource, Inc.
  * Copyright (C) 2004 Tomas Frydrych <tomasfrydrych@yahoo.co.uk>
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -90,13 +91,13 @@ enum AD_HISTORY_STATE: uint8_t
 class ABI_EXPORT AD_Revision
 {
   public:
-	AD_Revision(UT_uint32 iId, UT_UCS4Char * pDesc, time_t start, UT_uint32 iVer = 0)
-		:m_iId(iId),m_pDescription(pDesc), m_tStart(start), m_iVersion(iVer){};
-
-	~AD_Revision(){delete [] m_pDescription;}
+	AD_Revision(UT_uint32 iId, const UT_UCS4Char * pDesc, time_t start, UT_uint32 iVer = 0)
+		:m_iId(iId), m_pDescription(pDesc ? pDesc : std::basic_string<UT_UCS4Char>()), m_tStart(start), m_iVersion(iVer){};
 
 	UT_uint32         getId()const{return m_iId;}
-	UT_UCS4Char *     getDescription() const {return m_pDescription;}
+	const UT_UCS4Char * getDescription() const {
+		return m_pDescription.c_str();
+	}
 
 	// NB: getStartTime() == 0 should be interpreted as 'unknown'
 	time_t            getStartTime() const {return m_tStart;}
@@ -107,7 +108,7 @@ class ABI_EXPORT AD_Revision
 
   private:
 	UT_uint32     m_iId;
-	UT_UCS4Char * m_pDescription;
+	std::basic_string<UT_UCS4Char> m_pDescription;
 	time_t        m_tStart;
 	UT_uint32     m_iVersion;
 };
@@ -232,10 +233,7 @@ public:
 	UT_uint32       getNewUUID32() const;
 	UT_uint64       getNewUUID64() const;
 
-	bool            addRevision(UT_uint32 iId, UT_UCS4Char * pDesc,
-								time_t tStart, UT_uint32 iVersion, bool bGenCR=true);
-
-	bool            addRevision(UT_uint32 iId, const UT_UCS4Char * pDesc, UT_uint32 iLen,
+	bool            addRevision(UT_uint32 iId, const UT_UCS4Char * pDesc,
 								time_t tStart, UT_uint32 iVersion, bool bGenCR=true);
 	bool            addRevision(AD_Revision&& pRev, bool bGenCR = true);
 	virtual bool    createAndSendDocPropCR( const gchar ** pAtts, const gchar ** pProps) = 0;

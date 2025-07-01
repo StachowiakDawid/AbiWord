@@ -329,7 +329,6 @@ void IE_Imp_XML::charData(const gchar *s, int len)
 							UT_DEBUGMSG(("Doing revision \n"));
 							X_CheckError(getDoc()->addRevision(m_currentRevisionId,
 															   buf.ucs4_str(),
-															   buf.size(),
 															   m_currentRevisionTime,
 															   m_currentRevisionVersion));
 

@@ -1265,7 +1265,7 @@ void IE_Imp_AbiWord_1::endElement(const gchar *name)
 		if(m_currentRevisionId != 0) {
 			// the revision had no comment associated, so it was not
 			// added to the doc by the xml paraser
-			X_CheckError(getDoc()->addRevision(m_currentRevisionId, nullptr, 0,
+			X_CheckError(getDoc()->addRevision(m_currentRevisionId, nullptr,
 											   m_currentRevisionTime,
 											   m_currentRevisionVersion, true));
 			m_currentRevisionId = 0;
