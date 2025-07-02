@@ -53,14 +53,15 @@ BeginLayout(FileEditOps, AP_STRING_ID_TB_Standard, AP_PREF_KEY_StandardBarVisibl
 	ToolbarItem(AP_TOOLBAR_ID_EDIT_PASTE)
 	ToolbarItem(AP_TOOLBAR_ID_FMTPAINTER)
 
-	Spacer()
 #ifdef ENABLE_SPELL
-	ToolbarItem(AP_TOOLBAR_ID_SPELLCHECK)
 	Spacer()
+	ToolbarItem(AP_TOOLBAR_ID_SPELLCHECK)
 #endif
+	Spacer()
 	ToolbarItem(AP_TOOLBAR_ID_ZOOM)
 
 #ifndef TOOLKIT_WIN
+	Spacer()
 	ToolbarItem(AP_TOOLBAR_ID_REVISIONS_NEW)
 	ToolbarItem(AP_TOOLBAR_ID_REVISIONS_SELECT)
 	ToolbarItem(AP_TOOLBAR_ID_REVISIONS_SHOW_FINAL)
