@@ -1,6 +1,7 @@
 /* AbiWord
  * Copyright (C) 2000 AbiSource, Inc.
- * 
+ * Copyright (C) 2025 Hubert Figuière
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -95,20 +96,34 @@ void XAP_UnixDialog_DocComparison::_populateWindowData(GtkBuilder* builder)
 {
     const XAP_StringSet * pSS = m_pApp->getStringSet();
     std::string text;
+	gchar* result = nullptr;
+	gchar* path = nullptr;
 	localizeLabelMarkup (GTK_WIDGET(gtk_builder_get_object(builder, "lbDocCompared")), pSS, XAP_STRING_ID_DLG_DocComparison_DocsCompared);
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbDocument1")), getPath1());
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbDocument2")), getPath2());
+	path = getPath1();
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbDocument1")), path);
+	g_free(path);
+	path = getPath2();
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbDocument2")), path);
+	g_free(path);
 	localizeLabelMarkup (GTK_WIDGET(gtk_builder_get_object(builder, "lbResults")), pSS, XAP_STRING_ID_DLG_DocComparison_Results);
 	pSS->getValueUTF8(XAP_STRING_ID_DLG_DocComparison_Relationship, text);
 	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbRelationship")), text.c_str());
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbRelationshipRes")), getResultValue(0));
+	result = getResultValue(0);
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbRelationshipRes")), result);
+	g_free(result);
 	pSS->getValueUTF8(XAP_STRING_ID_DLG_DocComparison_Content, text);
 	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbContent")), text.c_str());
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbContentRes")), getResultValue(1));
+	result = getResultValue(1);
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbContentRes")), result);
+	g_free(result);
 	pSS->getValueUTF8(XAP_STRING_ID_DLG_DocComparison_Fmt, text);
 	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbFormat")), text.c_str());
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbFormatRes")), getResultValue(2));
+	result = getResultValue(2);
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbFormatRes")), result);
+	g_free(result);
 	pSS->getValueUTF8(XAP_STRING_ID_DLG_DocComparison_Styles, text);
 	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbStyles")), text.c_str());
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbStylesRes")),getResultValue(3));
+	result = getResultValue(3);
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbStylesRes")), result);
+	g_free(result);
 }
