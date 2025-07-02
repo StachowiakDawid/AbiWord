@@ -119,8 +119,8 @@ void AP_UnixDialog_Annotation::eventOK ()
 	if (editable_txt && strlen(editable_txt))
 	{
 		setDescription ( editable_txt ) ;
-		g_free(editable_txt);
 	}
+	g_free(editable_txt);
 }
 
 void AP_UnixDialog_Annotation::eventApply ()
