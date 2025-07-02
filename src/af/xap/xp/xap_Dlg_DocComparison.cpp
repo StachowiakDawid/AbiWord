@@ -1,6 +1,7 @@
 /* AbiWord
  * Copyright (C) 2004 Tomas Frydrych <tomasfrydrych@yahoo.co.uk>
- * 
+ * Copyright (C) 2025 Hubert Figuière
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -110,16 +111,16 @@ const char * XAP_Dialog_DocComparison::getFrame2Label() const
 	return m_pSS->getValue(XAP_STRING_ID_DLG_DocComparison_Results);
 }
 
-char * XAP_Dialog_DocComparison::getPath1() const
+std::string XAP_Dialog_DocComparison::getPath1() const
 {
-	UT_return_val_if_fail(m_pDoc1, nullptr);
-	return g_strdup(UT_ellipsisPath(m_pDoc1->getFilename(), 60, 50).c_str());
+	UT_return_val_if_fail(m_pDoc1, "");
+	return UT_ellipsisPath(m_pDoc1->getFilename(), 60, 50);
 }
 
-char * XAP_Dialog_DocComparison::getPath2() const
+std::string XAP_Dialog_DocComparison::getPath2() const
 {
-	UT_return_val_if_fail(m_pDoc2, nullptr);
-	return g_strdup(UT_ellipsisPath(m_pDoc2->getFilename(), 60, 50).c_str());
+	UT_return_val_if_fail(m_pDoc2, "");
+	return UT_ellipsisPath(m_pDoc2->getFilename(), 60, 50);
 }
 
 
@@ -140,13 +141,13 @@ const char * XAP_Dialog_DocComparison::getResultLabel(UT_uint32 indx) const
 }
 
 
-char * XAP_Dialog_DocComparison::getResultValue(UT_uint32 indx) const
+std::string XAP_Dialog_DocComparison::getResultValue(UT_uint32 indx) const
 {
 	UT_return_val_if_fail(m_pSS, nullptr);
-	
-	UT_String S1, S2;
+
 	struct tm * tM;
 	char * s;
+	std::string resultValue;
 
 	switch(indx)
 	{
@@ -154,47 +155,49 @@ char * XAP_Dialog_DocComparison::getResultValue(UT_uint32 indx) const
 			if(m_iVersionOfDiff == 0xffffffff)
 			{
 				// equal
-				return g_strdup(m_pSS->getValue(XAP_STRING_ID_DLG_DocComparison_Identical));
+				m_pSS->getValueUTF8(XAP_STRING_ID_DLG_DocComparison_Identical, resultValue);
+				return resultValue;
 			}
 			else if(m_iVersionOfDiff == 0)
 			{
 				// unrelated
-				return g_strdup(m_pSS->getValue(XAP_STRING_ID_DLG_DocComparison_Unrelated));
+				m_pSS->getValueUTF8(XAP_STRING_ID_DLG_DocComparison_Unrelated, resultValue);
+				return resultValue;
 			}
 			else
 			{
 				// siblings
-				S1 = m_pSS->getValue(XAP_STRING_ID_DLG_DocComparison_Siblings);
-				S1 += "; ";
-				S1 += m_pSS->getValue(XAP_STRING_ID_DLG_DocComparison_Diverging);
+				std::string s1;
+				m_pSS->getValueUTF8(XAP_STRING_ID_DLG_DocComparison_Siblings, s1);
+				s1 += "; ";
+				s1 += m_pSS->getValue(XAP_STRING_ID_DLG_DocComparison_Diverging);
 
 				tM = localtime(&m_tTimeOfDiff);
 				s = (char*)g_try_malloc(30);
 				strftime(s,30,"%c",tM);
 
-				UT_String_sprintf(S2, S1.c_str(), m_iVersionOfDiff, s);
+				resultValue = UT_std_string_sprintf(s1.c_str(), m_iVersionOfDiff, s);
 				FREEP(s);
-				
-				return g_strdup(S2.c_str());
+				return resultValue;
 			}
-			
+
 		case 1: // content
 			if(m_iVersionOfDiff == 0xffffffff)
 			{
 				// test skipped
-				return g_strdup(m_pSS->getValue(XAP_STRING_ID_DLG_DocComparison_TestSkipped));
+				m_pSS->getValueUTF8(XAP_STRING_ID_DLG_DocComparison_TestSkipped, resultValue);
+				return resultValue;
 			}
 			else if(m_iPosOfDiff == 0xffffffff)
 			{
 				// equal
-				return g_strdup(m_pSS->getValue(XAP_STRING_ID_DLG_DocComparison_Identical));
+				m_pSS->getValueUTF8(XAP_STRING_ID_DLG_DocComparison_Identical, resultValue);
+				return resultValue;
 			}
 			else
 			{
 				const char *s2 = m_pSS->getValue(XAP_STRING_ID_DLG_DocComparison_DivergingPos);
-				UT_String_sprintf(S2, s2, m_iPosOfDiff);
-				
-				return g_strdup(S2.c_str());
+				return UT_std_string_sprintf(s2, m_iPosOfDiff);
 			}
 
 		case 2: // fmt
@@ -203,42 +206,45 @@ char * XAP_Dialog_DocComparison::getResultValue(UT_uint32 indx) const
 				// either the docs are know to be equal, or the
 				// content is not known not to be equal
 				// test skipped
-				return g_strdup(m_pSS->getValue(XAP_STRING_ID_DLG_DocComparison_TestSkipped));
+				m_pSS->getValueUTF8(XAP_STRING_ID_DLG_DocComparison_TestSkipped, resultValue);
+				return resultValue;
 			}
 			else if(m_iPosOfFmtDiff == 0xffffffff)
 			{
 				// equal
-				return g_strdup(m_pSS->getValue(XAP_STRING_ID_DLG_DocComparison_Identical));
+				m_pSS->getValueUTF8(XAP_STRING_ID_DLG_DocComparison_Identical, resultValue);
+				return resultValue;
 			}
 			else
 			{
 				const char * s2 = m_pSS->getValue(XAP_STRING_ID_DLG_DocComparison_DivergingPos);
-				UT_String_sprintf(S2, s2, m_iPosOfFmtDiff);
-				
-				return g_strdup(S2.c_str());
+				return UT_std_string_sprintf(s2, m_iPosOfFmtDiff);
 			}
-			
+
 		case 3: // styles
 			if(m_iVersionOfDiff == 0xffffffff)
 			{
 				// test skipped
-				return g_strdup(m_pSS->getValue(XAP_STRING_ID_DLG_DocComparison_TestSkipped));
+				m_pSS->getValueUTF8(XAP_STRING_ID_DLG_DocComparison_TestSkipped, resultValue);
+				return resultValue;
 			}
 			else if(m_bStylesEqual)
 			{
 				// equal
-				return g_strdup(m_pSS->getValue(XAP_STRING_ID_DLG_DocComparison_Identical));
+				m_pSS->getValueUTF8(XAP_STRING_ID_DLG_DocComparison_Identical, resultValue);
+				return resultValue;
 			}
 			else
 			{
-				return g_strdup(m_pSS->getValue(XAP_STRING_ID_DLG_DocComparison_Different));
+				m_pSS->getValueUTF8(XAP_STRING_ID_DLG_DocComparison_Different, resultValue);
+				return resultValue;
 			}
 
 		default:;
 	}
 
 	UT_ASSERT_HARMLESS(UT_SHOULD_NOT_HAPPEN);
-	return nullptr;
+	return resultValue;
 }
 
 

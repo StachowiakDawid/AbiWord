@@ -1,6 +1,6 @@
 /* AbiWord
  * Copyright (C) 2000 AbiSource, Inc.
- * Copyright (C) 2004 Hubert Figuiere
+ * Copyright (C) 2004-2025 Hubert Figuiere
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -129,18 +129,12 @@ void XAP_CocoaDialog_DocComparison::_populateWindowData(void)
 
 - (void)populate
 {
-	const char * path = _xap->getPath1();
-	if(path) {
-		[_doc1 setStringValue:[NSString stringWithUTF8String:path]];
-	}
-	path = _xap->getPath2();
-	if(path) {
-		[_doc2 setStringValue:[NSString stringWithUTF8String:path]];
-	}
-	[_relationshipData setStringValue:[NSString stringWithUTF8String:_xap->getResultValue(0)]];
-	[_contentData setStringValue:[NSString stringWithUTF8String:_xap->getResultValue(1)]];
-	[_formatData setStringValue:[NSString stringWithUTF8String:_xap->getResultValue(2)]];
-	[_stylesData setStringValue:[NSString stringWithUTF8String:_xap->getResultValue(3)]];
+	[_doc1 setStringValue:[NSString stringWithUTF8String:_xap->getPath1().c_str()]];
+	[_doc2 setStringValue:[NSString stringWithUTF8String:_xap->getPath2().c_str()]];
+	[_relationshipData setStringValue:[NSString stringWithUTF8String:_xap->getResultValue(0).c_str()]];
+	[_contentData setStringValue:[NSString stringWithUTF8String:_xap->getResultValue(1).c_str()]];
+	[_formatData setStringValue:[NSString stringWithUTF8String:_xap->getResultValue(2).c_str()]];
+	[_stylesData setStringValue:[NSString stringWithUTF8String:_xap->getResultValue(3).c_str()]];
 }
 
 

@@ -79,28 +79,20 @@ BOOL XAP_Win32Dialog_DocComparison::_onInitDialog(HWND /*hWnd*/, WPARAM /*wParam
 	setDlgItemText(XAP_RID_DIALOG_DOCCOMPARISON_FRAME2,getFrame2Label());
 
 	// fill frame 1
-	char * p = getPath1();
-	if (!p) p = g_strdup("FIXME: Invalid Path1");
-    setDlgItemText(XAP_RID_DIALOG_DOCCOMPARISON_PATH1,p);
-	FREEP(p);
+    setDlgItemText(XAP_RID_DIALOG_DOCCOMPARISON_PATH1, getPath1().c_str());
 
-	p = getPath2();
-	if (!p) p = g_strdup("FIXME: Invalid Path2");
-	setDlgItemText(XAP_RID_DIALOG_DOCCOMPARISON_PATH2,p);
-	FREEP(p);
-	
+	setDlgItemText(XAP_RID_DIALOG_DOCCOMPARISON_PATH2, getPath2().c_str());
+
 	// fill frame 2
 	UT_uint32 i;
 	UT_uint32 k1 = XAP_RID_DIALOG_DOCCOMPARISON_LABEL_RELATIONSHIP;
 	UT_uint32 k2 = XAP_RID_DIALOG_DOCCOMPARISON_RELATIONSHIP;
-								  
+
 	for(i = 0; i < getResultCount(); i++)
 	{
 		setDlgItemText(k1 + i,getResultLabel(i));
-		
-		char * t = getResultValue(i);
-		setDlgItemText(k2 + i, t);
-		FREEP(t);
+
+		setDlgItemText(k2 + i, getResultValue(i).c_str());
 	}
 
     centerDialog();

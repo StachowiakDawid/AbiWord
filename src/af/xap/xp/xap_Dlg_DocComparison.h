@@ -1,5 +1,6 @@
 /* AbiWord
  * Copyright (C) 2004 Tomas Frydrych <tomasfrydrych@yahoo.co.uk>
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_DIALOG_DOCCOMPARISON_H
-#define XAP_DIALOG_DOCCOMPARISON_H
+#pragma once
 
 #include "xap_Dialog.h"
 #include "ut_vector.h"
@@ -69,12 +69,12 @@ class ABI_EXPORT XAP_Dialog_DocComparison : public XAP_Dialog_NonPersistent
 	const char * getFrame1Label() const;
 	const char * getFrame2Label() const;
 
-	char *       getPath1() const;
-	char *       getPath2() const;
+	std::string getPath1() const;
+	std::string getPath2() const;
 
 	UT_uint32    getResultCount() const {return iResultCount;}
 	const char * getResultLabel(UT_uint32 n) const;
-	char *       getResultValue(UT_uint32 n) const;
+	std::string getResultValue(UT_uint32 n) const;
 
   private:
 	const AD_Document *   m_pDoc1;
@@ -87,5 +87,3 @@ class ABI_EXPORT XAP_Dialog_DocComparison : public XAP_Dialog_NonPersistent
 	UT_uint32             m_iPosOfFmtDiff;
 	bool                  m_bStylesEqual;
 };
-
-#endif /* XAP_DIALOG_DOCCOMPARISON_H */
