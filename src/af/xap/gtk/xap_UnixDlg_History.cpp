@@ -1,7 +1,8 @@
 /* AbiWord
  * Copyright (C) 2000 AbiSource, Inc.
  * Copyright (C) 2004 Martin Sevior <msevior@physics.unimelb.edu.au>
- * 
+ * Copyright (C) 2025 Hubert Figuière
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -161,14 +162,20 @@ void XAP_UnixDialog_History::_fillHistoryTree(void)
     for (i = 0; i < getListItemCount(); i++)
 	{
 		// Add a new row to the model
-		gchar *itime = g_locale_to_utf8(getListValue(i,1), -1, nullptr, nullptr, nullptr);
+		gchar *value = getListValue(i,1);
+		gchar *itime = g_locale_to_utf8(value, -1, nullptr, nullptr, nullptr);
+		g_clear_pointer(&value, g_free);
 		gtk_tree_store_append (model, &iter,nullptr);
-		gtk_tree_store_set (model, &iter, 0, getListValue(i,0), 
+		value = getListValue(i, 0);
+		gchar *value2 = getListValue(i, 2);
+		gtk_tree_store_set (model, &iter, 0, value,
 							1,itime ,
-							2,getListValue(i,2) ,
-							3,getListItemId(i) ,
+							2, value2,
+							3, getListItemId(i),
 							-1);
-    g_free(itime);
+		g_free(value);
+		g_free(value2);
+		g_free(itime);
 	}
     m_wTreeView = gtk_tree_view_new_with_model (GTK_TREE_MODEL (model));
 
@@ -202,20 +209,33 @@ void XAP_UnixDialog_History::_fillHistoryTree(void)
 
 void XAP_UnixDialog_History::_populateWindowData(GtkBuilder* builder)
 {
+	gchar* headerValue = nullptr;
     const XAP_StringSet * pSS = m_pApp->getStringSet();
 	localizeLabelMarkup (GTK_WIDGET(gtk_builder_get_object(builder, "lbDocumentDetails")), pSS, XAP_STRING_ID_DLG_History_DocumentDetails);
 	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbDocumentName")), getHeaderLabel(0));
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbDocNameVal")), getHeaderValue(0));
+	headerValue = getHeaderValue(0);
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbDocNameVal")), headerValue);
+	g_free(headerValue);
 	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbVersion")), getHeaderLabel(1));
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbVersionVal")), getHeaderValue(1));
+	headerValue = getHeaderValue(1);
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbVersionVal")), headerValue);
+	g_free(headerValue);
 	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbCreated")), getHeaderLabel(2));
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbCreatedVal")), getHeaderValue(2));
+	headerValue = getHeaderValue(2);
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbCreatedVal")), headerValue);
+	g_free(headerValue);
 	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbSaved")), getHeaderLabel(3));
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbSavedVal")), getHeaderValue(3));
+	headerValue = getHeaderValue(3);
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbSavedVal")), headerValue);
+	g_free(headerValue);
 	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbEditTime")), getHeaderLabel(4));
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbEditTimeVal")), getHeaderValue(4));
+	headerValue = getHeaderValue(4);
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbEditTimeVal")), headerValue);
+	g_free(headerValue);
 	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbIdentifier")), getHeaderLabel(5));
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbIdentifierVal")), getHeaderValue(5));
+	headerValue = getHeaderValue(5);
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbIdentifierVal")), headerValue);
+	g_free(headerValue);
 	setLabelMarkup (GTK_WIDGET(gtk_builder_get_object(builder, "lbVersionHistory")), getListTitle());
 	localizeButton(GTK_WIDGET(gtk_builder_get_object(builder, "okbutton1")), pSS, XAP_STRING_ID_DLG_History_Restore);
 }
