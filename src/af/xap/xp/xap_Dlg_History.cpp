@@ -69,52 +69,52 @@ const char * XAP_Dialog_History::getHeaderLabel(UT_uint32 indx) const
 }
 
 
-char * XAP_Dialog_History::getHeaderValue(UT_uint32 indx) const
+std::string XAP_Dialog_History::getHeaderValue(UT_uint32 indx) const
 {
-	UT_return_val_if_fail(m_pDoc, nullptr);
-	
-	UT_String S;
+	UT_return_val_if_fail(m_pDoc, "");
+
 	time_t tT;
 	struct tm * tM;
-	char * s;
 
 	switch(indx)
 	{
 		case 0:
-			return g_strdup(UT_ellipsisPath(m_pDoc->getFilename(), 45, 35).c_str());
+			return UT_ellipsisPath(m_pDoc->getFilename(), 45, 35);
 
 		case 1:
-			UT_String_sprintf(S,"%d",m_pDoc->getDocVersion());
-			return g_strdup(S.c_str());
+			return UT_std_string_sprintf("%d",m_pDoc->getDocVersion());
 
 		case 2:
 			{
 				const UT_UUID * pUUID = m_pDoc->getDocUUID();
-				UT_return_val_if_fail(pUUID, nullptr);
-				
+				UT_return_val_if_fail(pUUID, "");
+
 				tT = pUUID->getTime();
 				tM = localtime(&tT);
-				s = (char*)g_try_malloc(30);
+				char* s = (char*)g_try_malloc(30);
 				if(!s)
-					return nullptr;
+					return "";
 
 				size_t len = strftime(s,30,"%c",tM);
 				if(!len)
 				{
 					FREEP(s);
-					return nullptr;
+					return "";
 				}
 
-				return s;
+				std::string value(s);
+				FREEP(s);
+
+				return value;
 			}
-			
+
 		case 3:
 			{
 				tT = m_pDoc->getLastSavedTime();
 				tM = localtime(&tT);
-				s = (char*)g_try_malloc(30);
+				char* s = (char*)g_try_malloc(30);
 				if(!s)
-					return nullptr;
+					return "";
 
 				size_t len = strftime(s,30,"%c",tM);
 				if(!len)
@@ -122,7 +122,10 @@ char * XAP_Dialog_History::getHeaderValue(UT_uint32 indx) const
 					FREEP(s);
 					return nullptr;
 				}
-				return s;
+				std::string value(s);
+				FREEP(s);
+
+				return value;
 			}
 		case 4:
 			{
@@ -130,19 +133,19 @@ char * XAP_Dialog_History::getHeaderValue(UT_uint32 indx) const
 				time_t iHours = iEditTime / 3600;
 				time_t iMinutes = (iEditTime % 3600)/60;
 				time_t iSeconds = (iEditTime % 3600) % 60;
-				
-				UT_String_sprintf(S,"%.2d:%.2d:%.2d", static_cast<UT_sint32>(iHours), static_cast<UT_sint32>(iMinutes), static_cast<UT_sint32>(iSeconds));
-				return g_strdup(S.c_str());
+
+				return UT_std_string_sprintf("%.2d:%.2d:%.2d", static_cast<UT_sint32>(iHours), static_cast<UT_sint32>(iMinutes), static_cast<UT_sint32>(iSeconds));
 			}
 
 		case 5:
-			return g_strdup(m_pDoc->getDocUUIDString());
-			
-		default:;
+			return m_pDoc->getDocUUIDString();
+
+		default:
+			break;
 	}
 
 	UT_ASSERT(UT_SHOULD_NOT_HAPPEN);
-	return nullptr;
+	return "";
 }
 
 
@@ -188,26 +191,22 @@ UT_uint32 XAP_Dialog_History::getListItemCount() const
 }
 
 
-char * XAP_Dialog_History::getListValue(UT_uint32 item, UT_uint32 column) const
+std::string XAP_Dialog_History::getListValue(UT_uint32 item, UT_uint32 column) const
 {
-	UT_return_val_if_fail(m_pDoc, nullptr);
+	UT_return_val_if_fail(m_pDoc, "");
 
-	UT_String S;
 	time_t tT;
 	struct tm * tM;
-	char * s;
-	
+
 	switch(column)
 	{
 		case 0:
-			UT_String_sprintf(S,"%d",m_pDoc->getHistoryNthId(item));
-			return g_strdup(S.c_str());
-			
+			return UT_std_string_sprintf("%d",m_pDoc->getHistoryNthId(item));
 		case 1:
 			{
 				tT = m_pDoc->getHistoryNthTimeStarted(item);
 				tM = localtime(&tT);
-				s = (char*)g_try_malloc(30);
+				char* s = (char*)g_try_malloc(30);
 				if(!s)
 					return nullptr;
 
@@ -215,28 +214,28 @@ char * XAP_Dialog_History::getListValue(UT_uint32 item, UT_uint32 column) const
 				if(!len)
 				{
 					FREEP(s);
-					return nullptr;
+					return "";
 				}
-
-				return s;
+				std::string value(s);
+				FREEP(s);
+				return value;
 			}
 
 		case 2:
 			{
-				UT_return_val_if_fail(m_pSS, nullptr);
+				UT_return_val_if_fail(m_pSS, "");
 
-				const char * pszS;
+				std::string value;
 				if(m_pDoc->getHistoryNthAutoRevisioned(item))
-					pszS = m_pSS->getValue(XAP_STRING_ID_DLG_MB_Yes);
+					m_pSS->getValueUTF8(XAP_STRING_ID_DLG_MB_Yes, value);
 				else
-					pszS = m_pSS->getValue(XAP_STRING_ID_DLG_MB_No);
-					
-				UT_return_val_if_fail(pszS, nullptr);
+					m_pSS->getValueUTF8(XAP_STRING_ID_DLG_MB_No, value);
 
-				return g_strdup(pszS);
+				return value;
 			}
-			
-		default:;
+
+		default:
+			break;
 	}
 
 	UT_ASSERT(UT_SHOULD_NOT_HAPPEN);

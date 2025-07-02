@@ -91,10 +91,9 @@ BOOL XAP_Win32Dialog_History::_onInitDialog(HWND hWnd, WPARAM /*wParam*/, LPARAM
 	for(i = 0; i < getHeaderItemCount(); i++)
 	{
 		setDlgItemText(k1 + i,getHeaderLabel(i));
-		
-		char * t = getHeaderValue(i);
+
+		char * t = getHeaderValue(i).c_str();
 		setDlgItemText(hWnd,k2 + i, t); // !
-		FREEP(t);
 	}
 
 	// set the column headings
@@ -132,7 +131,7 @@ BOOL XAP_Win32Dialog_History::_onInitDialog(HWND hWnd, WPARAM /*wParam*/, LPARAM
 		for(UT_uint32 j = 0; j < getListColumnCount(); j++)
 		{
 			item.iSubItem = j;
-			t = getListValue(i,j);
+			t = getListValue(i,j).c_str();
 			str.fromUTF8(t);
 			item.pszText = (wchar_t *) str.c_str();
             item.mask = LVIF_TEXT;
@@ -147,8 +146,6 @@ BOOL XAP_Win32Dialog_History::_onInitDialog(HWND hWnd, WPARAM /*wParam*/, LPARAM
 			{
 				SendMessageW(h, LVM_SETITEMW, 0, (LPARAM)&item);
 			}
-			
-			FREEP(t);
 		}
 	}
 	

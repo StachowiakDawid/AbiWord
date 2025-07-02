@@ -80,7 +80,7 @@ class ABI_EXPORT XAP_Dialog_History : public XAP_Dialog_NonPersistent
 
 	UT_uint32    getHeaderItemCount() const {return iHeaderItemCount;}
 	const char * getHeaderLabel(UT_uint32 indx) const;
-	char *       getHeaderValue(UT_uint32 indx) const;
+	std::string getHeaderValue(UT_uint32 indx) const;
 
 	UT_uint32    getButtonCount() const {return iButtonCount;}
 	const char * getButtonLabel(UT_uint32 indx) const;
@@ -89,7 +89,7 @@ class ABI_EXPORT XAP_Dialog_History : public XAP_Dialog_NonPersistent
 	UT_uint32    getListColumnCount() const {return iListColumnCount;}
 	const char * getListHeader(UT_uint32 column) const;
 	UT_uint32    getListItemCount() const;
-	char *       getListValue(UT_uint32 item, UT_uint32 column) const;
+	std::string getListValue(UT_uint32 item, UT_uint32 column) const;
 	UT_uint32    getListItemId(UT_uint32 item) const;
 
 	const char * getWindowLabel() const;

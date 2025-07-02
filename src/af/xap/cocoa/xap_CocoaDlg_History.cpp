@@ -1,8 +1,8 @@
 /* AbiWord
  * Copyright (C) 2000 AbiSource, Inc.
  * Copyright (C) 2004 Martin Sevior <msevior@physics.unimelb.edu.au>
- * Copyright (C) 2004, 2009 Hubert Figuiere
- * 
+ * Copyright (C) 2004, 2009-2025 Hubert Figuière
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -168,17 +168,17 @@ static void addCol(NSTableView *table, XAP_CocoaDialog_History* xap, int idx)
 - (void)populate
 {
 	[_docNameLabel setStringValue:[NSString stringWithUTF8String:_xap->getHeaderLabel(0)]];
-	[_docNameData setStringValue:[NSString stringWithUTF8String:_xap->getHeaderValue(0)]];
+	[_docNameData setStringValue:[NSString stringWithUTF8String:_xap->getHeaderValue(0).c_str()]];
 	[_versionLabel setStringValue:[NSString stringWithUTF8String:_xap->getHeaderLabel(1)]];
-	[_versionData setStringValue:[NSString stringWithUTF8String:_xap->getHeaderValue(1)]];
+	[_versionData setStringValue:[NSString stringWithUTF8String:_xap->getHeaderValue(1).c_str()]];
 	[_createdLabel setStringValue:[NSString stringWithUTF8String:_xap->getHeaderLabel(2)]];
-	[_createdData setStringValue:[NSString stringWithUTF8String:_xap->getHeaderValue(2)]];
+	[_createdData setStringValue:[NSString stringWithUTF8String:_xap->getHeaderValue(2).c_str()]];
 	[_lastSavedLabel setStringValue:[NSString stringWithUTF8String:_xap->getHeaderLabel(3)]];
-	[_lastSavedData setStringValue:[NSString stringWithUTF8String:_xap->getHeaderValue(3)]];
+	[_lastSavedData setStringValue:[NSString stringWithUTF8String:_xap->getHeaderValue(3).c_str()]];
 	[_editTimeLabel setStringValue:[NSString stringWithUTF8String:_xap->getHeaderLabel(4)]];
-	[_editTimeData setStringValue:[NSString stringWithUTF8String:_xap->getHeaderValue(4)]];
+	[_editTimeData setStringValue:[NSString stringWithUTF8String:_xap->getHeaderValue(4).c_str()]];
 	[_identifierLabel setStringValue:[NSString stringWithUTF8String:_xap->getHeaderLabel(5)]];
-	[_identifierData setStringValue:[NSString stringWithUTF8String:_xap->getHeaderValue(5)]];
+	[_identifierData setStringValue:[NSString stringWithUTF8String:_xap->getHeaderValue(5).c_str()]];
 	[_historyBox setTitle:[NSString stringWithUTF8String:_xap->getListTitle()]];
 	[_historyList setDataSource:self];	
 }
@@ -190,7 +190,7 @@ static void addCol(NSTableView *table, XAP_CocoaDialog_History* xap, int idx)
 	UT_UNUSED(aTableView);
 	id i = [aTableColumn identifier];
 	int col = [ i longValue];
-	NSString *s = [NSString stringWithUTF8String:_xap->getListValue(rowIndex, col)];
+	NSString *s = [NSString stringWithUTF8String:_xap->getListValue(rowIndex, col).c_str()];
 
 	return s;
 }

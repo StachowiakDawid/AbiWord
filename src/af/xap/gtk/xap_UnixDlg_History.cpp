@@ -162,19 +162,13 @@ void XAP_UnixDialog_History::_fillHistoryTree(void)
     for (i = 0; i < getListItemCount(); i++)
 	{
 		// Add a new row to the model
-		gchar *value = getListValue(i,1);
-		gchar *itime = g_locale_to_utf8(value, -1, nullptr, nullptr, nullptr);
-		g_clear_pointer(&value, g_free);
+		gchar *itime = g_locale_to_utf8(getListValue(i, 1).c_str(), -1, nullptr, nullptr, nullptr);
 		gtk_tree_store_append (model, &iter,nullptr);
-		value = getListValue(i, 0);
-		gchar *value2 = getListValue(i, 2);
-		gtk_tree_store_set (model, &iter, 0, value,
-							1,itime ,
-							2, value2,
+		gtk_tree_store_set (model, &iter, 0, getListValue(i, 0).c_str(),
+							1, itime,
+							2, getListValue(i, 2).c_str(),
 							3, getListItemId(i),
 							-1);
-		g_free(value);
-		g_free(value2);
 		g_free(itime);
 	}
     m_wTreeView = gtk_tree_view_new_with_model (GTK_TREE_MODEL (model));
@@ -209,33 +203,21 @@ void XAP_UnixDialog_History::_fillHistoryTree(void)
 
 void XAP_UnixDialog_History::_populateWindowData(GtkBuilder* builder)
 {
-	gchar* headerValue = nullptr;
     const XAP_StringSet * pSS = m_pApp->getStringSet();
+
 	localizeLabelMarkup (GTK_WIDGET(gtk_builder_get_object(builder, "lbDocumentDetails")), pSS, XAP_STRING_ID_DLG_History_DocumentDetails);
 	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbDocumentName")), getHeaderLabel(0));
-	headerValue = getHeaderValue(0);
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbDocNameVal")), headerValue);
-	g_free(headerValue);
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbDocNameVal")), getHeaderValue(0).c_str());
 	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbVersion")), getHeaderLabel(1));
-	headerValue = getHeaderValue(1);
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbVersionVal")), headerValue);
-	g_free(headerValue);
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbVersionVal")), getHeaderValue(1).c_str());
 	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbCreated")), getHeaderLabel(2));
-	headerValue = getHeaderValue(2);
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbCreatedVal")), headerValue);
-	g_free(headerValue);
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbCreatedVal")), getHeaderValue(2).c_str());
 	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbSaved")), getHeaderLabel(3));
-	headerValue = getHeaderValue(3);
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbSavedVal")), headerValue);
-	g_free(headerValue);
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbSavedVal")), getHeaderValue(3).c_str());
 	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbEditTime")), getHeaderLabel(4));
-	headerValue = getHeaderValue(4);
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbEditTimeVal")), headerValue);
-	g_free(headerValue);
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbEditTimeVal")), getHeaderValue(4).c_str());
 	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbIdentifier")), getHeaderLabel(5));
-	headerValue = getHeaderValue(5);
-	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbIdentifierVal")), headerValue);
-	g_free(headerValue);
+	gtk_label_set_text (GTK_LABEL(gtk_builder_get_object(builder, "lbIdentifierVal")), getHeaderValue(5).c_str());
 	setLabelMarkup (GTK_WIDGET(gtk_builder_get_object(builder, "lbVersionHistory")), getListTitle());
 	localizeButton(GTK_WIDGET(gtk_builder_get_object(builder, "okbutton1")), pSS, XAP_STRING_ID_DLG_History_Restore);
 }
