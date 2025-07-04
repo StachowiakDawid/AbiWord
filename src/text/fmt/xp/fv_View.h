@@ -384,7 +384,7 @@ public:
 	void            getTextInCurrentSection(UT_GrowBuf & buf) const;
 	void            getTextInDocument(UT_GrowBuf & buf) const;
 	bool            getLineBounds(PT_DocPosition pos, PT_DocPosition *start, PT_DocPosition *end);
-	UT_UCS4Char getChar(PT_DocPosition pos, UT_sint32 *x = nullptr, UT_sint32 *y = nullptr, UT_uint32 *width = nullptr, UT_uint32 *height = nullptr);
+	UT_UCS4Char getChar(PT_DocPosition pos, UT_sint32 *x = nullptr, UT_sint32 *y = nullptr, UT_uint32 *width = nullptr, UT_uint32 *height = nullptr) const;
 
 // ----------------------
 	FL_DocLayout*	getLayout() const;

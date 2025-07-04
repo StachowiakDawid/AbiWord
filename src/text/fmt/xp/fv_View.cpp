@@ -2401,7 +2401,7 @@ void FV_View:: getTextInDocument(UT_GrowBuf & buf) const
 	return TRUE;
 }
 
-UT_UCS4Char FV_View::getChar(PT_DocPosition pos, UT_sint32 *x, UT_sint32 *y, UT_uint32 *width, UT_uint32 *height)
+UT_UCS4Char FV_View::getChar(PT_DocPosition pos, UT_sint32 *x, UT_sint32 *y, UT_uint32 *width, UT_uint32 *height) const
 {
   if (x || y || height)
   {
