@@ -372,8 +372,8 @@ public:
 	{ return m_Selection.isSelectAll();}
 	virtual void		cmdUnselectSelection(void) override;
 	void				getDocumentRangeOfCurrentSelection(PD_DocumentRange * pdr) const;
-	PT_DocPosition		mapDocPos( FV_DocPos dp );
-	PT_DocPosition		mapDocPosSimple( FV_DocPos dp );
+	PT_DocPosition		mapDocPos( FV_DocPos dp ) const;
+	PT_DocPosition		mapDocPosSimple( FV_DocPos dp ) const;
 	PT_DocPosition saveSelectedImage (const char * toFile );
 	PT_DocPosition saveSelectedImage(UT_ConstByteBufPtr & outByteBuf);
 	PT_DocPosition getSelectedImage(const char **dataId) const;
@@ -383,7 +383,7 @@ public:
 	void            getTextInCurrentBlock(UT_GrowBuf & buf) const;
 	void            getTextInCurrentSection(UT_GrowBuf & buf) const;
 	void            getTextInDocument(UT_GrowBuf & buf) const;
-	bool            getLineBounds(PT_DocPosition pos, PT_DocPosition *start, PT_DocPosition *end);
+	bool            getLineBounds(PT_DocPosition pos, PT_DocPosition *start, PT_DocPosition *end) const;
 	UT_UCS4Char getChar(PT_DocPosition pos, UT_sint32 *x = nullptr, UT_sint32 *y = nullptr, UT_uint32 *width = nullptr, UT_uint32 *height = nullptr) const;
 
 // ----------------------
@@ -742,7 +742,7 @@ public:
 
 // ----------------------
 
-	FV_DocCount 		countWords(bool bActuallyCountWords = true);
+	FV_DocCount 		countWords(bool bActuallyCountWords = true) const;
 
 // -----------------------
 
@@ -768,7 +768,7 @@ public:
 	ViewMode 			getViewMode (void) const  {return m_viewMode;}
 	bool				isPreview(void) const {return VIEW_PREVIEW == m_viewMode;}
 	void				setPreviewMode(PreViewMode pre) {m_previewMode = pre;}
-	PreViewMode 		getPreviewMode(void) { return m_previewMode;}
+	PreViewMode 		getPreviewMode(void) const { return m_previewMode;}
 
 	UT_uint32           getTabToggleAreaWidth() const;
 	UT_sint32           getNormalModeXOffset() const;

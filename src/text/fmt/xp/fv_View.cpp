@@ -2371,7 +2371,7 @@ void FV_View:: getTextInDocument(UT_GrowBuf & buf) const
 /*!
  * This method returns the bounds of a line, given an offset.
  */
-	bool FV_View::getLineBounds(PT_DocPosition pos, PT_DocPosition *start, PT_DocPosition *end)
+bool FV_View::getLineBounds(PT_DocPosition pos, PT_DocPosition *start, PT_DocPosition *end) const
 {
 	fl_BlockLayout *pBlock = nullptr;
 	fp_Run *pRun = nullptr;
@@ -2873,11 +2873,11 @@ PT_DocPosition FV_View::saveSelectedImage (const char * toFile)
   return dPos ;
 }
 
-PT_DocPosition FV_View::mapDocPos( FV_DocPos dp ) {
+PT_DocPosition FV_View::mapDocPos( FV_DocPos dp ) const {
 	return ( _getDocPos( dp ));
 	}
 
-PT_DocPosition FV_View::mapDocPosSimple( FV_DocPos dp ) {
+PT_DocPosition FV_View::mapDocPosSimple( FV_DocPos dp ) const {
 	return ( _getDocPos( dp, false ));
 	}
 
@@ -11056,7 +11056,7 @@ static bool s_notChar(UT_UCS4Char c)
  \return structure with word counts
  Count words in document (or selection).
 */
-FV_DocCount FV_View::countWords(bool bActuallyCountWords)
+FV_DocCount FV_View::countWords(bool bActuallyCountWords) const
 {
 	FV_DocCount wCount;
 	memset(&wCount,0,sizeof(wCount));
