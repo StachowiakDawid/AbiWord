@@ -1,6 +1,7 @@
 /* -*- mode: C++; tab-width: 4; c-basic-offset: 4;  indent-tabs-mode: t -*- */
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -169,7 +170,7 @@ pf_Frag * pf_Fragments::getLast() const
 	return find( sizeDocument() - 1 ).value();
 }
 
-void pf_Fragments::insertFrag(pf_Frag * pfPlace, pf_Frag * pfNew)
+void pf_Fragments::insertFrag(const pf_Frag * pfPlace, pf_Frag * pfNew)
 {
 	// insert the new fragment after the given fragment.
 	UT_return_if_fail (pfPlace);
@@ -183,7 +184,7 @@ void pf_Fragments::insertFrag(pf_Frag * pfPlace, pf_Frag * pfNew)
 	//	verifyDoc();
 }
 
-void pf_Fragments::insertFragBefore(pf_Frag * pfPlace, pf_Frag * pfNew)
+void pf_Fragments::insertFragBefore(const pf_Frag * pfPlace, pf_Frag * pfNew)
 {
 	// insert the new fragment after the given fragment.
 	UT_return_if_fail (pfPlace);
@@ -197,7 +198,7 @@ void pf_Fragments::insertFragBefore(pf_Frag * pfPlace, pf_Frag * pfNew)
 	//	verifyDoc();
 }
 
-void pf_Fragments::unlinkFrag(pf_Frag * pf)
+void pf_Fragments::unlinkFrag(const pf_Frag * pf)
 {
 	// NOTE:  it is the caller's responsibility to delete pf if appropriate.
         xxx_UT_DEBUGMSG(("Unlinking frag %p \n",pf));
@@ -808,7 +809,7 @@ void pf_Fragments::verifyDoc(void) const
  * @params pf_Frag * is a pointer to Fragment for which we wish to calculate
  * the size of the left side of it's location within the tree.
  */
-PT_DocPosition pf_Fragments::_calculateLeftSize( pf_Frag * pf) const
+PT_DocPosition pf_Fragments::_calculateLeftSize(const pf_Frag * pf) const
 {
   Node* x = pf->_getNode();
   UT_ASSERT(x != nullptr);

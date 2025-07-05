@@ -301,7 +301,7 @@ bool pt_PieceTable::insertStruxNoUpdateBefore(const pf_Frag_Strux* pfs, PTStruxT
 	return true;
 }
 
-void pt_PieceTable::_unlinkFrag(pf_Frag * pf,
+void pt_PieceTable::_unlinkFrag(const pf_Frag * pf,
 								pf_Frag ** ppfEnd, UT_uint32 * pfragOffsetEnd)
 {
 	// unlink the given fragment from the fragment list.

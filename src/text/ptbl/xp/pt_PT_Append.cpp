@@ -449,7 +449,7 @@ bool pt_PieceTable::appendFmtMark(void)
 	return true;
 }
 
-bool pt_PieceTable::insertStruxBeforeFrag(pf_Frag * pF, PTStruxType pts,
+bool pt_PieceTable::insertStruxBeforeFrag(const pf_Frag * pF, PTStruxType pts,
 										  const PP_PropertyVector & attributes, pf_Frag_Strux ** ppfs_ret)
 {
 	UT_return_val_if_fail(pF , false);
@@ -482,7 +482,7 @@ bool pt_PieceTable::insertStruxBeforeFrag(pf_Frag * pF, PTStruxType pts,
 }
 
 
-bool pt_PieceTable::insertSpanBeforeFrag(pf_Frag * pf, const UT_UCS4Char * p, UT_uint32 length)
+bool pt_PieceTable::insertSpanBeforeFrag(const pf_Frag * pf, const UT_UCS4Char * p, UT_uint32 length)
 {
 	// can only be used while loading the document
 	UT_return_val_if_fail (m_pts==PTS_Loading, false);
@@ -543,7 +543,7 @@ bool pt_PieceTable::insertSpanBeforeFrag(pf_Frag * pf, const UT_UCS4Char * p, UT
 	return true;
 }
 
-bool pt_PieceTable::insertObjectBeforeFrag(pf_Frag * pF, PTObjectType pto,
+bool pt_PieceTable::insertObjectBeforeFrag(const pf_Frag * pF, PTObjectType pto,
 										   const PP_PropertyVector & attributes)
 {
 	// cannot insert before first fragment
@@ -568,7 +568,7 @@ bool pt_PieceTable::insertObjectBeforeFrag(pf_Frag * pF, PTObjectType pto,
 	return true;
 }
 
-bool pt_PieceTable::insertFmtMarkBeforeFrag(pf_Frag * pF)
+bool pt_PieceTable::insertFmtMarkBeforeFrag(const pf_Frag * pF)
 {
 	// cannot insert before first fragment
 	UT_return_val_if_fail(pF && pF->getPrev() && pF != m_fragments.getFirst(), false);
@@ -582,7 +582,7 @@ bool pt_PieceTable::insertFmtMarkBeforeFrag(pf_Frag * pF)
 }
 
 
-bool pt_PieceTable::insertFmtMarkBeforeFrag(pf_Frag * pF, const PP_PropertyVector & attributes)
+bool pt_PieceTable::insertFmtMarkBeforeFrag(const pf_Frag * pF, const PP_PropertyVector & attributes)
 {
 	// cannot insert before first fragment
 	UT_return_val_if_fail(pF && pF->getPrev() && pF != m_fragments.getFirst(), false);

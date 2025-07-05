@@ -1,5 +1,7 @@
+/* -*- mode: C++; tab-width: 4; c-basic-offset: 4;  indent-tabs-mode: t -*- */
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -43,9 +45,9 @@ public:
 	~pf_Fragments();
 
 	void					appendFrag(pf_Frag * pf);
-	void					insertFrag(pf_Frag * pfPlace, pf_Frag * pfNew);
-	void					insertFragBefore(pf_Frag * pfPlace, pf_Frag * pfNew);
-	void					unlinkFrag(pf_Frag * pf);
+	void					insertFrag(const pf_Frag * pfPlace, pf_Frag * pfNew);
+	void					insertFragBefore(const pf_Frag * pfPlace, pf_Frag * pfNew);
+	void					unlinkFrag(const pf_Frag * pf);
 	// Call this to purge ALL the fragments. Likely before the destructor.
 	void                                    purgeFrags();
 	pf_Frag *               findFirstFragBeforePos(PT_DocPosition pos) const;
@@ -165,7 +167,7 @@ private:
 	void _leftRotate(Node* x);
 	void _rightRotate(Node* x);
 	PT_DocPosition _calculateSize(Node* x) const;
-	PT_DocPosition _calculateLeftSize(pf_Frag * pf) const;
+	PT_DocPosition _calculateLeftSize(const pf_Frag * pf) const;
 #ifdef DEBUG
 	int _countBlackNodes(const Iterator it) const;
 #endif

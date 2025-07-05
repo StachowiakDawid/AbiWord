@@ -284,14 +284,14 @@ public:
 	bool					appendFmtMark(void);
 	bool					appendStyle(const PP_PropertyVector & attributes);
 
-	bool					insertStruxBeforeFrag(pf_Frag * pF, PTStruxType pts,
+	bool					insertStruxBeforeFrag(const pf_Frag * pF, PTStruxType pts,
 												  const PP_PropertyVector & attributes,
                                                   pf_Frag_Strux ** ppfs_ret = nullptr);
-	bool					insertSpanBeforeFrag(pf_Frag * pF, const UT_UCS4Char * p, UT_uint32 length);
-	bool					insertObjectBeforeFrag(pf_Frag * pF, PTObjectType pto,
+	bool					insertSpanBeforeFrag(const pf_Frag * pF, const UT_UCS4Char * p, UT_uint32 length);
+	bool					insertObjectBeforeFrag(const pf_Frag * pF, PTObjectType pto,
 												   const PP_PropertyVector & attributes);
-	bool					insertFmtMarkBeforeFrag(pf_Frag * pF);
-	bool					insertFmtMarkBeforeFrag(pf_Frag * pF, const PP_PropertyVector & attributes);
+	bool					insertFmtMarkBeforeFrag(const pf_Frag * pF);
+	bool					insertFmtMarkBeforeFrag(const pf_Frag * pF, const PP_PropertyVector & attributes);
 
 	bool					removeStyle(const gchar * name);
 	size_t					getStyleCount(void) const;
@@ -442,7 +442,7 @@ protected:
 	bool					_deleteSpan(pf_Frag_Text * pft, UT_uint32 fragOffset,
 										PT_BufIndex bi, UT_uint32 length,
 										pf_Frag ** ppfEnd, UT_uint32 * pfragOffsetEnd);
-	void					_unlinkFrag(pf_Frag * pf,
+	void					_unlinkFrag(const pf_Frag * pf,
 										pf_Frag ** ppfEnd, UT_uint32 * pfragOffsetEnd);
 	bool					_getStruxFromPosition(PT_DocPosition docPos,
 												  pf_Frag_Strux ** ppfs, bool bSkipFootnotes = false) const ABI_NONNULL(3);
