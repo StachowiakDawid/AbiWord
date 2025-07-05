@@ -2220,7 +2220,7 @@ bool PD_Document::appendFmtMark(void)
 
  Don't FREEP *pszRetValue!!!
 */
-bool PD_Document::getAttributeFromSDH(pf_Frag_Strux* sdh, bool bShowRevisions, UT_uint32 iRevisionLevel,
+bool PD_Document::getAttributeFromSDH(const pf_Frag_Strux* sdh, bool bShowRevisions, UT_uint32 iRevisionLevel,
 									  const char * szAttribute, const char ** pszRetValue) const
 {
 	const pf_Frag_Strux * pfStrux = static_cast<const pf_Frag_Strux *>(sdh);
@@ -6605,7 +6605,7 @@ bool PD_Document::_exportFindVisDirectionRunAtPos(PT_DocPosition pos)
 	return _exportInitVisDirection(pos);
 }
 
-bool PD_Document::insertStruxBeforeFrag(pf_Frag * pF, PTStruxType pts,
+bool PD_Document::insertStruxBeforeFrag(const pf_Frag * pF, PTStruxType pts,
 										const PP_PropertyVector & attributes,
 										pf_Frag_Strux ** ppfs_ret)
 {
@@ -6629,18 +6629,18 @@ bool PD_Document::insertStruxBeforeFrag(pf_Frag * pF, PTStruxType pts,
 	return m_pPieceTable->insertStruxBeforeFrag(pF,pts,attributes,ppfs_ret);
 }
 
-bool PD_Document::insertSpanBeforeFrag(pf_Frag * pF, const UT_UCS4Char * pbuf, UT_uint32 length)
+bool PD_Document::insertSpanBeforeFrag(const pf_Frag * pF, const UT_UCS4Char * pbuf, UT_uint32 length)
 {
 	UT_return_val_if_fail (m_pPieceTable, false);
 	if(pF->getType() == pf_Frag::PFT_Strux)
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pF);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pF);
 		if((pfs->getStruxType() != PTX_Block) && (pfs->getStruxType() != PTX_EndFootnote) && (pfs->getStruxType() != PTX_EndEndnote) && (pfs->getStruxType() != PTX_EndAnnotation) && (pfs->getStruxType() != PTX_EndCell) )
 		{
 			//
 			// Append a block!
 			//
-			m_vecSuspectFrags.addItem(pF);
+			m_vecSuspectFrags.addItem(const_cast<pf_Frag*>(pF));
 			return true;
 		}
 	}
@@ -6713,19 +6713,19 @@ bool PD_Document::insertSpanBeforeFrag(pf_Frag * pF, const UT_UCS4Char * pbuf, U
 	return result;
 }
 
-bool PD_Document::insertObjectBeforeFrag(pf_Frag * pF, PTObjectType pto,
+bool PD_Document::insertObjectBeforeFrag(const pf_Frag * pF, PTObjectType pto,
 										 const PP_PropertyVector & attributes)
 {
 	UT_return_val_if_fail (m_pPieceTable, false);
 	if(pF->getType() == pf_Frag::PFT_Strux)
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pF);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pF);
 		if((pfs->getStruxType() != PTX_Block) && (pfs->getStruxType() != PTX_EndFootnote) && (pfs->getStruxType() != PTX_EndEndnote)  && (pfs->getStruxType() != PTX_EndAnnotation) )
 		{
 			//
 			// Append a block!
 			//
-			m_vecSuspectFrags.addItem(pF);
+			m_vecSuspectFrags.addItem(const_cast<pf_Frag*>(pF));
 			return true;
 		}
 	}
@@ -6735,18 +6735,18 @@ bool PD_Document::insertObjectBeforeFrag(pf_Frag * pF, PTObjectType pto,
 	return m_pPieceTable->insertObjectBeforeFrag(pF,pto,attributes);
 }
 
-bool PD_Document::insertFmtMarkBeforeFrag(pf_Frag * pF)
+bool PD_Document::insertFmtMarkBeforeFrag(const pf_Frag * pF)
 {
 	UT_return_val_if_fail (m_pPieceTable, false);
 	if(pF->getType() == pf_Frag::PFT_Strux)
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pF);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pF);
 		if((pfs->getStruxType() != PTX_Block) && (pfs->getStruxType() != PTX_EndFootnote) && (pfs->getStruxType() != PTX_EndEndnote) && (pfs->getStruxType() != PTX_EndAnnotation) )
 		{
 			//
 			// Append a block!
 			//
-			m_vecSuspectFrags.addItem(pF);
+			m_vecSuspectFrags.addItem(const_cast<pf_Frag*>(pF));
 			return true;
 		}
 	}
@@ -6782,7 +6782,7 @@ PT_AttrPropIndex  PD_Document::getAPIFromSOH(pf_Frag_Object* odh) const
 	return pfo->getIndexAP();
 }	
 
-bool PD_Document::insertFmtMarkBeforeFrag(pf_Frag * pF, const PP_PropertyVector & attributes)
+bool PD_Document::insertFmtMarkBeforeFrag(const pf_Frag * pF, const PP_PropertyVector & attributes)
 {
 	UT_return_val_if_fail (m_pPieceTable, false);
 

@@ -406,13 +406,13 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	bool					appendFmtMark(void);
 	bool					appendStyle(const PP_PropertyVector & attributes);
 	bool                    changeStruxFormatNoUpdate(PTChangeFmt ptc, pf_Frag_Strux* sdh, const PP_PropertyVector & attributes);
-	bool					insertStruxBeforeFrag(pf_Frag * pF, PTStruxType pts,
+	bool					insertStruxBeforeFrag(const pf_Frag * pF, PTStruxType pts,
 												  const PP_PropertyVector & attributes, pf_Frag_Strux ** ppfs_ret = nullptr);
-	bool					insertSpanBeforeFrag(pf_Frag * pF, const UT_UCS4Char * p, UT_uint32 length);
-	bool					insertObjectBeforeFrag(pf_Frag * pF, PTObjectType pto,
+	bool					insertSpanBeforeFrag(const pf_Frag * pF, const UT_UCS4Char * p, UT_uint32 length);
+	bool					insertObjectBeforeFrag(const pf_Frag * pF, PTObjectType pto,
 												   const PP_PropertyVector & attributes);
-	bool					insertFmtMarkBeforeFrag(pf_Frag * pF);
-	bool					insertFmtMarkBeforeFrag(pf_Frag * pF, const PP_PropertyVector & attributes);
+	bool					insertFmtMarkBeforeFrag(const pf_Frag * pF);
+	bool					insertFmtMarkBeforeFrag(const pf_Frag * pF, const PP_PropertyVector & attributes);
 
 	pf_Frag *               findFragOfType(pf_Frag::PFType iType, UT_sint32 iSubtype = -1,
 										   pf_Frag * pfStart = nullptr) const;
@@ -513,7 +513,7 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	// you would need the AP at that index to have revision attribute exploded -- use one of the
 	// functions below to retrieve props and attrs correctly reflecting revisions settings
 	PT_AttrPropIndex        getAPIFromSDH(pf_Frag_Strux* sdh) const;
-    bool                    getAttributeFromSDH(pf_Frag_Strux* sdh, bool bShowRevisions, UT_uint32 iRevisionLevel,
+    bool                    getAttributeFromSDH(const pf_Frag_Strux* sdh, bool bShowRevisions, UT_uint32 iRevisionLevel,
 												const char * szAttribute, const char ** pszValue) const;
 
     bool                    getPropertyFromSDH(const pf_Frag_Strux* sdh, bool bShowRevisions, UT_uint32 iRevisionLevel,
