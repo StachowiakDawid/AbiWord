@@ -204,7 +204,7 @@ public:
 												UT_uint32 &iRealDeleteCount,
 												bool bDeleteTableStrux);
 
-	bool                	deleteFieldFrag(pf_Frag * pf);
+	bool                	deleteFieldFrag(const pf_Frag * pf);
 
 	void                	deleteHdrFtrStrux(pf_Frag_Strux * pfs);
 
@@ -248,7 +248,7 @@ public:
 	bool                    deleteStruxNoUpdate(pf_Frag_Strux* sdh);
 	bool                    deleteFragNoUpdate(pf_Frag * pf);
 	bool                    deleteStruxWithNotify(pf_Frag_Strux* sdh);
-	bool                    insertStruxNoUpdateBefore(pf_Frag_Strux* sdh, PTStruxType pts, const PP_PropertyVector & attributes );
+	bool                    insertStruxNoUpdateBefore(const pf_Frag_Strux* sdh, PTStruxType pts, const PP_PropertyVector & attributes );
 	bool                    changeLastStruxFmtNoUndo(PT_DocPosition dpos, PTStruxType pts,
 													 const PP_PropertyVector & attrs, const PP_PropertyVector & props,
 													 bool bSkipEmbededSections);
@@ -306,7 +306,7 @@ public:
 
 	bool					getAttrProp(PT_AttrPropIndex indexAP,
 										const PP_AttrProp ** ppAP) const;
-	bool					getSpanAttrProp(pf_Frag_Strux* sdh, UT_uint32 offset, bool bLeftSide,
+	bool					getSpanAttrProp(const pf_Frag_Strux* sdh, UT_uint32 offset, bool bLeftSide,
 											const PP_AttrProp ** ppAP) const;
 
 	inline const UT_UCS4Char *getPointer(PT_BufIndex bi) const
@@ -318,17 +318,20 @@ public:
 			return m_varset.getPointer(bi);
 		}
 
-	bool					getBlockBuf(pf_Frag_Strux* sdh, UT_GrowBuf * pgb) const;
+	bool					getBlockBuf(const pf_Frag_Strux* pf, UT_GrowBuf * pgb) const;
 
-    PT_DocPosition          getPosEnd();
+    PT_DocPosition          getPosEnd() const;
 	bool					getBounds(bool bEnd, PT_DocPosition & docPos) const;
-	PT_DocPosition			getStruxPosition(pf_Frag_Strux* sdh) const;
+	PT_DocPosition			getStruxPosition(const pf_Frag_Strux* sdh) const;
 	PT_DocPosition			getFragPosition(const pf_Frag * pfToFind) const;
 
     bool dumpDoc( const char* msg, PT_DocPosition currentpos, PT_DocPosition endpos );
 
 	bool					getFragFromPosition(PT_DocPosition docPos,
 												pf_Frag ** ppf,
+												PT_BlockOffset * pOffset) const;
+	bool					getFragFromPosition(PT_DocPosition docPos,
+												const pf_Frag ** ppf,
 												PT_BlockOffset * pOffset) const;
 
 	bool					getStruxOfTypeFromPosition(PL_ListenerId listenerId,
@@ -348,7 +351,10 @@ public:
 
 	bool					getFragsFromPositions(PT_DocPosition dPos1, PT_DocPosition dPos2,
 												  pf_Frag ** ppf1, PT_BlockOffset * pOffset1,
-												  pf_Frag ** ppf2, PT_BlockOffset * pOffset2) const;
+												  pf_Frag ** ppf2, PT_BlockOffset * pOffset2) const ABI_NONNULL(4,6);
+	bool					getFragsFromPositions(PT_DocPosition dPos1, PT_DocPosition dPos2,
+												  const pf_Frag** ppf1, PT_BlockOffset * pOffset1,
+												  const pf_Frag** ppf2, PT_BlockOffset * pOffset2) const ABI_NONNULL(4,6);
 
 	bool					getStyle(const char * szName, PD_Style ** ppStyle) const;
 
@@ -358,15 +364,17 @@ public:
 	bool                    enumStyles(UT_GenericVector<PD_Style*> * & pStyles) const;
 	
 	const std::map<std::string, PD_Style *> & getAllStyles()const {return m_hashStyles;}
-	bool                    isEndFootnote(pf_Frag * pf) const;
-	bool                    isFootnote(pf_Frag * pf) const;
-	bool                    isInsideFootnote(PT_DocPosition dpos, pf_Frag ** pfBegin = nullptr) const;
+	bool                    isEndFootnote(const pf_Frag * pf) const;
+	bool                    isFootnote(const pf_Frag * pf) const;
+	bool                    isInsideFootnote(PT_DocPosition dpos, const pf_Frag ** pfBegin = nullptr) const;
 	bool                    hasEmbedStruxOfTypeInRange(PT_DocPosition posStart, PT_DocPosition posEnd, 
 													   PTStruxType iType) const;
 
 	void					clearIfAtFmtMark(PT_DocPosition dpos);
-    pt_VarSet &             getVarSet(void) {return m_varset;};
-    pf_Fragments &          getFragments(void) {return m_fragments;};
+    const pt_VarSet &       getVarSet(void) const {return m_varset;}
+    pt_VarSet &             getVarSet(void) {return m_varset;}
+    const pf_Fragments &    getFragments(void) const {return m_fragments;}
+    pf_Fragments &          getFragments(void) {return m_fragments;}
 
 	bool                    purgeFmtMarks();
 	bool                    isDoingTheDo(void) const
@@ -378,7 +386,7 @@ public:
 	UT_uint32               getTopXID() const {return m_iXID;}
 	void                    setXIDThreshold(UT_uint32 i){m_iXID = i;}
 	void                    fixMissingXIDs();
-	UT_sint32               calcDocsize(void);
+	UT_sint32               calcDocsize(void) const;
 	void                    setCRNumber(UT_sint32 iCRNumber)
 	{ m_iCurCRNumber = iCRNumber;}
 #ifdef PT_TEST
@@ -393,18 +401,18 @@ protected:
     pf_Frag_Strux*          _findLastStruxOfType(pf_Frag * pfStart,
                                                  PTStruxType pst,
                                                  PTStruxType* stopConditions,
-                                                 bool bSkipEmbededSections );
-    pf_Frag_Strux*          _findLastStruxOfType(pf_Frag * pfStart, PTStruxType pst, bool bSkipEmbeded);
-	pf_Frag *               _findPrevHyperlink(pf_Frag * pfStart);
-	pf_Frag *               _findNextHyperlink(pf_Frag * pfStart);
+                                                 bool bSkipEmbededSections ) const;
+    pf_Frag_Strux*          _findLastStruxOfType(pf_Frag * pfStart, PTStruxType pst, bool bSkipEmbeded) const;
+	pf_Frag *               _findPrevHyperlink(pf_Frag * pfStart) const;
+	pf_Frag *               _findNextHyperlink(pf_Frag * pfStart) const;
 
 	bool					_tellAndMaybeAddListener(PL_Listener * pListener,
 													 PL_ListenerId listenerId,
 													 bool bAdd);
 
 	void					_captureActiveSpan(pf_Frag_Strux_Block * pfsBlock);
-	PT_AttrPropIndex		_chooseIndexAP(pf_Frag * pf, PT_BlockOffset fragOffset);
-	bool					_canCoalesceInsertSpan(PX_ChangeRecord_Span * pcrSpan) const;
+	PT_AttrPropIndex		_chooseIndexAP(const pf_Frag * pf, PT_BlockOffset fragOffset) const;
+	bool					_canCoalesceInsertSpan(const PX_ChangeRecord_Span * pcrSpan) const;
 
 	bool					_createStrux(PTStruxType pts,
 										 PT_AttrPropIndex indexAP,
@@ -430,21 +438,23 @@ protected:
 										UT_uint32 length,
 										PT_AttrPropIndex indexAP,
                                         fd_Field * pField = nullptr);
-	bool                    _StruxIsNotTable(pf_Frag_Strux * pfs);
+	bool                    _StruxIsNotTable(const pf_Frag_Strux * pfs) const;
 	bool					_deleteSpan(pf_Frag_Text * pft, UT_uint32 fragOffset,
 										PT_BufIndex bi, UT_uint32 length,
 										pf_Frag ** ppfEnd, UT_uint32 * pfragOffsetEnd);
 	void					_unlinkFrag(pf_Frag * pf,
 										pf_Frag ** ppfEnd, UT_uint32 * pfragOffsetEnd);
 	bool					_getStruxFromPosition(PT_DocPosition docPos,
-												  pf_Frag_Strux ** ppfs, bool bSkipFootnotes = false) const;
+												  pf_Frag_Strux ** ppfs, bool bSkipFootnotes = false) const ABI_NONNULL(3);
+	bool					_getStruxFromPosition(PT_DocPosition docPos,
+												  const pf_Frag_Strux** ppfs, bool bSkipFootnotes = false) const ABI_NONNULL(3);
 	bool					_getStruxOfTypeFromPosition(PT_DocPosition dpos,
 														PTStruxType pts,
 														pf_Frag_Strux ** ppfs) const;
     pf_Frag_Strux*          _getBlockFromPosition(PT_DocPosition pos) const;
     bool					_doTheDo(PX_ChangeRecord* pcr, bool bUndo);
-	bool					_struxHasContent(pf_Frag_Strux * pfs) const;
-	bool					_struxIsEmpty(pf_Frag_Strux * pfs) const;
+	bool					_struxHasContent(const pf_Frag_Strux * pfs) const;
+	bool					_struxIsEmpty(const pf_Frag_Strux * pfs) const;
 	bool					_unlinkStrux(pf_Frag_Strux * pfs,
 										 pf_Frag ** ppfEnd, UT_uint32 * pfragOffsetEnd);
 	bool					_unlinkStrux_Block(pf_Frag_Strux * pfs,
@@ -570,15 +580,15 @@ protected:
 													   UT_uint32 * pfragOffsetNewEnd,
 													   bool bRevisionDelete);
 
-	bool					_getStruxFromFrag(pf_Frag * pfStart, pf_Frag_Strux ** ppfs) const;
-	bool					_getStruxFromFragSkip(pf_Frag * pfStart, pf_Frag_Strux ** ppfs) const;
+	bool					_getStruxFromFrag(const pf_Frag * pfStart, pf_Frag_Strux ** ppfs) const;
+	bool					_getStruxFromFragSkip(const pf_Frag * pfStart, pf_Frag_Strux ** ppfs) const;
 
-	bool                    _getNextStruxAfterFragSkip(pf_Frag *pfStart, pf_Frag_Strux ** ppfs);
+	bool                    _getNextStruxAfterFragSkip(const pf_Frag *pfStart, pf_Frag_Strux ** ppfs) const;
 
 	bool                    _getStruxFromPositionSkip(PT_DocPosition docPos,
 													  pf_Frag_Strux ** ppfs) const;
 
-	UT_uint32				_computeBlockOffset(pf_Frag_Strux * pfs,pf_Frag * pfTarget) const;
+	UT_uint32				_computeBlockOffset(const pf_Frag_Strux * pfs, const pf_Frag * pfTarget) const;
 
 	bool					_loadBuiltinStyles(void);
 	bool					_createBuiltinStyle(const char * szName, bool bDisplayed, const PP_PropertyVector & attributes);
@@ -611,12 +621,12 @@ protected:
 											  UT_uint32 * pfragOffsetNewEnd);
 	bool					_computeFmtMarkForNewBlock(pf_Frag_Strux * pfsBlock,
 													   pf_Frag * pfCurrent, PT_BlockOffset fragOffset,
-													   PT_AttrPropIndex * pFmtMarkAP);
-	bool					_getSpanAttrPropHelper(pf_Frag * pf, const PP_AttrProp ** ppAP) const;
-	bool					_lastUndoIsThisFmtMark(PT_DocPosition dpos);
+													   PT_AttrPropIndex * pFmtMarkAP) const;
+	bool					_getSpanAttrPropHelper(const pf_Frag * pf, const PP_AttrProp ** ppAP) const;
+	bool					_lastUndoIsThisFmtMark(PT_DocPosition dpos) const;
 
 	bool					_changePointWithNotify(PT_DocPosition dpos);
-	bool                    _checkSkipFootnote(PT_DocPosition dpos1, PT_DocPosition dpos2, pf_Frag * pf_End = nullptr) const;
+	bool                    _checkSkipFootnote(PT_DocPosition dpos1, PT_DocPosition dpos2, const pf_Frag * pf_End = nullptr) const;
 	// helper methods for the appned and insert*BeforeFrag methods
 	bool					_makeStrux(PTStruxType pts, const PP_PropertyVector & attributes,
 									   pf_Frag_Strux * &pfs);

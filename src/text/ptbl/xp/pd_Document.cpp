@@ -3,7 +3,7 @@
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
  * Copyright (c) 2001,2002,2003 Tomas Frydrych
- * Copyright (C) 2013-2022 Hubert Figuière
+ * Copyright (C) 2013-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -368,7 +368,7 @@ void PD_Document::addPageReferencedTextbox(UT_ByteBuf & sContent,UT_sint32 iPage
 	m_pPendingTextboxPage.addItem(new TextboxPage(iPage, xInch,yInch,pzProps, sContent));
 }
 
-ImagePage * PD_Document::getNthImagePage(UT_sint32 iImagePage)
+ImagePage * PD_Document::getNthImagePage(UT_sint32 iImagePage) const
 {
 	if(iImagePage < m_pPendingImagePage.getItemCount())
 	{
@@ -377,7 +377,7 @@ ImagePage * PD_Document::getNthImagePage(UT_sint32 iImagePage)
 	return nullptr;
 }
 
-TextboxPage * PD_Document::getNthTextboxPage(UT_sint32 iTextboxPage)
+TextboxPage * PD_Document::getNthTextboxPage(UT_sint32 iTextboxPage) const
 {
 	if(iTextboxPage < m_pPendingTextboxPage.getItemCount())
 	{
@@ -878,7 +878,7 @@ UT_Error PD_Document::_importFile(GsfInput * input, int ieft,
 	return errorCode;
 }
 
-AP_StatusBar *  PD_Document::getStatusBar(void)
+AP_StatusBar *  PD_Document::getStatusBar(void) const
 {
 	XAP_Frame * pFrame = XAP_App::getApp()->getLastFocussedFrame();
 	if(pFrame)
@@ -1468,11 +1468,10 @@ bool PD_Document::insertStrux(PT_DocPosition dpos, PTStruxType pts,
 }
 
 /*!
- * This method deletes the HdrFtr strux pointed to by sdh
+ * This method deletes the HdrFtr strux pointed to by pfs_hdrftr
  */
-void PD_Document::deleteHdrFtrStrux(pf_Frag_Strux* sdh)
+void PD_Document::deleteHdrFtrStrux(pf_Frag_Strux* pfs_hdrftr)
 {
-	pf_Frag_Strux * pfs_hdrftr = sdh;
 	UT_return_if_fail (pfs_hdrftr->getType()  == pf_Frag::PFT_Strux);
 	m_pPieceTable->deleteHdrFtrStrux(pfs_hdrftr);
 }
@@ -1493,11 +1492,10 @@ bool PD_Document::changeStruxFmt(PTChangeFmt ptc,
 
 
 bool PD_Document::changeStruxFmtNoUndo(PTChangeFmt ptc,
-								 pf_Frag_Strux* sdh,
+								 pf_Frag_Strux* pfs,
 								 const PP_PropertyVector & attributes,
 								 const PP_PropertyVector & properties)
 {
-	pf_Frag_Strux * pfs = sdh;
 	UT_return_val_if_fail (pfs->getType() == pf_Frag::PFT_Strux,false);
 	return m_pPieceTable->changeStruxFmtNoUndo(ptc,pfs,attributes,properties);
 }
@@ -1523,9 +1521,9 @@ bool PD_Document::changeStruxFmt(PTChangeFmt ptc,
  * This Method is used to change just the parentID of each strux in a list
  * without updating the fl_Layouts.
  */
-bool PD_Document::changeStruxForLists(pf_Frag_Strux* sdh, const char * pszParentID)
+bool PD_Document::changeStruxForLists(pf_Frag_Strux* pfs, const char * pszParentID)
 {
-	return m_pPieceTable->changeStruxForLists(sdh, pszParentID);
+	return m_pPieceTable->changeStruxForLists(pfs, pszParentID);
 }
 
 bool PD_Document::insertFmtMark(PTChangeFmt ptc, PT_DocPosition dpos, PP_AttrProp *p_AttrProp)
@@ -2223,7 +2221,7 @@ bool PD_Document::appendFmtMark(void)
  Don't FREEP *pszRetValue!!!
 */
 bool PD_Document::getAttributeFromSDH(pf_Frag_Strux* sdh, bool bShowRevisions, UT_uint32 iRevisionLevel,
-									  const char * szAttribute, const char ** pszRetValue)
+									  const char * szAttribute, const char ** pszRetValue) const
 {
 	const pf_Frag_Strux * pfStrux = static_cast<const pf_Frag_Strux *>(sdh);
 	PT_AttrPropIndex indexAP = pfStrux->getIndexAP();
@@ -2252,7 +2250,7 @@ bool PD_Document::getAttributeFromSDH(pf_Frag_Strux* sdh, bool bShowRevisions, U
  *     the AP at the index using the explodeRevisions() methods or you can retrieve specific props
  *     and attrs using getPropertyFromSDH() and getAttributeFromSDH().
  */
-PT_AttrPropIndex PD_Document::getAPIFromSDH( pf_Frag_Strux* sdh)
+PT_AttrPropIndex PD_Document::getAPIFromSDH( pf_Frag_Strux* sdh) const
 {
 	const pf_Frag_Strux * pfStrux = sdh;
 	return pfStrux->getIndexAP();
@@ -2628,7 +2626,7 @@ const pf_Frag_Strux*  PD_Document::getLastSectionSDH(void) const
 /*!
  * This method returns the last pf_Frag_Strux as a pf_Frag_Strux* before the end of the piecetable.
  */
-pf_Frag_Strux*  PD_Document::getLastSectionMutableSDH(void)
+pf_Frag_Strux*  PD_Document::getLastSectionMutableSDH(void) const
 {
 	pf_Frag * currentFrag = m_pPieceTable->getFragments().getFirst();
 	pf_Frag_Strux * pfSecLast = nullptr;
@@ -2653,7 +2651,7 @@ pf_Frag_Strux*  PD_Document::getLastSectionMutableSDH(void)
  * This method returns the last pf_Frag_Strux as a pf_Frag_Strux* 
  * before the end of the piecetable.
  */
-pf_Frag_Strux*  PD_Document::getLastStruxOfType(PTStruxType pts )
+pf_Frag_Strux*  PD_Document::getLastStruxOfType(PTStruxType pts) const
 {
 	pf_Frag * currentFrag = m_pPieceTable->getFragments().getLast();
 	pf_Frag_Strux * pfSecLast = nullptr;
@@ -2801,7 +2799,7 @@ bool PD_Document::verifySectionID(const gchar * pszId)
 \returns a pf_Frag_Strux* of the matching frag or nullptr if none found.
  */
 pf_Frag_Strux* PD_Document::findHdrFtrStrux(const gchar * pszHdrFtr,
-											const gchar * pszHdrFtrID)
+											const gchar * pszHdrFtrID) const
 {
 	pf_Frag * currentFrag = m_pPieceTable->getFragments().getFirst();
 	while (currentFrag!=m_pPieceTable->getFragments().getLast())
@@ -2839,7 +2837,7 @@ pf_Frag_Strux* PD_Document::findHdrFtrStrux(const gchar * pszHdrFtr,
  * And a pointer to the embedded strux found.
  * If no emebedded strux is found in the block we return -1 ans nullptr
  */ 
-UT_sint32 PD_Document::getEmbeddedOffset(pf_Frag_Strux* sdh, PT_DocPosition posoff, pf_Frag_Strux* & sdhEmbedded)
+UT_sint32 PD_Document::getEmbeddedOffset(pf_Frag_Strux* sdh, PT_DocPosition posoff, pf_Frag_Strux* & sdhEmbedded) const
 {
 	pf_Frag_Strux * pfs = sdh;
 	UT_return_val_if_fail (pfs->getStruxType() == PTX_Block,-1);
@@ -2894,7 +2892,7 @@ bool PD_Document::hasEmbedStruxOfTypeInRange(PT_DocPosition posStart, PT_DocPosi
  * This method returns true if there is a Footnote strux at exactly this 
  * position.
  */
-bool PD_Document::isFootnoteAtPos(PT_DocPosition pos)
+bool PD_Document::isFootnoteAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
 	pf_Frag * pf = nullptr;
@@ -2920,7 +2918,7 @@ bool PD_Document::isFootnoteAtPos(PT_DocPosition pos)
  * This method returns true if there is a TOC or endTOC strux at exactly this 
  * position.
  */
-bool PD_Document::isTOCAtPos(PT_DocPosition pos)
+bool PD_Document::isTOCAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
 	pf_Frag * pf = nullptr;
@@ -2954,7 +2952,7 @@ bool PD_Document::isTOCAtPos(PT_DocPosition pos)
  * This method returns true if there is an EndFootnote strux at exactly this 
  * position.
  */
-bool PD_Document::isEndFootnoteAtPos(PT_DocPosition pos)
+bool PD_Document::isEndFootnoteAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
 	pf_Frag * pf = nullptr;
@@ -2984,7 +2982,7 @@ bool PD_Document::isEndFootnoteAtPos(PT_DocPosition pos)
  * This method returns true if there is a frame strux at exactly this 
  * position.
  */
-bool PD_Document::isFrameAtPos(PT_DocPosition pos)
+bool PD_Document::isFrameAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
 	pf_Frag * pf = nullptr;
@@ -3010,7 +3008,7 @@ bool PD_Document::isFrameAtPos(PT_DocPosition pos)
  * This method returns true if there is an endFrame strux at exactly this 
  * position.
  */
-bool PD_Document::isEndFrameAtPos(PT_DocPosition pos)
+bool PD_Document::isEndFrameAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
 	pf_Frag * pf = nullptr;
@@ -3035,7 +3033,7 @@ bool PD_Document::isEndFrameAtPos(PT_DocPosition pos)
  * This method returns true if there is a HdrFtr strux at exactly this 
  * position.
  */
-bool PD_Document::isHdrFtrAtPos(PT_DocPosition pos)
+bool PD_Document::isHdrFtrAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
 	pf_Frag * pf = nullptr;
@@ -3061,7 +3059,7 @@ bool PD_Document::isHdrFtrAtPos(PT_DocPosition pos)
  * This method returns true if there is a Section strux at exactly this 
  * position.
  */
-bool PD_Document::isSectionAtPos(PT_DocPosition pos)
+bool PD_Document::isSectionAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
 	pf_Frag * pf = nullptr;
@@ -3086,7 +3084,7 @@ bool PD_Document::isSectionAtPos(PT_DocPosition pos)
  * This method returns true if there is a Block strux at exactly this 
  * position.
  */
-bool PD_Document::isBlockAtPos(PT_DocPosition pos)
+bool PD_Document::isBlockAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
 	pf_Frag * pf = nullptr;
@@ -3115,7 +3113,7 @@ bool PD_Document::isBlockAtPos(PT_DocPosition pos)
  * This method returns true if there is a table strux at exactly this 
  * position.
  */
-bool PD_Document::isTableAtPos(PT_DocPosition pos)
+bool PD_Document::isTableAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
 	pf_Frag * pf = nullptr;
@@ -3140,7 +3138,7 @@ bool PD_Document::isTableAtPos(PT_DocPosition pos)
  * This method returns true if there is an EndTable strux at exactly this 
  * position.
  */
-bool PD_Document::isEndTableAtPos(PT_DocPosition pos)
+bool PD_Document::isEndTableAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
 	pf_Frag * pf = nullptr;
@@ -3165,7 +3163,7 @@ bool PD_Document::isEndTableAtPos(PT_DocPosition pos)
  * This method returns true if there is a cell strux at exactly this 
  * position.
  */
-bool PD_Document::isCellAtPos(PT_DocPosition pos)
+bool PD_Document::isCellAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
 	pf_Frag * pf = nullptr;
@@ -3189,7 +3187,7 @@ bool PD_Document::isCellAtPos(PT_DocPosition pos)
  * This method returns the end table strux associated with the table strux tableSDH
  * Returns nullptr on failure to find it.
  */
-pf_Frag_Strux* PD_Document::getEndTableStruxFromTableSDH(pf_Frag_Strux* tableSDH)
+pf_Frag_Strux* PD_Document::getEndTableStruxFromTableSDH(pf_Frag_Strux* tableSDH) const
 {
 	pf_Frag * currentFrag = tableSDH;
 	currentFrag = currentFrag->getNext();
@@ -3223,7 +3221,7 @@ pf_Frag_Strux* PD_Document::getEndTableStruxFromTableSDH(pf_Frag_Strux* tableSDH
  * This method returns the end cell strux associated with the cell strux cellSDH
  * Returns nullptr on failure to find it.
  */
-pf_Frag_Strux* PD_Document::getEndCellStruxFromCellSDH(pf_Frag_Strux* cellSDH)
+pf_Frag_Strux* PD_Document::getEndCellStruxFromCellSDH(pf_Frag_Strux* cellSDH) const
 {
 	pf_Frag * currentFrag = cellSDH;
 	currentFrag = currentFrag->getNext();
@@ -3266,7 +3264,7 @@ pf_Frag_Strux* PD_Document::getEndCellStruxFromCellSDH(pf_Frag_Strux* cellSDH)
  * This method returns the end table strux associated with the table strux tableSDH
  * Returns nullptr on failure to find it.
  */
-pf_Frag_Strux* PD_Document::getEndTableStruxFromTablePos(PT_DocPosition tablePos)
+pf_Frag_Strux* PD_Document::getEndTableStruxFromTablePos(PT_DocPosition tablePos) const
 {
 	pf_Frag_Strux* tableSDH = nullptr;
 	pf_Frag_Strux* EndTableSDH = nullptr;
@@ -3284,7 +3282,7 @@ pf_Frag_Strux* PD_Document::getEndTableStruxFromTablePos(PT_DocPosition tablePos
 \param UT_sint32 * numCols pointer to the number of cols returned
 */
 bool PD_Document::getRowsColsFromTableSDH(pf_Frag_Strux* tableSDH, bool bShowRevisions, UT_uint32 iRevisionLevel,
-										  UT_sint32 * numRows, UT_sint32 * numCols)
+										  UT_sint32 * numRows, UT_sint32 * numCols) const
 {
 	UT_sint32 iRight = 0;
     UT_sint32 iBot = 0;
@@ -3339,7 +3337,7 @@ bool PD_Document::getRowsColsFromTableSDH(pf_Frag_Strux* tableSDH, bool bShowRev
 	return false;
 }
 
-void  PD_Document::miniDump(pf_Frag_Strux* sdh, UT_sint32 nstruxes)
+void  PD_Document::miniDump(pf_Frag_Strux* sdh, UT_sint32 nstruxes) const
 {
 #ifdef DEBUG
 	UT_sint32 i=0;
@@ -3452,7 +3450,7 @@ PD_Document::dumpDoc( const char* msg, PT_DocPosition currentpos, PT_DocPosition
 pf_Frag_Strux* PD_Document::getCellSDHFromRowCol(pf_Frag_Strux* tableSDH,
 													bool bShowRevisions, UT_uint32 iRevisionLevel,
 													UT_sint32 row, 
-													UT_sint32 col)
+													UT_sint32 col) const
 {
 	UT_sint32 Top,Left,Bot,Right;
 	const char * szLeft = nullptr;
@@ -3530,7 +3528,7 @@ pf_Frag_Strux* PD_Document::getCellSDHFromRowCol(pf_Frag_Strux* tableSDH,
  * styles in the basedon heiracy and the followedby list
  *
  */
-void PD_Document::getAllUsedStyles(UT_GenericVector <PD_Style*>* pVecStyles)
+void PD_Document::getAllUsedStyles(UT_GenericVector <PD_Style*>* pVecStyles) const
 {
 	UT_sint32 i = 0;
 	pf_Frag * currentFrag = m_pPieceTable->getFragments().getFirst();
@@ -3912,7 +3910,7 @@ bool PD_Document::appendStyle(const PP_PropertyVector & attributes)
 	return m_pPieceTable->appendStyle(attributes);
 }
 
-size_t PD_Document::getStyleCount(void)
+size_t PD_Document::getStyleCount(void) const
 {
   UT_return_val_if_fail (m_pPieceTable, false);
 
@@ -3922,7 +3920,7 @@ size_t PD_Document::getStyleCount(void)
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 
-bool PD_Document::tellListener(PL_Listener* pListener)
+bool PD_Document::tellListener(PL_Listener* pListener) const
 {
 	UT_return_val_if_fail (pListener,false);
 	UT_return_val_if_fail (m_pPieceTable,false);
@@ -3932,7 +3930,7 @@ bool PD_Document::tellListener(PL_Listener* pListener)
 
 bool PD_Document::tellListenerSubset( PL_Listener* pListener,
                                       PD_DocumentRange * pDocRange,
-                                      PL_ListenerCoupleCloser* closer )
+                                      PL_ListenerCoupleCloser* closer) const
 {
 	UT_return_val_if_fail (pListener, false);
 	UT_return_val_if_fail (m_pPieceTable, false);
@@ -4288,7 +4286,7 @@ void PD_Document::processDeferredNotifications(void)
 
 
 
-fl_ContainerLayout* PD_Document::getNthFmtHandle(pf_Frag_Strux* sdh, UT_uint32 n)
+fl_ContainerLayout* PD_Document::getNthFmtHandle(pf_Frag_Strux* sdh, UT_uint32 n) const
 {
 	const pf_Frag_Strux * pfs = static_cast<const pf_Frag_Strux *>(sdh);
 	UT_uint32 nListen = m_vecListeners.getItemCount();
@@ -4366,7 +4364,7 @@ bool PD_Document::notifyListeners(const pf_Frag_Strux * pfs,
 /*!
  * Return true if the document has an abicollab connection
  */
-bool PD_Document::isConnected(void)
+bool PD_Document::isConnected(void) const
 {
 	PL_ListenerId lid;
 	PL_ListenerId lidCount = m_vecListeners.getItemCount();
@@ -4724,7 +4722,7 @@ bool PD_Document::hasMath(void) const
 	return false;
 }
 
-pf_Frag * PD_Document::findBookmark(const char * pName, bool bEnd, pf_Frag * pfStart)
+pf_Frag * PD_Document::findBookmark(const char * pName, bool bEnd, pf_Frag * pfStart) const
 {
 	if(!pfStart)
 	{
@@ -4765,7 +4763,7 @@ pf_Frag * PD_Document::findBookmark(const char * pName, bool bEnd, pf_Frag * pfS
 }
 
 
-po_Bookmark * PD_Document::getBookmark(pf_Frag_Strux* sdh, UT_uint32 offset)
+po_Bookmark * PD_Document::getBookmark(pf_Frag_Strux* sdh, UT_uint32 offset) const
 {
 	const pf_Frag * pf = static_cast<const pf_Frag *>(sdh);
 	UT_return_val_if_fail (pf->getType() == pf_Frag::PFT_Strux, nullptr);
@@ -4864,7 +4862,7 @@ bool PD_Document::getStruxOfTypeFromPosition(PT_DocPosition docPos,
 /// Return the sdh of type pts immediately prior to sdh
 ///
 bool PD_Document::getPrevStruxOfType(pf_Frag_Strux* sdh,PTStruxType pts,
-					pf_Frag_Strux* * prevsdh)
+					pf_Frag_Strux* * prevsdh) const
 {
 	pf_Frag* pfs = sdh;
 	UT_return_val_if_fail (pfs, false);
@@ -4890,7 +4888,7 @@ bool PD_Document::getPrevStruxOfType(pf_Frag_Strux* sdh,PTStruxType pts,
 ///get the next strux after the strux given. Skip embedded strux's
 ///
 bool PD_Document::getNextStrux(pf_Frag_Strux* sdh,
-							   pf_Frag_Strux* * nextsdh)
+							   pf_Frag_Strux* * nextsdh) const
 {
 	pf_Frag * pfs = sdh;
 	UT_return_val_if_fail (pfs, false);
@@ -4933,7 +4931,7 @@ pf_Frag * PD_Document::getFragFromPosition(PT_DocPosition docPos) const
 /// Return the sdh of type pts immediately after sdh
 ///
 bool PD_Document::getNextStruxOfType(pf_Frag_Strux* sdh,PTStruxType pts,
-					pf_Frag_Strux* * nextsdh)
+					pf_Frag_Strux* * nextsdh) const
 {
 	pf_Frag * pfs = sdh;
 	UT_return_val_if_fail (pfs, false);
@@ -5361,7 +5359,7 @@ bool PD_Document::enumStyles(UT_GenericVector<PD_Style*> * & pStyles) const
 	return m_pPieceTable->enumStyles(pStyles);
 }
 
-bool PD_Document::getStyleProperty(const char * szStyleName, const char * szPropertyName, const char *& szPropertyValue)
+bool PD_Document::getStyleProperty(const char * szStyleName, const char * szPropertyName, const char *& szPropertyValue) const
 {
 	PD_Style * pS;
 	PD_Style ** ppS = &pS;
@@ -5418,7 +5416,7 @@ bool	PD_Document::addStyleAttributes(const gchar * szStyleName, const PP_Propert
  * The method returns the style defined in a sdh. If there is no style it returns
  * nullptr
  */
-PD_Style * PD_Document::getStyleFromSDH( pf_Frag_Strux* sdh)
+PD_Style * PD_Document::getStyleFromSDH( pf_Frag_Strux* sdh) const
 {
 	const pf_Frag_Strux * pfs = sdh;
 	PT_AttrPropIndex indexAP = pfs->getIndexAP();
@@ -5444,7 +5442,7 @@ PD_Style * PD_Document::getStyleFromSDH( pf_Frag_Strux* sdh)
 \param sdh The StruxDocHandle of the fragment where we start to look from.
 \returns PD_Style of the first Numbered Heading, otherwise nullptr
 */
-pf_Frag_Strux* PD_Document::getPrevNumberedHeadingStyle(pf_Frag_Strux* sdh)
+pf_Frag_Strux* PD_Document::getPrevNumberedHeadingStyle(pf_Frag_Strux* sdh) const
 {
 	pf_Frag * pf = sdh;
 	bool bFound = false;
@@ -5537,7 +5535,7 @@ bool	PD_Document::setAllStyleAttributes(const gchar * szStyleName, const PP_Prop
 \param pos the document position to start from.
 \return the sdh of the strux found.
 */
-pf_Frag_Strux* PD_Document::findPreviousStyleStrux(const gchar * szStyle, PT_DocPosition pos)
+pf_Frag_Strux* PD_Document::findPreviousStyleStrux(const gchar * szStyle, PT_DocPosition pos) const
 {
 	pf_Frag_Strux* sdh = nullptr;
 	getStruxOfTypeFromPosition(pos,PTX_Block, &sdh);
@@ -5586,7 +5584,7 @@ pf_Frag_Strux* PD_Document::findPreviousStyleStrux(const gchar * szStyle, PT_Doc
 \param pos the document position to start from.
 \return the sdh of the strux found.
 */
-pf_Frag_Strux* PD_Document::findForwardStyleStrux(const gchar * szStyle, PT_DocPosition pos)
+pf_Frag_Strux* PD_Document::findForwardStyleStrux(const gchar * szStyle, PT_DocPosition pos) const
 {
 	pf_Frag_Strux* sdh = nullptr;
 	getStruxOfTypeFromPosition(pos,PTX_Block, &sdh);
@@ -5886,7 +5884,7 @@ fl_AutoNumPtr PD_Document::getListByID(UT_uint32 id) const
 	return fl_AutoNumPtr();
 }
 
-bool PD_Document::enumLists(UT_uint32 k, fl_AutoNumConstPtr & pAutoNum)
+bool PD_Document::enumLists(UT_uint32 k, fl_AutoNumConstPtr & pAutoNum) const
 {
 	UT_uint32 kLimit = m_vecLists.size();
 	if (k >= kLimit)
@@ -6131,7 +6129,7 @@ void  PD_Document::clearDoingPaste(void)
          m_bDoingPaste = false;
 }
 
-bool  PD_Document::isDoingPaste(void)
+bool  PD_Document::isDoingPaste(void) const
 {
          return m_bDoingPaste;
 }
@@ -6778,7 +6776,7 @@ bool PD_Document::changeObjectFormatNoUpdate(PTChangeFmt ptc, pf_Frag_Object* od
  * Return Attribute Property Index associated with the pf_Frag_Object pointed
  * to by odh
  */
-PT_AttrPropIndex  PD_Document::getAPIFromSOH(pf_Frag_Object* odh)
+PT_AttrPropIndex  PD_Document::getAPIFromSOH(pf_Frag_Object* odh) const
 {
 	pf_Frag_Object * pfo = odh;
 	return pfo->getIndexAP();

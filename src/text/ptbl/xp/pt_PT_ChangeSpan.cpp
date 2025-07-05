@@ -72,7 +72,8 @@ bool pt_PieceTable::changeSpanFmt(PTChangeFmt ptc,
 		while(dpos1 < dpos2)
 		{
 			// first retrive the starting and ending fragments
-			pf_Frag * pf1, * pf2;
+			const pf_Frag * pf1;
+			const pf_Frag * pf2;
 			PT_BlockOffset Offset1, Offset2;
 
 			if(!getFragsFromPositions(dpos1,dpos2, &pf1, &Offset1, &pf2, &Offset2) ||

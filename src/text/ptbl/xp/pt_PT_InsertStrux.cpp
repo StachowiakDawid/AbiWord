@@ -633,7 +633,7 @@ bool pt_PieceTable::_realInsertStrux(PT_DocPosition dpos,
 
 bool pt_PieceTable::_computeFmtMarkForNewBlock(pf_Frag_Strux * /* pfsNewBlock */,
 												  pf_Frag * pfCurrent, PT_BlockOffset fragOffset,
-												  PT_AttrPropIndex * pFmtMarkAP)
+												  PT_AttrPropIndex * pFmtMarkAP) const
 {
 	*pFmtMarkAP = 0;
 

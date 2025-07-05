@@ -320,7 +320,7 @@ bool pt_PieceTable::_insertSpan(pf_Frag * pf,
 	return true;
 }
 
-bool pt_PieceTable::_lastUndoIsThisFmtMark(PT_DocPosition dpos)
+bool pt_PieceTable::_lastUndoIsThisFmtMark(PT_DocPosition dpos) const
 {
 	// look backwards thru the undo from this point and see
 	// if we have <InsertFmtMark>[<ChangeFmtMark>*]
@@ -597,7 +597,7 @@ bool pt_PieceTable::_realInsertSpan(PT_DocPosition dpos,
 	return true;
 }
 
-bool pt_PieceTable::_canCoalesceInsertSpan(PX_ChangeRecord_Span * pcrSpan) const
+bool pt_PieceTable::_canCoalesceInsertSpan(const PX_ChangeRecord_Span * pcrSpan) const
 {
 	// see if this record can be coalesced with the most recent undo record.
 
@@ -634,7 +634,7 @@ bool pt_PieceTable::_canCoalesceInsertSpan(PX_ChangeRecord_Span * pcrSpan) const
 	return true;
 }
 
-PT_AttrPropIndex pt_PieceTable::_chooseIndexAP(pf_Frag * pf, PT_BlockOffset fragOffset)
+PT_AttrPropIndex pt_PieceTable::_chooseIndexAP(const pf_Frag * pf, PT_BlockOffset fragOffset) const
 {
 	// decide what indexAP to give an insertSpan inserting at the given
 	// position in the document [pf,fragOffset].
@@ -642,7 +642,7 @@ PT_AttrPropIndex pt_PieceTable::_chooseIndexAP(pf_Frag * pf, PT_BlockOffset frag
 
 	if (pf->getType() == pf_Frag::PFT_FmtMark)
 	{
-		pf_Frag_FmtMark * pffm = static_cast<pf_Frag_FmtMark *>(pf);
+		auto pffm = static_cast<const pf_Frag_FmtMark *>(pf);
 		return pffm->getIndexAP();
 	}
 
@@ -651,7 +651,7 @@ PT_AttrPropIndex pt_PieceTable::_chooseIndexAP(pf_Frag * pf, PT_BlockOffset frag
 		// if we are inserting at the middle or end of a text fragment,
 		// we take the A/P of this text fragment.
 
-		pf_Frag_Text * pft = static_cast<pf_Frag_Text *>(pf);
+		auto pft = static_cast<const pf_Frag_Text *>(pf);
 		return pft->getIndexAP();
 	}
 
@@ -659,7 +659,7 @@ PT_AttrPropIndex pt_PieceTable::_chooseIndexAP(pf_Frag * pf, PT_BlockOffset frag
 	// we are at the beginning of a text fragment.
 	// look to the previous fragment to see what to do.
 
-	pf_Frag * pfPrev = pf->getPrev();
+	const pf_Frag * pfPrev = pf->getPrev();
 	switch (pfPrev->getType())
 	{
 	case pf_Frag::PFT_Text:
@@ -667,7 +667,7 @@ PT_AttrPropIndex pt_PieceTable::_chooseIndexAP(pf_Frag * pf, PT_BlockOffset frag
 			// if we immediately follow another text fragment, we
 			// take the A/P of that fragment.
 
-			pf_Frag_Text * pftPrev = static_cast<pf_Frag_Text *>(pfPrev);
+			auto pftPrev = static_cast<const pf_Frag_Text *>(pfPrev);
 			return pftPrev->getIndexAP();
 		}
 
@@ -681,7 +681,7 @@ PT_AttrPropIndex pt_PieceTable::_chooseIndexAP(pf_Frag * pf, PT_BlockOffset frag
 			{
 				// we take the A/P of this text fragment.
 
-				pf_Frag_Text * pft = static_cast<pf_Frag_Text *>(pf);
+				auto pft = static_cast<const pf_Frag_Text *>(pf);
 				return pft->getIndexAP();
 			}
 
@@ -698,7 +698,7 @@ PT_AttrPropIndex pt_PieceTable::_chooseIndexAP(pf_Frag * pf, PT_BlockOffset frag
 			// the text to the right of the image).  for a field, it may
 			// be a valid to use the A/P of the object.
 
-			pf_Frag_Object * pfo = static_cast<pf_Frag_Object *>(pfPrev);
+			auto pfo = static_cast<const pf_Frag_Object *>(pfPrev);
 			switch (pfo->getObjectType())
 			{
 			case PTO_Image:
@@ -725,7 +725,7 @@ PT_AttrPropIndex pt_PieceTable::_chooseIndexAP(pf_Frag * pf, PT_BlockOffset frag
 		{
 			// TODO i'm not sure this is possible
 
-			pf_Frag_FmtMark * pffm = static_cast<pf_Frag_FmtMark *>(pfPrev);
+			auto pffm = static_cast<const pf_Frag_FmtMark *>(pfPrev);
 			return pffm->getIndexAP();
 		}
 

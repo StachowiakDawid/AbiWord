@@ -3175,7 +3175,7 @@ PD_DocumentRDF::getAP(void)
 {
     PT_AttrPropIndex indexAP = getIndexAP();
     pt_PieceTable*   pt = getPieceTable();
-    pt_VarSet& m_varset = pt->getVarSet();
+    const pt_VarSet& m_varset = pt->getVarSet();
     const PP_AttrProp* ret = m_varset.getAP(indexAP);
     return ret;
 }

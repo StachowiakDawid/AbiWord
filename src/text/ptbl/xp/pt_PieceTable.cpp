@@ -129,10 +129,10 @@ bool pt_PieceTable::deleteFragNoUpdate(pf_Frag * pf)
  * Don't call this in production code. This is used only for recovery and 
  * testing purposes
  */
-UT_sint32 pt_PieceTable::calcDocsize(void)
+UT_sint32 pt_PieceTable::calcDocsize(void) const
 {
 	UT_sint32 size = 0;
-	pf_Frag * pf = getFragments().getFirst();
+	const pf_Frag * pf = getFragments().getFirst();
 	while(pf && (pf->getType() !=  pf_Frag::PFT_EndOfDoc))
 	{
 		size += static_cast<UT_sint32>(pf->getLength());
@@ -150,7 +150,7 @@ bool pt_PieceTable::createAndSendDocPropCR( const PP_PropertyVector & pAtts, con
 	pAP->setProperties(pProps);
 	bool b = m_varset.addIfUniqueAP(pAP,&indexAP);
 	PX_ChangeRecord * pcr= new PX_ChangeRecord(PX_ChangeRecord::PXT_ChangeDocProp,0,indexAP,0);
-	const pf_Frag_Strux * pfStart = static_cast<pf_Frag_Strux *>(getFragments().getFirst());
+	auto pfStart = static_cast<const pf_Frag_Strux *>(getFragments().getFirst());
 	m_pDocument->notifyListeners(pfStart, pcr);
 	delete pcr;
 	return b;
@@ -214,11 +214,10 @@ bool pt_PieceTable::createAndSendCR(PT_DocPosition iPos, UT_sint32 iType,bool bS
 
 
 /*!
- * Delete the single strux given in sdh and create and record a change record.
+ * Delete the single strux given in pfs and create and record a change record.
  */
-bool pt_PieceTable::deleteStruxWithNotify(pf_Frag_Strux* sdh)
+bool pt_PieceTable::deleteStruxWithNotify(pf_Frag_Strux* pfs)
 {
-	pf_Frag_Strux * pfs = sdh;
 	PT_DocPosition dpos = pfs->getPos();
 	pf_Frag * pfEnd = nullptr;
 	UT_uint32 pfragOffsetEnd = 0;
@@ -260,15 +259,14 @@ bool pt_PieceTable::deleteFmtMark(PT_DocPosition dpos)
 	return b;
 }
 /*!
- * This method inserts a strux of type pts immediately before the sdh given.
+ * This method inserts a strux of type pts immediately before the pfs given.
  * Attributes of the strux can be optionally passed. This method does not throw
  * a change record and should only be used under exceptional circumstances to 
  * repair the piecetable during loading. It was necessary to import RTF tables.
  */
-bool pt_PieceTable::insertStruxNoUpdateBefore(pf_Frag_Strux* sdh, PTStruxType pts, const PP_PropertyVector & attributes )
+bool pt_PieceTable::insertStruxNoUpdateBefore(const pf_Frag_Strux* pfs, PTStruxType pts, const PP_PropertyVector & attributes )
 {
-	const pf_Frag_Strux * pfs = sdh;
-	UT_DEBUGMSG(("SEVIOR: Inserting strux of type %d no update %p \n", pts, (void*)sdh));
+	UT_DEBUGMSG(("SEVIOR: Inserting strux of type %d no update %p \n", pts, pfs));
 //
 // Create an indexAP
 //
@@ -326,8 +324,8 @@ void pt_PieceTable::_unlinkFrag(pf_Frag * pf,
 		&& pp->getNext()
 		&& pp->getNext()->getType()==pf_Frag::PFT_Text)
 	{
-		pf_Frag_Text * ppt = static_cast<pf_Frag_Text *> (pp);
-		pf_Frag_Text * pnt = static_cast<pf_Frag_Text *> (pp->getNext());
+		auto ppt = static_cast<pf_Frag_Text *>(pp);
+		auto pnt = static_cast<pf_Frag_Text *>(pp->getNext());
 		UT_uint32 prevLength = ppt->getLength();
 		if (   ppt->getIndexAP() == pnt->getIndexAP()
 			&& m_varset.isContiguous(ppt->getBufIndex(),prevLength,pnt->getBufIndex()))
@@ -345,20 +343,20 @@ void pt_PieceTable::_unlinkFrag(pf_Frag * pf,
 	UT_ASSERT(pp && (pp->getNext() != pf));
 }
 
-bool pt_PieceTable::_struxHasContent(pf_Frag_Strux * pfs) const
+bool pt_PieceTable::_struxHasContent(const pf_Frag_Strux * pfs) const
 {
 	// return true iff the paragraph has content (text).
 
 	return (pfs->getNext() && (pfs->getNext()->getType() == pf_Frag::PFT_Text));
 }
 
-bool  pt_PieceTable::_struxIsEmpty(pf_Frag_Strux * pfs) const
+bool  pt_PieceTable::_struxIsEmpty(const pf_Frag_Strux * pfs) const
 {
 	if(pfs->getNext() == nullptr)
 	{
 		return true;
 	}
-	pf_Frag * pf = pfs->getNext();
+	const pf_Frag * pf = pfs->getNext();
 	if(pf->getType() == pf_Frag::PFT_EndOfDoc)
 	{
 		return true;
@@ -367,7 +365,7 @@ bool  pt_PieceTable::_struxIsEmpty(pf_Frag_Strux * pfs) const
 	{
 		return false;
 	}
-	pf_Frag_Strux * pfsNext = static_cast<pf_Frag_Strux *>(pfs->getNext());
+	auto pfsNext = static_cast<const pf_Frag_Strux *>(pfs->getNext());
 	if(isFootnote(pfsNext))
 	{
 		return false;
@@ -387,14 +385,14 @@ bool pt_PieceTable::getAttrProp(PT_AttrPropIndex indexAP, const PP_AttrProp ** p
 	return true;
 }
 
-bool pt_PieceTable::_getSpanAttrPropHelper(pf_Frag * pf, const PP_AttrProp ** ppAP) const
+bool pt_PieceTable::_getSpanAttrPropHelper(const pf_Frag * pf, const PP_AttrProp ** ppAP) const
 {
 	switch (pf->getType())
 	{
 	case pf_Frag::PFT_FmtMark:
 	case pf_Frag::PFT_Text:
 	case pf_Frag::PFT_Object:
-		{	
+		{
 			const PP_AttrProp * pAP = m_varset.getAP(pf->getIndexAP());
 			if (pAP)
 			{
@@ -419,20 +417,18 @@ bool pt_PieceTable::_getSpanAttrPropHelper(pf_Frag * pf, const PP_AttrProp ** pp
 }
 
 
-bool pt_PieceTable::getSpanAttrProp(pf_Frag_Strux* sdh, UT_uint32 offset, bool bLeftSide,
+bool pt_PieceTable::getSpanAttrProp(const pf_Frag_Strux* pfsBlock, UT_uint32 offset, bool bLeftSide,
 									   const PP_AttrProp ** ppAP) const
 {
 	// return the AP for the text at the given offset from the given strux.
 	// offset zero now refers to the first character in the block, so adding
 	// fl_BLOCK_STRUX_OFFSET to the offset in the call is no longer necessary.
 
-	UT_return_val_if_fail (sdh,false);
+	UT_return_val_if_fail (pfsBlock, false);
 	UT_return_val_if_fail (ppAP,false);
 
-	const pf_Frag * pf = sdh;
-	UT_return_val_if_fail (pf->getType() == pf_Frag::PFT_Strux,false);
-	const pf_Frag_Strux * pfsBlock = sdh;
-	
+	UT_return_val_if_fail (pfsBlock->getType() == pf_Frag::PFT_Strux,false);
+
 	// This assert is incorrect; blocks that are inserted inside a TOC use sdh of the TOC section
 	// UT_return_val_if_fail (pfsBlock->getStruxType() == PTX_Block,false);
 	UT_return_val_if_fail (pfsBlock->getStruxType() == PTX_Block || pfsBlock->getStruxType() == PTX_SectionTOC,false);
@@ -484,7 +480,7 @@ bool pt_PieceTable::getSpanAttrProp(pf_Frag_Strux* sdh, UT_uint32 offset, bool b
 #if 0
 // I will leave the code here for now to aid in debugging any problems
 // with the new iterator (should there be any, that is) Tomas, Nov 15, 2003
-bool pt_PieceTable::getSpanPtr(pf_Frag_Strux* sdh, UT_uint32 offset,
+bool pt_PieceTable::getSpanPtr(const pf_Frag_Strux* pfsBlock, UT_uint32 offset,
 								  const UT_UCS4Char ** ppSpan, UT_uint32 * pLength) const
 {
 	// note: offset zero refers to the strux.  the first character is at
@@ -493,13 +489,11 @@ bool pt_PieceTable::getSpanPtr(pf_Frag_Strux* sdh, UT_uint32 offset,
 	*ppSpan = nullptr;
 	*pLength = 0;
 
-	const pf_Frag * pf = sdh;
-	UT_return_val_if_fail (pf->getType() == pf_Frag::PFT_Strux,false);
-	const pf_Frag_Strux * pfsBlock = sdh;
+	UT_return_val_if_fail (pfsBlock->getType() == pf_Frag::PFT_Strux,false);
 	UT_return_val_if_fail (pfsBlock->getStruxType() == PTX_Block,false);
 	xxx_UT_DEBUGMSG(("getSpanPtr: Requested offset %d \n",offset));
 	
-	UT_uint32 cumOffset = pf->getLength();
+	UT_uint32 cumOffset = pfsBlock->getLength();
 	for (pf_Frag * pfTemp=pfsBlock->getNext(); (pfTemp); pfTemp=pfTemp->getNext())
 	{
 		xxx_UT_DEBUGMSG(("getSpanPtr: offset %d cumOffset %d \n",offset,cumOffset));
@@ -536,7 +530,7 @@ bool pt_PieceTable::getSpanPtr(pf_Frag_Strux* sdh, UT_uint32 offset,
 				xxx_UT_DEBUGMSG(("getSpanPtr: Error 2 offset %d cumOffset %d \n",offset,cumOffset));
 				return false;
 			}
-			pf_Frag_Text * pfText = static_cast<pf_Frag_Text *> (pfTemp);
+			auto pfText = static_cast<const pf_Frag_Text *>(pfTemp);
 			const UT_UCS4Char * p = getPointer(pfText->getBufIndex());
 			UT_uint32 delta = offset - cumOffset;
 			*ppSpan = p + delta;
@@ -565,19 +559,17 @@ PD_Document * pt_PieceTable::getDocument(void)
   Copy the contents (unicode character data) of the paragraph (block)
   into the growbuf given.  We append the content onto the growbuf.
 */
-bool pt_PieceTable::getBlockBuf(pf_Frag_Strux* sdh,
+bool pt_PieceTable::getBlockBuf(const pf_Frag_Strux* pfsBlock,
                                    UT_GrowBuf * pgb) const
 {
     UT_return_val_if_fail (pgb,false);
 
-    const pf_Frag * pf = sdh;
-    UT_return_val_if_fail(pf->getType() == pf_Frag::PFT_Strux, false);
-    const pf_Frag_Strux * pfsBlock = sdh;
+    UT_return_val_if_fail(pfsBlock->getType() == pf_Frag::PFT_Strux, false);
     UT_return_val_if_fail(pfsBlock->getStruxType() == PTX_Block, false);
 
     UT_uint32 bufferOffset = pgb->getLength();
 
-    pf_Frag * pfTemp = pfsBlock->getNext();
+    const pf_Frag * pfTemp = pfsBlock->getNext();
 	UT_sint32 countFoots = 0;
     while (pfTemp)
     {
@@ -600,7 +592,7 @@ bool pt_PieceTable::getBlockBuf(pf_Frag_Strux* sdh,
 			// Deal with TOC's. Since TOC's are always placed right before
 			// the end of the paragraph we terminate the fill here.
 			//
-			pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pfTemp);
+			auto pfs = static_cast<const pf_Frag_Strux *>(pfTemp);
 			if(pfs->getStruxType() == PTX_SectionTOC)
 			{
 				pfTemp = nullptr;
@@ -650,7 +642,7 @@ bool pt_PieceTable::getBlockBuf(pf_Frag_Strux* sdh,
 
         case pf_Frag::PFT_Text:
         {
-            pf_Frag_Text * pft = static_cast<pf_Frag_Text *>(pfTemp);
+            auto pft = static_cast<const pf_Frag_Text *>(pfTemp);
             const UT_UCS4Char * pSpan = getPointer(pft->getBufIndex());
             UT_uint32 length = pft->getLength();
 
@@ -713,7 +705,7 @@ bool pt_PieceTable::getBlockBuf(pf_Frag_Strux* sdh,
     return true;
 }
 
-PT_DocPosition pt_PieceTable::getPosEnd()
+PT_DocPosition pt_PieceTable::getPosEnd() const
 {
     PT_DocPosition ret = 0;
     getBounds( true, ret );
@@ -737,25 +729,21 @@ bool pt_PieceTable::getBounds(bool bEnd, PT_DocPosition & docPos) const
 	return res;
 }
 
-PT_DocPosition pt_PieceTable::getStruxPosition(pf_Frag_Strux* sdh) const
+PT_DocPosition pt_PieceTable::getStruxPosition(const pf_Frag_Strux* pfs) const
 {
 	// return absolute document position of the given handle.
-
-	const pf_Frag * pfToFind = sdh;
-
-	return getFragPosition(pfToFind);
+	return getFragPosition(pfs);
 }
 
 void pt_PieceTable::deleteHdrFtrStrux(pf_Frag_Strux * pfs)
 {
 	UT_return_if_fail( pfs );
-	
+
 	if(m_pDocument->isMarkRevisions())
 	{
-		const pf_Frag * pfFrag = pfs;
-		PT_DocPosition dpos1 = getFragPosition(pfFrag);
+		PT_DocPosition dpos1 = getFragPosition(pfs);
 
-		pfFrag = pfFrag->getNext();
+		const auto* pfFrag = pfs->getNext();
 
 		while(pfFrag)
 		{
@@ -771,7 +759,7 @@ void pt_PieceTable::deleteHdrFtrStrux(pf_Frag_Strux * pfs)
 
 		// there should always be at least EndOfDoc fragment !!!
 		UT_return_if_fail( pfFrag );
-		
+
 		PT_DocPosition dpos2 = getFragPosition(pfFrag);
 
 		UT_uint32 iRealDelete = 0;
@@ -781,7 +769,7 @@ void pt_PieceTable::deleteHdrFtrStrux(pf_Frag_Strux * pfs)
 	{
 		const PP_AttrProp * pAP = nullptr;
 		UT_return_if_fail(pfs->getStruxType()==PTX_SectionHdrFtr);
-		pf_Frag_Strux_SectionHdrFtr * pfHdr = static_cast<pf_Frag_Strux_SectionHdrFtr *>(pfs);
+		auto pfHdr = static_cast<const pf_Frag_Strux_SectionHdrFtr *>(pfs);
 
 		if(!getAttrProp(pfHdr->getIndexAP(),&pAP) || !pAP)
 			return;
@@ -797,7 +785,6 @@ void pt_PieceTable::deleteHdrFtrStrux(pf_Frag_Strux * pfs)
 		_realDeleteHdrFtrStrux(pfs);
 		_fixHdrFtrReferences(pszHdrType, pszHdrId);
 	}
-	
 }
 
 void pt_PieceTable::_realDeleteHdrFtrStrux(pf_Frag_Strux * pfs)
@@ -810,6 +797,16 @@ PT_DocPosition pt_PieceTable::getFragPosition(const pf_Frag * pfToFind) const
 	return  pfToFind->getPos();
 }
 
+
+bool pt_PieceTable::getFragFromPosition(PT_DocPosition docPos,
+										const pf_Frag ** ppf,
+										PT_BlockOffset * pFragOffset) const
+{
+	pf_Frag* pf = nullptr;
+	bool result = getFragFromPosition(docPos, &pf, pFragOffset);
+	*ppf = pf;
+	return result;
+}
 
 bool pt_PieceTable::getFragFromPosition(PT_DocPosition docPos,
 										   pf_Frag ** ppf,
@@ -881,6 +878,18 @@ bool pt_PieceTable::getFragFromPosition(PT_DocPosition docPos,
 
 //  	return true;
 //  }
+
+bool pt_PieceTable::getFragsFromPositions(PT_DocPosition dPos1, PT_DocPosition dPos2,
+										  const pf_Frag ** ppf1, PT_BlockOffset * pOffset1,
+										  const pf_Frag ** ppf2, PT_BlockOffset * pOffset2) const
+{
+	pf_Frag *pf1 = nullptr;
+	pf_Frag *pf2 = nullptr;
+	bool result = getFragsFromPositions(dPos1, dPos2, &pf1, pOffset1, &pf2, pOffset2);
+	*ppf1 = pf1;
+	*ppf2 = pf2;
+	return result;
+}
 
 bool pt_PieceTable::getFragsFromPositions(PT_DocPosition dPos1, PT_DocPosition dPos2,
 											 pf_Frag ** ppf1, PT_BlockOffset * pOffset1,
@@ -969,11 +978,11 @@ bool pt_PieceTable::getStruxOfTypeFromPosition( PT_DocPosition docPos,
 	return _getStruxOfTypeFromPosition(docPos,pts,sdh);
 }
 
-bool pt_PieceTable::isEndFootnote(pf_Frag * pf) const
+bool pt_PieceTable::isEndFootnote(const pf_Frag * pf) const
 {
 	if(pf && (pf->getType() == pf_Frag::PFT_Strux))
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pf);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pf);
 		if((pfs->getStruxType() == PTX_EndFootnote) || (pfs->getStruxType() == PTX_EndEndnote) || (pfs->getStruxType() == PTX_EndTOC) || (pfs->getStruxType() == PTX_EndAnnotation))
 		{
 			return true;
@@ -983,11 +992,11 @@ bool pt_PieceTable::isEndFootnote(pf_Frag * pf) const
 }
 
 
-bool pt_PieceTable::isFootnote(pf_Frag * pf) const
+bool pt_PieceTable::isFootnote(const pf_Frag * pf) const
 {
 	if(pf && (pf->getType() == pf_Frag::PFT_Strux))
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pf);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pf);
 		if((pfs->getStruxType() == PTX_SectionFootnote) || (pfs->getStruxType() == PTX_SectionEndnote) || (pfs->getStruxType() == PTX_SectionTOC) || (pfs->getStruxType() == PTX_SectionAnnotation))
 		{
 			return true;
@@ -997,7 +1006,7 @@ bool pt_PieceTable::isFootnote(pf_Frag * pf) const
 }
 
 
-bool pt_PieceTable::isInsideFootnote(PT_DocPosition dpos, pf_Frag ** pfBegin) const
+bool pt_PieceTable::isInsideFootnote(PT_DocPosition dpos, const pf_Frag ** pfBegin) const
 {
 	// return true if pos is inside a footnote, an endnote or an annotation.
 	// the address of the footnote (endnote or annotation) pfs_strux is 
@@ -1054,6 +1063,15 @@ bool  pt_PieceTable::hasEmbedStruxOfTypeInRange(PT_DocPosition posStart, PT_DocP
 	return false;	
 }
 
+bool pt_PieceTable::_getStruxFromPosition(PT_DocPosition docPos,
+										  const pf_Frag_Strux ** ppfs,
+										  bool bSkipFootnotes) const
+{
+	pf_Frag_Strux *pfs = nullptr;
+	bool result = _getStruxFromPosition(docPos, &pfs, bSkipFootnotes);
+	*ppfs = pfs;
+	return result;
+}
 
 bool pt_PieceTable::_getStruxFromPosition(PT_DocPosition docPos,
 											 pf_Frag_Strux ** ppfs,
@@ -1228,7 +1246,7 @@ bool pt_PieceTable::_getStruxOfTypeFromPosition(PT_DocPosition dpos,
  *
  * FIXME!! Should this code work for annotations too?
  */
-pf_Frag *    pt_PieceTable::_findPrevHyperlink(pf_Frag * pfStart)
+pf_Frag *    pt_PieceTable::_findPrevHyperlink(pf_Frag * pfStart) const
 {
 	pf_Frag * pf = pfStart;
 	pf_Frag_Object *pOb = nullptr;
@@ -1286,7 +1304,7 @@ pf_Frag *    pt_PieceTable::_findPrevHyperlink(pf_Frag * pfStart)
  * (b) It encounters a start hyperlink first
  * (c) It encounters the end of document
  */
-pf_Frag *    pt_PieceTable::_findNextHyperlink(pf_Frag * pfStart)
+pf_Frag *    pt_PieceTable::_findNextHyperlink(pf_Frag * pfStart) const
 {
 	pf_Frag * pf = pfStart;
 	pf_Frag_Object *pOb = nullptr;
@@ -1337,7 +1355,7 @@ pf_Frag *    pt_PieceTable::_findNextHyperlink(pf_Frag * pfStart)
 	return nullptr;
 }
 
-bool pt_PieceTable::_getStruxFromFrag(pf_Frag * pfStart, pf_Frag_Strux ** ppfs) const
+bool pt_PieceTable::_getStruxFromFrag(const pf_Frag * pfStart, pf_Frag_Strux ** ppfs) const
 {
 	// return the strux frag immediately prior to (containing)
 	// the given fragment.
@@ -1355,7 +1373,7 @@ bool pt_PieceTable::_getStruxFromFrag(pf_Frag * pfStart, pf_Frag_Strux ** ppfs) 
 }
 
 
-bool pt_PieceTable::_getNextStruxAfterFragSkip(pf_Frag *pfStart, pf_Frag_Strux ** ppfs)
+bool pt_PieceTable::_getNextStruxAfterFragSkip(const pf_Frag *pfStart, pf_Frag_Strux ** ppfs) const
 {
 
 	*ppfs = nullptr;
@@ -1395,7 +1413,7 @@ bool pt_PieceTable::_getNextStruxAfterFragSkip(pf_Frag *pfStart, pf_Frag_Strux *
 }
 
 
-bool pt_PieceTable::_getStruxFromFragSkip(pf_Frag * pfStart, pf_Frag_Strux ** ppfs) const
+bool pt_PieceTable::_getStruxFromFragSkip(const pf_Frag * pfStart, pf_Frag_Strux ** ppfs) const
 {
 	// return the strux frag immediately prior to (containing)
 	// the given fragment while skipping endFootnote/footnote stuff.
@@ -1440,12 +1458,12 @@ bool pt_PieceTable::_getStruxFromFragSkip(pf_Frag * pfStart, pf_Frag_Strux ** pp
 	return true;
 }
 
-UT_uint32 pt_PieceTable::_computeBlockOffset(pf_Frag_Strux * pfs,pf_Frag * pfTarget) const
+UT_uint32 pt_PieceTable::_computeBlockOffset(const pf_Frag_Strux * pfs, const pf_Frag * pfTarget) const
 {
 	// return the block offset of the beginning of pfTarget from the end of pfs.
 
 	UT_uint32 sum;
-	pf_Frag * pf;
+	const pf_Frag * pf;
 
 	for (pf=pfs->getNext(), sum=0; (pf && (pf!=pfTarget)); sum+=pf->getLength(), pf=pf->getNext())
 		;
@@ -1502,7 +1520,7 @@ UT_uint32 pt_PieceTable::getXID()
 
 
 /* Return true if neither dpos1 nor dpos2 is within a note and the whole document is not selected*/
-bool pt_PieceTable::_checkSkipFootnote(PT_DocPosition dpos1, PT_DocPosition dpos2, pf_Frag * pf_End) const
+bool pt_PieceTable::_checkSkipFootnote(PT_DocPosition dpos1, PT_DocPosition dpos2, const pf_Frag * pf_End) const
 {
 	if(m_embeddedStrux.empty())
 	{
@@ -1512,11 +1530,11 @@ bool pt_PieceTable::_checkSkipFootnote(PT_DocPosition dpos1, PT_DocPosition dpos
 	if (!pf_End)
 	{
 		PT_BlockOffset offset;
-		getFragFromPosition(dpos2,&pf_End,&offset);
+		getFragFromPosition(dpos2, &pf_End, &offset);
 	}
 	if ((dpos1 == 1) && ((pf_End->getType() == pf_Frag::PFT_EndOfDoc) ||
 						 ((pf_End->getType() == pf_Frag::PFT_Strux) && 
-						  (static_cast<pf_Frag_Strux*>(pf_End)->getStruxType() == PTX_SectionHdrFtr))))
+						  (static_cast<const pf_Frag_Strux*>(pf_End)->getStruxType() == PTX_SectionHdrFtr))))
 	{
 		return false;
 	}

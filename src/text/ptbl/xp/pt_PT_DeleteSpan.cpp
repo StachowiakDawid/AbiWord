@@ -2033,7 +2033,7 @@ bool pt_PieceTable::_deleteFormatting(PT_DocPosition dpos1,
 /*!
  * Returns true if pfs is not a strux connected with a table or frame
  */
-bool pt_PieceTable::_StruxIsNotTable(pf_Frag_Strux * pfs)
+bool pt_PieceTable::_StruxIsNotTable(const pf_Frag_Strux * pfs) const
 {
 	PTStruxType its = pfs->getStruxType();
 	bool b = ((its != PTX_SectionTable) && (its != PTX_SectionCell)
@@ -3176,14 +3176,14 @@ bool pt_PieceTable::_realDeleteSpan(PT_DocPosition dpos1,
 	PP_AttrProp AttrProp_Before;
 
 	{
-		pf_Frag * pf1;
+		const pf_Frag * pf1;
 		PT_BlockOffset Offset1;
 		getFragFromPosition(dpos1, &pf1, &Offset1);
 		if(pf1->getType() == pf_Frag::PFT_Text)
 		{
 			const PP_AttrProp *p_AttrProp;
-			getAttrProp(static_cast<pf_Frag_Text *>(pf1)->getIndexAP(), &p_AttrProp);
-		  
+			getAttrProp(static_cast<const pf_Frag_Text *>(pf1)->getIndexAP(), &p_AttrProp);
+
 			AttrProp_Before = *p_AttrProp;
 			if(p_AttrProp_Before)
 				*p_AttrProp_Before = *p_AttrProp;
@@ -3276,11 +3276,11 @@ bool pt_PieceTable::_realDeleteSpan(PT_DocPosition dpos1,
 
 	// Have we deleted all the text in a paragraph.
 
-	pf_Frag * p_frag_before;
+	const pf_Frag * p_frag_before;
 	PT_BlockOffset Offset_before;
 	getFragFromPosition(dpos1 - 1, &p_frag_before, &Offset_before);
 
-	pf_Frag * p_frag_after;
+	const pf_Frag * p_frag_after;
 	PT_BlockOffset Offset_after;
 	getFragFromPosition(dpos1, &p_frag_after, &Offset_after);
 
@@ -3301,13 +3301,13 @@ bool pt_PieceTable::_realDeleteSpan(PT_DocPosition dpos1,
 		bool bDoit = !bDontGlob;
 		if(bDoit && (p_frag_after->getType() == pf_Frag::PFT_Strux))
 		{
-		     pf_Frag_Strux * pfsa = static_cast<pf_Frag_Strux *>(p_frag_after);
+		     auto pfsa = static_cast<const pf_Frag_Strux *>(p_frag_after);
 		     if(isEndFootnote(pfsa))
 		     {
-			 bDoit = false;
+			 	bDoit = false;
 		     }
 		}
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(p_frag_before);
+		auto pfs = static_cast<const pf_Frag_Strux *>(p_frag_before);
 		if(bDoit && ((pfs->getStruxType() == PTX_Block) || (p_frag_before->getType() == pf_Frag::PFT_EndOfDoc) ))
 			_insertFmtMarkFragWithNotify(PTC_AddFmt, dpos1, &AttrProp_Before);
 
@@ -3324,10 +3324,8 @@ bool pt_PieceTable::_realDeleteSpan(PT_DocPosition dpos1,
 
 // need a special delete for a field update because otherwise
 // the whole field object would be deleted by _tweakDeleteSpan
-bool pt_PieceTable::deleteFieldFrag(pf_Frag * pf)
+bool pt_PieceTable::deleteFieldFrag(const pf_Frag * pf)
 {
-
-
 	UT_return_val_if_fail (m_pts==PTS_Editing,false);
 
 	bool bSuccess = true;
@@ -3356,36 +3354,34 @@ void pt_PieceTable::_tweakFieldSpan(PT_DocPosition & dpos1,
 	//  user will expect to have deleted, even if the dpositions
 	//  aren't quite right to encompass those.
 
-	pf_Frag * pf_First;
-	pf_Frag * pf_End;
-	pf_Frag * pf_Other;
+	const pf_Frag * pf_First;
+	const pf_Frag * pf_End;
+	const pf_Frag * pf_Other;
 	PT_BlockOffset fragOffset_First;
 	PT_BlockOffset fragOffset_End;
 
 	bool bFound = getFragsFromPositions(dpos1,dpos2,&pf_First,&fragOffset_First,&pf_End,&fragOffset_End);
 	UT_return_if_fail (bFound);
 
-	pf_Frag_Strux * pfsContainer = nullptr;
+	const pf_Frag_Strux * pfsContainer = nullptr;
 	bool bFoundStrux = _getStruxFromPosition(dpos1,&pfsContainer);
 	UT_return_if_fail (bFoundStrux);
 
     // if start in middle of field widen to include object
     if ((pf_First->getType() == pf_Frag::PFT_Text)&&
-        (static_cast<pf_Frag_Text *>(pf_First)->getField()))
+        (static_cast<const pf_Frag_Text *>(pf_First)->getField()))
     {
-        pf_Frag_Text * pft = static_cast<pf_Frag_Text *>(pf_First);
-        pf_Frag_Text * pft2 = nullptr;
+        auto pft = static_cast<const pf_Frag_Text *>(pf_First);
         // we can't delete part of a field so widen deletion to
         // include object at start
         while (pft->getPrev()->getType() == pf_Frag::PFT_Text)
         {
-            pft2 = static_cast<pf_Frag_Text *>(pft->getPrev());
+            auto pft2 = static_cast<const pf_Frag_Text *>(pft->getPrev());
             UT_ASSERT_HARMLESS(pft->getField() == pft2->getField());
             pft = pft2;
         }
         UT_return_if_fail (pft->getPrev()->getType() == pf_Frag::PFT_Object);
-        pf_Frag_Object *pfo =
-            static_cast<pf_Frag_Object *>(pft->getPrev());
+        auto pfo = static_cast<const pf_Frag_Object *>(pft->getPrev());
         UT_return_if_fail (pfo->getObjectType()==PTO_Field);
         UT_return_if_fail (pfo->getField()==pft->getField());
         dpos1 = getFragPosition(pfo);
@@ -3398,7 +3394,7 @@ void pt_PieceTable::_tweakFieldSpan(PT_DocPosition & dpos1,
 								(static_cast<pf_Frag_Object *>(pf_End)
 								->getObjectType()==PTO_Field))*/)
     {
-        fd_Field * pField = pf_End->getField();
+        const fd_Field * pField = pf_End->getField();
         UT_return_if_fail (pField);
         pf_Other = pf_End->getNext();
         UT_return_if_fail (pf_Other);

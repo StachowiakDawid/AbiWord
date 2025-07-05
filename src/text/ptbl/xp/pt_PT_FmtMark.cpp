@@ -99,7 +99,7 @@ bool pt_PieceTable::_insertFmtMarkFragWithNotify(PTChangeFmt ptc,
 	//
 	if(pf->getType() == pf_Frag::PFT_Strux)
 	{
-	    pf_Frag_Strux * pfse = static_cast<pf_Frag_Strux *>(pf);
+	    auto pfse = static_cast<const pf_Frag_Strux *>(pf);
 	    if(isEndFootnote(pfse))
 	    {
 		if(pf->getPrev())

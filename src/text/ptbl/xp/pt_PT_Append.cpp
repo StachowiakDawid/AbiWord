@@ -61,11 +61,11 @@ bool pt_PieceTable::appendStrux(PTStruxType pts, const PP_PropertyVector & attri
 		}
 	}
 
-	pf_Frag * pfPrev = m_fragments.getLast();
+	const pf_Frag * pfPrev = m_fragments.getLast();
 	bool bDoInsertFmt = false;
 	if(pfPrev != nullptr && pfPrev->getType() == pf_Frag::PFT_Strux)
 	{
-		pf_Frag_Strux * pfsPrev = static_cast<pf_Frag_Strux *>(pfPrev);
+		auto pfsPrev = static_cast<const pf_Frag_Strux *>(pfPrev);
 		if(pfsPrev->getStruxType() == PTX_Block)
 		{
 			bDoInsertFmt = true;
@@ -108,7 +108,7 @@ bool pt_PieceTable::appendStrux(PTStruxType pts, const PP_PropertyVector & attri
 pf_Frag_Strux* pt_PieceTable::_findLastStruxOfType( pf_Frag * pfStart,
                                                     PTStruxType pst,
                                                     PTStruxType* stopConditions,
-                                                    bool bSkipEmbededSections )
+                                                    bool bSkipEmbededSections ) const
 {
 	UT_return_val_if_fail( pfStart, nullptr );
 
@@ -143,7 +143,7 @@ pf_Frag_Strux* pt_PieceTable::_findLastStruxOfType( pf_Frag * pfStart,
 					{
 						if(pf->getType() == pf_Frag::PFT_Strux)
 						{
-							pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux*>(pf);
+							auto pfs = static_cast<const pf_Frag_Strux*>(pf);
 
 							if(pfs->getStruxType() == PTX_SectionTOC)
 								break;
@@ -158,7 +158,7 @@ pf_Frag_Strux* pt_PieceTable::_findLastStruxOfType( pf_Frag * pfStart,
 					{
 						if(pf->getType() == pf_Frag::PFT_Strux)
 						{
-							pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux*>(pf);
+							auto pfs = static_cast<const pf_Frag_Strux*>(pf);
 
 							if(pfs->getStruxType() == PTX_SectionFrame)
 								break;
@@ -174,7 +174,7 @@ pf_Frag_Strux* pt_PieceTable::_findLastStruxOfType( pf_Frag * pfStart,
 					{
 						if(pf->getType() == pf_Frag::PFT_Strux)
 						{
-							pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux*>(pf);
+							auto pfs = static_cast<const pf_Frag_Strux*>(pf);
 
 							if(pfs->getStruxType() == PTX_SectionEndnote)
 								break;
@@ -189,7 +189,7 @@ pf_Frag_Strux* pt_PieceTable::_findLastStruxOfType( pf_Frag * pfStart,
 					{
 						if(pf->getType() == pf_Frag::PFT_Strux)
 						{
-							pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux*>(pf);
+							auto pfs = static_cast<const pf_Frag_Strux*>(pf);
 
 							if(pfs->getStruxType() == PTX_SectionFootnote)
 								break;
@@ -204,7 +204,7 @@ pf_Frag_Strux* pt_PieceTable::_findLastStruxOfType( pf_Frag * pfStart,
 					{
 						if(pf->getType() == pf_Frag::PFT_Strux)
 						{
-							pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux*>(pf);
+							auto pfs = static_cast<const pf_Frag_Strux*>(pf);
 
 							if(pfs->getStruxType() == PTX_SectionMarginnote)
 								break;
@@ -226,7 +226,7 @@ pf_Frag_Strux* pt_PieceTable::_findLastStruxOfType( pf_Frag * pfStart,
 
 pf_Frag_Strux* pt_PieceTable::_findLastStruxOfType( pf_Frag * pfStart,
                                                     PTStruxType pst,
-                                                    bool bSkipEmbededSections )
+                                                    bool bSkipEmbededSections) const
 {
 	UT_return_val_if_fail( pfStart, nullptr );
     PTStruxType stopCondition[] = { PTX_StruxDummy };

@@ -473,8 +473,8 @@ bool pt_PieceTable::_realChangeStruxFmt(PTChangeFmt ptc,
 	}
 	else
 	{
-		pf_Frag * pfPos1 = nullptr;
-		pf_Frag * pfPos2 = nullptr;
+		const pf_Frag * pfPos1 = nullptr;
+		const pf_Frag * pfPos2 = nullptr;
 		bool bNoteFirst = isInsideFootnote(dpos1,&pfPos1);
 		bool bNoteEnd = isInsideFootnote(dpos2,&pfPos2);
 

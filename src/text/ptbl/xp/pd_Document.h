@@ -243,7 +243,7 @@ public:
 	UT_Error		importFile(GsfInput *input, int ieft, bool markClean = false, bool bImportStylesFirst = true,
 							   const char * impProps = nullptr);
 	virtual UT_Error		importStyles(const char * szFilename, int ieft, bool bDocProps = false);
-	AP_StatusBar *          getStatusBar(void);
+	AP_StatusBar *          getStatusBar(void) const;
 	void                    updateStatus(void);
 	virtual UT_Error		newDocument(void) override;
 
@@ -255,7 +255,7 @@ public:
 
 	virtual bool			isDirty(void) const override;
 	virtual void            forceDirty() override;
-	bool                    isConnected(void);
+	bool                    isConnected(void) const;
 	virtual bool			canDo(bool bUndo) const override;
 	virtual UT_uint32		undoCount(bool bUndo) const;
 	virtual bool			undoCmd(UT_uint32 repeatCount) override;
@@ -270,8 +270,8 @@ public:
 
 	void                    addPageReferencedImage(UT_UTF8String & sImageId, UT_sint32 iPage, double xInch, double yInch, const char * pzProps);
 	void                    addPageReferencedTextbox(UT_ByteBuf & sContent,UT_sint32 iPage, double xInch, double yInch,const char * pzProps);
-	ImagePage *             getNthImagePage(UT_sint32 iImagePage);
-	TextboxPage *           getNthTextboxPage(UT_sint32 iTextboxPage);
+	ImagePage *             getNthImagePage(UT_sint32 iImagePage) const;
+	TextboxPage *           getNthTextboxPage(UT_sint32 iTextboxPage) const;
 	void                    clearAllPendingObjects(void);
 
 	// Author methods
@@ -304,7 +304,7 @@ public:
 	void                    setMarginChangeOnly(bool b);
 	bool                    isMarginChangeOnly(void) const;
 	bool                    changeObjectFormatNoUpdate(PTChangeFmt ptc, pf_Frag_Object* odh, const PP_PropertyVector & attributes,const PP_PropertyVector & properties );
-PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh);
+PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	bool					insertObject(PT_DocPosition dpos,
 										 PTObjectType pto,
 										 const PP_PropertyVector & attributes,
@@ -420,10 +420,10 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh);
 	bool                    checkForSuspect(void);
 	bool                    repairDoc(void);
 	bool                    removeStyle(const gchar * name);
-	bool					tellListener(PL_Listener * pListener);
+	bool					tellListener(PL_Listener * pListener) const;
 	bool					tellListenerSubset( PL_Listener * pListener,
                                                 PD_DocumentRange * pDocRange,
-                                                PL_ListenerCoupleCloser* closer = nullptr);
+                                                PL_ListenerCoupleCloser* closer = nullptr) const;
 	bool					addListener(PL_Listener * pListener, PL_ListenerId * pListenerId);
 	bool					removeListener(PL_ListenerId listenerId);
 	bool					signalListeners(UT_uint32 iSignal) const;
@@ -470,10 +470,10 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh);
 	pf_Frag *				getFragFromPosition(PT_DocPosition docPos) const;
 
 	bool					getNextStruxOfType(pf_Frag_Strux* sdh,PTStruxType pts,
-											   pf_Frag_Strux* * nextsdh);
+											   pf_Frag_Strux* * nextsdh) const;
 	bool					getPrevStruxOfType(pf_Frag_Strux* sdh,PTStruxType pts,
-											   pf_Frag_Strux* * prevsdh);
-	bool                    getNextStrux(pf_Frag_Strux* sdh, pf_Frag_Strux* *nextSDH);
+											   pf_Frag_Strux* * prevsdh) const;
+	bool                    getNextStrux(pf_Frag_Strux* sdh, pf_Frag_Strux* *nextSDH) const;
 
 	// data items
 
@@ -497,11 +497,11 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh);
 										  UT_ConstByteBufPtr & pByteBuf, std::string * pMimeType) const;
 
     pf_Frag_Strux*       findHdrFtrStrux(const gchar * pszHdtFtr,
-											const gchar * pszHdrFtrID);
+											const gchar * pszHdrFtrID) const;
 	bool                    verifySectionID(const gchar * pszId);
 	const pf_Frag_Strux*       getLastSectionSDH(void) const;
-	pf_Frag_Strux*       getLastSectionMutableSDH(void);
-	pf_Frag_Strux*       getLastStruxOfType(PTStruxType pts);
+	pf_Frag_Strux*       getLastSectionMutableSDH(void) const;
+	pf_Frag_Strux*       getLastStruxOfType(PTStruxType pts) const;
 
 	bool                    changeStruxAttsNoUpdate(pf_Frag_Strux* sdh, const char * attr, const char * attvalue);
 	bool                    deleteStruxNoUpdate(pf_Frag_Strux* sdh);
@@ -512,31 +512,31 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh);
 	// the function below does exactly what the name says -- returns the AP index; in revisions mode
 	// you would need the AP at that index to have revision attribute exploded -- use one of the
 	// functions below to retrieve props and attrs correctly reflecting revisions settings
-	PT_AttrPropIndex        getAPIFromSDH(pf_Frag_Strux* sdh);
+	PT_AttrPropIndex        getAPIFromSDH(pf_Frag_Strux* sdh) const;
     bool                    getAttributeFromSDH(pf_Frag_Strux* sdh, bool bShowRevisions, UT_uint32 iRevisionLevel,
-												const char * szAttribute, const char ** pszValue);
+												const char * szAttribute, const char ** pszValue) const;
 
     bool                    getPropertyFromSDH(const pf_Frag_Strux* sdh, bool bShowRevisions, UT_uint32 iRevisionLevel,
 											   const char * szProperty, const char ** pszValue) const;
 	// styles
-	void                    getAllUsedStyles(UT_GenericVector<PD_Style*> * pVecStyles);
-	fl_ContainerLayout*       getNthFmtHandle(pf_Frag_Strux* sdh, UT_uint32 n);
+	void                    getAllUsedStyles(UT_GenericVector<PD_Style*> * pVecStyles) const;
+	fl_ContainerLayout*       getNthFmtHandle(pf_Frag_Strux* sdh, UT_uint32 n) const;
     const char *            getDefaultStyle() const;
 	bool					getStyle(const char * szName, PD_Style ** ppStyle) const;
-	PD_Style *				getStyleFromSDH(pf_Frag_Strux* sdh);
-	pf_Frag_Strux*       getPrevNumberedHeadingStyle(pf_Frag_Strux* sdh);
-	size_t                  getStyleCount(void);
+	PD_Style *				getStyleFromSDH(pf_Frag_Strux* sdh) const;
+	pf_Frag_Strux*       getPrevNumberedHeadingStyle(pf_Frag_Strux* sdh) const;
+	size_t                  getStyleCount(void) const;
 	bool					enumStyles(UT_uint32 k,
 									   const char ** pszName, const PD_Style ** ppStyle) const;
 	bool                    enumStyles(UT_GenericVector<PD_Style*> * & pStyles) const;
-	bool					getStyleProperty(const gchar * szStyleName, const gchar * szPropertyName, const gchar *& szPropertyValue);
+	bool					getStyleProperty(const gchar * szStyleName, const gchar * szPropertyName, const gchar *& szPropertyValue) const;
 	bool					addStyleProperty(const gchar * szStyleName, const gchar * szPropertyName, const gchar * szPropertyValue);
 	bool					addStyleProperties(const gchar * szStyleName, const PP_PropertyVector & pProperties);
 	bool	                setAllStyleAttributes(const gchar * szStyleName, const PP_PropertyVector & pAttribs);
 	bool	                addStyleAttributes(const gchar * szStyleName, const PP_PropertyVector & pAttribs);
 
-    pf_Frag_Strux*       findPreviousStyleStrux(const gchar * szStyle, PT_DocPosition pos);
-    pf_Frag_Strux*       findForwardStyleStrux(const gchar * szStyle, PT_DocPosition pos);
+    pf_Frag_Strux*       findPreviousStyleStrux(const gchar * szStyle, PT_DocPosition pos) const;
+    pf_Frag_Strux*       findForwardStyleStrux(const gchar * szStyle, PT_DocPosition pos) const;
 	bool					updateDocForStyleChange(const gchar * szStyleName,
 													bool isParaStyle);
 	void                    updateAllLayoutsInDoc( pf_Frag_Strux* sdh);
@@ -548,46 +548,46 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh);
 	bool					getField(pf_Frag_Strux* sdh,
 									 UT_uint32 offset,
                                      fd_Field * &pField);
-	po_Bookmark * 			getBookmark(pf_Frag_Strux* sdh, UT_uint32 offset);
-	pf_Frag *               findBookmark(const char * pName, bool bEnd = false, pf_Frag * pfStart = nullptr);
+	po_Bookmark * 			getBookmark(pf_Frag_Strux* sdh, UT_uint32 offset) const;
+	pf_Frag *               findBookmark(const char * pName, bool bEnd = false, pf_Frag * pfStart = nullptr) const;
 	bool                    hasMath(void) const;
 
 	void					setDontChangeInsPoint(void);
 	void					allowChangeInsPoint(void);
 	bool					getAllowChangeInsPoint(void) const;
 	// Footnote functions
-	bool                    isFootnoteAtPos(PT_DocPosition pos);
-	bool                    isEndFootnoteAtPos(PT_DocPosition pos);
-	UT_sint32               getEmbeddedOffset(pf_Frag_Strux* sdh,PT_DocPosition posOff, pf_Frag_Strux* & sdhEmbedded);
+	bool                    isFootnoteAtPos(PT_DocPosition pos) const;
+	bool                    isEndFootnoteAtPos(PT_DocPosition pos) const;
+	UT_sint32               getEmbeddedOffset(pf_Frag_Strux* sdh,PT_DocPosition posOff, pf_Frag_Strux* & sdhEmbedded) const;
 	bool                    hasEmbedStruxOfTypeInRange(PT_DocPosition posStart, PT_DocPosition posEnd, 
 													   PTStruxType iType) const;
 
 	// TOC functions
-	bool                    isTOCAtPos(PT_DocPosition pos);
+	bool                    isTOCAtPos(PT_DocPosition pos) const;
 
 	// FRAME function
-	bool                    isFrameAtPos(PT_DocPosition pos);
-	bool                    isEndFrameAtPos(PT_DocPosition pos);
-	bool                    isHdrFtrAtPos(PT_DocPosition pos);
-	bool                    isSectionAtPos(PT_DocPosition pos);
-	bool                    isBlockAtPos(PT_DocPosition pos);
+	bool                    isFrameAtPos(PT_DocPosition pos) const;
+	bool                    isEndFrameAtPos(PT_DocPosition pos) const;
+	bool                    isHdrFtrAtPos(PT_DocPosition pos) const;
+	bool                    isSectionAtPos(PT_DocPosition pos) const;
+	bool                    isBlockAtPos(PT_DocPosition pos) const;
 
 // Table functions
 
-	bool                    isTableAtPos(PT_DocPosition pos);
-	bool                    isEndTableAtPos(PT_DocPosition pos);
-	bool                    isCellAtPos(PT_DocPosition pos);
-	pf_Frag_Strux*       getEndTableStruxFromTableSDH(pf_Frag_Strux* tableSDH);
-	pf_Frag_Strux*       getEndCellStruxFromCellSDH(pf_Frag_Strux* cellSDH);
-	pf_Frag_Strux*       getEndTableStruxFromTablePos(PT_DocPosition posTable);
+	bool                    isTableAtPos(PT_DocPosition pos) const;
+	bool                    isEndTableAtPos(PT_DocPosition pos) const;
+	bool                    isCellAtPos(PT_DocPosition pos) const;
+	pf_Frag_Strux*       getEndTableStruxFromTableSDH(pf_Frag_Strux* tableSDH) const;
+	pf_Frag_Strux*       getEndCellStruxFromCellSDH(pf_Frag_Strux* cellSDH) const;
+	pf_Frag_Strux*       getEndTableStruxFromTablePos(PT_DocPosition posTable) const;
 	bool                    getRowsColsFromTableSDH(pf_Frag_Strux* tableSDH,
 													bool bShowRevisions, UT_uint32 iRevisionLevel,
-													UT_sint32 * numRows, UT_sint32 * numCols);
+													UT_sint32 * numRows, UT_sint32 * numCols) const;
 	pf_Frag_Strux*       getCellSDHFromRowCol(pf_Frag_Strux* tableSDH,
 												 bool bShowRevisions, UT_uint32 iRevisionLevel,
 												 UT_sint32 row,
-												 UT_sint32 col);
-	void                    miniDump(pf_Frag_Strux* sdh, UT_sint32 nstruxes);
+												 UT_sint32 col) const;
+	void                    miniDump(pf_Frag_Strux* sdh, UT_sint32 nstruxes) const;
     bool                    dumpDoc( const char* msg, PT_DocPosition currentpos, PT_DocPosition endpos );
 
 	bool                    isInsertHyperLinkValid(PT_DocPosition pos) const;
@@ -596,7 +596,7 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh);
 	// List Functions
 	fl_AutoNumPtr			getListByID(UT_uint32 id) const;
 	fl_AutoNumPtr			getNthList(UT_uint32 i) const;
-	bool					enumLists(UT_uint32 k, fl_AutoNumConstPtr & pAutoNum);
+	bool					enumLists(UT_uint32 k, fl_AutoNumConstPtr & pAutoNum) const;
 	UT_uint32				getListsCount(void) const;
 	void					addList(const fl_AutoNumPtr & pAutoNum);
 	bool					appendList(const PP_PropertyVector & attributes);
@@ -613,7 +613,7 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh);
 
 	void					setDoingPaste(void);
 	void					clearDoingPaste(void);
-	bool					isDoingPaste(void);
+	bool					isDoingPaste(void) const;
 
 	void                    setRedrawHappenning(bool bIsHappening) {m_bRedrawHappenning  = bIsHappening;}
 	bool                    isRedrawHappenning(void) const {return m_bRedrawHappenning;}
