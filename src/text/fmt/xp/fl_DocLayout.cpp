@@ -1177,8 +1177,8 @@ fl_FrameLayout * FL_DocLayout:: relocateFrame(fl_FrameLayout * pFL, fl_BlockLayo
 	}
 
 	// Delete Frame
-	pf_Frag_Strux* sdhStart =  pFL->getStruxDocHandle();
-	pf_Frag_Strux* sdhEnd = nullptr;
+	const pf_Frag_Strux* sdhStart =  pFL->getStruxDocHandle();
+	const pf_Frag_Strux* sdhEnd = nullptr;
 	posStart = m_pDoc->getStruxPosition(sdhStart);
 	m_pDoc->getNextStruxOfType(sdhStart, PTX_EndFrame, &sdhEnd);
 	if(sdhEnd == nullptr)

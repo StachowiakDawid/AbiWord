@@ -5410,7 +5410,7 @@ Defun1(selectTable)
 	ABIWORD_VIEW;
 	UT_return_val_if_fail (pView, false);
 	PT_DocPosition posStartTab,posEndTab;
-	pf_Frag_Strux* tableSDH,*endTableSDH;
+	const pf_Frag_Strux *tableSDH, *endTableSDH;
 	PD_Document * pDoc = pView->getDocument();
 	bool bRes = pDoc->getStruxOfTypeFromPosition(pView->getPoint(),PTX_SectionTable,&tableSDH);
 	if(!bRes)
@@ -5540,7 +5540,7 @@ Defun1(selectRow)
 	ABIWORD_VIEW;
 	UT_return_val_if_fail (pView, false);
 	PT_DocPosition posStartRow,posEndRow;
-	pf_Frag_Strux* rowSDH,*endRowSDH,*tableSDH;
+	const pf_Frag_Strux *rowSDH, *endRowSDH, *tableSDH;
 	UT_sint32 iLeft,iRight,iTop,iBot;
 
 	PD_Document * pDoc = pView->getDocument();
@@ -5556,14 +5556,14 @@ Defun1(selectRow)
 	// Now find the number of rows and columns inthis table.
     //
 	UT_sint32 numRows,numCols;
-	bRes = pDoc->getRowsColsFromTableStrux(tableSDH,pView->isShowRevisions(), pView->getRevisionLevel(),&numRows,&numCols);
+	bRes = pDoc->getRowsColsFromTableStrux(tableSDH, pView->isShowRevisions(), pView->getRevisionLevel(), &numRows, &numCols);
 	if(!bRes)
 	{
 		return false;
 	}
-	rowSDH = pDoc->getCellStruxFromRowCol(tableSDH,pView->isShowRevisions(), pView->getRevisionLevel(),iTop,0);
+	rowSDH = pDoc->getCellStruxFromRowCol(tableSDH, pView->isShowRevisions(), pView->getRevisionLevel(), iTop, 0);
 	posStartRow = pDoc->getStruxPosition(rowSDH) - 1;
-	endRowSDH = pDoc->getCellStruxFromRowCol(tableSDH,pView->isShowRevisions(), pView->getRevisionLevel(),iTop,numCols -1);
+	endRowSDH = pDoc->getCellStruxFromRowCol(tableSDH, pView->isShowRevisions(), pView->getRevisionLevel(), iTop, numCols -1);
 	posEndRow = pDoc->getStruxPosition(endRowSDH);
 	bRes = pDoc->getNextStruxOfType(endRowSDH,PTX_EndCell,&endRowSDH);
 	if(!bRes)
@@ -5583,7 +5583,7 @@ Defun1(selectCell)
 	ABIWORD_VIEW;
 	UT_return_val_if_fail (pView, false);
 	PT_DocPosition posStartCell,posEndCell;
-	pf_Frag_Strux* cellSDH,*endCellSDH;
+	const pf_Frag_Strux *cellSDH, *endCellSDH;
 	PD_Document * pDoc = pView->getDocument();
 	bool bRes = pDoc->getStruxOfTypeFromPosition(pView->getPoint(),PTX_SectionCell,&cellSDH);
 	if(!bRes)

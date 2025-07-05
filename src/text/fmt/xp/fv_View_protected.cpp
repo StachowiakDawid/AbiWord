@@ -2,7 +2,7 @@
 /* AbiWord
  * Copyright (C) 1998-2000 AbiSource, Inc.
  * Copyright (c) 2001,2002 Tomas Frydrych
- * Copyright (c) 2022 Hubert Figuière
+ * Copyright (c) 2022-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -627,22 +627,22 @@ bool FV_View::_MergeCells( PT_DocPosition posDestination,PT_DocPosition posSourc
 	fBot = UT_MAX(sBot,dBot);
 
 	PD_DocumentRange dr_source;
-	pf_Frag_Strux* sourceSDH,*endSourceSDH,*destinationSDH,*endDestSDH;
+	const pf_Frag_Strux* sourceSDH, *destinationSDH;
 	bool bres = m_pDoc->getStruxOfTypeFromPosition(posSource,PTX_SectionCell,&sourceSDH);
 	if(!bres)
 	{
 		return false;
 	}
-	endSourceSDH =  m_pDoc->getEndCellStruxFromCellStrux(sourceSDH);
-	PT_DocPosition posEndCell = m_pDoc->getStruxPosition(endSourceSDH)-1;
+	const pf_Frag_Strux* endSourceStrux =  m_pDoc->getEndCellStruxFromCellStrux(sourceSDH);
+	PT_DocPosition posEndCell = m_pDoc->getStruxPosition(endSourceStrux) - 1;
 	posSource = m_pDoc->getStruxPosition(sourceSDH)+1;
 	bres = m_pDoc->getStruxOfTypeFromPosition(posDestination,PTX_SectionCell,&destinationSDH);
 	if(!bres)
 	{
 		return false;
 	}
-	endDestSDH = m_pDoc->getEndCellStruxFromCellStrux(destinationSDH);
-	PT_DocPosition posEndDestCell = m_pDoc->getStruxPosition(endDestSDH);
+	const pf_Frag_Strux* endDestStrux = m_pDoc->getEndCellStruxFromCellStrux(destinationSDH);
+	PT_DocPosition posEndDestCell = m_pDoc->getStruxPosition(endDestStrux);
 //	if(!bBefore)
 //	{
 //		posDestination = posEndDestCell;
@@ -690,7 +690,7 @@ bool FV_View::_MergeCells( PT_DocPosition posDestination,PT_DocPosition posSourc
  * This method is used to change a parameter of the table to trigger a table
  * rebuild. It also restores all the nice needed for single step undo's
  */
-bool FV_View::_restoreCellParams(PT_DocPosition posTable, pf_Frag_Strux * tableSDH)
+bool FV_View::_restoreCellParams(PT_DocPosition posTable, const pf_Frag_Strux * tableSDH)
 {
 	//
 	// Now trigger a rebuild of the whole table by sending a changeStrux to the table strux
@@ -732,7 +732,7 @@ bool FV_View::_restoreCellParams(PT_DocPosition posTable, pf_Frag_Strux * tableS
  *  Change the parameters of the table.
  * Return the line type of the table. We'll restore this later.
  */
-bool FV_View::_changeCellParams(PT_DocPosition posTable, pf_Frag_Strux* tableSDH)
+bool FV_View::_changeCellParams(PT_DocPosition posTable, const pf_Frag_Strux* tableSDH)
 {
 	// Signal PieceTable Change
 	_saveAndNotifyPieceTableChange();
@@ -761,7 +761,7 @@ bool FV_View::_changeCellParams(PT_DocPosition posTable, pf_Frag_Strux* tableSDH
  */
 bool FV_View::_deleteCellAt(PT_DocPosition posTable, UT_sint32 row, UT_sint32 col)
 {
-	pf_Frag_Strux* cellSDH,*endCellSDH;
+	const pf_Frag_Strux* cellSDH;
 	PT_DocPosition posCell = findCellPosAt(posTable,row,col);
 	if(posCell == 0)
 	{
@@ -772,12 +772,12 @@ bool FV_View::_deleteCellAt(PT_DocPosition posTable, UT_sint32 row, UT_sint32 co
 	{
 		return false;
 	}
-	endCellSDH = m_pDoc->getEndCellStruxFromCellStrux(cellSDH);
-	if(!endCellSDH)
+	const pf_Frag_Strux* endCellStrux = m_pDoc->getEndCellStruxFromCellStrux(cellSDH);
+	if (!endCellStrux)
 	{
 		return false;
 	}
-	PT_DocPosition posEndCell = m_pDoc->getStruxPosition(endCellSDH) +1;
+	PT_DocPosition posEndCell = m_pDoc->getStruxPosition(endCellStrux) + 1;
 	if(posEndCell == 0)
 	{
 		return false;
@@ -3015,7 +3015,7 @@ FV_View::_findGetNextBlockBuffer(fl_BlockLayout** pBlock,
 			if(pFL->isEndFootnoteIn())
 			{
 				pf_Frag_Strux* sdhStart = pCL->getStruxDocHandle();
-				pf_Frag_Strux* sdhEnd = nullptr;
+				const pf_Frag_Strux* sdhEnd = nullptr;
 				if(pCL->getContainerType() == FL_CONTAINER_FOOTNOTE)
 				{
 					getDocument()->getNextStruxOfType(sdhStart,PTX_EndFootnote, &sdhEnd);
@@ -6051,7 +6051,7 @@ void FV_View::_removeThisHdrFtr(fl_HdrFtrSectionLayout * pHdrFtr)
 	const gchar * pszHdrFtrType = nullptr;
 	UT_ASSERT(pHdrFtr->getContainerType() == FL_CONTAINER_HDRFTR);
 	pf_Frag_Strux* sdhHdrFtr = pHdrFtr->getStruxDocHandle();
-	m_pDoc->getAttributeFromStrux(sdhHdrFtr,isShowRevisions(),getRevisionLevel(),PT_TYPE_ATTRIBUTE_NAME, &pszHdrFtrType);
+	m_pDoc->getAttributeFromStrux(sdhHdrFtr, isShowRevisions(), getRevisionLevel(), PT_TYPE_ATTRIBUTE_NAME, &pszHdrFtrType);
 //
 // Remove the header/footer strux
 //

@@ -170,7 +170,7 @@ protected:
 	void                            _write_parafmt(const PP_AttrProp * pSpanAP,
 												   const PP_AttrProp * pBlockAP,
 												   const PP_AttrProp * pSectionAP,
-												   bool & bStartedList, pf_Frag_Strux* sdh, UT_uint32 &iCurrID,
+												   bool & bStartedList, const pf_Frag_Strux* sdh, UT_uint32 &iCurrID,
 												   bool &bIsListBlock, UT_sint32 iNestLevel);
 
 	void                            _write_style_fmt(const PD_Style *);
@@ -184,7 +184,7 @@ protected:
 	void                            _get_LeftRight_Side(UT_String & LeftSide, UT_String & RightSide);
 	void                            _generate_level_Text(const fl_AutoNumConstPtr & pAuto,UT_String & LevelText,UT_String &LevelNumbers, UT_uint32 & lenText, UT_uint32 & ifoundLevel);
 
-	void                            _output_revision(const s_RTF_AttrPropAdapter & apa, bool bPara,pf_Frag_Strux* sdh,
+	void                            _output_revision(const s_RTF_AttrPropAdapter & apa, bool bPara, const pf_Frag_Strux* sdh,
 													 UT_sint32 iNestLevel, bool & bStartedList,  bool &bIsListBlock,
 													 UT_uint32 &iCurrID);
 

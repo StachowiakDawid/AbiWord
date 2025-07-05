@@ -803,9 +803,11 @@ bool pt_PieceTable::getFragFromPosition(PT_DocPosition docPos,
 										PT_BlockOffset * pFragOffset) const
 {
 	pf_Frag* pf = nullptr;
-	bool result = getFragFromPosition(docPos, &pf, pFragOffset);
-	*ppf = pf;
-	return result;
+	if (getFragFromPosition(docPos, &pf, pFragOffset)) {
+		*ppf = pf;
+		return true;
+	}
+	return false;
 }
 
 bool pt_PieceTable::getFragFromPosition(PT_DocPosition docPos,

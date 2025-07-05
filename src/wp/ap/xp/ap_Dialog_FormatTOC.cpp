@@ -394,7 +394,7 @@ void AP_Dialog_FormatTOC::fillTOCPropsFromDoc(void)
 	else
 	{
 		PT_DocPosition pos = pView->getSelectionAnchor()+1;
-		pf_Frag_Strux* sdhTOC = nullptr;
+		const pf_Frag_Strux* sdhTOC = nullptr;
 		m_pDoc->getStruxOfTypeFromPosition(pos,PTX_SectionTOC, &sdhTOC);
 		UT_return_if_fail (sdhTOC);
 //

@@ -135,7 +135,7 @@ void FV_Selection::setTOCSelected(fl_TOCLayout * pTOCL)
 
 void FV_Selection::pasteRowOrCol(void)
 {
-	pf_Frag_Strux* cellSDH, *tableSDH;
+	const pf_Frag_Strux* cellSDH, *tableSDH;
 	PT_DocPosition pos = m_pView->getPoint();
 	if(m_iPrevSelectionMode == FV_SelectionMode_TableColumn)
 	{
@@ -392,8 +392,8 @@ void FV_Selection::addCellToSelection(fl_CellLayout * pCell)
 {
 	UT_ASSERT((m_iSelectionMode == 	FV_SelectionMode_TableColumn) 
 			  || ( m_iSelectionMode == 	FV_SelectionMode_TableRow));
-	pf_Frag_Strux* sdhEnd = nullptr;
-	pf_Frag_Strux* sdhStart = pCell->getStruxDocHandle();
+	const pf_Frag_Strux* sdhEnd = nullptr;
+	const pf_Frag_Strux* sdhStart = pCell->getStruxDocHandle();
 	PT_DocPosition posLow = getDoc()->getStruxPosition(sdhStart) +1; // First block
 
 	UT_DebugOnly<bool> bres = getDoc()->getNextStruxOfType(sdhStart,PTX_EndCell,&sdhEnd);

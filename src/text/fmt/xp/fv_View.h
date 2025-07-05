@@ -455,7 +455,7 @@ public:
 	bool	resetCharFormat(bool bAll);
 	bool	getCharFormat(PP_PropertyVector & properties, bool bExpandStyles = true) const;
 	bool	getCharFormat(PP_PropertyVector & properties, bool bExpandStyles, PT_DocPosition posStart) const;
-	fl_BlockLayout * getBlockFromStrux(pf_Frag_Strux* sdh);
+	fl_BlockLayout * getBlockFromStrux(const pf_Frag_Strux* pfs);
 	bool	setStyle(const gchar * style, bool bDontGeneralUpdate=false);
 	bool	setStyleAtPos(const gchar * style, PT_DocPosition posStart, PT_DocPosition posEnd, bool bDontGeneralUpdate=false);
 	bool    isNumberedHeadingHere(fl_BlockLayout * pBlock) const;
@@ -816,8 +816,8 @@ public:
 	fp_CellContainer *  getCellAtPos(PT_DocPosition pos) const;
 	PT_DocPosition      findCellPosAt(PT_DocPosition posTable, UT_sint32 row, UT_sint32 col) const;
 	bool                _deleteCellAt(PT_DocPosition posTable,UT_sint32 row, UT_sint32 col);
-	bool                _restoreCellParams(PT_DocPosition posTable, pf_Frag_Strux* tableSDH);
-	bool                _changeCellParams(PT_DocPosition posTable,pf_Frag_Strux* tableSDH );
+	bool                _restoreCellParams(PT_DocPosition posTable, const pf_Frag_Strux* tableSDH);
+	bool                _changeCellParams(PT_DocPosition posTable, const pf_Frag_Strux* tableSDH );
 	bool                deleteCellAt(PT_DocPosition posTable,UT_sint32 row, UT_sint32 col);
 	bool                cmdDeleteCell(PT_DocPosition pos);
 	bool                cmdDeleteCol(PT_DocPosition pos);

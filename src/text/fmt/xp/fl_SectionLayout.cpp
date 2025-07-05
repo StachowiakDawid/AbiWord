@@ -3640,8 +3640,8 @@ void fl_HdrFtrSectionLayout::addPage(fp_Page* pPage)
 	PT_DocPosition posStart,posEnd,posDocEnd;
 	m_pDoc->getBounds(true,posDocEnd);
 	posStart = getFirstLayout()->getPosition(true) - 1;
-	pf_Frag_Strux* sdStart = getFirstLayout()->getStruxDocHandle();
-	pf_Frag_Strux* sdEnd = nullptr;
+	const pf_Frag_Strux* sdStart = getFirstLayout()->getStruxDocHandle();
+	const pf_Frag_Strux* sdEnd = nullptr;
 	m_pDoc->getNextStruxOfType(sdStart,PTX_SectionHdrFtr,&sdEnd);
 	if(sdEnd)
 	{
@@ -3723,7 +3723,7 @@ bool fl_HdrFtrSectionLayout::isPointInHere(PT_DocPosition pos)
 // Now the point MIGHT be in this last block. Use code from pd_Document
 // to find out. Have to check whether we're out of docrange first
 //
-	pf_Frag_Strux* sdh=nullptr;
+	const pf_Frag_Strux* sdh = nullptr;
 	bool bres;
 	bres = m_pDoc->getStruxOfTypeFromPosition(pos, PTX_Block, &sdh);
 	if(bres && sdh == pBL->getStruxDocHandle())
@@ -5279,7 +5279,7 @@ fl_ContainerLayout * fl_HdrFtrShadow::findBlockAtPosition(PT_DocPosition pos)
 	m_pDoc->getBounds(true,posEnd);
 	if(pos > posEnd)
 		return nullptr;
-	pf_Frag_Strux* sdh=nullptr;
+	const pf_Frag_Strux* sdh = nullptr;
 	bool bres;
 	bres = m_pDoc->getStruxOfTypeFromPosition(pos, PTX_Block, &sdh);
 	if(bres && sdh == pBL->getStruxDocHandle())

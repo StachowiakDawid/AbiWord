@@ -1711,8 +1711,8 @@ void fl_BlockLayout::updateEnclosingBlockIfNeeded(void)
 	{
 		return;
 	}
-	pf_Frag_Strux* sdhStart = pCL->getStruxDocHandle();
-	pf_Frag_Strux* sdhEnd = nullptr;
+	const pf_Frag_Strux* sdhStart = pCL->getStruxDocHandle();
+	const pf_Frag_Strux* sdhEnd = nullptr;
 	if(pCL->getContainerType() == FL_CONTAINER_FOOTNOTE)
 	{
 		getDocument()->getNextStruxOfType(sdhStart,PTX_EndFootnote, &sdhEnd);
@@ -1760,8 +1760,8 @@ fl_BlockLayout * fl_BlockLayout::getEnclosingBlock(void) const
 	{
 		return nullptr;
 	}
-	pf_Frag_Strux* sdhStart = pCL->getStruxDocHandle();
-	pf_Frag_Strux* sdhEnd = nullptr;
+	const pf_Frag_Strux* sdhStart = pCL->getStruxDocHandle();
+	const pf_Frag_Strux* sdhEnd = nullptr;
 	if(pCL->getContainerType() == FL_CONTAINER_FOOTNOTE)
 	{
 		getDocument()->getNextStruxOfType(sdhStart,PTX_EndFootnote, &sdhEnd);
@@ -4374,7 +4374,7 @@ const char* fl_BlockLayout::getProperty(const gchar * pszName, bool bExpandStyle
 UT_sint32 fl_BlockLayout::getLength() const
 {
 	PT_DocPosition posThis = getPosition(true);
-	pf_Frag_Strux* nextSDH =nullptr;
+	const pf_Frag_Strux* nextSDH =nullptr;
 	m_pDoc->getNextStrux(getStruxDocHandle(),&nextSDH);
 	if(nextSDH == nullptr)
 	{
@@ -8110,8 +8110,8 @@ void fl_BlockLayout::shuffleEmbeddedIfNeeded(fl_BlockLayout * pBlock, UT_uint32 
 		//
 		// Now add in the length of the container
 		//
-		pf_Frag_Strux* sdhStart = pEmbedCL->getStruxDocHandle();
-		pf_Frag_Strux* sdhEnd = nullptr;
+		const pf_Frag_Strux* sdhStart = pEmbedCL->getStruxDocHandle();
+		const pf_Frag_Strux* sdhEnd = nullptr;
 		if(pEmbedCL->getContainerType() == FL_CONTAINER_FOOTNOTE)
 		{
 			getDocument()->getNextStruxOfType(sdhStart,PTX_EndFootnote, &sdhEnd);

@@ -246,8 +246,8 @@ PT_DocPosition fl_FrameLayout::getDocPosition(void)
 UT_uint32 fl_FrameLayout::getLength(void)
 {
 	PT_DocPosition startPos = getDocPosition();
-	pf_Frag_Strux* sdhEnd = nullptr;
-	pf_Frag_Strux* sdhStart = getStruxDocHandle();
+	const pf_Frag_Strux* sdhEnd = nullptr;
+	const pf_Frag_Strux* sdhStart = getStruxDocHandle();
 	UT_DebugOnly<bool> bres;
 	bres = m_pLayout->getDocument()->getNextStruxOfType(sdhStart,PTX_EndFrame,&sdhEnd);
 	UT_ASSERT(bres && sdhEnd);

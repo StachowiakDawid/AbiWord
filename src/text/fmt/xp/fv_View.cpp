@@ -2,7 +2,7 @@
 /* AbiWord
  * Copyright (C) 1998-2000 AbiSource, Inc.
  * Copyright (c) 2001,2002 Tomas Frydrych
- * Copyright (C) 2016-2022 Hubert Figuière
+ * Copyright (C) 2016-2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -4358,7 +4358,7 @@ bool FV_View::setStyleAtPos(const gchar * style, PT_DocPosition posStart1, PT_Do
 // Look backwards to see if there is a heading before here.
 //
 			bool bFoundPrevHeadingBackwards = false;
-			pf_Frag_Strux* sdh = m_pDoc->findPreviousStyleStrux(style, pos);
+			const pf_Frag_Strux* sdh = m_pDoc->findPreviousStyleStrux(style, pos);
 			bFoundPrevHeadingBackwards = (sdh != nullptr);
 //
 // If not, Look forward to see if there one ahead of this block
@@ -4469,7 +4469,7 @@ bool FV_View::setStyleAtPos(const gchar * style, PT_DocPosition posStart1, PT_Do
  * This method finds the appropiate matching block in the current view
  * for the StruxDocHandle (actually a pointer to a pf_frag_strux)
  */
-fl_BlockLayout * FV_View::getBlockFromStrux(pf_Frag_Strux* sdh)
+fl_BlockLayout * FV_View::getBlockFromStrux(const pf_Frag_Strux* sdh)
 {
 	fl_ContainerLayout* sfh = nullptr;
 	fl_BlockLayout * pBlock = nullptr;
@@ -5584,7 +5584,7 @@ bool FV_View::removeStruxAttrProps(PT_DocPosition ipos1,
 
 bool FV_View::isImageAtStrux(PT_DocPosition ipos1, PTStruxType iStrux)
 {
-	pf_Frag_Strux* sdh = nullptr;
+	const pf_Frag_Strux* sdh = nullptr;
 	bool  bret = m_pDoc->getStruxOfTypeFromPosition(ipos1, iStrux, &sdh);
 	if(!bret)
 	{
@@ -5677,7 +5677,7 @@ bool FV_View::setBlockFormat(const PP_PropertyVector & properties)
 
 	// We need to know if the selection is inside a table, because in that
 	// case, not all blocks can be selected
-	pf_Frag_Strux *tstart, *tend;
+	const pf_Frag_Strux *tstart, *tend;
 	if (m_pDoc->getStruxOfTypeFromPosition(posStart,PTX_SectionTable,&tstart)
 	    && m_pDoc->getStruxOfTypeFromPosition(posEnd,PTX_SectionTable,&tend)
 	    && tstart == tend)
@@ -8522,7 +8522,7 @@ void FV_View::getDocumentRangeOfCurrentSelection(PD_DocumentRange * pdr) const
 bool FV_View::getCellParams(PT_DocPosition posCell, UT_sint32 * pLeft, UT_sint32 * pRight,
 							 UT_sint32 * pTop, UT_sint32 * pBot) const
 {
-	pf_Frag_Strux* cellSDH;
+	const pf_Frag_Strux* cellSDH;
 	bool bres = m_pDoc->getStruxOfTypeFromPosition(posCell,PTX_SectionCell,&cellSDH);
 	if(!bres)
 	{
@@ -8578,7 +8578,7 @@ bool FV_View::getCellParams(PT_DocPosition posCell, UT_sint32 * pLeft, UT_sint32
 bool FV_View::getCellLineStyle(PT_DocPosition posCell, UT_sint32 * pLeft, UT_sint32 * pRight,
 							 UT_sint32 * pTop, UT_sint32 * pBot) const
 {
-	pf_Frag_Strux* cellSDH;
+	const pf_Frag_Strux* cellSDH;
 	bool bres = m_pDoc->getStruxOfTypeFromPosition(posCell,PTX_SectionCell,&cellSDH);
 	if(!bres)
 	{
@@ -8664,7 +8664,7 @@ bool FV_View::setCellFormat(const PP_PropertyVector & properties, FormatTable ap
 	}
 	
 	// Find the enclosing table. If just look for the first one we can get fooled by nested tables.
-	pf_Frag_Strux* tableSDH;
+	const pf_Frag_Strux* tableSDH;
 	bRet = m_pDoc->getStruxOfTypeFromPosition(getPoint(),PTX_SectionTable,&tableSDH);
 	if(!bRet)
 	{
@@ -8685,7 +8685,7 @@ bool FV_View::setCellFormat(const PP_PropertyVector & properties, FormatTable ap
 	// The Format Selection case needs some special attention
 	if (applyTo == FORMAT_TABLE_SELECTION)
 	{
-		pf_Frag_Strux* cellSDH;
+		const pf_Frag_Strux* cellSDH;
 		PT_DocPosition posTemp = ((posTable == posStart) ? posStart + 2 : posStart);
 		bRet = m_pDoc->getStruxOfTypeFromPosition(posTemp,PTX_SectionCell,&cellSDH);
 		if(bRet)
@@ -8694,13 +8694,13 @@ bool FV_View::setCellFormat(const PP_PropertyVector & properties, FormatTable ap
 			//
 			// Make sure posEnd is inside the Table.
 			//
-			pf_Frag_Strux* endTableSDH = m_pDoc->getEndTableStruxFromTablePos(posTable);
-			UT_ASSERT(endTableSDH);
-			if(endTableSDH == nullptr)
+			const pf_Frag_Strux* endTableStrux = m_pDoc->getEndTableStruxFromTablePos(posTable);
+			UT_ASSERT(endTableStrux);
+			if (endTableStrux == nullptr)
 			{
 				return false;
 			}
-			PT_DocPosition posEndTable = m_pDoc->getStruxPosition(endTableSDH);
+			PT_DocPosition posEndTable = m_pDoc->getStruxPosition(endTableStrux);
 			if(posEnd > posEndTable)
 			{
 				posEnd = posEndTable -1;
@@ -8767,12 +8767,12 @@ bool FV_View::setCellFormat(const PP_PropertyVector & properties, FormatTable ap
 		{
 			for (i = colStart; i <= colEnd; i++)
 			{
-				pf_Frag_Strux* cellSDH = m_pDoc->getCellStruxFromRowCol(tableSDH, isShowRevisions(), getRevisionLevel(),
+				const pf_Frag_Strux* cellStrux = m_pDoc->getCellStruxFromRowCol(tableSDH, isShowRevisions(), getRevisionLevel(),
 																		 j, i);
-				if(cellSDH)
+				if (cellStrux)
 				{
 					// Do the actual change
-					posStart = m_pDoc->getStruxPosition(cellSDH)+1;
+					posStart = m_pDoc->getStruxPosition(cellStrux) + 1;
 					bRet = m_pDoc->changeStruxFmt(PTC_AddFmt, posStart, posStart,PP_NOPROPS, properties, PTX_SectionCell);
 					if(pFG != nullptr)
 					{
@@ -8856,12 +8856,12 @@ bool FV_View::setCellFormat(const PP_PropertyVector & properties, FormatTable ap
 		{
 			for (i = colStart; i <= colEnd; i++)
 			{
-				pf_Frag_Strux* cellSDH = m_pDoc->getCellStruxFromRowCol(tableSDH, isShowRevisions(), getRevisionLevel(),
+				const pf_Frag_Strux* cellStrux = m_pDoc->getCellStruxFromRowCol(tableSDH, isShowRevisions(), getRevisionLevel(),
 																		 j, i);
-				if(cellSDH)
+				if (cellStrux)
 				{
 					// Do the actual change
-					posStart = m_pDoc->getStruxPosition(cellSDH)+1;
+					posStart = m_pDoc->getStruxPosition(cellStrux) + 1;
 					bRet = m_pDoc->changeStruxFmt(PTC_AddFmt, posStart, posStart, PP_NOPROPS, properties, PTX_SectionCell);
 					if(pFG != nullptr)
 					{
@@ -8916,7 +8916,7 @@ bool FV_View::setCellFormat(const PP_PropertyVector & properties, FormatTable ap
  */
 bool FV_View::getCellProperty(PT_DocPosition posCell, const gchar * szPropName, gchar * &szPropValue) const
 {
-	pf_Frag_Strux* cellSDH;
+	const pf_Frag_Strux* cellSDH;
 	bool bres = m_pDoc->getStruxOfTypeFromPosition(posCell,PTX_SectionCell,&cellSDH);
 	if(!bres)
 	{
@@ -8944,7 +8944,7 @@ bool FV_View::setTableFormat(PT_DocPosition pos, const PP_PropertyVector & prope
 	bool bRet;
 
 	PT_DocPosition posStart = pos;
-	pf_Frag_Strux* tableSDH = nullptr;
+	const pf_Frag_Strux* tableSDH = nullptr;
 	bRet = m_pDoc->getStruxOfTypeFromPosition(posStart, PTX_SectionTable, &tableSDH);
 	if(!bRet)
 	{
@@ -12243,8 +12243,8 @@ bool FV_View::isInHdrFtr(PT_DocPosition pos) const
  */
 bool FV_View::isPointLegal(PT_DocPosition pos) const
 {
-	pf_Frag_Strux* prevSDH = nullptr;
-	pf_Frag_Strux* nextSDH = nullptr;
+	const pf_Frag_Strux* prevSDH = nullptr;
+	const pf_Frag_Strux* nextSDH = nullptr;
 	PT_DocPosition nextPos =0;
 	
 //
@@ -12501,7 +12501,7 @@ bool FV_View::getAnnotationText(UT_uint32 iAnnotation, std::string & sText) cons
 bool FV_View::selectAnnotation(fl_AnnotationLayout * pAL)
 {
 		pf_Frag_Strux* sdhAnn = pAL->getStruxDocHandle();
-		pf_Frag_Strux* sdhEnd = nullptr;
+		const pf_Frag_Strux* sdhEnd = nullptr;
 		getDocument()->getNextStruxOfType(sdhAnn,PTX_EndAnnotation, &sdhEnd);
 		
 		UT_return_val_if_fail(sdhEnd != nullptr, false);
@@ -12541,7 +12541,7 @@ bool FV_View::setAnnotationText(UT_uint32 iAnnotation, const std::string & sText
 	if(!pAL)
 		return false;
 	pf_Frag_Strux* sdhStart = pAL->getStruxDocHandle();
-	pf_Frag_Strux* sdhEnd = nullptr;
+	const pf_Frag_Strux* sdhEnd = nullptr;
 	getDocument()->getNextStruxOfType(sdhStart,PTX_EndAnnotation, &sdhEnd);
 	
 	UT_return_val_if_fail(sdhEnd != nullptr, false);
@@ -12586,7 +12586,7 @@ bool FV_View::setAnnotationText(UT_uint32 iAnnotation, const std::string & sText
 	if(!pAL)
 		return false;
 	pf_Frag_Strux* sdhStart = pAL->getStruxDocHandle();
-	pf_Frag_Strux* sdhEnd = nullptr;
+	const pf_Frag_Strux* sdhEnd = nullptr;
 	getDocument()->getNextStruxOfType(sdhStart,PTX_EndAnnotation, &sdhEnd);
 	
 	UT_return_val_if_fail(sdhEnd != nullptr, false);
@@ -13570,7 +13570,7 @@ bool FV_View::isInTable( PT_DocPosition pos) const
 		//
 		// This could be the start of nested table. If so return true!
 		//
-		pf_Frag_Strux* sdhTable = nullptr;
+		const pf_Frag_Strux* sdhTable = nullptr;
 		bool bRes = m_pDoc->getStruxOfTypeFromPosition(pos+1,PTX_SectionTable,&sdhTable);
 		UT_return_val_if_fail(bRes,false);
 		UT_ASSERT(sdhTable && sdhTable->getPos() == pos);
@@ -13651,10 +13651,10 @@ bool FV_View::isInTable( PT_DocPosition pos) const
 	if(pCL->getContainerType() == FL_CONTAINER_TABLE)
 	{
 		pf_Frag_Strux* sdh = pCL->getStruxDocHandle();
-		pf_Frag_Strux* sdhEnd = m_pDoc->getEndTableStruxFromTableStrux(sdh);
-		if(sdhEnd != nullptr)
+		const pf_Frag_Strux* struxEnd = m_pDoc->getEndTableStruxFromTableStrux(sdh);
+		if (struxEnd != nullptr)
 		{
-			PT_DocPosition posEnd =  m_pDoc->getStruxPosition(sdhEnd);
+			PT_DocPosition posEnd = m_pDoc->getStruxPosition(struxEnd);
 			if(posEnd == pos)
 			{
 				xxx_UT_DEBUGMSG(("Exactly at end of table \n"));
@@ -13672,7 +13672,7 @@ bool FV_View::isInTable( PT_DocPosition pos) const
  */
 PT_DocPosition FV_View::findCellPosAt(PT_DocPosition posTable, UT_sint32 row, UT_sint32 col) const
 {
-	pf_Frag_Strux* cellSDH,*tableSDH;
+	const pf_Frag_Strux *tableSDH;
 	bool bRes = m_pDoc->getStruxOfTypeFromPosition(posTable,PTX_SectionTable,&tableSDH);
 	if(!bRes)
 	{
@@ -13695,12 +13695,12 @@ PT_DocPosition FV_View::findCellPosAt(PT_DocPosition posTable, UT_sint32 row, UT
 			}
 		}
 	}
-	cellSDH = m_pDoc->getCellStruxFromRowCol(tableSDH, isShowRevisions(), getRevisionLevel(), row,col);
-	if(cellSDH == nullptr)
+	const pf_Frag_Strux* cellStrux = m_pDoc->getCellStruxFromRowCol(tableSDH, isShowRevisions(), getRevisionLevel(), row, col);
+	if (cellStrux == nullptr)
 	{
 		return 0;
 	}
-	return 	m_pDoc->getStruxPosition(cellSDH);
+	return m_pDoc->getStruxPosition(cellStrux);
 }
 
 /*! find out which pages in the document are visible on the screen and

@@ -142,13 +142,13 @@ void fl_AutoNum::fixHierarchy(void)
 	UT_uint32 docParentID = 0;
 	if (!m_items.empty())
 	{
-		pf_Frag_Strux* sdh = m_items.front();
+		const pf_Frag_Strux* pfs = m_items.front();
 		XAP_Frame * pFrame = XAP_App::getApp()->getLastFocussedFrame();
 		FV_View* pView = nullptr;
 		if (pFrame)
 			pView = static_cast<FV_View *>(pFrame->getCurrentView());
 
-		bool bFound = m_pDoc->getAttributeFromStrux(sdh,
+		bool bFound = m_pDoc->getAttributeFromStrux(pfs,
 												  pView ? pView->isShowRevisions() : true,
 												  pView ? pView->getRevisionLevel(): PD_MAX_REVISION,
 												  PT_PARENTID_ATTRIBUTE_NAME,&pszParentID);
@@ -1119,9 +1119,9 @@ bool fl_AutoNum::_updateItems(UT_sint32 start, const pf_Frag_Strux* notMe)
 ///
 /// Returns true if item is contained or immediately adjacent to the list
 ///
-bool fl_AutoNum::isContainedByList(pf_Frag_Strux* pItem) const
+bool fl_AutoNum::isContainedByList(const pf_Frag_Strux* pItem) const
 {
-	pf_Frag_Strux *sdh, *sdh_prev, *sdh_next;
+	const pf_Frag_Strux *sdh, *sdh_prev, *sdh_next;
 	PT_DocPosition pos_prev,pos_next,pos;
 	bool bret;
 	if (m_items.empty()) {

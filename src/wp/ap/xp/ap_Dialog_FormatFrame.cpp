@@ -440,7 +440,7 @@ void AP_Dialog_FormatFrame::setCurFrameProps(void)
 
 	PD_Document * pDoc = pView->getDocument();
 
-	pf_Frag_Strux* sdh;
+	const pf_Frag_Strux* sdh;
 
 	m_bSensitive = false;
 

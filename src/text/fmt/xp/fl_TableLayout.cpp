@@ -1901,8 +1901,8 @@ PT_DocPosition fl_TableLayout::getPosition(bool bActualBlockPosition /* = false 
  */
 UT_uint32 fl_TableLayout::getLength(void)
 {
-	pf_Frag_Strux* sdhTab = getStruxDocHandle();
-	pf_Frag_Strux* sdhEnd = m_pDoc-> getEndTableStruxFromTableStrux(sdhTab);
+	const pf_Frag_Strux* sdhTab = getStruxDocHandle();
+	const pf_Frag_Strux* sdhEnd = m_pDoc-> getEndTableStruxFromTableStrux(sdhTab);
 	PT_DocPosition posEnd = 0;
 	PT_DocPosition posStart = 0;
 	UT_uint32 len = 0;
@@ -2150,7 +2150,7 @@ bool fl_CellLayout::isCellSelected(void)
 	FV_View* pView = m_pLayout->getView();
 	PT_DocPosition posStartCell = 0;
 	PT_DocPosition posEndCell =0;
-	pf_Frag_Strux* sdhEnd, *sdhStart;
+	const pf_Frag_Strux* sdhEnd, *sdhStart;
 
 	sdhStart = getStruxDocHandle();
 	posStartCell = m_pDoc->getStruxPosition(sdhStart) +1;
@@ -2870,8 +2870,8 @@ void fl_CellLayout::_localCollapse(void)
  */
 UT_uint32 fl_CellLayout::getLength(void)
 {
-	pf_Frag_Strux* sdhCell = getStruxDocHandle();
-	pf_Frag_Strux* sdhEnd = m_pDoc->getEndCellStruxFromCellStrux(sdhCell);
+	const pf_Frag_Strux* sdhCell = getStruxDocHandle();
+	const pf_Frag_Strux* sdhEnd = m_pDoc->getEndCellStruxFromCellStrux(sdhCell);
 	PT_DocPosition posEnd = 0;
 	PT_DocPosition posStart = 0;
 	UT_uint32 len = 0;

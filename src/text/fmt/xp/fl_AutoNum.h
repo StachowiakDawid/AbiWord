@@ -145,7 +145,7 @@ public:
 	void						removeItem(const pf_Frag_Strux* pItem);
 	pf_Frag_Strux*			getParentItem() const;
 	void						setParentItem(pf_Frag_Strux* pItem);
-	bool					isContainedByList(pf_Frag_Strux* pItem) const;
+	bool					isContainedByList(const pf_Frag_Strux* pItem) const;
 	pf_Frag_Strux*			getNthBlock(UT_uint32 i) const;
 	pf_Frag_Strux*			getPrevInList(const pf_Frag_Strux* pItem) const;
 

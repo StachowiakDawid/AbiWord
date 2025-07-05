@@ -1821,9 +1821,9 @@ void IE_Imp_RTF::closePastedTableIfNeeded(void)
 // below
 //
 				UT_sint32 numRows = pPaste->m_iNumRows;
-				pf_Frag_Strux* sdhCell = nullptr;
-				pf_Frag_Strux* sdhTable = nullptr;
-				pf_Frag_Strux* sdhEndTable = nullptr;
+				const pf_Frag_Strux* sdhCell = nullptr;
+				const pf_Frag_Strux* sdhTable = nullptr;
+				const pf_Frag_Strux* sdhEndTable = nullptr;
 				bool b = getDoc()->getStruxOfTypeFromPosition(m_dposPaste,PTX_SectionTable,&sdhTable);
 				PT_DocPosition posTable = getDoc()->getStruxPosition(sdhTable);
 				UT_ASSERT(b);
@@ -6922,7 +6922,7 @@ UT_uint32 IE_Imp_RTF::mapID(UT_uint32 id)
 				fl_AutoNumConstPtr pMapAuto;
 				UT_uint32 nLists = getDoc()->getListsCount();
 				UT_uint32 highestLevel = 0;
-				pf_Frag_Strux* sdh;
+				const pf_Frag_Strux* sdh;
 //
 // Get the List Type
 //
@@ -7682,7 +7682,7 @@ bool IE_Imp_RTF::ApplyParagraphAttributes(bool bDontInsert)
 				getDoc()->addList(pAuto);
 				pAuto->fixHierarchy();
 			}
-			bSuccess = getDoc()->getStruxOfTypeFromPosition(m_dposPaste,PTX_Block,&sdh_cur);
+			bSuccess = getDoc()->getMutStruxOfTypeFromPosition(m_dposPaste, PTX_Block, &sdh_cur);
 			///
 			/// Now insert this into the pAuto List
 			///
@@ -7721,7 +7721,7 @@ bool IE_Imp_RTF::ApplyParagraphAttributes(bool bDontInsert)
 			//
 			// Now check if this strux has associated list element. If so stop the list!
 			//
-			pf_Frag_Strux* sdh = nullptr;
+			const pf_Frag_Strux* sdh = nullptr;
 			getDoc()->getStruxOfTypeFromPosition(m_dposPaste,PTX_Block,&sdh);
 			bool bisListItem = false;
 			//
@@ -10075,8 +10075,8 @@ bool IE_Imp_RTF::HandleAbiTable(void)
 	
 	UT_DEBUGMSG(("RTF_Import: Paste: Tables props are: %s \n",sProps.c_str()));
 	bool bIsPasteIntoSame = false;
-	pf_Frag_Strux* sdhTable = nullptr;
-	pf_Frag_Strux* sdhEndTable = nullptr;
+	const pf_Frag_Strux* sdhTable = nullptr;
+	const pf_Frag_Strux* sdhEndTable = nullptr;
 	bool bFound = getDoc()->getStruxOfTypeFromPosition(m_dposPaste,PTX_SectionTable,&sdhTable);
 	PT_DocPosition posTable = 0;
 	XAP_Frame * pFrame = XAP_App::getApp()->getLastFocussedFrame();
@@ -10113,7 +10113,7 @@ bool IE_Imp_RTF::HandleAbiTable(void)
 					UT_DEBUGMSG(("Paste Whole Row into same Table!!!!! \n"));
 					bIsPasteIntoSame = true;
 					pPaste->m_bPasteAfterRow = true;
-					pf_Frag_Strux* sdhCell = nullptr;
+					const pf_Frag_Strux* sdhCell = nullptr;
 					bool b = getDoc()->getStruxOfTypeFromPosition(m_dposPaste,PTX_SectionCell,&sdhCell);
 					UT_return_val_if_fail(b,false);
 					const char * szTop = nullptr;
@@ -10210,7 +10210,7 @@ bool IE_Imp_RTF::HandleAbiTable(void)
 	return true;
 }
 
-bool IE_Imp_RTF:: HandleAbiEndTable(void)
+bool IE_Imp_RTF::HandleAbiEndTable(void)
 {
 	ABI_Paste_Table * pPaste = nullptr;
 	m_pasteTableStack.viewTop((void**)(&pPaste));
@@ -10222,9 +10222,9 @@ bool IE_Imp_RTF:: HandleAbiEndTable(void)
 	{
 		UT_ASSERT_HARMLESS(UT_SHOULD_NOT_HAPPEN);
 		UT_sint32 numRows = pPaste->m_iCurTopCell -pPaste->m_iRowNumberAtPaste;
-		pf_Frag_Strux* sdhCell = nullptr;
-		pf_Frag_Strux* sdhTable = nullptr;
-		pf_Frag_Strux* sdhEndTable = nullptr;
+		const pf_Frag_Strux* sdhCell = nullptr;
+		const pf_Frag_Strux* sdhTable = nullptr;
+		const pf_Frag_Strux* sdhEndTable = nullptr;
 		bool b = getDoc()->getStruxOfTypeFromPosition(m_dposPaste,PTX_SectionTable,&sdhTable);
 		UT_return_val_if_fail(b,false);
 		sdhEndTable = getDoc()->getEndTableStruxFromTableStrux(sdhTable);
@@ -11267,7 +11267,7 @@ bool IE_Imp_RTF::HandleDeltaMoveID()
 	{
 //		m_ctMoveID = moveid;
 		pf_Frag_Strux* sdh;
-		bool bResult = getDoc()->getStruxOfTypeFromPosition( m_dposPaste, PTX_Block, &sdh);
+		bool bResult = getDoc()->getMutStruxOfTypeFromPosition( m_dposPaste, PTX_Block, &sdh);
 		if( bResult )
 		{
 			getDoc()->changeStruxAttsNoUpdate( sdh, "delta:move-idref", moveid.c_str() );

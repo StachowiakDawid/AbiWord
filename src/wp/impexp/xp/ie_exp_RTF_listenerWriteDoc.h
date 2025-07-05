@@ -132,7 +132,7 @@ protected:
 	bool                m_bInFrame;
 	bool                m_bJustOpennedFrame;
 	UT_Wctomb		    m_wctomb;
-	pf_Frag_Strux*   m_sdh;
+	pf_Frag_Strux* m_sdh;
 	UT_uint32           m_currID;
 	PT_DocPosition      m_posDoc;
 	bool                m_bBlankLine;
@@ -145,7 +145,7 @@ protected:
 	UT_sint32           m_iTop;
 	UT_sint32           m_iBot;
 	PT_AttrPropIndex	m_apiSavedBlock;
-	pf_Frag_Strux*   m_sdhSavedBlock;
+	pf_Frag_Strux* m_sdhSavedBlock;
 	bool                m_bOpennedFootnote;
 	PP_PropertyMap::TypeLineStyle    m_LastLinestyle;
 	UT_String           m_sLastColor;

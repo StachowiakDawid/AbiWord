@@ -223,7 +223,7 @@ bool IE_Imp_Text::_insertBlock()
 	else
 	{
 		pf_Frag_Strux* sdh = nullptr;
-		if(getDoc()->getStruxOfTypeFromPosition(getDocPos(), PTX_Block,&sdh))
+		if (getDoc()->getMutStruxOfTypeFromPosition(getDocPos(), PTX_Block, &sdh))
 		{
 			m_pBlock = sdh;
 		}
@@ -276,7 +276,7 @@ bool IE_Imp_Text::_insertSpan(UT_GrowBuf &b)
 				if(m_pBlock == nullptr)
 				{
 					pf_Frag_Strux* sdh = nullptr;
-					if(getDoc()->getStruxOfTypeFromPosition(getDocPos(), PTX_Block,&sdh))
+					if (getDoc()->getMutStruxOfTypeFromPosition(getDocPos(), PTX_Block, &sdh))
 					{
 						m_pBlock = sdh;
 					}

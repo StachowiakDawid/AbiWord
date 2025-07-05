@@ -296,25 +296,25 @@ void IE_Exp_RTF::exportHdrFtr(const char * pszHdrFtr , const char * pszHdrFtrID,
 #endif
 	m_pListenerWriteDoc->_setTabEaten(false);
 
-	pf_Frag_Strux* hdrSDH = getDoc()->findHdrFtrStrux((const gchar *) pszHdrFtr,(const gchar * ) pszHdrFtrID);
+	pf_Frag_Strux* hdrStrux = getDoc()->findHdrFtrStrux((const gchar *)pszHdrFtr, (const gchar *)pszHdrFtrID);
 
-	if(hdrSDH == nullptr)
+	if(hdrStrux == nullptr)
 	{
 	  UT_ASSERT_NOT_REACHED();
 		return;
 	}
-	PT_DocPosition posStart = getDoc()->getStruxPosition(hdrSDH);
+	PT_DocPosition posStart = getDoc()->getStruxPosition(hdrStrux);
 	PT_DocPosition posEnd = 0;
-	pf_Frag_Strux* nextSDH = nullptr;
-	bool found = getDoc()->getNextStruxOfType(hdrSDH,PTX_SectionHdrFtr ,&nextSDH);
+	const pf_Frag_Strux* nextStrux = nullptr;
+	bool found = getDoc()->getNextStruxOfType(hdrStrux,PTX_SectionHdrFtr ,&nextStrux);
 
-	if(!found || (nextSDH == nullptr ))
+	if (!found || (nextStrux == nullptr))
 	{
 		getDoc()->getBounds(true, posEnd);
 	}
 	else
 	{
-		posEnd =  getDoc()->getStruxPosition(nextSDH);
+		posEnd =  getDoc()->getStruxPosition(nextStrux);
 	}
 	posStart++;
 	PD_DocumentRange * pExportHdrFtr = new PD_DocumentRange(getDoc(),posStart,posEnd);
@@ -1024,7 +1024,7 @@ bool IE_Exp_RTF::_write_rtf_header(void)
 // Write out the facingp and titlepg keywords so that we can export our fancy
 // header-footers to RTF
 //
-	pf_Frag_Strux* sdh = nullptr;
+	const pf_Frag_Strux* sdh = nullptr;
 	getDoc()->getStruxOfTypeFromPosition(2,PTX_Section,&sdh);
 	if(sdh != nullptr)
 	{
@@ -1343,7 +1343,7 @@ const gchar * IE_Exp_RTF::_getStyleProp(
  * does not print opening and closing braces.
  */
 void IE_Exp_RTF::_write_parafmt(const PP_AttrProp * pSpanAP, const PP_AttrProp * pBlockAP, const PP_AttrProp * pSectionAP,
-								bool & bStartedList, pf_Frag_Strux* sdh, UT_uint32 & iCurrID, bool &bIsListBlock,
+								bool & bStartedList, const pf_Frag_Strux* sdh, UT_uint32 & iCurrID, bool &bIsListBlock,
 								UT_sint32 iNestLevel)
 {
 	const gchar * szTextAlign = PP_evalProperty("text-align",pSpanAP,pBlockAP,pSectionAP,getDoc(),true);
@@ -2067,7 +2067,7 @@ void IE_Exp_RTF::_write_charfmt(const s_RTF_AttrPropAdapter & apa)
 }
 
 void IE_Exp_RTF::_output_revision(const s_RTF_AttrPropAdapter & apa, bool bPara,
-								  pf_Frag_Strux* sdh, UT_sint32 iNestLevel,
+								  const pf_Frag_Strux* sdh, UT_sint32 iNestLevel,
 								  bool & bStartedList,  bool &bIsListBlock, UT_uint32 &iCurrID)
 {
 	const gchar *szRevisions = apa.getAttribute("revision");

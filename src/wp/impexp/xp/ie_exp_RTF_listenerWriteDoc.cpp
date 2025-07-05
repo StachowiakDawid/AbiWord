@@ -2095,7 +2095,7 @@ const UT_UCS4Char * s_RTF_ListenerWriteDoc::_getFieldValue(void)
 //
 	if(m_sdh == nullptr)
 	{
-		m_pDocument->getStruxOfTypeFromPosition(m_posDoc,PTX_Block,&m_sdh);
+		m_pDocument->getMutStruxOfTypeFromPosition(m_posDoc, PTX_Block, &m_sdh);
 	}
 	fl_ContainerLayout* sfh = m_pDocument->getNthFmtHandle(m_sdh,0);
 	const fl_Layout * pL = reinterpret_cast<const fl_Layout *>(sfh);
@@ -3642,7 +3642,7 @@ void s_RTF_ListenerWriteDoc::_open_cell(PT_AttrPropIndex api)
  */
 UT_sint32  s_RTF_ListenerWriteDoc::getRightOfCell(UT_sint32 row,UT_sint32 col)
 {
-	pf_Frag_Strux* sdhCell = m_pDocument->getCellStruxFromRowCol(m_Table.getTableStrux(),true,PD_MAX_REVISION,row,col);
+	const pf_Frag_Strux* sdhCell = m_pDocument->getCellStruxFromRowCol(m_Table.getTableStrux(), true, PD_MAX_REVISION, row, col);
 	if(sdhCell == nullptr)
 	{
 		return -1;
@@ -3789,12 +3789,12 @@ void s_RTF_ListenerWriteDoc::_newRow(void)
 		xxx_UT_DEBUGMSG(("SEVIOR: set to row %d i %d left %d right %d \n",row,i,m_Table.getLeft(),m_Table.getRight()));
 		if(m_Table.getRight() <= i)
 		{
-			pf_Frag_Strux* cellSDH = m_pDocument->getCellStruxFromRowCol(m_Table.getTableStrux(),true,PD_MAX_REVISION,
+			const pf_Frag_Strux* cellStrux = m_pDocument->getCellStruxFromRowCol(m_Table.getTableStrux(), true, PD_MAX_REVISION,
 																		  row,i);
-			UT_ASSERT_HARMLESS(cellSDH);
-			if(cellSDH)
+			UT_ASSERT_HARMLESS(cellStrux);
+			if (cellStrux)
 			{
-				m_pDocument->miniDump(cellSDH,8);
+				m_pDocument->miniDump(cellStrux, 8);
 			}
 			UT_ASSERT_HARMLESS(UT_SHOULD_NOT_HAPPEN);
 			iNext = i+1;
@@ -4256,7 +4256,7 @@ void s_RTF_ListenerWriteDoc::_open_table(PT_AttrPropIndex api,bool bIsCell)
 	if(bIsCell)
 	{
 		PT_DocPosition posCell = m_pDocument->getStruxPosition(m_sdh);
-		bool b = m_pDocument->getStruxOfTypeFromPosition(posCell,PTX_SectionTable,&sdhTable);
+		bool b = m_pDocument->getMutStruxOfTypeFromPosition(posCell, PTX_SectionTable, &sdhTable);
 		UT_return_if_fail(b);
 		api = m_pDocument->getAPIFromStrux(sdhTable);
 		m_Table.openTable(sdhTable,api);

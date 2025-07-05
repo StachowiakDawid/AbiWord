@@ -1346,8 +1346,8 @@ void FV_FrameEdit::deleteFrame(fl_FrameLayout * pFL)
 
 // Delete the frame
 
-	pf_Frag_Strux* sdhStart =  m_pFrameLayout->getStruxDocHandle();
-	pf_Frag_Strux* sdhEnd = nullptr;
+	const pf_Frag_Strux* sdhStart = m_pFrameLayout->getStruxDocHandle();
+	const pf_Frag_Strux* sdhEnd = nullptr;
 	PT_DocPosition posStart = getDoc()->getStruxPosition(sdhStart);
 	getDoc()->getNextStruxOfType(sdhStart, PTX_EndFrame, &sdhEnd);
 	PT_DocPosition posEnd = getDoc()->getStruxPosition(sdhEnd)+1;	

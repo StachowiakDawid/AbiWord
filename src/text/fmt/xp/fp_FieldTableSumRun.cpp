@@ -190,7 +190,7 @@ static void sFormatDouble(UT_UTF8String & sVal, double d)
 bool fp_FieldTableSumRows::calculateValue(void)
 {
 	FV_View * pView = _getView();
-	pf_Frag_Strux* tableSDH= nullptr;
+	const pf_Frag_Strux* tableSDH = nullptr;
 	UT_sint32 numRows =0;
 	UT_sint32 numCols = 0;
 	bUseCurrency = false;
@@ -219,7 +219,7 @@ bool fp_FieldTableSumRows::calculateValue(void)
 	}
 	PT_DocPosition pos = pDoc->getStruxPosition(sdh)+1;
 	pDoc->getStruxOfTypeFromPosition(pos,PTX_SectionTable,&tableSDH);
-	pDoc-> getRowsColsFromTableStrux(tableSDH, pView->isShowRevisions(), pView->getRevisionLevel(), &numRows, &numCols);
+	pDoc->getRowsColsFromTableStrux(tableSDH, pView->isShowRevisions(), pView->getRevisionLevel(), &numRows, &numCols);
 	UT_UTF8String sValF;
 	if(!pView->isInTable(pos))
 	{
@@ -235,7 +235,7 @@ bool fp_FieldTableSumRows::calculateValue(void)
 	double dSum = 0.0;
 	for(row = 0; row < numRows; row++)
 	{
-		pf_Frag_Strux* sdhCell = pDoc->getCellStruxFromRowCol(tableSDH,true,99999,row,col);
+		const pf_Frag_Strux* sdhCell = pDoc->getCellStruxFromRowCol(tableSDH, true, 99999, row, col);
 		UT_sint32 i = getBlock()->getDocLayout()->getLID();
 		fl_ContainerLayout* fmtCell = pDoc->getNthFmtHandle(sdhCell,i);
 		pCell = static_cast<fl_CellLayout *>(fmtCell);
@@ -307,7 +307,7 @@ bool fp_FieldTableSumRows::calculateValue(void)
 bool fp_FieldTableSumCols::calculateValue(void)
 {
 	FV_View * pView = _getView();
-	pf_Frag_Strux* tableSDH= nullptr;
+	const pf_Frag_Strux* tableSDH = nullptr;
 	UT_sint32 numRows =0;
 	UT_sint32 numCols = 0;
 	bUseCurrency = false;
@@ -354,7 +354,7 @@ bool fp_FieldTableSumCols::calculateValue(void)
 	double dSum = 0.0;
 	for(col = 0; col < numCols; col++)
 	{
-		pf_Frag_Strux* sdhCell = pDoc->getCellStruxFromRowCol(tableSDH,true,99999,row,col);
+		const pf_Frag_Strux* sdhCell = pDoc->getCellStruxFromRowCol(tableSDH, true, 99999, row, col);
 		UT_sint32 i = getBlock()->getDocLayout()->getLID();
 		fl_ContainerLayout* fmtCell = pDoc->getNthFmtHandle(sdhCell,i);
 		pCell = static_cast<fl_CellLayout *>(fmtCell);

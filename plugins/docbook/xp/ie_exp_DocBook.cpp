@@ -2079,7 +2079,7 @@ bool s_DocBook_Listener::populateStrux(pf_Frag_Strux* sdh,
 			if((m_iNestedTable == 2) && (m_iTableDepth == 1)) //the last cell had a nested table; reset the value
 				m_iNestedTable = -1;
 
-			pf_Frag_Strux* nextTable = nullptr, *nextCell = nullptr;
+			const pf_Frag_Strux* nextTable = nullptr, *nextCell = nullptr;
 			bool bNextTable = m_pDocument->getNextStruxOfType(sdh, PTX_SectionTable, &nextTable);
 			bool bEndCell = m_pDocument->getNextStruxOfType(sdh, PTX_EndCell, &nextCell);
 

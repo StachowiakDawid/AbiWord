@@ -438,14 +438,14 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	// the first two of these functions just retrieve the AP with the given index; the latter two
 	// return AP that represents state of things with current revision settings
 	bool					getAttrProp(PT_AttrPropIndex indexAP, const PP_AttrProp ** ppAP) const;
-	bool					getSpanAttrProp(pf_Frag_Strux* sdh, UT_uint32 offset, bool bLeftSide,
+	bool					getSpanAttrProp(const pf_Frag_Strux* sdh, UT_uint32 offset, bool bLeftSide,
 											const PP_AttrProp ** ppAP) const;
 
 	bool                    getAttrProp(PT_AttrPropIndex apIndx, const PP_AttrProp ** ppAP,
 										std::optional<std::unique_ptr<PP_RevisionAttr>>& pRevisions,
 										bool bShowRevisions, UT_uint32 iRevisionId, bool &bHiddenRevision) const;
 
-	bool                    getSpanAttrProp(pf_Frag_Strux* sdh, UT_uint32 offset, bool bLeftSide,
+	bool                    getSpanAttrProp(const pf_Frag_Strux* sdh, UT_uint32 offset, bool bLeftSide,
 											const PP_AttrProp ** ppAP,
 											std::optional<std::unique_ptr<PP_RevisionAttr>>& pRevisions,
 											bool bShowRevisions, UT_uint32 iRevisionId,
@@ -455,8 +455,8 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	bool					getBlockBuf(pf_Frag_Strux* sdh, UT_GrowBuf * pgb) const;
 
 	bool					getBounds(bool bEnd, PT_DocPosition & docPos) const;
-	PTStruxType             getStruxType(pf_Frag_Strux* sdh) const;
-	PT_DocPosition			getStruxPosition(pf_Frag_Strux* sdh) const;
+	PTStruxType             getStruxType(const pf_Frag_Strux* sdh) const;
+	PT_DocPosition			getStruxPosition(const pf_Frag_Strux* pfs) const;
 	bool					getStruxFromPosition(PL_ListenerId listenerId,
 												 PT_DocPosition docPos,
 												 fl_ContainerLayout* * psfh) const;
@@ -464,16 +464,21 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 													   PT_DocPosition docPos,
 													   PTStruxType pts,
 													   fl_ContainerLayout* * psfh) const;
-	bool					getStruxOfTypeFromPosition(PT_DocPosition, PTStruxType pts, pf_Frag_Strux* * sdh) const;
+	bool					getStruxOfTypeFromPosition(PT_DocPosition, PTStruxType pts, const pf_Frag_Strux* * sdh) const;
+	/* This is used by the importers. */
+	bool					getMutStruxOfTypeFromPosition(PT_DocPosition, PTStruxType pts, pf_Frag_Strux* * sdh) const;
     pf_Frag_Strux*       getBlockFromPosition( PT_DocPosition pos ) const;
 
 	pf_Frag *				getFragFromPosition(PT_DocPosition docPos) const;
 
-	bool					getNextStruxOfType(pf_Frag_Strux* sdh,PTStruxType pts,
-											   pf_Frag_Strux* * nextsdh) const;
-	bool					getPrevStruxOfType(pf_Frag_Strux* sdh,PTStruxType pts,
+	bool					getNextStruxOfType(const pf_Frag_Strux* pfs, PTStruxType pts,
+											   const pf_Frag_Strux* * nextsdh) const;
+	bool					getPrevMutStruxOfType(const pf_Frag_Strux* pfs, PTStruxType pts,
 											   pf_Frag_Strux* * prevsdh) const;
-	bool                    getNextStrux(pf_Frag_Strux* sdh, pf_Frag_Strux* *nextSDH) const;
+	bool					getPrevStruxOfType(const pf_Frag_Strux* pfs, PTStruxType pts,
+											   const pf_Frag_Strux* * prevsdh) const;
+	bool                    getNextMutStrux(const pf_Frag_Strux* sdh, pf_Frag_Strux* *next) const;
+	bool                    getNextStrux(const pf_Frag_Strux* sdh, const pf_Frag_Strux* *next) const;
 
 	// data items
 
@@ -512,7 +517,7 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	// the function below does exactly what the name says -- returns the AP index; in revisions mode
 	// you would need the AP at that index to have revision attribute exploded -- use one of the
 	// functions below to retrieve props and attrs correctly reflecting revisions settings
-	PT_AttrPropIndex        getAPIFromStrux(pf_Frag_Strux* sdh) const;
+	PT_AttrPropIndex        getAPIFromStrux(const pf_Frag_Strux* sdh) const;
     bool                    getAttributeFromStrux(const pf_Frag_Strux* sdh, bool bShowRevisions, UT_uint32 iRevisionLevel,
 												const char * szAttribute, const char ** pszValue) const;
 
@@ -520,11 +525,11 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 											   const char * szProperty, const char ** pszValue) const;
 	// styles
 	void                    getAllUsedStyles(UT_GenericVector<PD_Style*> * pVecStyles) const;
-	fl_ContainerLayout*       getNthFmtHandle(pf_Frag_Strux* sdh, UT_uint32 n) const;
+	fl_ContainerLayout*     getNthFmtHandle(const pf_Frag_Strux* sdh, UT_uint32 n) const;
     const char *            getDefaultStyle() const;
 	bool					getStyle(const char * szName, PD_Style ** ppStyle) const;
-	PD_Style *				getStyleFromStrux(pf_Frag_Strux* sdh) const;
-	pf_Frag_Strux*       getPrevNumberedHeadingStyle(pf_Frag_Strux* sdh) const;
+	PD_Style *				getStyleFromStrux(const pf_Frag_Strux* pfs) const;
+	pf_Frag_Strux*       getPrevNumberedHeadingStyle(pf_Frag_Strux* pfs) const;
 	size_t                  getStyleCount(void) const;
 	bool					enumStyles(UT_uint32 k,
 									   const char ** pszName, const PD_Style ** ppStyle) const;
@@ -535,8 +540,8 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	bool	                setAllStyleAttributes(const gchar * szStyleName, const PP_PropertyVector & pAttribs);
 	bool	                addStyleAttributes(const gchar * szStyleName, const PP_PropertyVector & pAttribs);
 
-    pf_Frag_Strux*       findPreviousStyleStrux(const gchar * szStyle, PT_DocPosition pos) const;
-    pf_Frag_Strux*       findForwardStyleStrux(const gchar * szStyle, PT_DocPosition pos) const;
+    const pf_Frag_Strux*       findPreviousStyleStrux(const gchar * szStyle, PT_DocPosition pos) const;
+    const pf_Frag_Strux*       findForwardStyleStrux(const gchar * szStyle, PT_DocPosition pos) const;
 	bool					updateDocForStyleChange(const gchar * szStyleName,
 													bool isParaStyle);
 	void                    updateAllLayoutsInDoc( pf_Frag_Strux* sdh);
@@ -576,17 +581,23 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	bool                    isTableAtPos(PT_DocPosition pos) const;
 	bool                    isEndTableAtPos(PT_DocPosition pos) const;
 	bool                    isCellAtPos(PT_DocPosition pos) const;
-	pf_Frag_Strux*       getEndTableStruxFromTableStrux(pf_Frag_Strux* tableSDH) const;
-	pf_Frag_Strux*       getEndCellStruxFromCellStrux(pf_Frag_Strux* cellSDH) const;
-	pf_Frag_Strux*       getEndTableStruxFromTablePos(PT_DocPosition posTable) const;
-	bool                    getRowsColsFromTableStrux(pf_Frag_Strux* tableSDH,
+	pf_Frag_Strux*    getEndTableMutStruxFromTableStrux(const pf_Frag_Strux* table) const;
+	const pf_Frag_Strux*    getEndTableStruxFromTableStrux(const pf_Frag_Strux* table) const;
+	pf_Frag_Strux*    getEndCellMutStruxFromCellStrux(const pf_Frag_Strux* cell) const;
+	const pf_Frag_Strux*    getEndCellStruxFromCellStrux(const pf_Frag_Strux* cell) const;
+	const pf_Frag_Strux*       getEndTableStruxFromTablePos(PT_DocPosition posTable) const;
+	bool                 getRowsColsFromTableStrux(const pf_Frag_Strux* table,
 													bool bShowRevisions, UT_uint32 iRevisionLevel,
 													UT_sint32 * numRows, UT_sint32 * numCols) const;
-	pf_Frag_Strux*       getCellStruxFromRowCol(pf_Frag_Strux* tableSDH,
+	pf_Frag_Strux*    getCellMutStruxFromRowCol(const pf_Frag_Strux* table,
 												 bool bShowRevisions, UT_uint32 iRevisionLevel,
 												 UT_sint32 row,
 												 UT_sint32 col) const;
-	void                    miniDump(pf_Frag_Strux* sdh, UT_sint32 nstruxes) const;
+	const pf_Frag_Strux*    getCellStruxFromRowCol(const pf_Frag_Strux* table,
+												 bool bShowRevisions, UT_uint32 iRevisionLevel,
+												 UT_sint32 row,
+												 UT_sint32 col) const;
+	void                    miniDump(const pf_Frag_Strux* sdh, UT_sint32 nstruxes) const;
     bool                    dumpDoc( const char* msg, PT_DocPosition currentpos, PT_DocPosition endpos );
 
 	bool                    isInsertHyperLinkValid(PT_DocPosition pos) const;
@@ -602,7 +613,7 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	bool					fixListHierarchy(void);
 	void					removeList(const fl_AutoNumPtr & pAutoNum, pf_Frag_Strux* sdh);
 	void					listUpdate(pf_Frag_Strux* sdh);
-	void					StopList(pf_Frag_Strux* sdh);
+	void					StopList(const pf_Frag_Strux* pfs);
 	void					disableListUpdates(void);
 	void					enableListUpdates(void);
 	void					updateDirtyLists(void);
