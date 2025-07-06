@@ -445,7 +445,7 @@ void AP_Dialog_FormatFrame::setCurFrameProps(void)
 	m_bSensitive = false;
 
 	if (pDoc->getStruxOfTypeFromPosition(pos, PTX_SectionFrame, &sdh))
-		if (PT_AttrPropIndex api = pDoc->getAPIFromSDH(sdh)) {
+		if (PT_AttrPropIndex api = pDoc->getAPIFromStrux(sdh)) {
 			const PP_AttrProp * pAP = nullptr;
 			if (pDoc->getAttrProp(api, &pAP))
 				if (pAP) {

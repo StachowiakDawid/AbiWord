@@ -684,7 +684,7 @@ bool ABI_Collab_Import::_import(const SessionPacket& packet, UT_sint32 iImportAd
 								UT_ASSERT(UT_SHOULD_NOT_HAPPEN);
 								return false;
 							}
-							PD_Style * pStyle = m_pDoc->getStyleFromSDH(sdh);
+							PD_Style * pStyle = m_pDoc->getStyleFromStrux(sdh);
 							if(!pStyle)
 							{
 								UT_ASSERT(UT_SHOULD_NOT_HAPPEN);

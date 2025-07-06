@@ -499,8 +499,8 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
     pf_Frag_Strux*       findHdrFtrStrux(const gchar * pszHdtFtr,
 											const gchar * pszHdrFtrID) const;
 	bool                    verifySectionID(const gchar * pszId);
-	const pf_Frag_Strux*       getLastSectionSDH(void) const;
-	pf_Frag_Strux*       getLastSectionMutableSDH(void) const;
+	const pf_Frag_Strux*       getLastSectionStrux(void) const;
+	pf_Frag_Strux*       getLastSectionMutableStrux(void) const;
 	pf_Frag_Strux*       getLastStruxOfType(PTStruxType pts) const;
 
 	bool                    changeStruxAttsNoUpdate(pf_Frag_Strux* sdh, const char * attr, const char * attvalue);
@@ -512,18 +512,18 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	// the function below does exactly what the name says -- returns the AP index; in revisions mode
 	// you would need the AP at that index to have revision attribute exploded -- use one of the
 	// functions below to retrieve props and attrs correctly reflecting revisions settings
-	PT_AttrPropIndex        getAPIFromSDH(pf_Frag_Strux* sdh) const;
-    bool                    getAttributeFromSDH(const pf_Frag_Strux* sdh, bool bShowRevisions, UT_uint32 iRevisionLevel,
+	PT_AttrPropIndex        getAPIFromStrux(pf_Frag_Strux* sdh) const;
+    bool                    getAttributeFromStrux(const pf_Frag_Strux* sdh, bool bShowRevisions, UT_uint32 iRevisionLevel,
 												const char * szAttribute, const char ** pszValue) const;
 
-    bool                    getPropertyFromSDH(const pf_Frag_Strux* sdh, bool bShowRevisions, UT_uint32 iRevisionLevel,
+    bool                    getPropertyFromStrux(const pf_Frag_Strux* sdh, bool bShowRevisions, UT_uint32 iRevisionLevel,
 											   const char * szProperty, const char ** pszValue) const;
 	// styles
 	void                    getAllUsedStyles(UT_GenericVector<PD_Style*> * pVecStyles) const;
 	fl_ContainerLayout*       getNthFmtHandle(pf_Frag_Strux* sdh, UT_uint32 n) const;
     const char *            getDefaultStyle() const;
 	bool					getStyle(const char * szName, PD_Style ** ppStyle) const;
-	PD_Style *				getStyleFromSDH(pf_Frag_Strux* sdh) const;
+	PD_Style *				getStyleFromStrux(pf_Frag_Strux* sdh) const;
 	pf_Frag_Strux*       getPrevNumberedHeadingStyle(pf_Frag_Strux* sdh) const;
 	size_t                  getStyleCount(void) const;
 	bool					enumStyles(UT_uint32 k,
@@ -577,13 +577,13 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	bool                    isTableAtPos(PT_DocPosition pos) const;
 	bool                    isEndTableAtPos(PT_DocPosition pos) const;
 	bool                    isCellAtPos(PT_DocPosition pos) const;
-	pf_Frag_Strux*       getEndTableStruxFromTableSDH(pf_Frag_Strux* tableSDH) const;
-	pf_Frag_Strux*       getEndCellStruxFromCellSDH(pf_Frag_Strux* cellSDH) const;
+	pf_Frag_Strux*       getEndTableStruxFromTableStrux(pf_Frag_Strux* tableSDH) const;
+	pf_Frag_Strux*       getEndCellStruxFromCellStrux(pf_Frag_Strux* cellSDH) const;
 	pf_Frag_Strux*       getEndTableStruxFromTablePos(PT_DocPosition posTable) const;
-	bool                    getRowsColsFromTableSDH(pf_Frag_Strux* tableSDH,
+	bool                    getRowsColsFromTableStrux(pf_Frag_Strux* tableSDH,
 													bool bShowRevisions, UT_uint32 iRevisionLevel,
 													UT_sint32 * numRows, UT_sint32 * numCols) const;
-	pf_Frag_Strux*       getCellSDHFromRowCol(pf_Frag_Strux* tableSDH,
+	pf_Frag_Strux*       getCellStruxFromRowCol(pf_Frag_Strux* tableSDH,
 												 bool bShowRevisions, UT_uint32 iRevisionLevel,
 												 UT_sint32 row,
 												 UT_sint32 col) const;

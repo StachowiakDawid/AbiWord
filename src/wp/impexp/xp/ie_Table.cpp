@@ -304,7 +304,7 @@ const char * ie_PartTable::getCellProp(const char * pProp) const
 */
 void ie_PartTable::_setRowsCols(void)
 {
-	m_pDoc->getRowsColsFromTableSDH(m_TableSDH, true, PD_MAX_REVISION, &m_iNumRows, &m_iNumCols);
+	m_pDoc->getRowsColsFromTableStrux(m_TableSDH, true, PD_MAX_REVISION, &m_iNumRows, &m_iNumCols);
 }
 
 /*--------------------------------------------------------------------------------*/
@@ -411,13 +411,13 @@ void ie_Table::setCellJustOpenned(bool b)
 /*!
  * Return the current table SDH for debugging purposes.
  */
-pf_Frag_Strux* ie_Table::getTableSDH(void) const
+pf_Frag_Strux* ie_Table::getTableStrux(void) const
 {
 	UT_return_val_if_fail(!m_sLastTable.empty(), nullptr);
 	ie_PartTable * pPT = m_sLastTable.top();
 	if(pPT)
 	{
-		return pPT->getTableSDH();
+		return pPT->getTableStrux();
 	}
 	return nullptr;
 }
@@ -621,18 +621,18 @@ void ie_Table::setCellRowCol(UT_sint32 row, UT_sint32 col)
 	pf_Frag_Strux* sdhStart = m_sdhLastCell;
 	if(sdhStart == nullptr)
 	{
-		sdhStart = pPT->getTableSDH();
+		sdhStart = pPT->getTableStrux();
 	}
-	pf_Frag_Strux* cellSDH = m_pDoc->getCellSDHFromRowCol(sdhStart,true,PD_MAX_REVISION,row,col);
+	pf_Frag_Strux* cellSDH = m_pDoc->getCellStruxFromRowCol(sdhStart,true,PD_MAX_REVISION,row,col);
 	if(cellSDH == nullptr)
 	{
-		sdhStart = pPT->getTableSDH();
-		cellSDH = m_pDoc->getCellSDHFromRowCol(sdhStart,true,PD_MAX_REVISION,row,col);
+		sdhStart = pPT->getTableStrux();
+		cellSDH = m_pDoc->getCellStruxFromRowCol(sdhStart,true,PD_MAX_REVISION,row,col);
 	}
 	m_sdhLastCell = cellSDH;
 	if(cellSDH != nullptr)
 	{
-		PT_AttrPropIndex api = m_pDoc->getAPIFromSDH(cellSDH);
+		PT_AttrPropIndex api = m_pDoc->getAPIFromStrux(cellSDH);
 		pPT->setCellApi(api);
 	}
 }
@@ -768,7 +768,7 @@ UT_sint32 ie_imp_cell::getBot(void) const
 /*!
  * Get the cell SDH for this cell.
  */
-pf_Frag_Strux* ie_imp_cell::getCellSDH(void) const
+pf_Frag_Strux* ie_imp_cell::getCellStrux(void) const
 {
 	return m_cellSDH;
 }
@@ -776,7 +776,7 @@ pf_Frag_Strux* ie_imp_cell::getCellSDH(void) const
 /*!
  * Set Cell SDH 
  */
-void ie_imp_cell::setCellSDH(pf_Frag_Strux* cellSDH)
+void ie_imp_cell::setCellStrux(pf_Frag_Strux* cellSDH)
 {
 	m_cellSDH = cellSDH;
 }
@@ -1159,7 +1159,7 @@ void ie_imp_table::setCellX(UT_sint32 cellx)
 /*!
  * Return this tables SDH
  */
-pf_Frag_Strux* ie_imp_table::getTableSDH(void) const
+pf_Frag_Strux* ie_imp_table::getTableStrux(void) const
 {
 	return m_tableSDH;
 }
@@ -1167,7 +1167,7 @@ pf_Frag_Strux* ie_imp_table::getTableSDH(void) const
 /*!
  * Set the SDH for this table
  */
-void ie_imp_table::setTableSDH(pf_Frag_Strux* sdh)
+void ie_imp_table::setTableStrux(pf_Frag_Strux* sdh)
 {
 	m_tableSDH = sdh;
 	xxx_UT_DEBUGMSG(("SEVIOR: Table sdh set to %x \n",sdh));
@@ -1260,12 +1260,12 @@ void ie_imp_table::writeAllCellPropsInDoc(void)
 				//				removeOnThisCellRow(pCell);
 				continue;
 			}
-			UT_DEBUGMSG(("writeallcellprops: pCell %d row %d left %d right %d top %d bot %d sdh %p \n", i, pCell->getRow(), pCell->getLeft(), pCell->getRight(), pCell->getTop(), pCell->getBot(), (void*)pCell->getCellSDH())); 
+			UT_DEBUGMSG(("writeallcellprops: pCell %d row %d left %d right %d top %d bot %d sdh %p \n", i, pCell->getRow(), pCell->getLeft(), pCell->getRight(), pCell->getTop(), pCell->getBot(), (void*)pCell->getCellStrux())); 
 		}
-		if(pCell->isMergedAbove() && (pCell->getCellSDH() != nullptr))
+		if(pCell->isMergedAbove() && (pCell->getCellStrux() != nullptr))
 		{
 			UT_DEBUGMSG(("BUG!BUG! found a sdh is merged above cell! removing it \n"));
-			pf_Frag_Strux* cellSDH = pCell->getCellSDH();
+			pf_Frag_Strux* cellSDH = pCell->getCellStrux();
 			UT_return_if_fail(cellSDH != nullptr);
 			pf_Frag_Strux* nextSDH = nullptr;
 			m_pDoc->getNextStrux(cellSDH,&nextSDH);
@@ -1286,10 +1286,10 @@ void ie_imp_table::writeAllCellPropsInDoc(void)
 				}
 			}
 		}
-		if(pCell->isMergedLeft() && (pCell->getCellSDH() != nullptr))
+		if(pCell->isMergedLeft() && (pCell->getCellStrux() != nullptr))
 		{
 			UT_DEBUGMSG(("BUG!BUG! found a sdh is merged left cell! removing it \n"));
-			pf_Frag_Strux* cellSDH = pCell->getCellSDH();
+			pf_Frag_Strux* cellSDH = pCell->getCellStrux();
 			UT_return_if_fail(cellSDH != nullptr);
 			pf_Frag_Strux* nextSDH = nullptr;
 			m_pDoc->getNextStrux(cellSDH,&nextSDH);
@@ -1630,13 +1630,13 @@ void ie_imp_table::deleteRow(UT_sint32 row)
 		if(pCell->getRow() == row)
 		{
 			UT_DEBUGMSG(("Delete Cell pos %d on row %d \n",pCell->getLeft(),row));
-			if(pCell->getCellSDH() != nullptr)
+			if(pCell->getCellStrux() != nullptr)
 			{
-				pf_Frag_Strux* cellSDH = pCell->getCellSDH();
-				pf_Frag_Strux* endCellSDH = m_pDoc->getEndCellStruxFromCellSDH(cellSDH);
+				pf_Frag_Strux* cellSDH = pCell->getCellStrux();
+				pf_Frag_Strux* endCellSDH = m_pDoc->getEndCellStruxFromCellStrux(cellSDH);
 				if(endCellSDH == nullptr)
 				{
-					m_pDoc->deleteStruxNoUpdate(pCell->getCellSDH());
+					m_pDoc->deleteStruxNoUpdate(pCell->getCellStrux());
 				}
 				else
 				{
@@ -1668,7 +1668,7 @@ void ie_imp_table::deleteRow(UT_sint32 row)
 	pf_Frag_Strux* sdhEndCell = m_pDoc->getLastStruxOfType(PTX_EndCell);
 	if((sdhCell != nullptr) && (sdhEndCell != nullptr))
 	{
-		pf_Frag_Strux* sdhMyEnd= m_pDoc->getEndCellStruxFromCellSDH(sdhCell);
+		pf_Frag_Strux* sdhMyEnd= m_pDoc->getEndCellStruxFromCellStrux(sdhCell);
 		if((sdhMyEnd != nullptr) && (sdhEndCell != sdhMyEnd))
 		{
 			UT_DEBUGMSG(("Delete extraneous endCell strux 1 sdhEndCell %p sdhMyEnd %p \n", (void*)sdhEndCell, (void*)sdhMyEnd));
@@ -1718,9 +1718,9 @@ void ie_imp_table::removeExtraneousCells(void)
 	for(i= m_vecCells.getItemCount() -1; i >=0 ; i--)
 	{
 		pCell = m_vecCells.getNthItem(i);
-		if(pCell->getCellX() == -1 && (pCell->getCellSDH() != nullptr))
+		if(pCell->getCellX() == -1 && (pCell->getCellStrux() != nullptr))
 		{
-			m_pDoc->deleteStruxNoUpdate(pCell->getCellSDH());
+			m_pDoc->deleteStruxNoUpdate(pCell->getCellStrux());
 			delete pCell;
 			m_vecCells.deleteNthItem(i);
 		}
@@ -1739,10 +1739,10 @@ void ie_imp_table::_removeAllStruxes(void)
 	for(i= m_vecCells.getItemCount() -1; i >=0 ; i--)
 	{
 		pCell = m_vecCells.getNthItem(i);
-		if(pCell->getCellSDH())
+		if(pCell->getCellStrux())
 		{
-			UT_DEBUGMSG(("SEVIOR: Removing cell strux %p from PT \n", (void*)pCell->getCellSDH())); 
-			m_pDoc->deleteStruxNoUpdate(pCell->getCellSDH());
+			UT_DEBUGMSG(("SEVIOR: Removing cell strux %p from PT \n", (void*)pCell->getCellStrux())); 
+			m_pDoc->deleteStruxNoUpdate(pCell->getCellStrux());
 		}
 	}
 	if(m_tableSDH)
@@ -1963,7 +1963,7 @@ bool ie_imp_table_control::NewRow(void)
 	for(i=0; i < vecRow.getItemCount() && !bFound;i++)
 	{
 		pCell = vecRow.getNthItem(i);
-		if(pCell->getCellSDH())
+		if(pCell->getCellStrux())
 		{
 			bFound = true;
 			break;
@@ -1971,7 +1971,7 @@ bool ie_imp_table_control::NewRow(void)
 	}
 	if(bFound)
 	{
-		sdhCell = pCell->getCellSDH();
+		sdhCell = pCell->getCellStrux();
 		m_pDoc->insertStruxNoUpdateBefore(sdhCell, PTX_EndTable, PP_NOPROPS);
 		bAuto = getTable()->isAutoFit();
 		CloseTable();
@@ -1993,7 +1993,7 @@ bool ie_imp_table_control::NewRow(void)
 	getTable()->appendRow(&vecRow);
 	getTable()->NewRow();
 	pf_Frag_Strux* sdh = m_pDoc->getLastStruxOfType(PTX_SectionTable);
-	getTable()->setTableSDH(sdh);
+	getTable()->setTableStrux(sdh);
 	getTable()->CloseCell(); // This just sets the table used flag!
 //	UT_ASSERT_HARMLESS(0);
 	return true;

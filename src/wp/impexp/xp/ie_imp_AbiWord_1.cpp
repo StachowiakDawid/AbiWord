@@ -379,7 +379,7 @@ void IE_Imp_AbiWord_1::startElement(const gchar *name,
 //
 			const std::string & sType = PP_getAttribute("type", atts);
 			if(!sType.empty()) {
-				pf_Frag_Strux* sdh = getDoc()->getLastSectionMutableSDH();
+				pf_Frag_Strux* sdh = getDoc()->getLastSectionMutableStrux();
 				getDoc()->changeStruxAttsNoUpdate(sdh, sType.c_str(), sId.c_str());
 				m_parseState = _PS_Sec;
 				m_bWroteSection = true;

@@ -400,7 +400,7 @@ void AP_Dialog_FormatTOC::fillTOCPropsFromDoc(void)
 //
 // OK Now lets gets all props from here and place them in our local cache
 //
-		PT_AttrPropIndex iAPI = m_pDoc->getAPIFromSDH(sdhTOC);
+		PT_AttrPropIndex iAPI = m_pDoc->getAPIFromStrux(sdhTOC);
 		m_pDoc->getAttrProp(iAPI,&m_pAP);
 	}
 	m_bTOCFilled = true;

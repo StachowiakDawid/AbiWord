@@ -148,7 +148,7 @@ void fl_AutoNum::fixHierarchy(void)
 		if (pFrame)
 			pView = static_cast<FV_View *>(pFrame->getCurrentView());
 
-		bool bFound = m_pDoc->getAttributeFromSDH(sdh,
+		bool bFound = m_pDoc->getAttributeFromStrux(sdh,
 												  pView ? pView->isShowRevisions() : true,
 												  pView ? pView->getRevisionLevel(): PD_MAX_REVISION,
 												  PT_PARENTID_ATTRIBUTE_NAME,&pszParentID);

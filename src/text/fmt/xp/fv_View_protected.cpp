@@ -633,7 +633,7 @@ bool FV_View::_MergeCells( PT_DocPosition posDestination,PT_DocPosition posSourc
 	{
 		return false;
 	}
-	endSourceSDH =  m_pDoc->getEndCellStruxFromCellSDH(sourceSDH);
+	endSourceSDH =  m_pDoc->getEndCellStruxFromCellStrux(sourceSDH);
 	PT_DocPosition posEndCell = m_pDoc->getStruxPosition(endSourceSDH)-1;
 	posSource = m_pDoc->getStruxPosition(sourceSDH)+1;
 	bres = m_pDoc->getStruxOfTypeFromPosition(posDestination,PTX_SectionCell,&destinationSDH);
@@ -641,7 +641,7 @@ bool FV_View::_MergeCells( PT_DocPosition posDestination,PT_DocPosition posSourc
 	{
 		return false;
 	}
-	endDestSDH = m_pDoc->getEndCellStruxFromCellSDH(destinationSDH);
+	endDestSDH = m_pDoc->getEndCellStruxFromCellStrux(destinationSDH);
 	PT_DocPosition posEndDestCell = m_pDoc->getStruxPosition(endDestSDH);
 //	if(!bBefore)
 //	{
@@ -772,7 +772,7 @@ bool FV_View::_deleteCellAt(PT_DocPosition posTable, UT_sint32 row, UT_sint32 co
 	{
 		return false;
 	}
-	endCellSDH = m_pDoc->getEndCellStruxFromCellSDH(cellSDH);
+	endCellSDH = m_pDoc->getEndCellStruxFromCellStrux(cellSDH);
 	if(!endCellSDH)
 	{
 		return false;
@@ -6051,7 +6051,7 @@ void FV_View::_removeThisHdrFtr(fl_HdrFtrSectionLayout * pHdrFtr)
 	const gchar * pszHdrFtrType = nullptr;
 	UT_ASSERT(pHdrFtr->getContainerType() == FL_CONTAINER_HDRFTR);
 	pf_Frag_Strux* sdhHdrFtr = pHdrFtr->getStruxDocHandle();
-	m_pDoc->getAttributeFromSDH(sdhHdrFtr,isShowRevisions(),getRevisionLevel(),PT_TYPE_ATTRIBUTE_NAME, &pszHdrFtrType);
+	m_pDoc->getAttributeFromStrux(sdhHdrFtr,isShowRevisions(),getRevisionLevel(),PT_TYPE_ATTRIBUTE_NAME, &pszHdrFtrType);
 //
 // Remove the header/footer strux
 //

@@ -5556,14 +5556,14 @@ Defun1(selectRow)
 	// Now find the number of rows and columns inthis table.
     //
 	UT_sint32 numRows,numCols;
-	bRes = pDoc->getRowsColsFromTableSDH(tableSDH,pView->isShowRevisions(), pView->getRevisionLevel(),&numRows,&numCols);
+	bRes = pDoc->getRowsColsFromTableStrux(tableSDH,pView->isShowRevisions(), pView->getRevisionLevel(),&numRows,&numCols);
 	if(!bRes)
 	{
 		return false;
 	}
-	rowSDH = pDoc->getCellSDHFromRowCol(tableSDH,pView->isShowRevisions(), pView->getRevisionLevel(),iTop,0);
+	rowSDH = pDoc->getCellStruxFromRowCol(tableSDH,pView->isShowRevisions(), pView->getRevisionLevel(),iTop,0);
 	posStartRow = pDoc->getStruxPosition(rowSDH) - 1;
-	endRowSDH = pDoc->getCellSDHFromRowCol(tableSDH,pView->isShowRevisions(), pView->getRevisionLevel(),iTop,numCols -1);
+	endRowSDH = pDoc->getCellStruxFromRowCol(tableSDH,pView->isShowRevisions(), pView->getRevisionLevel(),iTop,numCols -1);
 	posEndRow = pDoc->getStruxPosition(endRowSDH);
 	bRes = pDoc->getNextStruxOfType(endRowSDH,PTX_EndCell,&endRowSDH);
 	if(!bRes)

@@ -1028,7 +1028,7 @@ bool IE_Exp_RTF::_write_rtf_header(void)
 	getDoc()->getStruxOfTypeFromPosition(2,PTX_Section,&sdh);
 	if(sdh != nullptr)
 	{
-	        PT_AttrPropIndex api = getDoc()->getAPIFromSDH(sdh);
+	        PT_AttrPropIndex api = getDoc()->getAPIFromStrux(sdh);
 		const PP_AttrProp * pSectionAP = nullptr;
 		getDoc()->getAttrProp(api,&pSectionAP);
 		const char * pszAtt = nullptr;
@@ -3080,12 +3080,12 @@ void IE_Exp_RTF::_output_ListRTF(const fl_AutoNumConstPtr & pAuto, UT_uint32 iLe
 		// 
 		if(sdh != nullptr)
 		{
-			bool bres = getDoc()->getPropertyFromSDH(sdh,true,PD_MAX_REVISION,"text-indent",&szIndent);
+			bool bres = getDoc()->getPropertyFromStrux(sdh,true,PD_MAX_REVISION,"text-indent",&szIndent);
 			if(bres)
 			{
 				_rtf_keyword_ifnotdefault_twips("fi",(char*)szIndent,0);
 			}
-			bres = getDoc()->getPropertyFromSDH(sdh,true,PD_MAX_REVISION,"margin-left",&szAlign);
+			bres = getDoc()->getPropertyFromStrux(sdh,true,PD_MAX_REVISION,"margin-left",&szAlign);
 			if(bres)
 			{
 				_rtf_keyword_ifnotdefault_twips("li",(char*)szAlign,0);

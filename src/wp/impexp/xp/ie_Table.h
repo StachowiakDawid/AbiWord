@@ -56,7 +56,7 @@ class ABI_EXPORT ie_PartTable
 	UT_sint32        getNumCols(void) const;
 	UT_sint32        getCurRow(void) const { return m_iCurRow;}
 	void             incCurRow(void) { m_iCurRow++;}
-	pf_Frag_Strux* getTableSDH(void) const
+	pf_Frag_Strux* getTableStrux(void) const
 		{ return m_TableSDH;}
 	void             setCellJustOpenned(bool b);
 	bool             isCellJustOpenned(void) const;
@@ -107,7 +107,7 @@ class ABI_EXPORT ie_Table
 	const char *     getCellProp(const char * pPropName) const;
 	UT_sint32        getNestDepth(void) const;
 	void             setCellRowCol(UT_sint32 row, UT_sint32 col);
-	pf_Frag_Strux*   getTableSDH(void) const;
+	pf_Frag_Strux*   getTableStrux(void) const;
 	void             setCellJustOpenned(bool b);
 	bool             isCellJustOpenned(void) const;
 	PT_AttrPropIndex getTableAPI(void) const;
@@ -145,8 +145,8 @@ class ABI_EXPORT ie_imp_cell
 	UT_sint32        getTop(void) const;
 	void             setBot(UT_sint32 iBot);
 	UT_sint32        getBot(void) const;
-	pf_Frag_Strux* getCellSDH(void) const;
-	void             setCellSDH(pf_Frag_Strux* cellSDH);
+	pf_Frag_Strux* getCellStrux(void) const;
+	void             setCellStrux(pf_Frag_Strux* cellSDH);
 	bool             writeCellPropsInDoc(void) const;
 	ie_imp_cell *    getCellAbove(void) const;
 	ie_imp_cell *    getCellBelow(void) const;
@@ -202,8 +202,8 @@ class ABI_EXPORT ie_imp_table
 	void                setCellRowNthCell(UT_sint32 row, UT_sint32 col);
 	ie_imp_cell *       getNthCellOnRow(UT_sint32 iCell) const;
 	void                setCellX(UT_sint32 cellx);
-	pf_Frag_Strux*   getTableSDH(void) const;
-	void                setTableSDH(pf_Frag_Strux* cellSDH);
+	pf_Frag_Strux*   getTableStrux(void) const;
+	void                setTableStrux(pf_Frag_Strux* cellSDH);
 	void                writeTablePropsInDoc(void);
 	void                writeAllCellPropsInDoc(void);
 	void                setProp(const std::string & psProp,

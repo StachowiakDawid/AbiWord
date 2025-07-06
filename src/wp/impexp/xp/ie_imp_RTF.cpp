@@ -1715,7 +1715,7 @@ void IE_Imp_RTF::OpenTable(bool bDontFlush)
 	getDoc()->getBounds(true,posEnd); // clean frags!
 	pf_Frag_Strux* sdh = getDoc()->getLastStruxOfType(PTX_SectionTable);
 	UT_DEBUGMSG(("SEVIOR: Table strux sdh is %p \n", (void*)sdh));
-	getTable()->setTableSDH(sdh);
+	getTable()->setTableStrux(sdh);
 	getTable()->OpenCell();
 	if(!bDontFlush)
 	{
@@ -1725,7 +1725,7 @@ void IE_Imp_RTF::OpenTable(bool bDontFlush)
 	getDoc()->appendStrux(PTX_SectionCell, PP_NOPROPS);
 	getDoc()->getBounds(true,posEnd); // clean frags!
 	sdh = getDoc()->getLastStruxOfType(PTX_SectionCell);
-	getCell()->setCellSDH(sdh);
+	getCell()->setCellStrux(sdh);
 	m_currentRTFState.m_cellProps = RTFProps_CellProps();
 	m_currentRTFState.m_tableProps = RTFProps_TableProps();
 	m_lastCellSDH = nullptr; // This is in the table structure and can be deleted from there.
@@ -1827,7 +1827,7 @@ void IE_Imp_RTF::closePastedTableIfNeeded(void)
 				bool b = getDoc()->getStruxOfTypeFromPosition(m_dposPaste,PTX_SectionTable,&sdhTable);
 				PT_DocPosition posTable = getDoc()->getStruxPosition(sdhTable);
 				UT_ASSERT(b);
-				sdhEndTable = getDoc()->getEndTableStruxFromTableSDH(sdhTable);
+				sdhEndTable = getDoc()->getEndTableStruxFromTableStrux(sdhTable);
 				UT_ASSERT(sdhEndTable);
 				PT_DocPosition posEndTable = getDoc()->getStruxPosition(sdhEndTable);
 				b = getDoc()->getStruxOfTypeFromPosition(m_dposPaste-1,PTX_SectionCell,&sdhCell);
@@ -1842,7 +1842,7 @@ void IE_Imp_RTF::closePastedTableIfNeeded(void)
 				}
 				while(b && (posCell < posEndTable))
 				{
-					getDoc()->getPropertyFromSDH(sdhCell,
+					getDoc()->getPropertyFromStrux(sdhCell,
 												 true,
 												 PD_MAX_REVISION,
 												 "top-attach", &szVal);
@@ -1850,7 +1850,7 @@ void IE_Imp_RTF::closePastedTableIfNeeded(void)
 					UT_sint32 iTop = atoi(szVal);
 					iTop += numRows;
 					sTop = UT_std_string_sprintf("%d",iTop);
-					getDoc()->getPropertyFromSDH(sdhCell,
+					getDoc()->getPropertyFromStrux(sdhCell,
 												 true,
 												 PD_MAX_REVISION,
 												 "bot-attach", &szVal);
@@ -2033,7 +2033,7 @@ void IE_Imp_RTF::HandleCell(void)
 
 	if(!getCell()->isMergedAbove() && !getCell()->isMergedLeft())
 	{
-		getCell()->setCellSDH(sdh);
+		getCell()->setCellStrux(sdh);
 		xxx_UT_DEBUGMSG(("SEVIOR: At posOnRow %d cellx %d \n",getTable()->getPosOnRow(),getCell()->getCellX()));
 		getTable()->incPosOnRow();
 		FlushStoredChars();		
@@ -10092,7 +10092,7 @@ bool IE_Imp_RTF::HandleAbiTable(void)
 	if(bFound)
 	{
 		posTable = getDoc()->getStruxPosition(sdhTable);
-		sdhEndTable = getDoc()->getEndTableStruxFromTableSDH(sdhTable);
+		sdhEndTable = getDoc()->getEndTableStruxFromTableStrux(sdhTable);
 		if(sdhEndTable != nullptr)
 		{
 			PT_DocPosition posEndTable = getDoc()->getStruxPosition(sdhEndTable);
@@ -10117,7 +10117,7 @@ bool IE_Imp_RTF::HandleAbiTable(void)
 					bool b = getDoc()->getStruxOfTypeFromPosition(m_dposPaste,PTX_SectionCell,&sdhCell);
 					UT_return_val_if_fail(b,false);
 					const char * szTop = nullptr;
-					getDoc()->getPropertyFromSDH(sdhCell,
+					getDoc()->getPropertyFromStrux(sdhCell,
 												 true,
 												 PD_MAX_REVISION,
 												 "top-attach",&szTop);
@@ -10140,7 +10140,7 @@ bool IE_Imp_RTF::HandleAbiTable(void)
 						}
 						else if(b)
 						{
-							getDoc()->getPropertyFromSDH(sdhCell,
+							getDoc()->getPropertyFromStrux(sdhCell,
 														 true,
 														 PD_MAX_REVISION,
 														 "top-attach",&szTop);
@@ -10227,7 +10227,7 @@ bool IE_Imp_RTF:: HandleAbiEndTable(void)
 		pf_Frag_Strux* sdhEndTable = nullptr;
 		bool b = getDoc()->getStruxOfTypeFromPosition(m_dposPaste,PTX_SectionTable,&sdhTable);
 		UT_return_val_if_fail(b,false);
-		sdhEndTable = getDoc()->getEndTableStruxFromTableSDH(sdhTable);
+		sdhEndTable = getDoc()->getEndTableStruxFromTableStrux(sdhTable);
 		UT_return_val_if_fail(sdhEndTable,false);
 		PT_DocPosition posEndTable = getDoc()->getStruxPosition(sdhEndTable);
 		b = getDoc()->getStruxOfTypeFromPosition(m_dposPaste,PTX_SectionCell,&sdhCell);
@@ -10237,7 +10237,7 @@ bool IE_Imp_RTF:: HandleAbiEndTable(void)
 		PT_DocPosition posCell = getDoc()->getStruxPosition(sdhCell);
 		while(b && (posCell < posEndTable))
 		{
-			getDoc()->getPropertyFromSDH(sdhCell,
+			getDoc()->getPropertyFromStrux(sdhCell,
 										 true,
 										 PD_MAX_REVISION,
 										 "top-attach", &szVal);
@@ -10245,7 +10245,7 @@ bool IE_Imp_RTF:: HandleAbiEndTable(void)
 			UT_sint32 iTop = atoi(szVal);
 			iTop += numRows;
 
-			getDoc()->getPropertyFromSDH(sdhCell,
+			getDoc()->getPropertyFromStrux(sdhCell,
 										 true,
 										 PD_MAX_REVISION,
 										 "bot-attach", &szVal);
@@ -11346,7 +11346,7 @@ void IE_Imp_RTF::_appendHdrFtr ()
 
 		if(!getDoc()->verifySectionID(hdrftrID.c_str()))
 		{
-			pf_Frag_Strux* sdh = getDoc()->getLastSectionMutableSDH();
+			pf_Frag_Strux* sdh = getDoc()->getLastSectionMutableStrux();
 			getDoc()->changeStruxAttsNoUpdate(sdh,szType,hdrftrID.c_str());
 		}
 		getDoc()->appendStrux (PTX_SectionHdrFtr, propsArray);

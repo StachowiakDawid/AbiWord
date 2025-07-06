@@ -3796,7 +3796,7 @@ PD_DocumentRDF::addXMLIDsForBlockAndTableCellForPosition( std::set< std::string 
     if( pt->getStruxOfTypeFromPosition( pos, PTX_Block, &psdh ) && psdh )
     {
         xxx_UT_DEBUGMSG(("PD_DocumentRDF::priv_addRelevantIDsForPosition() block pos:%d\n", pos ));
-        PT_AttrPropIndex api = doc->getAPIFromSDH( psdh );
+        PT_AttrPropIndex api = doc->getAPIFromStrux( psdh );
         const PP_AttrProp * AP = nullptr;
         doc->getAttrProp(api,&AP);
         if( AP )
@@ -3816,7 +3816,7 @@ PD_DocumentRDF::addXMLIDsForBlockAndTableCellForPosition( std::set< std::string 
     if( pt->getStruxOfTypeFromPosition( pos, PTX_SectionCell, &psdh ) && psdh )
     {
         xxx_UT_DEBUGMSG(("PD_DocumentRDF::priv_addRelevantIDsForPosition() cell pos:%d\n", pos ));
-        PT_AttrPropIndex api = doc->getAPIFromSDH( psdh );
+        PT_AttrPropIndex api = doc->getAPIFromStrux( psdh );
         const PP_AttrProp * AP = nullptr;
         doc->getAttrProp(api,&AP);
         if( AP )
@@ -4014,7 +4014,7 @@ PD_DocumentRDF::priv_addRelevantIDsForPosition( std::set< std::string >& ret,
     if( pt->getStruxOfTypeFromPosition( pos, PTX_Block, &psdh ) && psdh )
     {
         UT_DEBUGMSG(("PD_DocumentRDF::priv_addRelevantIDsForPosition() block pos:%d\n", pos ));
-        PT_AttrPropIndex api = doc->getAPIFromSDH( psdh );
+        PT_AttrPropIndex api = doc->getAPIFromStrux( psdh );
         const PP_AttrProp * AP = nullptr;
         doc->getAttrProp(api,&AP);
         if( AP )
@@ -4034,7 +4034,7 @@ PD_DocumentRDF::priv_addRelevantIDsForPosition( std::set< std::string >& ret,
     if( pt->getStruxOfTypeFromPosition( pos, PTX_SectionCell, &psdh ) && psdh )
     {
         UT_DEBUGMSG(("PD_DocumentRDF::priv_addRelevantIDsForPosition() cell pos:%d\n", pos ));
-        PT_AttrPropIndex api = doc->getAPIFromSDH( psdh );
+        PT_AttrPropIndex api = doc->getAPIFromStrux( psdh );
         const PP_AttrProp * AP = nullptr;
         doc->getAttrProp(api,&AP);
         if( AP )
@@ -4110,7 +4110,7 @@ PD_RDFModelHandle PD_DocumentRDF::getRDFAtPosition( PT_DocPosition pos )
     // if( pt->getStruxOfTypeFromPosition( pos, PTX_Block, &psdh ) && psdh )
     // {
     //     UT_DEBUGMSG(("PD_DocumentRDF::getRDFAtPosition() pos:%d\n", pos ));
-    //     PT_AttrPropIndex api = doc->getAPIFromSDH( psdh );
+    //     PT_AttrPropIndex api = doc->getAPIFromStrux( psdh );
     //     const PP_AttrProp * AP = nullptr;
     //     doc->getAttrProp(api,&AP);
     //     if( AP )
@@ -4438,7 +4438,7 @@ void PD_DocumentRDF::dumpObjectMarkersFromDocument()
         {
             UT_DEBUGMSG(("PD_DocumentRDF::dumpObjectMarkersFromDocument() current:%d end:%d have PTX_BLOCK \n",
                          curr, eod ));
-	        PT_AttrPropIndex api = doc->getAPIFromSDH( psdh );
+	        PT_AttrPropIndex api = doc->getAPIFromStrux( psdh );
             const PP_AttrProp * AP = nullptr;
             doc->getAttrProp(api,&AP);
             if( AP )

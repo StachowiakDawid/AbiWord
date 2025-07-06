@@ -173,7 +173,7 @@ void FV_Selection::pasteRowOrCol(void)
 		UT_sint32 numRows = 0;
 		UT_sint32 numCols = 0;
 		UT_sint32 i = 0;
-		getDoc()-> getRowsColsFromTableSDH(tableSDH, m_pView->isShowRevisions(), m_pView->getRevisionLevel(),
+		getDoc()-> getRowsColsFromTableStrux(tableSDH, m_pView->isShowRevisions(), m_pView->getRevisionLevel(),
 										   &numRows, &numCols);
 
 		PD_DocumentRange DocRange(getDoc(),posCell,posCell);

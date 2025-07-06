@@ -3642,13 +3642,13 @@ void s_RTF_ListenerWriteDoc::_open_cell(PT_AttrPropIndex api)
  */
 UT_sint32  s_RTF_ListenerWriteDoc::getRightOfCell(UT_sint32 row,UT_sint32 col)
 {
-	pf_Frag_Strux* sdhCell = m_pDocument->getCellSDHFromRowCol(m_Table.getTableSDH(),true,PD_MAX_REVISION,row,col);
+	pf_Frag_Strux* sdhCell = m_pDocument->getCellStruxFromRowCol(m_Table.getTableStrux(),true,PD_MAX_REVISION,row,col);
 	if(sdhCell == nullptr)
 	{
 		return -1;
 	}
 	const char * szRight;
-	m_pDocument->getPropertyFromSDH(sdhCell,true,PD_MAX_REVISION,"right-attach",&szRight);
+	m_pDocument->getPropertyFromStrux(sdhCell,true,PD_MAX_REVISION,"right-attach",&szRight);
 	UT_sint32 iRight = atoi(szRight);
 	return iRight;
 }
@@ -3789,7 +3789,7 @@ void s_RTF_ListenerWriteDoc::_newRow(void)
 		xxx_UT_DEBUGMSG(("SEVIOR: set to row %d i %d left %d right %d \n",row,i,m_Table.getLeft(),m_Table.getRight()));
 		if(m_Table.getRight() <= i)
 		{
-			pf_Frag_Strux* cellSDH = m_pDocument->getCellSDHFromRowCol(m_Table.getTableSDH(),true,PD_MAX_REVISION,
+			pf_Frag_Strux* cellSDH = m_pDocument->getCellStruxFromRowCol(m_Table.getTableStrux(),true,PD_MAX_REVISION,
 																		  row,i);
 			UT_ASSERT_HARMLESS(cellSDH);
 			if(cellSDH)
@@ -4242,7 +4242,7 @@ void s_RTF_ListenerWriteDoc::_fillTableProps(PT_AttrPropIndex api, std::string &
 		UT_std_string_setProperty(sTableProps, sProp, sPropVal);
 	}
 	sProp = "table-sdh";
-	sPropVal = UT_std_string_sprintf("%p", (void*)m_Table.getTableSDH());
+	sPropVal = UT_std_string_sprintf("%p", (void*)m_Table.getTableStrux());
 	UT_std_string_setProperty(sTableProps, sProp, sPropVal);
 	if(sTableProps.size() == 0)
 	{
@@ -4258,7 +4258,7 @@ void s_RTF_ListenerWriteDoc::_open_table(PT_AttrPropIndex api,bool bIsCell)
 		PT_DocPosition posCell = m_pDocument->getStruxPosition(m_sdh);
 		bool b = m_pDocument->getStruxOfTypeFromPosition(posCell,PTX_SectionTable,&sdhTable);
 		UT_return_if_fail(b);
-		api = m_pDocument->getAPIFromSDH(sdhTable);
+		api = m_pDocument->getAPIFromStrux(sdhTable);
 		m_Table.openTable(sdhTable,api);
 	}
 	else

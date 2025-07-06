@@ -4290,7 +4290,7 @@ bool FV_View::setStyleAtPos(const gchar * style, PT_DocPosition posStart1, PT_Do
 		pf_Frag_Strux* prevSDH = m_pDoc->getPrevNumberedHeadingStyle(curSdh);
 		if(prevSDH != nullptr)
 		{
-			PD_Style * pPrevStyle = m_pDoc->getStyleFromSDH(prevSDH);
+			PD_Style * pPrevStyle = m_pDoc->getStyleFromStrux(prevSDH);
 			if(pPrevStyle != nullptr)
 			{
 //
@@ -4320,7 +4320,7 @@ bool FV_View::setStyleAtPos(const gchar * style, PT_DocPosition posStart1, PT_Do
 					if(bFoundPrevList && pAuto->getFirstItem())
 					{
 						pf_Frag_Strux* subSDH = pAuto->getFirstItem();
-						fl_BlockLayout * pSubBlock = getBlockFromSDH(subSDH);
+						fl_BlockLayout * pSubBlock = getBlockFromStrux(subSDH);
 						UT_ASSERT(pSubBlock);
 						if(pSubBlock == nullptr)
 							goto finish_up;
@@ -4401,7 +4401,7 @@ bool FV_View::setStyleAtPos(const gchar * style, PT_DocPosition posStart1, PT_Do
 //
 			else if(bFoundPrevHeadingBackwards)
 			{
-				fl_BlockLayout * pBlock = getBlockFromSDH(sdh);
+				fl_BlockLayout * pBlock = getBlockFromStrux(sdh);
 				UT_ASSERT(pBlock);
 				if(pBlock == nullptr)
 					goto finish_up;
@@ -4422,7 +4422,7 @@ bool FV_View::setStyleAtPos(const gchar * style, PT_DocPosition posStart1, PT_Do
 //
 			else
 			{
-				fl_BlockLayout * pBlock = getBlockFromSDH(sdh);
+				fl_BlockLayout * pBlock = getBlockFromStrux(sdh);
 				UT_ASSERT(pBlock);
 				if(pBlock == nullptr)
 					goto finish_up;
@@ -4469,7 +4469,7 @@ bool FV_View::setStyleAtPos(const gchar * style, PT_DocPosition posStart1, PT_Do
  * This method finds the appropiate matching block in the current view
  * for the StruxDocHandle (actually a pointer to a pf_frag_strux)
  */
-fl_BlockLayout * FV_View::getBlockFromSDH(pf_Frag_Strux* sdh)
+fl_BlockLayout * FV_View::getBlockFromStrux(pf_Frag_Strux* sdh)
 {
 	fl_ContainerLayout* sfh = nullptr;
 	fl_BlockLayout * pBlock = nullptr;
@@ -5591,7 +5591,7 @@ bool FV_View::isImageAtStrux(PT_DocPosition ipos1, PTStruxType iStrux)
 		return false;
 	}	
 	const gchar * pszDataID = nullptr;
-    bret = m_pDoc->getAttributeFromSDH(sdh, isShowRevisions(), getRevisionLevel(), PT_STRUX_IMAGE_DATAID,&pszDataID);
+    bret = m_pDoc->getAttributeFromStrux(sdh, isShowRevisions(), getRevisionLevel(), PT_STRUX_IMAGE_DATAID,&pszDataID);
 	if(!bret)
 	{
 		return false;
@@ -8532,7 +8532,7 @@ bool FV_View::getCellParams(PT_DocPosition posCell, UT_sint32 * pLeft, UT_sint32
 	const char * pszRight;
 	const char * pszTop;
 	const char * pszBot;
-	m_pDoc->getPropertyFromSDH(cellSDH,isShowRevisions(),getRevisionLevel(),"left-attach",&pszLeft);
+	m_pDoc->getPropertyFromStrux(cellSDH,isShowRevisions(),getRevisionLevel(),"left-attach",&pszLeft);
 	if(pszLeft && *pszLeft)
 	{
 		*pLeft = atoi(pszLeft);
@@ -8541,7 +8541,7 @@ bool FV_View::getCellParams(PT_DocPosition posCell, UT_sint32 * pLeft, UT_sint32
 	{
 		return false;
 	}
-	m_pDoc->getPropertyFromSDH(cellSDH,isShowRevisions(),getRevisionLevel(),"right-attach",&pszRight);
+	m_pDoc->getPropertyFromStrux(cellSDH,isShowRevisions(),getRevisionLevel(),"right-attach",&pszRight);
 	if(pszRight && *pszRight)
 	{
 		*pRight = atoi(pszRight);
@@ -8550,7 +8550,7 @@ bool FV_View::getCellParams(PT_DocPosition posCell, UT_sint32 * pLeft, UT_sint32
 	{
 		return false;
 	}
-	m_pDoc->getPropertyFromSDH(cellSDH,isShowRevisions(),getRevisionLevel(),"top-attach",&pszTop);
+	m_pDoc->getPropertyFromStrux(cellSDH,isShowRevisions(),getRevisionLevel(),"top-attach",&pszTop);
 	if(pszTop && *pszTop)
 	{
 		*pTop = atoi(pszTop);
@@ -8559,7 +8559,7 @@ bool FV_View::getCellParams(PT_DocPosition posCell, UT_sint32 * pLeft, UT_sint32
 	{
 		return false;
 	}
-	m_pDoc->getPropertyFromSDH(cellSDH,isShowRevisions(),getRevisionLevel(),"bot-attach",&pszBot);
+	m_pDoc->getPropertyFromStrux(cellSDH,isShowRevisions(),getRevisionLevel(),"bot-attach",&pszBot);
 	if(pszBot && *pszBot)
 	{
 		*pBot = atoi(pszBot);
@@ -8588,7 +8588,7 @@ bool FV_View::getCellLineStyle(PT_DocPosition posCell, UT_sint32 * pLeft, UT_sin
 	const char * pszRight;
 	const char * pszTop;
 	const char * pszBot;
-	m_pDoc->getPropertyFromSDH(cellSDH,isShowRevisions(),getRevisionLevel(),"left-style",&pszLeft);
+	m_pDoc->getPropertyFromStrux(cellSDH,isShowRevisions(),getRevisionLevel(),"left-style",&pszLeft);
 	if(pszLeft && *pszLeft)
 	{
 		*pLeft = atoi(pszLeft);
@@ -8597,7 +8597,7 @@ bool FV_View::getCellLineStyle(PT_DocPosition posCell, UT_sint32 * pLeft, UT_sin
 	{
 		*pLeft = -1;
 	}
-	m_pDoc->getPropertyFromSDH(cellSDH,isShowRevisions(),getRevisionLevel(),"right-style",&pszRight);
+	m_pDoc->getPropertyFromStrux(cellSDH,isShowRevisions(),getRevisionLevel(),"right-style",&pszRight);
 	if(pszRight && *pszRight)
 	{
 		*pRight = atoi(pszRight);
@@ -8606,7 +8606,7 @@ bool FV_View::getCellLineStyle(PT_DocPosition posCell, UT_sint32 * pLeft, UT_sin
 	{
 		*pRight = -1;
 	}
-	m_pDoc->getPropertyFromSDH(cellSDH,isShowRevisions(),getRevisionLevel(),"top-style",&pszTop);
+	m_pDoc->getPropertyFromStrux(cellSDH,isShowRevisions(),getRevisionLevel(),"top-style",&pszTop);
 	if(pszTop && *pszTop)
 	{
 		*pTop = atoi(pszTop);
@@ -8615,7 +8615,7 @@ bool FV_View::getCellLineStyle(PT_DocPosition posCell, UT_sint32 * pLeft, UT_sin
 	{
 		*pTop = -1;
 	}
-	m_pDoc->getPropertyFromSDH(cellSDH,isShowRevisions(),getRevisionLevel(),"bottom-style",&pszBot);
+	m_pDoc->getPropertyFromStrux(cellSDH,isShowRevisions(),getRevisionLevel(),"bottom-style",&pszBot);
 	if(pszBot && *pszBot)
 	{
 		*pBot = atoi(pszBot);
@@ -8747,7 +8747,7 @@ bool FV_View::setCellFormat(const PP_PropertyVector & properties, FormatTable ap
 
 		UT_sint32 numRows;
 		UT_sint32 numCols;
-		bRet = m_pDoc->getRowsColsFromTableSDH(tableSDH, isShowRevisions(), getRevisionLevel(), &numRows, &numCols);
+		bRet = m_pDoc->getRowsColsFromTableStrux(tableSDH, isShowRevisions(), getRevisionLevel(), &numRows, &numCols);
 
 		UT_sint32 rowStart = 0;
 		UT_sint32 rowEnd;
@@ -8767,7 +8767,7 @@ bool FV_View::setCellFormat(const PP_PropertyVector & properties, FormatTable ap
 		{
 			for (i = colStart; i <= colEnd; i++)
 			{
-				pf_Frag_Strux* cellSDH = m_pDoc->getCellSDHFromRowCol(tableSDH, isShowRevisions(), getRevisionLevel(),
+				pf_Frag_Strux* cellSDH = m_pDoc->getCellStruxFromRowCol(tableSDH, isShowRevisions(), getRevisionLevel(),
 																		 j, i);
 				if(cellSDH)
 				{
@@ -8811,7 +8811,7 @@ bool FV_View::setCellFormat(const PP_PropertyVector & properties, FormatTable ap
 		// get the number of rows and columns in the current table
 		UT_sint32 numRows;
 		UT_sint32 numCols;
-		bRet = m_pDoc->getRowsColsFromTableSDH(tableSDH, isShowRevisions(), getRevisionLevel(), &numRows, &numCols);
+		bRet = m_pDoc->getRowsColsFromTableStrux(tableSDH, isShowRevisions(), getRevisionLevel(), &numRows, &numCols);
 		if(!bRet)
 		{
 			// Allow table updates
@@ -8856,7 +8856,7 @@ bool FV_View::setCellFormat(const PP_PropertyVector & properties, FormatTable ap
 		{
 			for (i = colStart; i <= colEnd; i++)
 			{
-				pf_Frag_Strux* cellSDH = m_pDoc->getCellSDHFromRowCol(tableSDH, isShowRevisions(), getRevisionLevel(),
+				pf_Frag_Strux* cellSDH = m_pDoc->getCellStruxFromRowCol(tableSDH, isShowRevisions(), getRevisionLevel(),
 																		 j, i);
 				if(cellSDH)
 				{
@@ -8922,7 +8922,7 @@ bool FV_View::getCellProperty(PT_DocPosition posCell, const gchar * szPropName, 
 	{
 		return false;
 	}
-	m_pDoc->getPropertyFromSDH(cellSDH,isShowRevisions(),getRevisionLevel(),szPropName,const_cast<const char **>(&szPropValue));
+	m_pDoc->getPropertyFromStrux(cellSDH,isShowRevisions(),getRevisionLevel(),szPropName,const_cast<const char **>(&szPropValue));
 	if(szPropValue && *szPropValue)
 	{
 		return true;
@@ -13651,7 +13651,7 @@ bool FV_View::isInTable( PT_DocPosition pos) const
 	if(pCL->getContainerType() == FL_CONTAINER_TABLE)
 	{
 		pf_Frag_Strux* sdh = pCL->getStruxDocHandle();
-		pf_Frag_Strux* sdhEnd = m_pDoc->getEndTableStruxFromTableSDH(sdh);
+		pf_Frag_Strux* sdhEnd = m_pDoc->getEndTableStruxFromTableStrux(sdh);
 		if(sdhEnd != nullptr)
 		{
 			PT_DocPosition posEnd =  m_pDoc->getStruxPosition(sdhEnd);
@@ -13695,7 +13695,7 @@ PT_DocPosition FV_View::findCellPosAt(PT_DocPosition posTable, UT_sint32 row, UT
 			}
 		}
 	}
-	cellSDH = m_pDoc->getCellSDHFromRowCol(tableSDH, isShowRevisions(), getRevisionLevel(), row,col);
+	cellSDH = m_pDoc->getCellStruxFromRowCol(tableSDH, isShowRevisions(), getRevisionLevel(), row,col);
 	if(cellSDH == nullptr)
 	{
 		return 0;

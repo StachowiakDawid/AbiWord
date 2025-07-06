@@ -236,7 +236,7 @@ bool FV_View::cmdSplitCells(AP_CellSplitType iSplitType)
 
 	posTable = m_pDoc->getStruxPosition(tableSDH) + 1;
 	posCell = m_pDoc->getStruxPosition(cellSDH);
-	endTableSDH = m_pDoc->getEndTableStruxFromTableSDH(tableSDH);
+	endTableSDH = m_pDoc->getEndTableStruxFromTableStrux(tableSDH);
 	posEndTable = m_pDoc->getStruxPosition(endTableSDH);
 	fl_TableLayout * pTL = static_cast<fl_TableLayout*>(m_pDoc->getNthFmtHandle(tableSDH,m_pLayout->getLID()));
 	UT_return_val_if_fail(pTL, false);
@@ -244,7 +244,7 @@ bool FV_View::cmdSplitCells(AP_CellSplitType iSplitType)
 	// will be copied in the new cell.
 	fl_BlockLayout * pBL = getBlockAtPosition(getPoint());
 	const PP_AttrProp * pAP = nullptr;
-	m_pDoc->getAttrProp(m_pDoc->getAPIFromSDH(pBL->getStruxDocHandle()), &pAP);
+	m_pDoc->getAttrProp(m_pDoc->getAPIFromStrux(pBL->getStruxDocHandle()), &pAP);
 	UT_return_val_if_fail(pAP, false);
 
 //
@@ -282,7 +282,7 @@ bool FV_View::cmdSplitCells(AP_CellSplitType iSplitType)
 //
 // OK now insert the cell and do the update
 //
-	m_pDoc-> getRowsColsFromTableSDH(tableSDH, isShowRevisions(), getRevisionLevel(), &numRows, &numCols);
+	m_pDoc-> getRowsColsFromTableStrux(tableSDH, isShowRevisions(), getRevisionLevel(), &numRows, &numCols);
 
 	if(iSplitType <= hori_right)
 	{
@@ -453,10 +453,10 @@ bool FV_View::cmdSplitCells(AP_CellSplitType iSplitType)
 				bool bFound = false;
 				while(!bFound)
 				{
-					curSDH = m_pDoc-> getCellSDHFromRowCol(tableSDH,isShowRevisions(), getRevisionLevel(), jTop,jLeft);
+					curSDH = m_pDoc-> getCellStruxFromRowCol(tableSDH,isShowRevisions(), getRevisionLevel(), jTop,jLeft);
 					if(curSDH == nullptr)
 					{
-						endTableSDH = m_pDoc->getEndTableStruxFromTableSDH(tableSDH);
+						endTableSDH = m_pDoc->getEndTableStruxFromTableStrux(tableSDH);
 						if(endTableSDH == nullptr)
 						{
 							//
@@ -489,7 +489,7 @@ bool FV_View::cmdSplitCells(AP_CellSplitType iSplitType)
 						}
 						if(jTop >= numRows)
 						{
-							endTableSDH = m_pDoc->getEndTableStruxFromTableSDH(tableSDH);
+							endTableSDH = m_pDoc->getEndTableStruxFromTableStrux(tableSDH);
 							if(endTableSDH == nullptr)
 							{
 								//
@@ -774,7 +774,7 @@ bool FV_View::cmdSelectColumn(PT_DocPosition posOfColumn)
 //
 	UT_sint32 numRows = 0;
 	UT_sint32 numCols = 0;
-	m_pDoc->getRowsColsFromTableSDH(tableSDH, isShowRevisions(), getRevisionLevel(), &numRows, &numCols);
+	m_pDoc->getRowsColsFromTableStrux(tableSDH, isShowRevisions(), getRevisionLevel(), &numRows, &numCols);
 //
 // Ok set the selection type to that of a column
 //
@@ -853,7 +853,7 @@ bool FV_View::cmdTableToText(PT_DocPosition posSource,UT_sint32 iSepType)
 //
 	UT_sint32 numRows = 0;
 	UT_sint32 numCols = 0;
-	m_pDoc->getRowsColsFromTableSDH(tableSDH, isShowRevisions(), getRevisionLevel(), &numRows, &numCols);
+	m_pDoc->getRowsColsFromTableStrux(tableSDH, isShowRevisions(), getRevisionLevel(), &numRows, &numCols);
 	PT_DocPosition posInsert = pTL->getPosition(true);
 
 	// Signal PieceTable Changes
@@ -958,7 +958,7 @@ bool FV_View::cmdMergeCells(PT_DocPosition posSource, PT_DocPosition posDestinat
 //
 	UT_sint32 numRows = 0;
 	UT_sint32 numCols = 0;
-	m_pDoc->getRowsColsFromTableSDH(tableSDH, isShowRevisions(), getRevisionLevel(), &numRows, &numCols);
+	m_pDoc->getRowsColsFromTableStrux(tableSDH, isShowRevisions(), getRevisionLevel(), &numRows, &numCols);
 	bool bChanged = false;
 
 //
@@ -1285,7 +1285,7 @@ bool FV_View::cmdMergeCells(PT_DocPosition posSource, PT_DocPosition posDestinat
 			PT_DocPosition posCell = 0;
 			bRes = m_pDoc->getStruxOfTypeFromPosition(posDestination,PTX_SectionCell,&sdhCell);
 			UT_return_val_if_fail(bRes,false);
-			sdhEndTable = m_pDoc->getEndTableStruxFromTableSDH(tableSDH);
+			sdhEndTable = m_pDoc->getEndTableStruxFromTableStrux(tableSDH);
 			UT_return_val_if_fail(sdhEndTable,false);
 			posEndTable = m_pDoc->getStruxPosition(sdhEndTable);
 			bool bKeepGoing = true;
@@ -1567,7 +1567,7 @@ bool FV_View::cmdTextToTable(UT_uint32 iDelim)
 		bool bEnd = false;
 		for(UT_uint32 j = 0; !bEnd && j < numCols; j++)
 		{
-			sdhCell = m_pDoc->getCellSDHFromRowCol(sdhTable,isShowRevisions(),PD_MAX_REVISION,i,j);
+			sdhCell = m_pDoc->getCellStruxFromRowCol(sdhTable,isShowRevisions(),PD_MAX_REVISION,i,j);
 			posCell = m_pDoc->getStruxPosition(sdhCell)+1; // Points at block
 			sWords.clear();
 			bEnd = !pBL->getNextTableElement(pBuf,posStart,	begPos,	endPos,	sWords,	iDelim);
@@ -1805,7 +1805,7 @@ bool FV_View::cmdInsertCol(PT_DocPosition posCol, bool bBefore)
 	// will be copied in the new cells.
 	fl_BlockLayout * pBL = getBlockAtPosition(posCol);
 	const PP_AttrProp * pAP = nullptr;
-	m_pDoc->getAttrProp(m_pDoc->getAPIFromSDH(pBL->getStruxDocHandle()), &pAP);
+	m_pDoc->getAttrProp(m_pDoc->getAPIFromStrux(pBL->getStruxDocHandle()), &pAP);
 	UT_return_val_if_fail(pAP, false);
 
 	// Signal PieceTable Change
@@ -1987,7 +1987,7 @@ bool FV_View::cmdInsertRow(PT_DocPosition posRow, bool bBefore)
 	// will be copied in the new cell. 
 	fl_BlockLayout * pBL = getBlockAtPosition(posRow);
 	const PP_AttrProp * pAP = nullptr;
-	m_pDoc->getAttrProp(m_pDoc->getAPIFromSDH(pBL->getStruxDocHandle()), &pAP);
+	m_pDoc->getAttrProp(m_pDoc->getAPIFromStrux(pBL->getStruxDocHandle()), &pAP);
 	UT_return_val_if_fail(pAP, false);
 
 	//
@@ -2326,7 +2326,7 @@ bool FV_View::cmdDeleteCol(PT_DocPosition posCol)
 			};
 			bRes = m_pDoc->changeStruxFmt(PTC_AddFmt, posCell2 + 1, posCell2 + 1, PP_NOPROPS, props, PTX_SectionCell);
 		}
-		endCellSDH = m_pDoc->getEndCellStruxFromCellSDH(cellSDH);
+		endCellSDH = m_pDoc->getEndCellStruxFromCellStrux(cellSDH);
 		posEndCell =  m_pDoc->getStruxPosition(endCellSDH);
 		if(posEndCell+1 >= posEndTable)
 		{
@@ -2384,7 +2384,7 @@ bool FV_View::cmdDeleteTable(PT_DocPosition posTable, bool bDontNotify)
 		return false;
 	}
 	posStartTable = m_pDoc->getStruxPosition(tableSDH);
-	endTableSDH = m_pDoc->getEndTableStruxFromTableSDH(tableSDH);
+	endTableSDH = m_pDoc->getEndTableStruxFromTableStrux(tableSDH);
 	posEndTable = m_pDoc->getStruxPosition(endTableSDH)+1; 
 //
 // Got all we need, now set things up to do the delete nicely
@@ -2541,7 +2541,7 @@ bool FV_View::cmdDeleteRow(PT_DocPosition posRow)
 // We stop when the position of the endCell strux is just before the position of
 // the endTable strux. So lets's get that now.
 //
-	endTableSDH = m_pDoc->getEndTableStruxFromTableSDH(tableSDH);
+	endTableSDH = m_pDoc->getEndTableStruxFromTableStrux(tableSDH);
 	if(!bRes || (endTableSDH == nullptr))
 	{
 		//
@@ -2595,7 +2595,7 @@ bool FV_View::cmdDeleteRow(PT_DocPosition posRow)
 			};
 			bRes = m_pDoc->changeStruxFmt(PTC_AddFmt, posCell2 + 1, posCell2 + 1, PP_NOPROPS, props, PTX_SectionCell);
 		}
-		endCellSDH = m_pDoc->getEndCellStruxFromCellSDH(cellSDH);
+		endCellSDH = m_pDoc->getEndCellStruxFromCellStrux(cellSDH);
 		posEndCell =  m_pDoc->getStruxPosition(endCellSDH);
 		if(posEndCell+1 >= posEndTable)
 		{
@@ -2657,8 +2657,8 @@ bool FV_View::cmdDeleteCell(PT_DocPosition /*cellPos*/ )
 	{
 		return false;
 	}
-	m_pDoc->getPropertyFromSDH(cellSDH,"left-attach",&pszLeftAttach);
-	m_pDoc->getPropertyFromSDH(cellSDH,"top-attach",&pszTopAttach);
+	m_pDoc->getPropertyFromStrux(cellSDH,"left-attach",&pszLeftAttach);
+	m_pDoc->getPropertyFromStrux(cellSDH,"top-attach",&pszTopAttach);
 	if(pszLeftAttach && *pszLeftAttach)
 	{
 		iLeft = atoi(pszLeftAttach);

@@ -219,7 +219,7 @@ bool fp_FieldTableSumRows::calculateValue(void)
 	}
 	PT_DocPosition pos = pDoc->getStruxPosition(sdh)+1;
 	pDoc->getStruxOfTypeFromPosition(pos,PTX_SectionTable,&tableSDH);
-	pDoc-> getRowsColsFromTableSDH(tableSDH, pView->isShowRevisions(), pView->getRevisionLevel(), &numRows, &numCols);
+	pDoc-> getRowsColsFromTableStrux(tableSDH, pView->isShowRevisions(), pView->getRevisionLevel(), &numRows, &numCols);
 	UT_UTF8String sValF;
 	if(!pView->isInTable(pos))
 	{
@@ -235,7 +235,7 @@ bool fp_FieldTableSumRows::calculateValue(void)
 	double dSum = 0.0;
 	for(row = 0; row < numRows; row++)
 	{
-		pf_Frag_Strux* sdhCell = pDoc->getCellSDHFromRowCol(tableSDH,true,99999,row,col);
+		pf_Frag_Strux* sdhCell = pDoc->getCellStruxFromRowCol(tableSDH,true,99999,row,col);
 		UT_sint32 i = getBlock()->getDocLayout()->getLID();
 		fl_ContainerLayout* fmtCell = pDoc->getNthFmtHandle(sdhCell,i);
 		pCell = static_cast<fl_CellLayout *>(fmtCell);
@@ -336,7 +336,7 @@ bool fp_FieldTableSumCols::calculateValue(void)
 	}
 	PT_DocPosition pos = pDoc->getStruxPosition(sdh)+1;
 	pDoc->getStruxOfTypeFromPosition(pos,PTX_SectionTable,&tableSDH);
-	pDoc-> getRowsColsFromTableSDH(tableSDH, pView->isShowRevisions(), pView->getRevisionLevel(), &numRows, &numCols);
+	pDoc->getRowsColsFromTableStrux(tableSDH, pView->isShowRevisions(), pView->getRevisionLevel(), &numRows, &numCols);
 
 	UT_UTF8String sValF;
 	if(!pView->isInTable(pos))
@@ -354,7 +354,7 @@ bool fp_FieldTableSumCols::calculateValue(void)
 	double dSum = 0.0;
 	for(col = 0; col < numCols; col++)
 	{
-		pf_Frag_Strux* sdhCell = pDoc->getCellSDHFromRowCol(tableSDH,true,99999,row,col);
+		pf_Frag_Strux* sdhCell = pDoc->getCellStruxFromRowCol(tableSDH,true,99999,row,col);
 		UT_sint32 i = getBlock()->getDocLayout()->getLID();
 		fl_ContainerLayout* fmtCell = pDoc->getNthFmtHandle(sdhCell,i);
 		pCell = static_cast<fl_CellLayout *>(fmtCell);

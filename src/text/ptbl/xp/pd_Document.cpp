@@ -1871,15 +1871,15 @@ bool PD_Document::_removeRepeatedHdrFtr(pf_Frag_Strux * pfs ,UT_GenericVector<pf
 	const char * pszThisHdrFtr = nullptr;
 	UT_sint32 i=0;
 	pf_Frag_Strux * pfsS = nullptr;
-	getAttributeFromSDH(pfs,false,0,"type",&pszMyHdrFtr);
-	getAttributeFromSDH(pfs,false,0,"id",&pszMyID);
+	getAttributeFromStrux(pfs,false,0,"type",&pszMyHdrFtr);
+	getAttributeFromStrux(pfs,false,0,"id",&pszMyID);
 	if(pszMyHdrFtr && *pszMyHdrFtr && pszMyID && *pszMyID)
 	{
 		for(i = iStart; i<vecHdrFtrs->getItemCount(); i++)
 		{
 			pfsS = vecHdrFtrs->getNthItem(i);
-			getAttributeFromSDH(pfsS,false,0,"type",&pszThisHdrFtr);
-			getAttributeFromSDH(pfsS,false,0,"id",&pszThisID);
+			getAttributeFromStrux(pfsS,false,0,"type",&pszThisHdrFtr);
+			getAttributeFromStrux(pfsS,false,0,"id",&pszThisID);
 			if(pszThisHdrFtr && *pszThisHdrFtr && pszThisID && *pszThisID)
 			{
 				if((strcmp(pszMyHdrFtr,pszThisHdrFtr) == 0) &&
@@ -1960,7 +1960,7 @@ bool PD_Document::_pruneSectionAPI(pf_Frag_Strux * pfs,const char * szHType, UT_
 	const char * pszHFID = nullptr;
 	const char * pszID = nullptr;
 	UT_sint32 i = 0;
-	getAttributeFromSDH(pfs,false,0,szHType,&pszID);
+	getAttributeFromStrux(pfs,false,0,szHType,&pszID);
 	if(!pszID)
 		return false;
 	if(!(*pszID))
@@ -1968,12 +1968,12 @@ bool PD_Document::_pruneSectionAPI(pf_Frag_Strux * pfs,const char * szHType, UT_
 	for(i= 0; i< vecHdrFtrs->getItemCount(); i++)
 	{
 		pf_Frag_Strux * pfsS = vecHdrFtrs->getNthItem(i);
-		getAttributeFromSDH(pfsS,false,0,"type",&pszHdrFtr);
+		getAttributeFromStrux(pfsS,false,0,"type",&pszHdrFtr);
 		if(pszHdrFtr && *pszHdrFtr)
 		{
 			if(strcmp(szHType,pszHdrFtr) == 0)
 			{
-				getAttributeFromSDH(pfsS,false,0,"id",&pszHFID);
+				getAttributeFromStrux(pfsS,false,0,"id",&pszHFID);
 				if(pszHFID && *pszHFID)
 				{
 					if(strcmp(pszHFID,pszID) == 0)
@@ -2034,12 +2034,12 @@ bool PD_Document::_matchSection(pf_Frag_Strux * pfs, UT_GenericVector<pf_Frag_St
 	const char * pszHFID = nullptr;
 	const char * pszID = nullptr;
 	UT_sint32 i = 0;
-	getAttributeFromSDH(pfs,false,0,"type",&pszHdrFtr);
+	getAttributeFromStrux(pfs,false,0,"type",&pszHdrFtr);
 	if(!pszHdrFtr)
 		return false;
 	if(!(*pszHdrFtr))
 		return false;
-	getAttributeFromSDH(pfs,false,0,"id",&pszHFID);
+	getAttributeFromStrux(pfs,false,0,"id",&pszHFID);
 	if(!pszHFID)
 		return false;
 	if(!(*pszHFID))
@@ -2047,7 +2047,7 @@ bool PD_Document::_matchSection(pf_Frag_Strux * pfs, UT_GenericVector<pf_Frag_St
 	for(i= 0; i< vecSections->getItemCount(); i++)
 	{
 		pf_Frag_Strux * pfsS = vecSections->getNthItem(i);
-		getAttributeFromSDH(pfsS,false,0,pszHdrFtr,&pszID);
+		getAttributeFromStrux(pfsS,false,0,pszHdrFtr,&pszID);
 		if(pszID && *pszID)
 		{
 			if(strcmp(pszID,pszHFID) == 0)
@@ -2220,7 +2220,7 @@ bool PD_Document::appendFmtMark(void)
 
  Don't FREEP *pszRetValue!!!
 */
-bool PD_Document::getAttributeFromSDH(const pf_Frag_Strux* sdh, bool bShowRevisions, UT_uint32 iRevisionLevel,
+bool PD_Document::getAttributeFromStrux(const pf_Frag_Strux* sdh, bool bShowRevisions, UT_uint32 iRevisionLevel,
 									  const char * szAttribute, const char ** pszRetValue) const
 {
 	const pf_Frag_Strux * pfStrux = static_cast<const pf_Frag_Strux *>(sdh);
@@ -2248,9 +2248,9 @@ bool PD_Document::getAttributeFromSDH(const pf_Frag_Strux* sdh, bool bShowRevisi
  *
  * NB: this method does not take into account revisions settings; you either have to further process
  *     the AP at the index using the explodeRevisions() methods or you can retrieve specific props
- *     and attrs using getPropertyFromSDH() and getAttributeFromSDH().
+ *     and attrs using getPropertyFromStrux() and getAttributeFromStrux().
  */
-PT_AttrPropIndex PD_Document::getAPIFromSDH( pf_Frag_Strux* sdh) const
+PT_AttrPropIndex PD_Document::getAPIFromStrux( pf_Frag_Strux* sdh) const
 {
 	const pf_Frag_Strux * pfStrux = sdh;
 	return pfStrux->getIndexAP();
@@ -2270,7 +2270,7 @@ PT_AttrPropIndex PD_Document::getAPIFromSDH( pf_Frag_Strux* sdh) const
 
  Don't FREEP *pszRetValue!!!
 */
-bool PD_Document::getPropertyFromSDH(const pf_Frag_Strux* sdh, bool bShowRevisions, UT_uint32 iRevisionLevel,
+bool PD_Document::getPropertyFromStrux(const pf_Frag_Strux* sdh, bool bShowRevisions, UT_uint32 iRevisionLevel,
 									 const char * szProperty, const char ** pszRetValue) const
 {
 	const pf_Frag_Strux * pfStrux = static_cast<const pf_Frag_Strux *>(sdh);
@@ -2603,7 +2603,7 @@ bool   PD_Document::isInsertHyperLinkValid(PT_DocPosition pos) const
 /*!
  * This method returns the last pf_Frag_Strux as a pf_Frag_Strux* before the end of the piecetable.
  */
-const pf_Frag_Strux*  PD_Document::getLastSectionSDH(void) const
+const pf_Frag_Strux*  PD_Document::getLastSectionStrux(void) const
 {
 	const pf_Frag * currentFrag = m_pPieceTable->getFragments().getFirst();
 	const pf_Frag_Strux * pfSecLast = nullptr;
@@ -2626,7 +2626,7 @@ const pf_Frag_Strux*  PD_Document::getLastSectionSDH(void) const
 /*!
  * This method returns the last pf_Frag_Strux as a pf_Frag_Strux* before the end of the piecetable.
  */
-pf_Frag_Strux*  PD_Document::getLastSectionMutableSDH(void) const
+pf_Frag_Strux*  PD_Document::getLastSectionMutableStrux(void) const
 {
 	pf_Frag * currentFrag = m_pPieceTable->getFragments().getFirst();
 	pf_Frag_Strux * pfSecLast = nullptr;
@@ -3187,7 +3187,7 @@ bool PD_Document::isCellAtPos(PT_DocPosition pos) const
  * This method returns the end table strux associated with the table strux tableSDH
  * Returns nullptr on failure to find it.
  */
-pf_Frag_Strux* PD_Document::getEndTableStruxFromTableSDH(pf_Frag_Strux* tableSDH) const
+pf_Frag_Strux* PD_Document::getEndTableStruxFromTableStrux(pf_Frag_Strux* tableSDH) const
 {
 	pf_Frag * currentFrag = tableSDH;
 	currentFrag = currentFrag->getNext();
@@ -3221,7 +3221,7 @@ pf_Frag_Strux* PD_Document::getEndTableStruxFromTableSDH(pf_Frag_Strux* tableSDH
  * This method returns the end cell strux associated with the cell strux cellSDH
  * Returns nullptr on failure to find it.
  */
-pf_Frag_Strux* PD_Document::getEndCellStruxFromCellSDH(pf_Frag_Strux* cellSDH) const
+pf_Frag_Strux* PD_Document::getEndCellStruxFromCellStrux(pf_Frag_Strux* cellSDH) const
 {
 	pf_Frag * currentFrag = cellSDH;
 	currentFrag = currentFrag->getNext();
@@ -3233,7 +3233,7 @@ pf_Frag_Strux* PD_Document::getEndCellStruxFromCellSDH(pf_Frag_Strux* cellSDH) c
 			pf_Frag_Strux * pfSec = static_cast<pf_Frag_Strux*>(currentFrag);
 			if(pfSec->getStruxType() == PTX_SectionTable)
 			{
-				pf_Frag_Strux* endTab = getEndTableStruxFromTableSDH(pfSec);
+				pf_Frag_Strux* endTab = getEndTableStruxFromTableStrux(pfSec);
 				currentFrag = endTab;
 			}
 			else if(pfSec->getStruxType() == PTX_EndCell )
@@ -3271,7 +3271,7 @@ pf_Frag_Strux* PD_Document::getEndTableStruxFromTablePos(PT_DocPosition tablePos
 	bool bRes =	getStruxOfTypeFromPosition(tablePos, PTX_SectionTable, &tableSDH);
 	if(!bRes)
 		return nullptr;
-	EndTableSDH = getEndTableStruxFromTableSDH(tableSDH);
+	EndTableSDH = getEndTableStruxFromTableStrux(tableSDH);
 	return EndTableSDH;
 }
 
@@ -3281,7 +3281,7 @@ pf_Frag_Strux* PD_Document::getEndTableStruxFromTablePos(PT_DocPosition tablePos
 \param UT_sint32 * numRows pointer to the number of rows returned
 \param UT_sint32 * numCols pointer to the number of cols returned
 */
-bool PD_Document::getRowsColsFromTableSDH(pf_Frag_Strux* tableSDH, bool bShowRevisions, UT_uint32 iRevisionLevel,
+bool PD_Document::getRowsColsFromTableStrux(pf_Frag_Strux* tableSDH, bool bShowRevisions, UT_uint32 iRevisionLevel,
 										  UT_sint32 * numRows, UT_sint32 * numCols) const
 {
 	UT_sint32 iRight = 0;
@@ -3307,7 +3307,7 @@ bool PD_Document::getRowsColsFromTableSDH(pf_Frag_Strux* tableSDH, bool bShowRev
 //
 // skip to the end of this nested table
 //
-				pf_Frag_Strux* endSDH = getEndTableStruxFromTableSDH(pfSec);
+				pf_Frag_Strux* endSDH = getEndTableStruxFromTableStrux(pfSec);
 				pfSec = endSDH;
 			}
 			else if(pfSec->getStruxType() == PTX_EndTable)
@@ -3315,11 +3315,11 @@ bool PD_Document::getRowsColsFromTableSDH(pf_Frag_Strux* tableSDH, bool bShowRev
 			else if(pfSec->getStruxType() == PTX_SectionCell)
 			{
 				cellSDH = pfSec;
-				UT_DebugOnly<bool> bres = getPropertyFromSDH(cellSDH,bShowRevisions, iRevisionLevel,"right-attach",&szRight);
+				UT_DebugOnly<bool> bres = getPropertyFromStrux(cellSDH,bShowRevisions, iRevisionLevel,"right-attach",&szRight);
 				UT_ASSERT(bres);
 				if(szRight && *szRight)
 					iRight = atoi(szRight);
-				bres = getPropertyFromSDH(cellSDH,bShowRevisions, iRevisionLevel,"bot-attach",&szBot);
+				bres = getPropertyFromStrux(cellSDH,bShowRevisions, iRevisionLevel,"bot-attach",&szBot);
 				UT_ASSERT(bres);
 				if(szBot && *szBot)
 					iBot = atoi(szBot);
@@ -3409,10 +3409,10 @@ void  PD_Document::miniDump(pf_Frag_Strux* sdh, UT_sint32 nstruxes) const
 		const char * szRight=nullptr;
 		const char * szTop=nullptr;
 		const char * szBot = nullptr;
-		getPropertyFromSDH(pfs,true, PD_MAX_REVISION,"left-attach",&szLeft);
-		getPropertyFromSDH(pfs,true, PD_MAX_REVISION,"right-attach",&szRight);
-		getPropertyFromSDH(pfs,true, PD_MAX_REVISION,"top-attach",&szTop);
-		getPropertyFromSDH(pfs,true, PD_MAX_REVISION,"bot-attach",&szBot);
+		getPropertyFromStrux(pfs,true, PD_MAX_REVISION,"left-attach",&szLeft);
+		getPropertyFromStrux(pfs,true, PD_MAX_REVISION,"right-attach",&szRight);
+		getPropertyFromStrux(pfs,true, PD_MAX_REVISION,"top-attach",&szTop);
+		getPropertyFromStrux(pfs,true, PD_MAX_REVISION,"bot-attach",&szBot);
 		if(szLeft != nullptr)
 		{
 			UT_DEBUGMSG(("left-attach %s right-attach %s top-attach %s bot-attach %s \n",szLeft,szRight,szTop,szBot));
@@ -3447,7 +3447,7 @@ PD_Document::dumpDoc( const char* msg, PT_DocPosition currentpos, PT_DocPosition
 \param UT_sint32 col column location
 */
 
-pf_Frag_Strux* PD_Document::getCellSDHFromRowCol(pf_Frag_Strux* tableSDH,
+pf_Frag_Strux* PD_Document::getCellStruxFromRowCol(pf_Frag_Strux* tableSDH,
 													bool bShowRevisions, UT_uint32 iRevisionLevel,
 													UT_sint32 row, 
 													UT_sint32 col) const
@@ -3477,7 +3477,7 @@ pf_Frag_Strux* PD_Document::getCellSDHFromRowCol(pf_Frag_Strux* tableSDH,
 //
 // skip to the end of this nested table
 //
-				pfSec = getEndTableStruxFromTableSDH(pfSec);
+				pfSec = getEndTableStruxFromTableStrux(pfSec);
 			}
 			else if(pfSec->getStruxType() == PTX_EndTable)
 			{
@@ -3493,19 +3493,19 @@ pf_Frag_Strux* PD_Document::getCellSDHFromRowCol(pf_Frag_Strux* tableSDH,
 				Top = -1;
 				Right = -1;
 				Bot = -1;
-				UT_DebugOnly<bool> bres = getPropertyFromSDH(cellSDH,bShowRevisions,iRevisionLevel,"left-attach",&szLeft);
+				UT_DebugOnly<bool> bres = getPropertyFromStrux(cellSDH,bShowRevisions,iRevisionLevel,"left-attach",&szLeft);
 				UT_ASSERT(bres);
 				if(szLeft && *szLeft)
 					Left = atoi(szLeft);
-				bres = getPropertyFromSDH(cellSDH,bShowRevisions,iRevisionLevel,"top-attach",&szTop);
+				bres = getPropertyFromStrux(cellSDH,bShowRevisions,iRevisionLevel,"top-attach",&szTop);
 				UT_ASSERT(bres);
 				if(szTop && *szTop)
 					Top = atoi(szTop);
-				bres = getPropertyFromSDH(cellSDH,bShowRevisions,iRevisionLevel,"right-attach",&szRight);
+				bres = getPropertyFromStrux(cellSDH,bShowRevisions,iRevisionLevel,"right-attach",&szRight);
 				UT_ASSERT(bres);
 				if(szRight && *szRight)
 					Right = atoi(szRight);
-				bres = getPropertyFromSDH(cellSDH,bShowRevisions,iRevisionLevel,"bot-attach",&szBot);
+				bres = getPropertyFromStrux(cellSDH,bShowRevisions,iRevisionLevel,"bot-attach",&szBot);
 				UT_ASSERT(bres);
 				if(szBot && *szBot)
 					Bot = atoi(szBot);
@@ -5416,7 +5416,7 @@ bool	PD_Document::addStyleAttributes(const gchar * szStyleName, const PP_Propert
  * The method returns the style defined in a sdh. If there is no style it returns
  * nullptr
  */
-PD_Style * PD_Document::getStyleFromSDH( pf_Frag_Strux* sdh) const
+PD_Style * PD_Document::getStyleFromStrux( pf_Frag_Strux* sdh) const
 {
 	const pf_Frag_Strux * pfs = sdh;
 	PT_AttrPropIndex indexAP = pfs->getIndexAP();
@@ -5456,7 +5456,7 @@ pf_Frag_Strux* PD_Document::getPrevNumberedHeadingStyle(pf_Frag_Strux* sdh) cons
 		if(pf->getType() == pf_Frag::PFT_Strux)
 		{
 			foundSDH = static_cast<pf_Frag_Strux*>(pf);
-			pStyle = getStyleFromSDH(foundSDH);
+			pStyle = getStyleFromStrux(foundSDH);
 			if(pStyle != nullptr)
 			{
 				szStyleName = pStyle->getName();
@@ -6137,13 +6137,13 @@ bool  PD_Document::isDoingPaste(void) const
 bool PD_Document::convertPercentToInches(const char * szPercent, UT_UTF8String & sInches)
 {
 	double width = m_docPageSize.Width(DIM_IN);
-	const pf_Frag_Strux* sdhSec = getLastSectionSDH();
+	const pf_Frag_Strux* sdhSec = getLastSectionStrux();
 	const char * szLeftMargin = nullptr;
 	const char * szRightMargin = nullptr;
 
 	// TODO -- probably needs to get revision settings from some view ...
-	getPropertyFromSDH(sdhSec,true,PD_MAX_REVISION,"page-margin-left",&szLeftMargin);
-	getPropertyFromSDH(sdhSec,true,PD_MAX_REVISION,"page-margin-right",&szRightMargin);
+	getPropertyFromStrux(sdhSec,true,PD_MAX_REVISION,"page-margin-left",&szLeftMargin);
+	getPropertyFromStrux(sdhSec,true,PD_MAX_REVISION,"page-margin-right",&szRightMargin);
 	if(szLeftMargin == nullptr)
 	{
 		szLeftMargin = "0.5in";

@@ -455,7 +455,7 @@ public:
 	bool	resetCharFormat(bool bAll);
 	bool	getCharFormat(PP_PropertyVector & properties, bool bExpandStyles = true) const;
 	bool	getCharFormat(PP_PropertyVector & properties, bool bExpandStyles, PT_DocPosition posStart) const;
-	fl_BlockLayout * getBlockFromSDH(pf_Frag_Strux* sdh);
+	fl_BlockLayout * getBlockFromStrux(pf_Frag_Strux* sdh);
 	bool	setStyle(const gchar * style, bool bDontGeneralUpdate=false);
 	bool	setStyleAtPos(const gchar * style, PT_DocPosition posStart, PT_DocPosition posEnd, bool bDontGeneralUpdate=false);
 	bool    isNumberedHeadingHere(fl_BlockLayout * pBlock) const;
