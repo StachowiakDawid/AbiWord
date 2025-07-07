@@ -157,3 +157,4 @@ private:
 // This is like pf->tryDownCastStrux() but you can pass a null pf as arg1
 // safely.
 pf_Frag_Strux* tryDownCastStrux( pf_Frag* pf, PTStruxType t);
+const pf_Frag_Strux* tryDownCastStrux(const pf_Frag* pf, PTStruxType t);

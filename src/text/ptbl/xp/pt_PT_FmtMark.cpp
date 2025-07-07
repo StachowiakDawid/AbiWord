@@ -52,7 +52,7 @@ bool pt_PieceTable::_insertFmtMarkFragWithNotify(PTChangeFmt ptc,
 
 	// The return value of getFragFromPosition was never checked (sterwill)
 	// bool bFound =
-	getFragFromPosition(dpos,&pf,&fo);
+	getMutFragFromPosition(dpos, &pf, &fo);
 
 	UT_return_val_if_fail (pf, false);
 	

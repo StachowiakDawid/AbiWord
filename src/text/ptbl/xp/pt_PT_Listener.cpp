@@ -320,8 +320,8 @@ static PT_DocPosition _tellListenerSubsetWalkRange(
     PT_DocPosition pfPos = rangeStartPos;
     if( !walkForwards )
         pfPos = rangeEndPos;
-    
-    if (!pt->getFragFromPosition( pfPos, &pf1, &fragOffset1 ))
+
+    if (!pt->getMutFragFromPosition( pfPos, &pf1, &fragOffset1))
     {
         xxx_UT_DEBUGMSG(("_tellListenerSubsetWalkRange(no frag!) listener %p startpos %d endpos %d\n",
                      pListener, rangeStartPos, rangeEndPos ));
@@ -339,7 +339,7 @@ static PT_DocPosition _tellListenerSubsetWalkRange(
             {
                 case pf_Frag::PFT_Text:
                 {
-                    pf_Frag_Text * pft = static_cast<pf_Frag_Text *> (pf);
+                    auto pft = static_cast<const pf_Frag_Text *> (pf);
                     PX_ChangeRecord * pcr = nullptr;
                     if( rangeEndPos < sum+pf->getLength() )
                         endOffset = (rangeEndPos - sum);
@@ -362,8 +362,8 @@ static PT_DocPosition _tellListenerSubsetWalkRange(
 			
                 case pf_Frag::PFT_Strux:
                 {
-                    pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *> (pf);
-                    pf_Frag_Strux* sdh = pfs;
+                    auto pfs = static_cast<pf_Frag_Strux *> (pf);
+                    auto sdh = pfs;
                     sfh = nullptr;
                     PX_ChangeRecord * pcr = nullptr;
                     bool bStatus1 = pfs->createSpecialChangeRecord(&pcr,sum);

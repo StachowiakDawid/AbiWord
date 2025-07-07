@@ -29,6 +29,7 @@
 #include "pf_Frag.h"
 #include "pf_Frag_Object.h"
 #include "pf_Frag_Text.h"
+#include "pf_Frag_Strux.h"
 #include "pf_Fragments.h"
 #include "px_ChangeRecord.h"
 #include "px_CR_Object.h"
@@ -48,7 +49,7 @@ bool pt_PieceTable::insertObject(PT_DocPosition dpos,
 		PP_PropertyVector ppRevAttrs;
 		PP_PropertyVector ppRevProps;
 
-		pf_Frag * pf = nullptr;
+		const pf_Frag * pf = nullptr;
 		PT_BlockOffset fragOffset = 0;
 		bool bFound = getFragFromPosition(dpos,&pf,&fragOffset);
 		UT_return_val_if_fail( bFound, false );
@@ -93,7 +94,7 @@ bool pt_PieceTable::insertObject(PT_DocPosition dpos,
 		PP_PropertyVector ppRevAttrs;
 		PP_PropertyVector ppRevProps;
 
-		pf_Frag * pf = nullptr;
+		const pf_Frag * pf = nullptr;
 		PT_BlockOffset fragOffset = 0;
 		bool bFound = getFragFromPosition(dpos,&pf,&fragOffset);
 		UT_return_val_if_fail( bFound, false );
@@ -145,15 +146,15 @@ bool pt_PieceTable::_realInsertObject(PT_DocPosition dpos,
 
 	pf_Frag * pf = nullptr;
 	PT_BlockOffset fragOffset = 0;
-	bool bFound = getFragFromPosition(dpos,&pf,&fragOffset);
+	bool bFound = getMutFragFromPosition(dpos, &pf, &fragOffset);
 	UT_return_val_if_fail (bFound,false);
 	pf_Frag_Strux * pfs = nullptr;
 	bool bFoundStrux = _getStruxFromFrag(pf,&pfs);
 
 	UT_return_val_if_fail (bFoundStrux,false);
-	if(isEndFootnote((pf_Frag *) pfs))
+	if (isEndFootnote(pfs))
 	{
-		bFoundStrux = _getStruxFromFragSkip((pf_Frag *)pfs,&pfs);
+		bFoundStrux = _getStruxFromFragSkip(pfs, &pfs);
 	}
 	UT_return_val_if_fail (bFoundStrux, false);
 	
@@ -232,15 +233,15 @@ bool pt_PieceTable::_realInsertObject(PT_DocPosition dpos,
 
 	pf_Frag * pf = nullptr;
 	PT_BlockOffset fragOffset = 0;
-	bool bFound = getFragFromPosition(dpos,&pf,&fragOffset);
+	bool bFound = getMutFragFromPosition(dpos, &pf, &fragOffset);
 	UT_return_val_if_fail (bFound,false);
 
 	pf_Frag_Strux * pfs = nullptr;
 	bool bFoundStrux = _getStruxFromFrag(pf,&pfs);
 	UT_return_val_if_fail (bFoundStrux,false);
-	if(isEndFootnote((pf_Frag *) pfs))
+	if (isEndFootnote(pfs))
 	{
-		bFoundStrux = _getStruxFromFragSkip((pf_Frag *)pfs,&pfs);
+		bFoundStrux = _getStruxFromFragSkip(pfs, &pfs);
 	}
 	UT_return_val_if_fail (bFoundStrux,false);
 	PT_BlockOffset blockOffset = _computeBlockOffset(pfs,pf) + fragOffset;

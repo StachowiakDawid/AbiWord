@@ -3633,11 +3633,11 @@ PD_DocumentRDF::addRelevantIDsForRange( std::set< std::string >& ret,
     return ret;
 }
 
-std::list< pf_Frag_Object* >
+std::list<const pf_Frag_Object*>
 PD_DocumentRDF::getObjectsInScopeOfTypesForRange( std::set< PTObjectType > objectTypes,
                                                   std::pair< PT_DocPosition, PT_DocPosition > range )
 {
-    std::list< pf_Frag_Object* > ret;
+    std::list<const pf_Frag_Object*> ret;
 //    PD_Document*    doc  = getDocument();
     pt_PieceTable*   pt  = getPieceTable();
     PT_DocPosition start = range.first;
@@ -3666,7 +3666,7 @@ PD_DocumentRDF::getObjectsInScopeOfTypesForRange( std::set< PTObjectType > objec
     //
     for( ; curr > searchBackThisFar; )
     {
-        pf_Frag* pf = nullptr;
+        const pf_Frag* pf = nullptr;
         PT_BlockOffset boffset;
 
         if( pt->getFragFromPosition( curr, &pf, &boffset ) )
@@ -3688,7 +3688,7 @@ PD_DocumentRDF::getObjectsInScopeOfTypesForRange( std::set< PTObjectType > objec
             // check what RDF is attached to this object.
             if(pf->getType() == pf_Frag::PFT_Object)
             {
-                pf_Frag_Object* pOb = static_cast<pf_Frag_Object*>(pf);
+                auto pOb = static_cast<const pf_Frag_Object*>(pf);
                 const PP_AttrProp * pAP = nullptr;
 
                 xxx_UT_DEBUGMSG(("PD_DocumentRDF::getObjectsInScope() po type:%d\n",
@@ -3747,14 +3747,13 @@ PD_DocumentRDF::getObjectsInScopeOfTypesForRange( std::set< PTObjectType > objec
 
 
 std::set< std::string >&
-PD_DocumentRDF::addXMLIDsForObjects( std::set< std::string >& ret, std::list< pf_Frag_Object* > objectList )
+PD_DocumentRDF::addXMLIDsForObjects(std::set<std::string>& ret, const std::list<const pf_Frag_Object*>& objectList)
 {
     const PP_AttrProp * pAP = nullptr;
 
-    for( std::list< pf_Frag_Object* >::iterator iter = objectList.begin();
-         iter != objectList.end(); ++iter )
+    for( auto iter = objectList.begin(); iter != objectList.end(); ++iter )
     {
-        pf_Frag_Object* pOb = *iter;
+        const pf_Frag_Object* pOb = *iter;
 
         if( pOb->getObjectType() == PTO_Bookmark )
         {
@@ -3859,7 +3858,7 @@ PD_DocumentRDF::addRelevantIDsForRange( std::set< std::string >& ret,
     std::set< PTObjectType > objectTypes;
     objectTypes.insert( PTO_Bookmark  );
     objectTypes.insert( PTO_RDFAnchor );
-    std::list< pf_Frag_Object* > objectList = getObjectsInScopeOfTypesForRange( objectTypes, range );
+    std::list<const pf_Frag_Object*> objectList = getObjectsInScopeOfTypesForRange(objectTypes, range);
     addXMLIDsForObjects( ret, objectList );
     xxx_UT_DEBUGMSG(("PD_DocumentRDF::addRelevantIDsForRange() xxxyyy objectList.sz:%ld\n", objectList.size() ));
     addXMLIDsForBlockAndTableCellForPosition( ret, pos );
@@ -3932,7 +3931,7 @@ PD_DocumentRDF::priv_addRelevantIDsForPosition( std::set< std::string >& ret,
     //
     for( ; curr > searchBackThisFar; )
     {
-        pf_Frag* pf = nullptr;
+        const pf_Frag* pf = nullptr;
         PT_BlockOffset boffset;
 
         if( pt->getFragFromPosition( curr, &pf, &boffset ) )
@@ -3953,7 +3952,7 @@ PD_DocumentRDF::priv_addRelevantIDsForPosition( std::set< std::string >& ret,
             // check what RDF is attached to this object.
             if(pf->getType() == pf_Frag::PFT_Object)
             {
-                pf_Frag_Object* pOb = static_cast<pf_Frag_Object*>(pf);
+                auto pOb = static_cast<const pf_Frag_Object*>(pf);
                 const PP_AttrProp * pAP = nullptr;
 
                 UT_DEBUGMSG(("PD_DocumentRDF::priv_addRelevantIDsForPosition() po type:%d\n",
@@ -4431,7 +4430,7 @@ void PD_DocumentRDF::dumpObjectMarkersFromDocument()
 
     for( ; curr < eod; ++curr )
     {
-        pf_Frag* pf = nullptr;
+        const pf_Frag* pf = nullptr;
         PT_BlockOffset boffset;
         pf_Frag_Strux* psdh;
         if( pt->getStruxOfTypeFromPosition( curr, PTX_Block, &psdh ) && psdh )
@@ -4459,7 +4458,7 @@ void PD_DocumentRDF::dumpObjectMarkersFromDocument()
 
             if(pf->getType() == pf_Frag::PFT_Object)
             {
-                pf_Frag_Object* pOb = static_cast<pf_Frag_Object*>(pf);
+                auto pOb = static_cast<const pf_Frag_Object*>(pf);
 
                 UT_DEBUGMSG(("PD_DocumentRDF::dumpObjectMarkersFromDocument() po type:%d\n",
                              pOb->getObjectType() ));

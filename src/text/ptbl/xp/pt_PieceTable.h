@@ -327,7 +327,7 @@ public:
 
     bool dumpDoc( const char* msg, PT_DocPosition currentpos, PT_DocPosition endpos );
 
-	bool					getFragFromPosition(PT_DocPosition docPos,
+	bool					getMutFragFromPosition(PT_DocPosition docPos,
 												pf_Frag ** ppf,
 												PT_BlockOffset * pOffset) const;
 	bool					getFragFromPosition(PT_DocPosition docPos,

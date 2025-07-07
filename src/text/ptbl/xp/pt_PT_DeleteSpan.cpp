@@ -95,8 +95,8 @@ bool pt_PieceTable::dumpDoc(
     {
         m_pDocument->getBounds( true, endpos );
     }
-    
-    pf_Frag *pf;
+
+    const pf_Frag *pf = nullptr;
     PT_BlockOffset Offset;
 
     UT_DEBUGMSG(("=========================================\n" ));
@@ -120,10 +120,8 @@ bool pt_PieceTable::dumpDoc(
         std::string extra = "";
         if( pf->getType() == pf_Frag::PFT_Text )
         {
-            if( pf_Frag_Text* pft = static_cast<pf_Frag_Text*>(pf))
-            {
-                extra = pft->toString().substr( 0, 20 );
-            }
+            auto pft = static_cast<const pf_Frag_Text*>(pf);
+			extra = pft->toString().substr( 0, 20 );
         }
 
         if( pf->getType() == pf_Frag::PFT_Strux && tryDownCastStrux( pf, PTX_Block ) ) {
@@ -135,7 +133,7 @@ bool pt_PieceTable::dumpDoc(
             
         if( pf->getType() == pf_Frag::PFT_Object )
         {
-			pf_Frag_Object * po = (pf_Frag_Object*) pf;
+			auto po = static_cast<const pf_Frag_Object*>(pf);
             std::string typeStr = "";
             switch( po->getObjectType() )
             {
@@ -153,7 +151,7 @@ bool pt_PieceTable::dumpDoc(
         
         if( pf->getType() == pf_Frag::PFT_Strux )
         {
-            PTStruxType eStruxType = static_cast<pf_Frag_Strux*>(pf)->getStruxType();
+            PTStruxType eStruxType = static_cast<const pf_Frag_Strux*>(pf)->getStruxType();
             std::string eStruxTypeStr;
             switch(eStruxType)
             {
@@ -598,19 +596,19 @@ pf_Frag* pt_PieceTable::getEndOfBlock( PT_DocPosition currentpos, PT_DocPosition
     bool bFoundEndBlockBeforeEndpos = false;
 
     UT_DEBUGMSG(("ODTCT: getEndOfBlock() cpos:%d e:%d\n", currentpos, endpos ));
-    
+
     // If the frag at currentpos is a block move past it.
-    if(getFragFromPosition( currentpos, &pf, &Offset ))
+    if (getMutFragFromPosition(currentpos, &pf, &Offset))
     {
         if( tryDownCastStrux( pf, PTX_Block ))
         {
             ++currentpos;
         }
     }
-    
+
     for( PT_DocPosition pos = currentpos; !bFoundEndBlockBeforeEndpos && pos <= endpos; )
     {
-        if(!getFragFromPosition( pos, &pf, &Offset ))
+        if (!getMutFragFromPosition(pos, &pf, &Offset))
         {
             UT_DEBUGMSG(("ODTCT: getEndOfBlock() NO FRAG AT pos:%d\n", pos ));
             break;
@@ -625,7 +623,7 @@ pf_Frag* pt_PieceTable::getEndOfBlock( PT_DocPosition currentpos, PT_DocPosition
         
         if( pf->getType() == pf_Frag::PFT_Strux )
         {
-            PTStruxType eStruxType = static_cast<pf_Frag_Strux*>(pf)->getStruxType();
+            PTStruxType eStruxType = static_cast<const pf_Frag_Strux*>(pf)->getStruxType();
             switch (eStruxType)
             {
                 case PTX_SectionFootnote: 
@@ -1212,7 +1210,7 @@ bool pt_PieceTable::deleteSpan(PT_DocPosition dpos1,
                     //        So we should get the pf_Frag again and adjust dposEnd if nessesary
                     //
                     {
-                        pf_Frag * pft;
+                        const pf_Frag * pft = nullptr;
                         PT_BlockOffset toffset;
                         getFragFromPosition(dpos1, &pft, &toffset);
                         UT_DEBUGMSG(("ODTCT: deleteSpan(revisions) addfmt dpos1:%d dposEnd:%d toffset:%d pftpos:%d pftlen:%d\n",

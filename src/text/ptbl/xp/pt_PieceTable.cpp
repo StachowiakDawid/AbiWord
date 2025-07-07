@@ -232,7 +232,7 @@ bool pt_PieceTable::deleteFmtMark(PT_DocPosition dpos)
 {
 	pf_Frag * pf = nullptr;
 	PT_BlockOffset pOffset= 0;
-	getFragFromPosition(dpos,&pf,&pOffset);
+	getMutFragFromPosition(dpos, &pf, &pOffset);
 	pf_Frag_FmtMark * pfm = nullptr;
 	if(pf->getType() == pf_Frag::PFT_FmtMark)
 	{
@@ -803,14 +803,14 @@ bool pt_PieceTable::getFragFromPosition(PT_DocPosition docPos,
 										PT_BlockOffset * pFragOffset) const
 {
 	pf_Frag* pf = nullptr;
-	if (getFragFromPosition(docPos, &pf, pFragOffset)) {
+	if (getMutFragFromPosition(docPos, &pf, pFragOffset)) {
 		*ppf = pf;
 		return true;
 	}
 	return false;
 }
 
-bool pt_PieceTable::getFragFromPosition(PT_DocPosition docPos,
+bool pt_PieceTable::getMutFragFromPosition(PT_DocPosition docPos,
 										   pf_Frag ** ppf,
 										   PT_BlockOffset * pFragOffset) const
 {
@@ -905,7 +905,7 @@ bool pt_PieceTable::getFragsFromPositions(PT_DocPosition dPos1, PT_DocPosition d
 
 	// the first set has to be done the hard way.
 
-	if (!getFragFromPosition(dPos1,ppf1,pOffset1))
+	if (!getMutFragFromPosition(dPos1, ppf1, pOffset1))
 		return false;
 
 	// now get the second set relative to the first.
@@ -1140,8 +1140,8 @@ pf_Frag_Strux* pt_PieceTable::_getBlockFromPosition(PT_DocPosition pos) const
     pf_Frag* pf;
     PT_BlockOffset offset;
     pf_Frag_Strux* ret = nullptr;
-    
-    if(!getFragFromPosition( pos, &pf, &offset ))
+
+    if (!getMutFragFromPosition(pos, &pf, &offset))
     {
         return ret;
     }

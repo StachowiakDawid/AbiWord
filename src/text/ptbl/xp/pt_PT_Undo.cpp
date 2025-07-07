@@ -75,7 +75,7 @@ bool pt_PieceTable::_doTheDo(PX_ChangeRecord* pcr, bool bUndo)
 			pf_Frag * pf = nullptr;
 			PT_BlockOffset fragOffset = 0;
 			UT_DEBUGMSG(("_undo insertspan Pos = %d \n",pcr->getPosition()));
-			bool bFound = getFragFromPosition(pcrSpan->getPosition(),&pf,&fragOffset);
+			bool bFound = getMutFragFromPosition(pcrSpan->getPosition(), &pf, &fragOffset);
 			UNDO_return_val_if_fail (bFound,false);
 
 			pf_Frag_Strux * pfs = nullptr;
@@ -110,7 +110,7 @@ bool pt_PieceTable::_doTheDo(PX_ChangeRecord* pcr, bool bUndo)
 			const PX_ChangeRecord_Span * pcrSpan = static_cast<const PX_ChangeRecord_Span *>(pcr);
 			pf_Frag * pf = nullptr;
 			PT_BlockOffset fragOffset = 0;
-			bool bFound = getFragFromPosition(pcrSpan->getPosition(),&pf,&fragOffset);
+			bool bFound = getMutFragFromPosition(pcrSpan->getPosition(), &pf, &fragOffset);
 			UNDO_return_val_if_fail (bFound,false);
 			UNDO_return_val_if_fail (pf->getType() == pf_Frag::PFT_Text,false);
 
@@ -170,7 +170,7 @@ bool pt_PieceTable::_doTheDo(PX_ChangeRecord* pcr, bool bUndo)
 
 			pf_Frag * pf = nullptr;
 			PT_BlockOffset fragOffset = 0;
-			bool bFound = getFragFromPosition(pcrs->getPosition(),&pf,&fragOffset);
+			bool bFound = getMutFragFromPosition(pcrs->getPosition(), &pf, &fragOffset);
 			UNDO_return_val_if_fail (bFound, false);
 			UNDO_return_val_if_fail (pf->getType() == pf_Frag::PFT_Text, false);
 
@@ -228,7 +228,7 @@ bool pt_PieceTable::_doTheDo(PX_ChangeRecord* pcr, bool bUndo)
 
 			pf_Frag * pf = nullptr;
 			PT_BlockOffset fragOffset = 0;
-			bool bFoundFrag = getFragFromPosition(pcrStrux->getPosition(),&pf,&fragOffset);
+			bool bFoundFrag = getMutFragFromPosition(pcrStrux->getPosition(), &pf, &fragOffset);
 			UNDO_return_val_if_fail (bFoundFrag, false);
 
 			// get the strux containing the given position.
@@ -259,7 +259,7 @@ bool pt_PieceTable::_doTheDo(PX_ChangeRecord* pcr, bool bUndo)
 			const PX_ChangeRecord_Strux * pcrStrux = static_cast<const PX_ChangeRecord_Strux *>(pcr);
 			pf_Frag * pf = nullptr;
 			PT_BlockOffset fragOffset = 0;
-			bool bFoundFrag = getFragFromPosition(pcrStrux->getPosition(),&pf,&fragOffset);
+			bool bFoundFrag = getMutFragFromPosition(pcrStrux->getPosition(), &pf, &fragOffset);
 			UNDO_return_val_if_fail (bFoundFrag,false);
 			UNDO_return_val_if_fail (pf->getType() == pf_Frag::PFT_Strux,false);
 
@@ -299,7 +299,7 @@ bool pt_PieceTable::_doTheDo(PX_ChangeRecord* pcr, bool bUndo)
 			const PX_ChangeRecord_Object * pcrObject = static_cast<const PX_ChangeRecord_Object *>(pcr);
 			pf_Frag * pf = nullptr;
 			PT_BlockOffset fragOffset = 0;
-			bool bFound = getFragFromPosition(pcrObject->getPosition(),&pf,&fragOffset);
+			bool bFound = getMutFragFromPosition(pcrObject->getPosition(), &pf, &fragOffset);
 			UNDO_return_val_if_fail (bFound, false);
 
 			pf_Frag_Strux * pfs = nullptr;
@@ -343,7 +343,7 @@ bool pt_PieceTable::_doTheDo(PX_ChangeRecord* pcr, bool bUndo)
 			const PX_ChangeRecord_Object * pcrObject = static_cast<const PX_ChangeRecord_Object *>(pcr);
 			pf_Frag * pf = nullptr;
 			PT_BlockOffset fragOffset = 0;
-			bool bFound = getFragFromPosition(pcrObject->getPosition(),&pf,&fragOffset);
+			bool bFound = getMutFragFromPosition(pcrObject->getPosition(), &pf, &fragOffset);
 			UNDO_return_val_if_fail (bFound, false);
 			UNDO_return_val_if_fail (pf->getType() == pf_Frag::PFT_Object,false);
 			UNDO_return_val_if_fail (fragOffset == 0,false);
@@ -381,7 +381,7 @@ bool pt_PieceTable::_doTheDo(PX_ChangeRecord* pcr, bool bUndo)
 
 			pf_Frag * pf = nullptr;
 			PT_BlockOffset fragOffset = 0;
-			bool bFound = getFragFromPosition(pcro->getPosition(),&pf,&fragOffset);
+			bool bFound = getMutFragFromPosition(pcro->getPosition(), &pf, &fragOffset);
 			UNDO_return_val_if_fail (bFound,false);
 			UNDO_return_val_if_fail (pf->getType() == pf_Frag::PFT_Object,false);
 			UNDO_return_val_if_fail (fragOffset == 0, false);
@@ -415,7 +415,7 @@ bool pt_PieceTable::_doTheDo(PX_ChangeRecord* pcr, bool bUndo)
 			const PX_ChangeRecord_FmtMark * pcrFM = static_cast<const PX_ChangeRecord_FmtMark *>(pcr);
 			pf_Frag * pf = nullptr;
 			PT_BlockOffset fragOffset = 0;
-			bool bFound = getFragFromPosition(pcrFM->getPosition(),&pf,&fragOffset);
+			bool bFound = getMutFragFromPosition(pcrFM->getPosition(), &pf, &fragOffset);
 			UNDO_return_val_if_fail (bFound, false);
 
 			pf_Frag_Strux * pfs = nullptr;
@@ -443,7 +443,7 @@ bool pt_PieceTable::_doTheDo(PX_ChangeRecord* pcr, bool bUndo)
 			const PX_ChangeRecord_FmtMark * pcrFM = static_cast<const PX_ChangeRecord_FmtMark *>(pcr);
 			pf_Frag * pf = nullptr;
 			PT_BlockOffset fragOffset = 0;
-			bool bFound = getFragFromPosition(pcrFM->getPosition(),&pf,&fragOffset);
+			bool bFound = getMutFragFromPosition(pcrFM->getPosition(), &pf, &fragOffset);
 			UNDO_return_val_if_fail (bFound, false);
 
 			// we backup one because we have zero length and getFragFromPosition()
@@ -496,7 +496,7 @@ bool pt_PieceTable::_doTheDo(PX_ChangeRecord* pcr, bool bUndo)
 
 			pf_Frag * pf = nullptr;
 			PT_BlockOffset fragOffset = 0;
-			bool bFound = getFragFromPosition(pcrFMC->getPosition(),&pf,&fragOffset);
+			bool bFound = getMutFragFromPosition(pcrFMC->getPosition(), &pf, &fragOffset);
 			UNDO_return_val_if_fail (bFound,false);
 
 			// we backup one because we have zero length and getFragFromPosition()

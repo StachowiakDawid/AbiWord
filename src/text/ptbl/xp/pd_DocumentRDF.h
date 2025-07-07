@@ -1025,10 +1025,10 @@ class ABI_EXPORT PD_DocumentRDF : public PD_RDFModel
     PD_RDFModelHandle getRDFAtPosition( PT_DocPosition pos );
     PD_RDFModelHandle getRDFForID( const std::string& xmlid );
 
-    std::list< pf_Frag_Object* > getObjectsInScopeOfTypesForRange(
+    std::list<const pf_Frag_Object*> getObjectsInScopeOfTypesForRange(
         std::set< PTObjectType > objectTypes,
         std::pair< PT_DocPosition, PT_DocPosition > range );
-    std::set< std::string >& addXMLIDsForObjects( std::set< std::string >& ret, std::list< pf_Frag_Object* > objectList );
+    std::set<std::string>& addXMLIDsForObjects(std::set< std::string >& ret, const std::list<const pf_Frag_Object*>& objectList);
     PT_DocPosition addXMLIDsForBlockAndTableCellForPosition( std::set< std::string >& col, PT_DocPosition pos );
 
 

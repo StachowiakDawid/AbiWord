@@ -58,7 +58,7 @@ bool pt_PieceTable::insertSpan(PT_DocPosition dpos,
 		PP_PropertyVector ppRevAttrib;
 		PP_PropertyVector ppRevProps;
 
-		pf_Frag * pf = nullptr;
+		const pf_Frag * pf = nullptr;
 		PT_BlockOffset fragOffset = 0;
 		bool bFound = getFragFromPosition(dpos,&pf,&fragOffset);
 		UT_return_val_if_fail( bFound, false );
@@ -90,7 +90,7 @@ bool pt_PieceTable::insertSpan(PT_DocPosition dpos,
 
 		// first retrive the fmt we have (_realChangeSpanFmt()) is
 		// quite involved, so we want to avoid calling it, if we can)
-		pf_Frag * pf1;
+		const pf_Frag * pf1;
 		PT_BlockOffset Offset1;
 
 		if(!getFragFromPosition(dpos, &pf1, &Offset1))
@@ -371,7 +371,7 @@ bool pt_PieceTable::_realInsertSpan(PT_DocPosition dpos,
 
 	pf_Frag * pf = nullptr;
 	PT_BlockOffset fragOffset = 0;
-	bool bFound = getFragFromPosition(dpos,&pf,&fragOffset);
+	bool bFound = getMutFragFromPosition(dpos, &pf, &fragOffset);
 	UT_return_val_if_fail (bFound,false);
 
 
@@ -384,14 +384,14 @@ bool pt_PieceTable::_realInsertSpan(PT_DocPosition dpos,
 	pf_Frag_Strux * pfs = nullptr;
 	bool bFoundStrux = _getStruxFromFrag(pf,&pfs);
 	UT_return_val_if_fail (bFoundStrux,false);
-	if(isEndFootnote((pf_Frag *)pfs))
+	if (isEndFootnote(pfs))
 	{
-		bFoundStrux = _getStruxFromFragSkip((pf_Frag *) pfs,&pfs);
+		bFoundStrux = _getStruxFromFragSkip(pfs, &pfs);
 	}
 	UT_return_val_if_fail (pfs,false);
 	if(pfs->getStruxType() == PTX_EndFrame)
 	{
-		bFoundStrux = _getStruxFromFragSkip((pf_Frag *) pfs,&pfs);
+		bFoundStrux = _getStruxFromFragSkip(pfs, &pfs);
 	}
 	// we just did a getFragFromPosition() which gives us the
 	// the thing *starting* at that position.  if we have a
@@ -469,7 +469,7 @@ bool pt_PieceTable::_realInsertSpan(PT_DocPosition dpos,
 			// been coalesced as the FmtMarks were deleted.  let's recompute them
 			// but with a few shortcuts.
 
-			bFound = getFragFromPosition(dpos,&pf,&fragOffset);
+			bFound = getMutFragFromPosition(dpos, &pf, &fragOffset);
 			UT_return_val_if_fail (bFound, false);
 
 			bFoundStrux = _getStruxFromFrag(pf,&pfs);

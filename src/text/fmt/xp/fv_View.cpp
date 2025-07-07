@@ -2415,15 +2415,15 @@ UT_UCS4Char FV_View::getChar(PT_DocPosition pos, UT_sint32 *x, UT_sint32 *y, UT_
     if (height) *height = fp_height;
   }
 
-  pt_PieceTable *piece = getDocument()->getPieceTable();
-  pf_Frag *p;
+  const pt_PieceTable *piece = getDocument()->getPieceTable();
+  const pf_Frag *p;
   PT_BlockOffset offset;
   UT_UCS4Char ret = 0;
   if (piece->getFragFromPosition(pos, &p, &offset))
   {
     if (p->getType() == 0) // PFT_Text)
     {
-      pf_Frag_Text *pt = reinterpret_cast<pf_Frag_Text *>(p);
+      auto pt = static_cast<const pf_Frag_Text *>(p);
       PT_BufIndex bi = pt->getBufIndex();
       const UT_UCS4Char *c = piece->getPointer(bi);
       ret = c[offset];

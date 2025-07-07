@@ -437,7 +437,7 @@ bool pt_PieceTable::_realInsertStrux(PT_DocPosition dpos,
 
 	pf_Frag * pf = nullptr;
 	PT_BlockOffset fragOffset = 0;
-	bool bFoundFrag = getFragFromPosition(dpos,&pf,&fragOffset);
+	bool bFoundFrag = getMutFragFromPosition(dpos, &pf, &fragOffset);
 	UT_return_val_if_fail (bFoundFrag, false);
 
 	// get the strux containing the given position.
@@ -516,7 +516,7 @@ bool pt_PieceTable::_realInsertStrux(PT_DocPosition dpos,
 									static_cast<pf_Frag_Object*>(pEndHype),
 									offset,1,pfsContainer,&pfEnd,&newOff,true);
 		}
-		bFoundFrag = getFragFromPosition(dpos,&pf,&fragOffset);
+		bFoundFrag = getMutFragFromPosition(dpos, &pf, &fragOffset);
 		UT_return_val_if_fail (bFoundFrag, false);
 	}
 

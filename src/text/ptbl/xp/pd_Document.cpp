@@ -2479,8 +2479,8 @@ bool PD_Document::createAndSendDocPropCR( const PP_PropertyVector & pAtts, const
 /*!
  * This method deletes a strux of the type specified at the position
  * requested.
- * if bRecordChange is fale no change record is recorded.
- * This method was created soled for the use of AbiCollab.
+ * if bRecordChange is false no change record is recorded.
+ * This method was created solely for the use of AbiCollab.
   * Use with extreme care. Should only be needed by AbiCollab
  */
 bool PD_Document::deleteStrux(PT_DocPosition dpos,
@@ -2489,16 +2489,15 @@ bool PD_Document::deleteStrux(PT_DocPosition dpos,
 {
 	PT_BlockOffset pOffset;
 	pf_Frag * pf = nullptr;
-	m_pPieceTable->getFragFromPosition(dpos,&pf,&pOffset);
+	m_pPieceTable->getMutFragFromPosition(dpos, &pf, &pOffset);
 	while(pf && pf->getLength() == 0)
 		pf = pf->getPrev();
 	if(pf == nullptr)
 		return false;
-	pf_Frag_Strux* sdh = nullptr;
+	pf_Frag_Strux* pfs = nullptr;
 	if(pf->getType() == pf_Frag::PFT_Strux)
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pf);
-		sdh = static_cast<pf_Frag_Strux*>(pfs);
+		pfs = static_cast<pf_Frag_Strux *>(pf);
 	}
 	else
 	{
@@ -2506,11 +2505,11 @@ bool PD_Document::deleteStrux(PT_DocPosition dpos,
 	}
 	if(!bRecordChange)
 	{
-		return m_pPieceTable->deleteStruxNoUpdate(sdh);
+		return m_pPieceTable->deleteStruxNoUpdate(pfs);
 	}
-	if(getStruxPosition(sdh) != dpos)
+	if(getStruxPosition(pfs) != dpos)
 		return false;
-	return m_pPieceTable->deleteStruxWithNotify(sdh);
+	return m_pPieceTable->deleteStruxWithNotify(pfs);
 }
 
 /*!
@@ -2540,13 +2539,13 @@ bool PD_Document::deleteFragNoUpdate(pf_Frag * pf)
 bool   PD_Document::isInsertHyperLinkValid(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
-	pf_Frag * pf = nullptr;
+	const pf_Frag * pf = nullptr;
 	m_pPieceTable->getFragFromPosition(pos,&pf,&pOffset);
 	while(pf && (pf->getType() != pf_Frag::PFT_Strux) )
 	{
 		if(pf->getType() == pf_Frag::PFT_Object)
 		{
-			pf_Frag_Object * pfo = static_cast<pf_Frag_Object *>(pf);
+			auto pfo = static_cast<const pf_Frag_Object *>(pf);
 			if((pfo->getObjectType() != PTO_Hyperlink)
                && (pfo->getObjectType() != PTO_Annotation)
                && (pfo->getObjectType() != PTO_RDFAnchor) )
@@ -2587,7 +2586,7 @@ bool   PD_Document::isInsertHyperLinkValid(PT_DocPosition pos) const
 		return false;
 	if(pf->getType() == pf_Frag::PFT_Strux)
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pf);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pf);
 		if(pfs->getStruxType() == PTX_Block)
 		{
 			return true;
@@ -2888,7 +2887,7 @@ bool PD_Document::hasEmbedStruxOfTypeInRange(PT_DocPosition posStart, PT_DocPosi
 bool PD_Document::isFootnoteAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
-	pf_Frag * pf = nullptr;
+	const pf_Frag * pf = nullptr;
 	m_pPieceTable->getFragFromPosition(pos,&pf,&pOffset);
 	while(pf && (pf->getLength() == 0))
     {
@@ -2897,7 +2896,7 @@ bool PD_Document::isFootnoteAtPos(PT_DocPosition pos) const
 	bool b = m_pPieceTable->isFootnote(pf);
 	if(b)
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pf);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pf);
 		if(pfs->getStruxType() == PTX_SectionTOC)
 		{
 			return false;
@@ -2914,7 +2913,7 @@ bool PD_Document::isFootnoteAtPos(PT_DocPosition pos) const
 bool PD_Document::isTOCAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
-	pf_Frag * pf = nullptr;
+	const pf_Frag * pf = nullptr;
 	m_pPieceTable->getFragFromPosition(pos,&pf,&pOffset);
 	while(pf && (pf->getLength() == 0))
     {
@@ -2923,7 +2922,7 @@ bool PD_Document::isTOCAtPos(PT_DocPosition pos) const
 	bool b = (pf && (pf->getType() == pf_Frag::PFT_Strux));
 	if(b)
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pf);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pf);
 		if(pfs->getStruxType() == PTX_SectionTOC)
 		{
 			return true;
@@ -2931,7 +2930,7 @@ bool PD_Document::isTOCAtPos(PT_DocPosition pos) const
 	}
 	if(b)
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pf);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pf);
 		if(pfs->getStruxType() == PTX_EndTOC)
 		{
 			return true;
@@ -2948,7 +2947,7 @@ bool PD_Document::isTOCAtPos(PT_DocPosition pos) const
 bool PD_Document::isEndFootnoteAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
-	pf_Frag * pf = nullptr;
+	const pf_Frag * pf = nullptr;
 	/*bool bRes = */m_pPieceTable->getFragFromPosition(pos,&pf,&pOffset);
 	while(pf && (pf->getLength() == 0))
 	{
@@ -2961,7 +2960,7 @@ bool PD_Document::isEndFootnoteAtPos(PT_DocPosition pos) const
 	bool b = m_pPieceTable->isEndFootnote(pf);
 	if(b)
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pf);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pf);
 		if(pfs->getStruxType() == PTX_EndTOC)
 		{
 			return false;
@@ -2978,7 +2977,7 @@ bool PD_Document::isEndFootnoteAtPos(PT_DocPosition pos) const
 bool PD_Document::isFrameAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
-	pf_Frag * pf = nullptr;
+	const pf_Frag * pf = nullptr;
 	/*bool bRes = */m_pPieceTable->getFragFromPosition(pos,&pf,&pOffset);
 	if(!pf)
 		return false;
@@ -2986,7 +2985,7 @@ bool PD_Document::isFrameAtPos(PT_DocPosition pos) const
 		pf = pf->getPrev();
 	if(pf && pf->getType() == pf_Frag::PFT_Strux)
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pf);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pf);
 		if(pfs->getStruxType() == PTX_SectionFrame)
 		{
 			return true;
@@ -3109,7 +3108,7 @@ bool PD_Document::isBlockAtPos(PT_DocPosition pos) const
 bool PD_Document::isTableAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
-	pf_Frag * pf = nullptr;
+	const pf_Frag * pf = nullptr;
 	/*bool bRes = */m_pPieceTable->getFragFromPosition(pos,&pf,&pOffset);
 	if(!pf)
 		return false;
@@ -3117,7 +3116,7 @@ bool PD_Document::isTableAtPos(PT_DocPosition pos) const
 		pf = pf->getPrev();
 	if(pf && pf->getType() == pf_Frag::PFT_Strux)
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pf);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pf);
 		if(pfs->getStruxType() == PTX_SectionTable)
 		{
 			return true;
@@ -4909,7 +4908,7 @@ bool PD_Document::getNextMutStrux(const pf_Frag_Strux* pfs,
 pf_Frag * PD_Document::getFragFromPosition(PT_DocPosition docPos) const
 {
 	pf_Frag * pf = nullptr;
-	m_pPieceTable->getFragFromPosition(docPos, &pf, nullptr);
+	m_pPieceTable->getMutFragFromPosition(docPos, &pf, nullptr);
 	return pf;
 }
 

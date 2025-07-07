@@ -237,6 +237,14 @@ pf_Frag_Strux* tryDownCastStrux( pf_Frag* pf, PTStruxType t)
     return pf->tryDownCastStrux( t );
 }
 
+const pf_Frag_Strux* tryDownCastStrux(const pf_Frag* pf, PTStruxType t)
+{
+    if (!pf) {
+        return nullptr;
+    }
+    return pf->tryDownCastStrux(t);
+}
+
 
 
 #include "pf_Frag_Object.h"
