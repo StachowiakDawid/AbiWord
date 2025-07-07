@@ -4763,16 +4763,15 @@ pf_Frag * PD_Document::findBookmark(const char * pName, bool bEnd, pf_Frag * pfS
 }
 
 
-po_Bookmark * PD_Document::getBookmark(pf_Frag_Strux* sdh, UT_uint32 offset) const
+po_Bookmark * PD_Document::getBookmark(const pf_Frag_Strux* pfsBlock, UT_uint32 offset) const
 {
-	const pf_Frag * pf = static_cast<const pf_Frag *>(sdh);
+	const pf_Frag * pf = pfsBlock;
 	UT_return_val_if_fail (pf->getType() == pf_Frag::PFT_Strux, nullptr);
-	const pf_Frag_Strux * pfsBlock = static_cast<const pf_Frag_Strux *> (pf);
 	UT_return_val_if_fail (pfsBlock->getStruxType() == PTX_Block, nullptr);
 
 	UT_uint32 cumOffset = 0;
-	pf_Frag_Object * pfo = nullptr;
-	for (pf_Frag * pfTemp=pfsBlock->getNext(); (pfTemp); pfTemp=pfTemp->getNext())
+	const pf_Frag_Object * pfo = nullptr;
+	for (const pf_Frag * pfTemp = pfsBlock->getNext(); (pfTemp); pfTemp = pfTemp->getNext())
 	{
 		cumOffset += pfTemp->getLength();
 		if (offset < cumOffset)
@@ -4780,7 +4779,7 @@ po_Bookmark * PD_Document::getBookmark(pf_Frag_Strux* sdh, UT_uint32 offset) con
 			switch (pfTemp->getType())
 			{
 				case pf_Frag::PFT_Object:
-					pfo = static_cast<pf_Frag_Object *> (pfTemp);
+					pfo = static_cast<const pf_Frag_Object *>(pfTemp);
 					return pfo->getBookmark();
 				default:
 					return nullptr;

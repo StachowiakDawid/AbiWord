@@ -548,7 +548,7 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	bool					getField(pf_Frag_Strux* sdh,
 									 UT_uint32 offset,
                                      fd_Field * &pField);
-	po_Bookmark * 			getBookmark(pf_Frag_Strux* sdh, UT_uint32 offset) const;
+	po_Bookmark * 			getBookmark(const pf_Frag_Strux* sdh, UT_uint32 offset) const;
 	pf_Frag *               findBookmark(const char * pName, bool bEnd = false, pf_Frag * pfStart = nullptr) const;
 	bool                    hasMath(void) const;
 
