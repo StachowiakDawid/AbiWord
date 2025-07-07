@@ -1134,7 +1134,7 @@ void UT_UTF8String_removeProperty(UT_UTF8String & sPropertyString, const UT_UTF8
 
 /////////////////////////////////////////////////////////////////////////////
 
-UT_UCS4String UT_UTF8String::ucs4_str ()
+UT_UCS4String UT_UTF8String::ucs4_str() const
 {
 	UT_UCS4String ucs4string;
 

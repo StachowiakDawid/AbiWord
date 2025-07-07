@@ -204,7 +204,7 @@ public:
 	// operation. You will _always_ get a legal pointer back,
 	// even if to an empty (0) string.
 	const char * utf8_str () const;
-	UT_UCS4String ucs4_str ();
+	UT_UCS4String ucs4_str() const;
 
 	void		assign (const char * sz, size_t n = 0 /* 0 == null-termination */);
 	void		append (const char * sz, size_t n = 0 /* 0 == null-termination */);
