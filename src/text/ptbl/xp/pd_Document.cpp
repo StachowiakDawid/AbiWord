@@ -4722,47 +4722,6 @@ bool PD_Document::hasMath(void) const
 	return false;
 }
 
-pf_Frag * PD_Document::findBookmark(const char * pName, bool bEnd, pf_Frag * pfStart) const
-{
-	if(!pfStart)
-	{
-		pfStart = getPieceTable()->getFragments().getFirst();
-	}
-
-	UT_return_val_if_fail(pfStart, nullptr);
-
-	pf_Frag * pf = pfStart;
-	while(pf)
-	{
-		if(pf->getType() == pf_Frag::PFT_Object)
-		{
-			pf_Frag_Object * po = (pf_Frag_Object*) pf;
-			if(po->getObjectType() == PTO_Bookmark)
-			{
-				po_Bookmark * pb = po->getBookmark();
-				if(!pb)
-				{
-					UT_ASSERT_HARMLESS( UT_SHOULD_NOT_HAPPEN );
-					pf = pf->getNext();
-					continue;
-				}
-
-				if(  (!bEnd && pb->getBookmarkType() == po_Bookmark::POBOOKMARK_START)
-				   ||( bEnd && pb->getBookmarkType() == po_Bookmark::POBOOKMARK_END))
-				{
-					if(0 == strcmp(pName, pb->getName()))
-					   return pf;
-				}
-			}
-		}
-
-		pf = pf->getNext();
-	}
-
-	return nullptr;
-}
-
-
 po_Bookmark * PD_Document::getBookmark(const pf_Frag_Strux* pfsBlock, UT_uint32 offset) const
 {
 	const pf_Frag * pf = pfsBlock;
