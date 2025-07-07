@@ -452,7 +452,7 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 											bool &bHiddenRevision) const;
 
 	const UT_UCS4Char *		getPointer(PT_BufIndex bi) const; /* see warning on this function */
-	bool					getBlockBuf(pf_Frag_Strux* sdh, UT_GrowBuf * pgb) const;
+	bool					getBlockBuf(const pf_Frag_Strux* sdh, UT_GrowBuf * pgb) const;
 
 	bool					getBounds(bool bEnd, PT_DocPosition & docPos) const;
 	PTStruxType             getStruxType(const pf_Frag_Strux* sdh) const;
@@ -511,8 +511,8 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	bool                    changeStruxAttsNoUpdate(pf_Frag_Strux* sdh, const char * attr, const char * attvalue);
 	bool                    deleteStruxNoUpdate(pf_Frag_Strux* sdh);
 	bool                    deleteFragNoUpdate(pf_Frag * pf);
-	bool                    insertStruxNoUpdateBefore(pf_Frag_Strux* sdh, PTStruxType pts, const PP_PropertyVector & attributes );
-	bool                    isStruxBeforeThis(pf_Frag_Strux* sdh,  PTStruxType pts);
+	bool                    insertStruxNoUpdateBefore(const pf_Frag_Strux* sdh, PTStruxType pts, const PP_PropertyVector & attributes );
+	bool                    isStruxBeforeThis(const pf_Frag_Strux* sdh,  PTStruxType pts);
 
 	// the function below does exactly what the name says -- returns the AP index; in revisions mode
 	// you would need the AP at that index to have revision attribute exploded -- use one of the
@@ -544,13 +544,13 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
     const pf_Frag_Strux*       findForwardStyleStrux(const gchar * szStyle, PT_DocPosition pos) const;
 	bool					updateDocForStyleChange(const gchar * szStyleName,
 													bool isParaStyle);
-	void                    updateAllLayoutsInDoc( pf_Frag_Strux* sdh);
+	void                    updateAllLayoutsInDoc(const pf_Frag_Strux* sdh);
 	void					clearIfAtFmtMark(PT_DocPosition dpos);
 
 	virtual UT_uint32		getLastSavedAsType() const override { return m_lastSavedAsType; }
 	UT_uint32				getLastOpenedType() const { return m_lastOpenedType; }
 	bool					updateFields(void);
-	bool					getField(pf_Frag_Strux* sdh,
+	bool					getField(const pf_Frag_Strux* sdh,
 									 UT_uint32 offset,
                                      fd_Field * &pField);
 	po_Bookmark * 			getBookmark(const pf_Frag_Strux* sdh, UT_uint32 offset) const;
@@ -562,7 +562,7 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	// Footnote functions
 	bool                    isFootnoteAtPos(PT_DocPosition pos) const;
 	bool                    isEndFootnoteAtPos(PT_DocPosition pos) const;
-	UT_sint32               getEmbeddedOffset(pf_Frag_Strux* sdh,PT_DocPosition posOff, pf_Frag_Strux* & sdhEmbedded) const;
+	UT_sint32               getEmbeddedOffset(const pf_Frag_Strux* sdh,PT_DocPosition posOff, pf_Frag_Strux* & sdhEmbedded) const;
 	bool                    hasEmbedStruxOfTypeInRange(PT_DocPosition posStart, PT_DocPosition posEnd, 
 													   PTStruxType iType) const;
 
@@ -611,8 +611,8 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	void					addList(const fl_AutoNumPtr & pAutoNum);
 	bool					appendList(const PP_PropertyVector & attributes);
 	bool					fixListHierarchy(void);
-	void					removeList(const fl_AutoNumPtr & pAutoNum, pf_Frag_Strux* sdh);
-	void					listUpdate(pf_Frag_Strux* sdh);
+	void					removeList(const fl_AutoNumPtr & pAutoNum, const pf_Frag_Strux* sdh);
+	void					listUpdate(const pf_Frag_Strux* pfs);
 	void					StopList(const pf_Frag_Strux* pfs);
 	void					disableListUpdates(void);
 	void					enableListUpdates(void);

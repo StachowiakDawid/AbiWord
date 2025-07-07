@@ -2309,7 +2309,7 @@ bool  PD_Document::changeStruxAttsNoUpdate(pf_Frag_Strux* pfStrux, const char * 
  * a change record and should only be used under exceptional circumstances to 
  * repair the piecetable during loading. It was necessary to import RTF tables.
  */
-bool PD_Document::insertStruxNoUpdateBefore(pf_Frag_Strux* sdh, PTStruxType pts, const PP_PropertyVector & attributes )
+bool PD_Document::insertStruxNoUpdateBefore(const pf_Frag_Strux* sdh, PTStruxType pts, const PP_PropertyVector & attributes )
 {
 #if 0
 	pf_Frag_Strux * pfStrux = sdh;
@@ -2322,13 +2322,12 @@ bool PD_Document::insertStruxNoUpdateBefore(pf_Frag_Strux* sdh, PTStruxType pts,
  * This method examines the frag immediately before the given sdh and decides
  * if it matches the strux type given.
  */
-bool PD_Document::isStruxBeforeThis(pf_Frag_Strux* sdh,  PTStruxType pts)
+bool PD_Document::isStruxBeforeThis(const pf_Frag_Strux* pfs,  PTStruxType pts)
 {
-	const pf_Frag_Strux * pfs = static_cast<const pf_Frag_Strux *>(sdh);
 	pf_Frag * pfb = pfs->getPrev();
 	if(pfb->getType() != pf_Frag::PFT_Strux)
 		return false;
-	pf_Frag_Strux * pfsb = static_cast<pf_Frag_Strux *>(pfb);
+	auto pfsb = static_cast<const pf_Frag_Strux *>(pfb);
 	if(pfsb->getStruxType() == pts)
 		return true;
 	return false;
@@ -2833,13 +2832,11 @@ pf_Frag_Strux* PD_Document::findHdrFtrStrux(const gchar * pszHdrFtr,
  * And a pointer to the embedded strux found.
  * If no emebedded strux is found in the block we return -1 ans nullptr
  */ 
-UT_sint32 PD_Document::getEmbeddedOffset(pf_Frag_Strux* sdh, PT_DocPosition posoff, pf_Frag_Strux* & sdhEmbedded) const
+UT_sint32 PD_Document::getEmbeddedOffset(const pf_Frag_Strux* pfs, PT_DocPosition posoff, pf_Frag_Strux* & sdhEmbedded) const
 {
-	pf_Frag_Strux * pfs = sdh;
 	UT_return_val_if_fail (pfs->getStruxType() == PTX_Block,-1);
-	pf_Frag * pf = pfs;
-	pf = pf->getNext();
-	PT_DocPosition pos = m_pPieceTable->getStruxPosition(sdh) + posoff;
+	pf_Frag * pf = pfs->getNext();
+	PT_DocPosition pos = m_pPieceTable->getStruxPosition(pfs) + posoff;
 	while(pf && m_pPieceTable->getFragPosition(pf) + pf->getLength() <= pos)
 	{
 		pf = pf->getNext();
@@ -2864,7 +2861,7 @@ UT_sint32 PD_Document::getEmbeddedOffset(pf_Frag_Strux* sdh, PT_DocPosition poso
 		return -1;
 	}
 	pf_Frag_Strux * pfsNew = static_cast<pf_Frag_Strux *>(pf);
-	pos  = m_pPieceTable->getFragPosition(pf);
+	pos = m_pPieceTable->getFragPosition(pf);
 	UT_sint32 diff = static_cast<UT_sint32>(pos) - static_cast<UT_sint32>(m_pPieceTable->getFragPosition(pfs));
 	sdhEmbedded = pfsNew;
 	return diff;
@@ -4674,7 +4671,7 @@ const UT_UCS4Char * PD_Document::getPointer(PT_BufIndex bi) const
 	return m_pPieceTable->getPointer(bi);
 }
 
-bool PD_Document::getBlockBuf(pf_Frag_Strux* sdh, UT_GrowBuf * pgb) const
+bool PD_Document::getBlockBuf(const pf_Frag_Strux* sdh, UT_GrowBuf * pgb) const
 {
 	return m_pPieceTable->getBlockBuf(sdh,pgb);
 }
@@ -4753,18 +4750,17 @@ po_Bookmark * PD_Document::getBookmark(const pf_Frag_Strux* pfsBlock, UT_uint32 
 	return nullptr;
 }
 
-bool PD_Document::getField(pf_Frag_Strux* sdh, UT_uint32 offset,
+bool PD_Document::getField(const pf_Frag_Strux* pfsBlock, UT_uint32 offset,
                                fd_Field * & pField)
 {
 
-	const pf_Frag * pf = static_cast<const pf_Frag *>(sdh);
+	const pf_Frag * pf = pfsBlock;
 	UT_return_val_if_fail (pf->getType() == pf_Frag::PFT_Strux, false);
-	const pf_Frag_Strux * pfsBlock = static_cast<const pf_Frag_Strux *> (pf);
 	UT_return_val_if_fail (pfsBlock->getStruxType() == PTX_Block, false);
 
 	UT_uint32 cumOffset = 0;
-	pf_Frag_Text * pft = nullptr;
-	for (pf_Frag * pfTemp=pfsBlock->getNext(); (pfTemp); pfTemp=pfTemp->getNext())
+	const pf_Frag_Text * pft = nullptr;
+	for (const pf_Frag * pfTemp = pfsBlock->getNext(); (pfTemp); pfTemp = pfTemp->getNext())
 	{
 		cumOffset += pfTemp->getLength();
 		if (offset < cumOffset)
@@ -4773,7 +4769,7 @@ bool PD_Document::getField(pf_Frag_Strux* sdh, UT_uint32 offset,
 			{
 			case pf_Frag::PFT_Text:
 			case pf_Frag::PFT_Object:
-				pft = static_cast<pf_Frag_Text *> (pfTemp);
+				pft = static_cast<const pf_Frag_Text *>(pfTemp);
 				pField = pft->getField();
 				return true; // break out of loop
 				break;
@@ -5748,11 +5744,10 @@ bool   PD_Document::updateDocForStyleChange(const gchar * szStyle,
 /*!
  * This method updates all the layouts associated with the document.
 */
-void  PD_Document::updateAllLayoutsInDoc( pf_Frag_Strux* sdh)
+void  PD_Document::updateAllLayoutsInDoc(const pf_Frag_Strux* pfs)
 {
-	const pf_Frag_Strux * pfs = sdh;
 	PT_AttrPropIndex indexAP = pfs->getIndexAP();
-	PT_DocPosition pos = getStruxPosition(sdh);
+	PT_DocPosition pos = getStruxPosition(pfs);
 	PX_ChangeRecord * pcr = new PX_ChangeRecord(PX_ChangeRecord::PXT_ChangeStrux,
 												pos,indexAP,pfs->getXID());
 	notifyListeners(pfs, pcr);
@@ -5902,15 +5897,14 @@ void PD_Document::addList(const fl_AutoNumPtr & pAutoNum)
 	}
 }
 
-void PD_Document::listUpdate(pf_Frag_Strux* sdh )
+void PD_Document::listUpdate(const pf_Frag_Strux* pfs)
 {
 	//
 	// Notify all views of a listupdate
 	//
-	UT_return_if_fail (sdh);
-	const pf_Frag_Strux * pfs = sdh;
+	UT_return_if_fail (pfs);
 	PT_AttrPropIndex pAppIndex = pfs->getIndexAP();
-	PT_DocPosition pos = getStruxPosition(sdh);
+	PT_DocPosition pos = getStruxPosition(pfs);
 	PX_ChangeRecord* pcr = new PX_ChangeRecord(PX_ChangeRecord::PXT_ListUpdate, pos, pAppIndex, pfs->getXID());
 	notifyListeners(pfs, pcr);
 	delete pcr;
@@ -6085,7 +6079,7 @@ bool PD_Document::fixListHierarchy(void)
 	}
 }
 
-void PD_Document::removeList(const fl_AutoNumPtr & pAutoNum, pf_Frag_Strux* sdh )
+void PD_Document::removeList(const fl_AutoNumPtr & pAutoNum, const pf_Frag_Strux* pfs)
 {
 	UT_return_if_fail (pAutoNum);
 	UT_uint32 ID = pAutoNum->getID();
@@ -6094,9 +6088,8 @@ void PD_Document::removeList(const fl_AutoNumPtr & pAutoNum, pf_Frag_Strux* sdh 
 	//
 	// Notify all views of a remove List
 	//
-	const pf_Frag_Strux * pfs = sdh;
 	PT_AttrPropIndex pAppIndex = pfs->getIndexAP();
-	PT_DocPosition pos = getStruxPosition(sdh);
+	PT_DocPosition pos = getStruxPosition(pfs);
 	PX_ChangeRecord* pcr = new PX_ChangeRecord(PX_ChangeRecord::PXT_RemoveList, pos, pAppIndex, pfs->getXID());
 	notifyListeners(pfs, pcr);
 	delete pcr;
