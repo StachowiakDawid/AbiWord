@@ -203,7 +203,7 @@ public:
 	FL_ListType getListTypeFromStyle( const gchar * style) const;
 	fl_BlockLayout * getNextList(UT_uint32 id) const;
 	bool isListLabelInBlock(void) const;
-	void StartList( const gchar * style, pf_Frag_Strux* prevSDH = nullptr);
+	void StartList(const gchar * style, const pf_Frag_Strux* prevSDH = nullptr);
 
 	void StartList( FL_ListType lType, UT_uint32 start,
 					const gchar * lDelim, const gchar * lDecimal,

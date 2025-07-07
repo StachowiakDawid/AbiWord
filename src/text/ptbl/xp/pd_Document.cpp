@@ -5429,20 +5429,20 @@ PD_Style * PD_Document::getStyleFromStrux(const pf_Frag_Strux* pfs) const
 \param sdh The StruxDocHandle of the fragment where we start to look from.
 \returns PD_Style of the first Numbered Heading, otherwise nullptr
 */
-pf_Frag_Strux* PD_Document::getPrevNumberedHeadingStyle(pf_Frag_Strux* sdh) const
+const pf_Frag_Strux* PD_Document::getPrevNumberedHeadingStyle(const pf_Frag_Strux* pfs) const
 {
-	pf_Frag * pf = sdh;
+	const pf_Frag * pf = pfs;
 	bool bFound = false;
 	pf = pf->getPrev();
 	PD_Style * pStyle = nullptr;
-	pf_Frag_Strux* foundSDH = nullptr;
+	const pf_Frag_Strux* foundSDH = nullptr;
 	PD_Style * pBasedOn = nullptr;
 	const char * szStyleName = nullptr;
 	while(pf && !bFound)
 	{
 		if(pf->getType() == pf_Frag::PFT_Strux)
 		{
-			foundSDH = static_cast<pf_Frag_Strux*>(pf);
+			foundSDH = static_cast<const pf_Frag_Strux*>(pf);
 			pStyle = getStyleFromStrux(foundSDH);
 			if(pStyle != nullptr)
 			{

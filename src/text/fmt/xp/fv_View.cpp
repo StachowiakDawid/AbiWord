@@ -4279,7 +4279,7 @@ bool FV_View::setStyleAtPos(const gchar * style, PT_DocPosition posStart1, PT_Do
 	{
 		fl_BlockLayout*  currBlock = vBlock.getNthItem(0);
 		PT_DocPosition pos = currBlock->getPosition(true) -1;
-		pf_Frag_Strux* curSdh = currBlock->getStruxDocHandle();
+		const pf_Frag_Strux* curSdh = currBlock->getStruxDocHandle();
 		if(pos < 2 )
 			pos = 2;
 //
@@ -4287,7 +4287,7 @@ bool FV_View::setStyleAtPos(const gchar * style, PT_DocPosition posStart1, PT_Do
 // Numbered Heading piece of text.
 //
 		bool bAttach = false;
-		pf_Frag_Strux* prevSDH = m_pDoc->getPrevNumberedHeadingStyle(curSdh);
+		const pf_Frag_Strux* prevSDH = m_pDoc->getPrevNumberedHeadingStyle(curSdh);
 		if(prevSDH != nullptr)
 		{
 			PD_Style * pPrevStyle = m_pDoc->getStyleFromStrux(prevSDH);
@@ -4319,7 +4319,7 @@ bool FV_View::setStyleAtPos(const gchar * style, PT_DocPosition posStart1, PT_Do
 					}
 					if(bFoundPrevList && pAuto->getFirstItem())
 					{
-						pf_Frag_Strux* subSDH = pAuto->getFirstItem();
+						const pf_Frag_Strux* subSDH = pAuto->getFirstItem();
 						fl_BlockLayout * pSubBlock = getBlockFromStrux(subSDH);
 						UT_ASSERT(pSubBlock);
 						if(pSubBlock == nullptr)

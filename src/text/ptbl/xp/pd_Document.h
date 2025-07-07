@@ -529,7 +529,7 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
     const char *            getDefaultStyle() const;
 	bool					getStyle(const char * szName, PD_Style ** ppStyle) const;
 	PD_Style *				getStyleFromStrux(const pf_Frag_Strux* pfs) const;
-	pf_Frag_Strux*       getPrevNumberedHeadingStyle(pf_Frag_Strux* pfs) const;
+	const pf_Frag_Strux*    getPrevNumberedHeadingStyle(const pf_Frag_Strux* pfs) const;
 	size_t                  getStyleCount(void) const;
 	bool					enumStyles(UT_uint32 k,
 									   const char ** pszName, const PD_Style ** ppStyle) const;
