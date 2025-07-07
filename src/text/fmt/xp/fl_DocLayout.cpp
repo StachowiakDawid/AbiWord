@@ -369,7 +369,7 @@ GR_EmbedManager * FL_DocLayout::getEmbedManager(const char * szEmbedType)
 /*! 
  * little helper method for lookup properties
  */
-FootnoteType FL_DocLayout::FootnoteTypeFromString(const gchar * pszFootnoteType)
+FootnoteType FL_DocLayout::FootnoteTypeFromString(const gchar * pszFootnoteType) const
 {
 	FootnoteType iFootnoteType;
 	if (pszFootnoteType == nullptr)
@@ -1258,7 +1258,7 @@ bool FL_DocLayout::removeFramesToBeInserted(fp_FrameContainer * pFrame)
   the initial layout stage.
  */
 
-fp_FrameContainer * FL_DocLayout::findFramesToBeInserted(fp_Page * pPage)
+fp_FrameContainer * FL_DocLayout::findFramesToBeInserted(fp_Page * pPage) const
 {
 	UT_sint32 count = m_vecFramesToBeInserted.getItemCount();
 	if (count == 0)

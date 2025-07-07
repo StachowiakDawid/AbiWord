@@ -141,7 +141,7 @@ public:
 
 	void			notifyBlockIsBeingDeleted(fl_BlockLayout *pBlock);
 	void            setSkipUpdates(UT_uint32 numSkips) {m_iSkipUpdates = numSkips;}
-	UT_uint32       getSkipUpdates(void) { return m_iSkipUpdates;}
+	UT_uint32       getSkipUpdates(void) const { return m_iSkipUpdates;}
 	void            setNeedsRedraw(void);
 	UT_sint32		getHeight() const;
 	UT_sint32       getWidth() const;
@@ -172,7 +172,7 @@ public:
 	void            clearAllCountWraps(void);
 	bool addFramesToBeInserted(fp_FrameContainer * pFrame);
 	bool removeFramesToBeInserted(fp_FrameContainer * pFrame);
-	fp_FrameContainer * findFramesToBeInserted(fp_Page * pPage);
+	fp_FrameContainer * findFramesToBeInserted(fp_Page * pPage) const;
 
 	UT_sint32   getPercentFilled(void) const
 		{ return m_iFilled;}
@@ -256,7 +256,7 @@ public:
 		{ return m_bRestartFootSection;}
 	bool                getRestartFootOnPage(void) const
 		{ return m_bRestartFootPage;}
-	FootnoteType        FootnoteTypeFromString( const gchar * pszStr);
+	FootnoteType        FootnoteTypeFromString( const gchar * pszStr) const;
 // EndNotes
 	void                insertEndnoteContainer(fp_EndnoteContainer * pECon);
 	void                removeEndnoteContainer(fp_EndnoteContainer * pECon);
