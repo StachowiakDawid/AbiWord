@@ -2501,7 +2501,7 @@ bool fl_BlockLayout::setFramesOnPage(fp_Line * pLastLine)
 	UT_sint32 i = 0;
 	for(i=0; i< getNumFrames();i++)
 	{
-		fl_FrameLayout * pFrame = getNthFrameLayout(i);
+		const fl_FrameLayout * pFrame = getNthFrameLayout(i);
 
 		if(pFrame->isHidden() > FP_VISIBLE)
 			continue;
@@ -2627,7 +2627,7 @@ bool fl_BlockLayout::setFramesOnPage(fp_Line * pLastLine)
 				fp_Page * pPageLast = pLLast->getPage();
 				if (pDL->isLayoutFilling())
 				{
-					fp_Page * pPageFinal = pDL->getLastPage();
+					const fp_Page * pPageFinal = pDL->getLastPage();
 					if (!pPageLast && (pDL->findPage(pPageFinal) <= iPrefPage)) 
 					{
 						if (pDL->findPage(pPageFinal) == iPrefPage)
@@ -2640,10 +2640,10 @@ bool fl_BlockLayout::setFramesOnPage(fp_Line * pLastLine)
 								if (pPageFinal->getNthColumnLeader(j)->getDocSectionLayout()==pSection)
 								{
 									b_sectionFound = true;
-									fp_Container * pCol2 = pPageFinal->getNthColumnLeader(j);
+									const fp_Container * pCol2 = pPageFinal->getNthColumnLeader(j);
 									while(k < iPrefColumn && pCol2)
 									{
-										pCol2 = static_cast <fp_Container *> (pCol2->getNext());
+										pCol2 = static_cast<const fp_Container *>(pCol2->getNext());
 										k++;
 									}
 								}
@@ -2715,7 +2715,7 @@ bool fl_BlockLayout::setFramesOnPage(fp_Line * pLastLine)
 						if(iPrefPage == iPageFirst)
 						{
 							pPage = pPageFirst;
-							fp_Column * firstColumn = static_cast <fp_Column *> (pLFirst->getColumn());
+							auto firstColumn = static_cast<const fp_Column *>(pLFirst->getColumn());
 							if ((firstColumn->getColumnIndex() <= iPrefColumn) &&
 								(numColumns > iPrefColumn))
 							{
@@ -2730,7 +2730,7 @@ bool fl_BlockLayout::setFramesOnPage(fp_Line * pLastLine)
 						else if(iPrefPage == iPageLast)
 						{
 							pPage = pPageLast;
-							fp_Column * lastColumn = static_cast <fp_Column *> (pLLast->getColumn());
+							auto lastColumn = static_cast<const fp_Column *>(pLLast->getColumn());
 							if (lastColumn->getColumnIndex() >= iPrefColumn)
 							{
 								pCol = pPage->getNthColumn(iPrefColumn,pSection);
@@ -2764,8 +2764,8 @@ bool fl_BlockLayout::setFramesOnPage(fp_Line * pLastLine)
 					else
 					{
 						pPage = pPageFirst;
-						fp_Column * firstColumn = static_cast <fp_Column *> (pLFirst->getColumn());
-						fp_Column * lastColumn = static_cast <fp_Column *> (pLLast->getColumn());
+						auto firstColumn = static_cast<const fp_Column *>(pLFirst->getColumn());
+						auto lastColumn = static_cast<const fp_Column *>(pLLast->getColumn());
 						if (iPrefColumn < firstColumn->getColumnIndex())
 						{
 							pCol = pLFirst->getColumn();
@@ -2817,7 +2817,7 @@ bool fl_BlockLayout::setFramesOnPage(fp_Line * pLastLine)
 				}
 				if (b_PrefColumnChanged)
 				{
-					fp_Column * pColumn = static_cast <fp_Column *> (pCol);
+					auto pColumn = static_cast<const fp_Column *>(pCol);
 					pFrameCon->setPreferedColumnNo(pColumn->getColumnIndex());
 				}
 			}
@@ -2835,9 +2835,9 @@ bool fl_BlockLayout::setFramesOnPage(fp_Line * pLastLine)
 				// Handle case of block spanning two pages
 				//
 				UT_sint32 iPrefPage = pFrameCon->getPreferedPageNo();
-				fp_Line * pLFirst = static_cast<fp_Line *>(getFirstContainer());
+				auto pLFirst = static_cast<const fp_Line *>(getFirstContainer());
 				UT_return_val_if_fail(pLFirst,false);
-				fp_Line * pLLast = static_cast<fp_Line *>(getLastContainer());
+				auto pLLast = static_cast<const fp_Line *>(getLastContainer());
 				UT_return_val_if_fail(pLLast,false);
 				fp_Page * pPageFirst = pLFirst->getPage();
 				UT_return_val_if_fail(pPageFirst,false);
@@ -2933,7 +2933,7 @@ bool fl_BlockLayout::getXYOffsetToLine(UT_sint32 & xoff, UT_sint32 & yoff, fp_Li
 	}
 	xoff = 0;
 	yoff = 0;
-	fp_Line * pCon = static_cast<fp_Line *>(getFirstContainer());
+	auto pCon = static_cast<const fp_Line *>(getFirstContainer());
 	while(pCon && (pCon != pLine))
 	{
 		if (!pCon->isSameYAsPrevious())
@@ -2955,7 +2955,7 @@ bool fl_BlockLayout::getXYOffsetToLine(UT_sint32 & xoff, UT_sint32 & yoff, fp_Li
 UT_sint32 fl_BlockLayout::getHeightOfBlock(bool b_withMargins) const
 {
 	UT_sint32 iHeight = 0;
-	fp_Line * pCon = static_cast<fp_Line *>(getFirstContainer());
+	auto pCon = static_cast<const fp_Line *>(getFirstContainer());
 	while(pCon)
 	{
 		if(!pCon->isSameYAsPrevious())
@@ -2967,7 +2967,7 @@ UT_sint32 fl_BlockLayout::getHeightOfBlock(bool b_withMargins) const
 				iHeight += pCon->getMarginAfter();
 			}
 		}
-		pCon = static_cast<fp_Line *>(pCon->getNext());
+		pCon = static_cast<const fp_Line *>(pCon->getNext());
 	}
 	return iHeight;
 }
@@ -3333,7 +3333,7 @@ void fl_BlockLayout::getLeftRightForWrapping(UT_sint32 iX, UT_sint32 iHeight,
 		bIsTight = pFC->isTightWrapped();
 		UT_Rect pRec = pFC->getScreenRect().value();
 		xxx_UT_DEBUGMSG(("Frame Left %d Line Left %d \n",pRec->left,iScreenX));
-		fl_FrameLayout * pFL = static_cast<fl_FrameLayout *>(pFC->getSectionLayout());
+		const fl_FrameLayout * pFL = static_cast<fl_FrameLayout *>(pFC->getSectionLayout());
 		iExpand = pFL->getBoundingSpace() + 2;
 		pRec.height += 2 * iExpand;
 		pRec.width += 2 * iExpand;
@@ -3404,7 +3404,7 @@ void fl_BlockLayout::getLeftRightForWrapping(UT_sint32 iX, UT_sint32 iHeight,
 			// edge of the available frames.
 			//
 			UT_sint32 iRightEdge = 0;
-			fp_FrameContainer * pRightC = nullptr;
+			const fp_FrameContainer * pRightC = nullptr;
 			for(i=0; i< static_cast<UT_sint32>(pPage->countAboveFrameContainers());i++)
 			{
 				projRec.left = iScreenX;
@@ -3419,7 +3419,7 @@ void fl_BlockLayout::getLeftRightForWrapping(UT_sint32 iX, UT_sint32 iHeight,
 				}
 				bIsTight = pFC->isTightWrapped();
 				UT_Rect pRec = pFC->getScreenRect().value();
-				fl_FrameLayout * pFL = static_cast<fl_FrameLayout *>(pFC->getSectionLayout());
+				auto pFL = static_cast<const fl_FrameLayout *>(pFC->getSectionLayout());
 				iExpand = pFL->getBoundingSpace() + 2;
 				pRec.height += 2 * iExpand;
 				pRec.width += 2 * iExpand;
@@ -3766,7 +3766,7 @@ void fl_BlockLayout::format()
 	// If think the latter is fixable elsewhere so will try for the "1"
 	// branch for now
 #if 1
-	fp_Container * pPrevCon = getFirstContainer();
+	const fp_Container * pPrevCon = getFirstContainer();
 	if(pPrevCon)
 	{
 		pPrevP = pPrevCon->getPage();
@@ -3899,7 +3899,7 @@ void fl_BlockLayout::format()
 			}
 			if(pRun->getType() == FPRUN_HYPERLINK)
 			{
-				fp_HyperlinkRun * pHRun = static_cast<fp_HyperlinkRun *>(pRun);
+				auto pHRun = static_cast<const fp_HyperlinkRun *>(pRun);
 				if(pHRun->getHyperlinkType() == HYPERLINK_ANNOTATION)
 				{
 					setUpdatableField(true);
@@ -4039,7 +4039,7 @@ void fl_BlockLayout::format()
 				// Can speed up things by doing an immediate format on the
 				// the cell.
 				//
-				fl_CellLayout * pCL = static_cast<fl_CellLayout *>(getSectionLayout());
+				auto pCL = static_cast<const fl_CellLayout *>(getSectionLayout());
 				if(!pCL->isDoingFormat())
 				{
 					getSectionLayout()->format();
@@ -4067,12 +4067,12 @@ void fl_BlockLayout::format()
 
 UT_sint32 fl_BlockLayout::findLineInBlock(fp_Line * pLine) const
 {
-	fp_Line * pTmpLine = static_cast<fp_Line *>(getFirstContainer());
+	auto pTmpLine = static_cast<const fp_Line *>(getFirstContainer());
 	UT_sint32 i = 0;
 	while(pTmpLine && pTmpLine != pLine)
 	{
 		i++;
-		pTmpLine = static_cast<fp_Line *>(pTmpLine->getNext());
+		pTmpLine = static_cast<const fp_Line *>(pTmpLine->getNext());
 	}
 	if(pTmpLine == nullptr)
 	{
@@ -4391,10 +4391,10 @@ UT_sint32 fl_BlockLayout::getLength() const
 	// OK Look to see if we've got a TOC/ENDTOC at the end. If so subtract
 	// it's length.
 	//
-	pf_Frag * pf = m_pDoc->getFragFromPosition(posNext-1);
+	const pf_Frag * pf = m_pDoc->getFragFromPosition(posNext - 1);
 	if(pf->getType() == pf_Frag::PFT_Strux)
 	{
-		pf_Frag_Strux * pfsTemp = static_cast<pf_Frag_Strux *>(pf);
+		auto pfsTemp = static_cast<const pf_Frag_Strux *>(pf);
 		if (pfsTemp->getStruxType() == PTX_EndTOC)	// did we find it
 		{
 			posNext -= 2;
@@ -4766,7 +4766,7 @@ fp_Line* fl_BlockLayout::findPrevLineInDocument(fp_Line* pLine) const
 		}
 		else
 		{
-			fl_SectionLayout* pSL = static_cast<fl_SectionLayout *>(m_pSectionLayout->getPrev());
+			auto pSL = static_cast<const fl_SectionLayout *>(m_pSectionLayout->getPrev());
 
 			if (!pSL)
 			{
@@ -4777,7 +4777,7 @@ fp_Line* fl_BlockLayout::findPrevLineInDocument(fp_Line* pLine) const
 			// is this cast safe? Could not some other layout class be returned?
 			// if this assert fails, then this code needs to be fixed up. Tomas
 			UT_ASSERT_HARMLESS( pSL->getLastLayout() && pSL->getLastLayout()->getContainerType() == FL_CONTAINER_BLOCK );
-			fl_BlockLayout* pBlock = static_cast<fl_BlockLayout *>(pSL->getLastLayout());
+			auto pBlock = static_cast<const fl_BlockLayout *>(pSL->getLastLayout());
 			UT_return_val_if_fail(pBlock, nullptr);
 			return static_cast<fp_Line *>(pBlock->getLastContainer());
 		}
@@ -4802,7 +4802,7 @@ fp_Line* fl_BlockLayout::findNextLineInDocument(fp_Line* pLine) const
 	else
 	{
 		// there is no next line in this section, try the next
-		const fl_SectionLayout* pSL = static_cast<const fl_SectionLayout*>(m_pSectionLayout->getNext());
+		auto pSL = static_cast<const fl_SectionLayout*>(m_pSectionLayout->getNext());
 
 		if (!pSL)
 		{
@@ -4814,7 +4814,7 @@ fp_Line* fl_BlockLayout::findNextLineInDocument(fp_Line* pLine) const
 		// if this assert fails, then this code needs to be fixed up. Tomas
 		UT_ASSERT_HARMLESS( pSL->getLastLayout() && pSL->getLastLayout()->getContainerType() == FL_CONTAINER_BLOCK );
 			
-		const fl_BlockLayout* pBlock = static_cast<const fl_BlockLayout*>(pSL->getFirstLayout());
+		auto pBlock = static_cast<const fl_BlockLayout*>(pSL->getFirstLayout());
 		UT_return_val_if_fail(pBlock, nullptr);
 		return static_cast<fp_Line *>(pBlock->getFirstContainer());
 	}
@@ -4999,8 +4999,8 @@ bool fl_BlockLayout::checkSpelling(void)
 
 	// we only want to do the cursor magic if the cursor is in this block
 	bool bIsCursorInBlock = false;
-	FV_View* pView = getView();
-	fp_Run* pLastRun = m_pFirstRun;
+	const FV_View* pView = getView();
+	const fp_Run* pLastRun = m_pFirstRun;
 
 	while(pLastRun && pLastRun->getNextRun())
 		pLastRun = pLastRun->getNextRun();

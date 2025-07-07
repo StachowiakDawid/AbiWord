@@ -1817,7 +1817,7 @@ void fp_Column::setPage(fp_Page * pPage)
 }
 
 /* Return the index of the column on its page*/
-UT_sint32 fp_Column::getColumnIndex(void)
+UT_sint32 fp_Column::getColumnIndex(void) const
 {
     fp_Page * pPage = getPage();
     fl_DocSectionLayout * pSection = getDocSectionLayout();

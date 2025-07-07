@@ -20,8 +20,7 @@
  *
  */
 
-#ifndef FRAMECONTAINER_H
-#define FRAMECONTAINER_H
+#pragma once
 
 #ifdef FMT_TEST
 #include <stdio.h>
@@ -63,8 +62,8 @@ public:
 	virtual UT_sint32   getWidth() const override;
 	virtual UT_sint32   getHeight() const override;
 	virtual void        setHeight(UT_sint32 iHeight) override;
-	UT_sint32           getLeftPad(UT_sint32 y, UT_sint32 height);
-	UT_sint32           getRightPad(UT_sint32 y, UT_sint32 height);
+	UT_sint32           getLeftPad(UT_sint32 y, UT_sint32 height) const;
+	UT_sint32           getRightPad(UT_sint32 y, UT_sint32 height) const;
 	virtual bool        isVBreakable(void) override
 		{ return false;}
 	UT_sint32           getFullX() const;
@@ -78,7 +77,7 @@ public:
 	UT_sint32           getXPad(void) const { return m_iXpad;}
 	UT_sint32           getYPad(void) const { return m_iYpad;}
 	void                setPage(fp_Page * pPage);
-	fl_DocSectionLayout * getDocSectionLayout(void);
+	fl_DocSectionLayout * getDocSectionLayout(void) const;
 	void                getBlocksAroundFrame(UT_GenericVector<fl_BlockLayout *> & vecBlocks);
 	PP_PropertyMap::Background getBackground () const;
 	void                setPreferedPageNo(UT_sint32 i);
@@ -149,6 +148,3 @@ private:
 	UT_sint32              m_iPreferedPageNo;
 	UT_sint32              m_iPreferedColumnNo;
 };
-
-
-#endif /* FRAMECONTAINER_H */

@@ -161,7 +161,7 @@ public:
 		{ m_vecWrappedLines.addItem(pLine);}
 	void                clearWrappedLines(void)
 		{ m_vecWrappedLines.clear();}
-	fp_Line *           getNthWrappedLine(UT_sint32 i)
+	fp_Line *           getNthWrappedLine(UT_sint32 i) const
 		{ return m_vecWrappedLines.getNthItem(i);}
 	/* Virtual functions for vertical breakable containers*/
 	virtual fp_Container * getFirstBrokenContainer() const {UT_ASSERT(0);return nullptr;}
@@ -234,7 +234,7 @@ public:
 	virtual fp_Page*	getPage(void) const
 		{ return m_pPage; }
 
-	UT_sint32               getColumnIndex(void);
+	UT_sint32               getColumnIndex(void) const;
 	/*!
 	  Get container's max height
 	  \return Max height

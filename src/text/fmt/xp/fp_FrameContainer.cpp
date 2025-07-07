@@ -231,9 +231,9 @@ void fp_FrameContainer::setPreferedColumnNo(UT_sint32 i)
  * which means the line can encroach into the rectangular region of the
  * image provided the region is transparent.
  */
-UT_sint32 fp_FrameContainer::getLeftPad(UT_sint32 y, UT_sint32 height)
+UT_sint32 fp_FrameContainer::getLeftPad(UT_sint32 y, UT_sint32 height) const
 {
-  fl_FrameLayout *pFL = static_cast<fl_FrameLayout *>(getSectionLayout());
+  auto pFL = static_cast<const fl_FrameLayout *>(getSectionLayout());
   UT_sint32 pad = pFL->getBoundingSpace();	
   UT_Rect pRect = getScreenRect().value();
   UT_sint32 yC = pRect.top;
@@ -264,9 +264,9 @@ UT_sint32 fp_FrameContainer::getLeftPad(UT_sint32 y, UT_sint32 height)
  * which means the line can encroach into the rectangular region of the
  * image provided the region is transparent.
  */
-UT_sint32 fp_FrameContainer::getRightPad(UT_sint32 y, UT_sint32 height)
+UT_sint32 fp_FrameContainer::getRightPad(UT_sint32 y, UT_sint32 height) const
 {
-  fl_FrameLayout *pFL = static_cast<fl_FrameLayout *>(getSectionLayout());
+  auto pFL = static_cast<const fl_FrameLayout *>(getSectionLayout());
   UT_sint32 pad = pFL->getBoundingSpace();
   UT_Rect pRect = getScreenRect().value();
   UT_sint32 yC = pRect.top;
@@ -380,10 +380,10 @@ void fp_FrameContainer::setContainer(fp_Container * /*pContainer*/)
 	UT_ASSERT(UT_SHOULD_NOT_HAPPEN);
 }
 
-fl_DocSectionLayout * fp_FrameContainer::getDocSectionLayout(void)
+fl_DocSectionLayout * fp_FrameContainer::getDocSectionLayout(void) const
 {
-	fl_FrameLayout * pFL = static_cast<fl_FrameLayout *>(getSectionLayout());
-	fl_DocSectionLayout * pDSL = static_cast<fl_DocSectionLayout *>(pFL->getSectionLayout());
+	auto pFL = static_cast<const fl_FrameLayout *>(getSectionLayout());
+	auto pDSL = static_cast<fl_DocSectionLayout *>(pFL->getSectionLayout());
 	UT_ASSERT(pDSL && (pDSL->getContainerType() == FL_CONTAINER_DOCSECTION));
 	return pDSL;
 }
