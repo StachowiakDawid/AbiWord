@@ -415,7 +415,7 @@ pp_Author *  PD_Document::addAuthor(UT_sint32 iAuthor)
 /** private method share by send*AuthorCR()
  *  \param attrName the value of the PT_DOCPROP_ATTRIBUTE_NAME attribute
  */
-bool PD_Document::_sendAuthorCR(const char *attrName, pp_Author *pAuthor)
+bool PD_Document::_sendAuthorCR(const char *attrName, pp_Author *pAuthor) const
 {
 	const PP_PropertyVector atts = {
 		PT_DOCPROP_ATTRIBUTE_NAME, attrName
@@ -438,7 +438,7 @@ bool PD_Document::sendChangeAuthorCR(pp_Author * pAuthor)
 	return _sendAuthorCR("changeauthor", pAuthor);
 }
 
-bool PD_Document::_buildAuthorProps(pp_Author * pAuthor, PP_PropertyVector & props)
+bool PD_Document::_buildAuthorProps(pp_Author * pAuthor, PP_PropertyVector & props) const
 {
 	const PP_AttrProp * pAP = pAuthor->getAttrProp();
 	UT_uint32 iCnt = pAP->getPropertyCount();
@@ -1967,7 +1967,7 @@ bool PD_Document::_pruneSectionAPI(pf_Frag_Strux * pfs,const char * szHType, UT_
 		return false;
 	for(i= 0; i< vecHdrFtrs->getItemCount(); i++)
 	{
-		pf_Frag_Strux * pfsS = vecHdrFtrs->getNthItem(i);
+		const pf_Frag_Strux * pfsS = vecHdrFtrs->getNthItem(i);
 		getAttributeFromStrux(pfsS,false,0,"type",&pszHdrFtr);
 		if(pszHdrFtr && *pszHdrFtr)
 		{
@@ -2028,7 +2028,7 @@ bool PD_Document::_removeHdrFtr(pf_Frag_Strux * pfs)
  * pfs point to a header footer section. This Method returns true if there
  * is a section that has a reference to it's HdrFtr type and id
  */
-bool PD_Document::_matchSection(pf_Frag_Strux * pfs, UT_GenericVector<pf_Frag_Strux *> *vecSections)
+bool PD_Document::_matchSection(pf_Frag_Strux * pfs, UT_GenericVector<pf_Frag_Strux *> *vecSections) const
 {
 	const char * pszHdrFtr = nullptr;
 	const char * pszHFID = nullptr;
@@ -2046,7 +2046,7 @@ bool PD_Document::_matchSection(pf_Frag_Strux * pfs, UT_GenericVector<pf_Frag_St
 		return false;
 	for(i= 0; i< vecSections->getItemCount(); i++)
 	{
-		pf_Frag_Strux * pfsS = vecSections->getNthItem(i);
+		const pf_Frag_Strux * pfsS = vecSections->getNthItem(i);
 		getAttributeFromStrux(pfsS,false,0,pszHdrFtr,&pszID);
 		if(pszID && *pszID)
 		{
@@ -2322,9 +2322,9 @@ bool PD_Document::insertStruxNoUpdateBefore(const pf_Frag_Strux* sdh, PTStruxTyp
  * This method examines the frag immediately before the given sdh and decides
  * if it matches the strux type given.
  */
-bool PD_Document::isStruxBeforeThis(const pf_Frag_Strux* pfs,  PTStruxType pts)
+bool PD_Document::isStruxBeforeThis(const pf_Frag_Strux* pfs,  PTStruxType pts) const
 {
-	pf_Frag * pfb = pfs->getPrev();
+	const pf_Frag * pfb = pfs->getPrev();
 	if(pfb->getType() != pf_Frag::PFT_Strux)
 		return false;
 	auto pfsb = static_cast<const pf_Frag_Strux *>(pfb);
@@ -2337,7 +2337,7 @@ bool PD_Document::isStruxBeforeThis(const pf_Frag_Strux* pfs,  PTStruxType pts)
  * Create a changerecord object and broadcast it to all the listeners.
  * If bsave is true save the CR in th eunod stack.
  */
-bool PD_Document::createAndSendCR(PT_DocPosition dpos, UT_sint32 iType,bool bSave,UT_Byte iGlob)
+bool PD_Document::createAndSendCR(PT_DocPosition dpos, UT_sint32 iType,bool bSave,UT_Byte iGlob) const
 {
 	return m_pPieceTable->createAndSendCR(dpos,iType,bSave,iGlob);
 }
@@ -2471,7 +2471,7 @@ bool PD_Document::createAndSendDocPropCR( const gchar ** pAtts,const gchar ** pP
 /*!
  * This method creates DocProp Change Record and broadcasts it to the listeners
  */
-bool PD_Document::createAndSendDocPropCR( const PP_PropertyVector & pAtts, const PP_PropertyVector & pProps )
+bool PD_Document::createAndSendDocPropCR( const PP_PropertyVector & pAtts, const PP_PropertyVector & pProps ) const
 {
 	return m_pPieceTable->createAndSendDocPropCR(pAtts,pProps);
 }
@@ -3004,7 +3004,7 @@ bool PD_Document::isFrameAtPos(PT_DocPosition pos) const
 bool PD_Document::isEndFrameAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
-	pf_Frag * pf = nullptr;
+	const pf_Frag * pf = nullptr;
 	/*bool bRes = */m_pPieceTable->getFragFromPosition(pos,&pf,&pOffset);
 	if(!pf)
 		return false;
@@ -3012,7 +3012,7 @@ bool PD_Document::isEndFrameAtPos(PT_DocPosition pos) const
 		pf = pf->getPrev();
 	if(pf && pf->getType() == pf_Frag::PFT_Strux)
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pf);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pf);
 		if(pfs->getStruxType() == PTX_EndFrame)
 		{
 			return true;
@@ -3029,7 +3029,7 @@ bool PD_Document::isEndFrameAtPos(PT_DocPosition pos) const
 bool PD_Document::isHdrFtrAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
-	pf_Frag * pf = nullptr;
+	const pf_Frag * pf = nullptr;
 	/*bool bRes = */m_pPieceTable->getFragFromPosition(pos,&pf,&pOffset);
 	if(!pf)
 		return false;
@@ -3037,7 +3037,7 @@ bool PD_Document::isHdrFtrAtPos(PT_DocPosition pos) const
 		pf = pf->getPrev();
 	if(pf && pf->getType() == pf_Frag::PFT_Strux)
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pf);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pf);
 		if(pfs->getStruxType() == PTX_SectionHdrFtr)
 		{
 			return true;
@@ -3055,7 +3055,7 @@ bool PD_Document::isHdrFtrAtPos(PT_DocPosition pos) const
 bool PD_Document::isSectionAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
-	pf_Frag * pf = nullptr;
+	const pf_Frag * pf = nullptr;
 	/*bool bRes = */m_pPieceTable->getFragFromPosition(pos,&pf,&pOffset);
 	if(!pf)
 		return false;
@@ -3063,7 +3063,7 @@ bool PD_Document::isSectionAtPos(PT_DocPosition pos) const
 		pf = pf->getPrev();
 	if(pf && pf->getType() == pf_Frag::PFT_Strux)
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pf);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pf);
 		if(pfs->getStruxType() == PTX_Section)
 		{
 			return true;
@@ -3080,7 +3080,7 @@ bool PD_Document::isSectionAtPos(PT_DocPosition pos) const
 bool PD_Document::isBlockAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
-	pf_Frag * pf = nullptr;
+	const pf_Frag * pf = nullptr;
 	/*bool bRes = */m_pPieceTable->getFragFromPosition(pos,&pf,&pOffset);
 	if(!pf)
 		return false;
@@ -3088,7 +3088,7 @@ bool PD_Document::isBlockAtPos(PT_DocPosition pos) const
 		pf = pf->getPrev();
 	if(pf && pf->getType() == pf_Frag::PFT_Strux)
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pf);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pf);
 		if(pfs->getStruxType() == PTX_Block)
 		{
 			return true;
@@ -3134,7 +3134,7 @@ bool PD_Document::isTableAtPos(PT_DocPosition pos) const
 bool PD_Document::isEndTableAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
-	pf_Frag * pf = nullptr;
+	const pf_Frag * pf = nullptr;
 	/*bool bRes = */m_pPieceTable->getFragFromPosition(pos,&pf,&pOffset);
 	if(!pf)
 		return false;
@@ -3142,7 +3142,7 @@ bool PD_Document::isEndTableAtPos(PT_DocPosition pos) const
 		pf = pf->getPrev();
 	if(pf && pf->getType() == pf_Frag::PFT_Strux)
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pf);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pf);
 		if(pfs->getStruxType() == PTX_EndTable)
 		{
 			return true;
@@ -3159,7 +3159,7 @@ bool PD_Document::isEndTableAtPos(PT_DocPosition pos) const
 bool PD_Document::isCellAtPos(PT_DocPosition pos) const
 {
 	PT_BlockOffset pOffset;
-	pf_Frag * pf = nullptr;
+	const pf_Frag * pf = nullptr;
 	/*bool bRes = */m_pPieceTable->getFragFromPosition(pos,&pf,&pOffset);
 	if(!pf)
 		return false;
@@ -3167,7 +3167,7 @@ bool PD_Document::isCellAtPos(PT_DocPosition pos) const
 		pf = pf->getPrev();
 	if(pf && pf->getType() == pf_Frag::PFT_Strux)
 	{
-		pf_Frag_Strux * pfs = static_cast<pf_Frag_Strux *>(pf);
+		auto pfs = static_cast<const pf_Frag_Strux *>(pf);
 		if(pfs->getStruxType() == PTX_SectionCell)
 		{
 			return true;
@@ -4751,7 +4751,7 @@ po_Bookmark * PD_Document::getBookmark(const pf_Frag_Strux* pfsBlock, UT_uint32 
 }
 
 bool PD_Document::getField(const pf_Frag_Strux* pfsBlock, UT_uint32 offset,
-                               fd_Field * & pField)
+                               fd_Field * & pField) const
 {
 
 	const pf_Frag * pf = pfsBlock;
@@ -5897,7 +5897,7 @@ void PD_Document::addList(const fl_AutoNumPtr & pAutoNum)
 	}
 }
 
-void PD_Document::listUpdate(const pf_Frag_Strux* pfs)
+void PD_Document::listUpdate(const pf_Frag_Strux* pfs) const
 {
 	//
 	// Notify all views of a listupdate
@@ -5987,7 +5987,7 @@ bool PD_Document::appendList(const PP_PropertyVector & attributes)
 	return true;
 }
 
-bool PD_Document::areListUpdatesAllowed(void)
+bool PD_Document::areListUpdatesAllowed(void) const
 {
         return m_ballowListUpdates;
 }
@@ -6113,7 +6113,7 @@ bool  PD_Document::isDoingPaste(void) const
          return m_bDoingPaste;
 }
 
-bool PD_Document::convertPercentToInches(const char * szPercent, UT_UTF8String & sInches)
+bool PD_Document::convertPercentToInches(const char * szPercent, UT_UTF8String & sInches) const
 {
 	double width = m_docPageSize.Width(DIM_IN);
 	const pf_Frag_Strux* sdhSec = getLastSectionStrux();

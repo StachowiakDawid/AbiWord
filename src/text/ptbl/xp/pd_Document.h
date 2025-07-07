@@ -296,7 +296,7 @@ public:
  private:
 	bool                    addAuthorAttributeIfBlank(PP_PropertyVector & atts);
 	bool                    addAuthorAttributeIfBlank( PP_AttrProp *&p_AttrProp);
-	bool                    _buildAuthorProps(pp_Author * pAuthor, PP_PropertyVector & props);
+	bool                    _buildAuthorProps(pp_Author * pAuthor, PP_PropertyVector & props) const;
  public:
 	//
 	void					beginUserAtomicGlob(void);
@@ -343,10 +343,10 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 										PTStruxType pts,
 										bool bRecordChange);
 
-	bool                    createAndSendCR(PT_DocPosition dpos,UT_sint32 iType,bool bsave,UT_Byte iGlob);
+	bool                    createAndSendCR(PT_DocPosition dpos,UT_sint32 iType,bool bsave,UT_Byte iGlob) const;
 	// XXX PP_PropertyVector is not visible in xad_Document
 	virtual bool            createAndSendDocPropCR( const gchar ** pAtts,const gchar ** pProps ) override;
-	bool                    createAndSendDocPropCR(const PP_PropertyVector & pAtts,const PP_PropertyVector & pProps);
+	bool                    createAndSendDocPropCR(const PP_PropertyVector & pAtts,const PP_PropertyVector & pProps) const;
 	bool                    changeDocPropeties(const PP_PropertyVector & szAtts, const PP_PropertyVector & pProps);
 
 	bool					insertStrux(PT_DocPosition dpos,
@@ -512,7 +512,7 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	bool                    deleteStruxNoUpdate(pf_Frag_Strux* sdh);
 	bool                    deleteFragNoUpdate(pf_Frag * pf);
 	bool                    insertStruxNoUpdateBefore(const pf_Frag_Strux* sdh, PTStruxType pts, const PP_PropertyVector & attributes );
-	bool                    isStruxBeforeThis(const pf_Frag_Strux* sdh,  PTStruxType pts);
+	bool                    isStruxBeforeThis(const pf_Frag_Strux* sdh,  PTStruxType pts) const;
 
 	// the function below does exactly what the name says -- returns the AP index; in revisions mode
 	// you would need the AP at that index to have revision attribute exploded -- use one of the
@@ -552,7 +552,7 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	bool					updateFields(void);
 	bool					getField(const pf_Frag_Strux* sdh,
 									 UT_uint32 offset,
-                                     fd_Field * &pField);
+                                     fd_Field * &pField) const;
 	po_Bookmark * 			getBookmark(const pf_Frag_Strux* sdh, UT_uint32 offset) const;
 	bool                    hasMath(void) const;
 
@@ -612,12 +612,12 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	bool					appendList(const PP_PropertyVector & attributes);
 	bool					fixListHierarchy(void);
 	void					removeList(const fl_AutoNumPtr & pAutoNum, const pf_Frag_Strux* sdh);
-	void					listUpdate(const pf_Frag_Strux* pfs);
+	void					listUpdate(const pf_Frag_Strux* pfs) const;
 	void					StopList(const pf_Frag_Strux* pfs);
 	void					disableListUpdates(void);
 	void					enableListUpdates(void);
 	void					updateDirtyLists(void);
-	bool					areListUpdatesAllowed(void);
+	bool					areListUpdatesAllowed(void) const;
 	void                    setHasListStopped(bool bStop) {m_bHasListStopped = bStop;}
 	bool                    hasListStopped(void) const {return m_bHasListStopped;}
 
@@ -629,7 +629,7 @@ PT_AttrPropIndex            getAPIFromSOH(pf_Frag_Object* odh) const;
 	bool                    isRedrawHappenning(void) const {return m_bRedrawHappenning;}
 
 	// PageSize functions
-	bool                    convertPercentToInches(const char * szPercent, UT_UTF8String & sInches);
+	bool                    convertPercentToInches(const char * szPercent, UT_UTF8String & sInches) const;
 	bool					setPageSizeFromFile(const PP_PropertyVector & attributes);
 	const	fp_PageSize	*	getPageSize(void) const
 	{ return & m_docPageSize;}
@@ -839,7 +839,7 @@ protected:
 
 	bool     _removeRepeatedHdrFtr(pf_Frag_Strux * pfs ,UT_GenericVector<pf_Frag_Strux *> * vecHdrFtrs, UT_sint32 i);
 	bool     _pruneSectionAPI(pf_Frag_Strux * pfs,const char * szHType, UT_GenericVector<pf_Frag_Strux *> *vecHdrFtrs);
-	bool     _matchSection(pf_Frag_Strux * pfs, UT_GenericVector<pf_Frag_Strux *> *vecSections);
+	bool     _matchSection(pf_Frag_Strux * pfs, UT_GenericVector<pf_Frag_Strux *> *vecSections) const;
 	bool     _removeHdrFtr(pf_Frag_Strux * pfs);
 	bool     _checkAndFixTable(pf_Frag_Strux * pfs);
 public:
@@ -853,7 +853,7 @@ private:
 	bool                    _exportFindVisDirectionRunAtPos(PT_DocPosition pos);
 
 	bool                    _sendAuthorCR(const char *attrName,
-                                          pp_Author *pAuthor);
+                                          pp_Author *pAuthor) const;
 private:
 	bool					m_ballowListUpdates;
 	pt_PieceTable *			m_pPieceTable;
