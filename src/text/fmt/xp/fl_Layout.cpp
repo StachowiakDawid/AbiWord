@@ -105,12 +105,12 @@ bool fl_Layout::getSpanAttrProp(UT_uint32 offset, bool bLeftSide, const PP_AttrP
 								   bShowRevisions, iRevisionId, bHiddenRevision);
 }
 
-bool fl_Layout::getField(UT_uint32 offset, fd_Field * & pField)
+bool fl_Layout::getField(UT_uint32 offset, fd_Field * & pField) const
 {
     return m_pDoc->getField(m_sdh,offset,pField);
 }
 
-po_Bookmark * fl_Layout::getBookmark(UT_uint32 offset)
+po_Bookmark * fl_Layout::getBookmark(UT_uint32 offset) const
 {
     return m_pDoc->getBookmark(m_sdh,offset);
 }

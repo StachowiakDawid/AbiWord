@@ -69,8 +69,8 @@ public:
 				bool bShowRevisions, UT_uint32 iRevisionId,
 				bool &bHiddenRevision) const;
 
-	bool				getField(UT_uint32 offset, fd_Field * &pField);
-	po_Bookmark *		getBookmark(UT_uint32 offset);
+	bool				getField(UT_uint32 offset, fd_Field * &pField) const;
+	po_Bookmark *		getBookmark(UT_uint32 offset) const;
 	virtual	void		listUpdate(void) { return; }
 	inline const fl_AutoNumPtr &	getAutoNum(void) const { return m_pAutoNum; }
 	void    			setAutoNum(const fl_AutoNumPtr & pAutoNum);
