@@ -1899,7 +1899,7 @@ PT_DocPosition fl_TableLayout::getPosition(bool bActualBlockPosition /* = false 
  * to the position of the table strux you will get the first position 
  * past the endtable strux
  */
-UT_uint32 fl_TableLayout::getLength(void)
+UT_uint32 fl_TableLayout::getLength(void) const
 {
 	const pf_Frag_Strux* sdhTab = getStruxDocHandle();
 	const pf_Frag_Strux* sdhEnd = m_pDoc-> getEndTableStruxFromTableStrux(sdhTab);

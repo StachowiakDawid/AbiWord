@@ -163,7 +163,7 @@ public:
 	virtual void                markAllRunsDirty(void) override;
 	virtual bool                needsReformat(void) const override;
 	virtual PT_DocPosition      getPosition(bool bActualBlockPosition = false) const override;
-	UT_uint32                   getLength(void);
+	UT_uint32                   getLength(void) const;
 	virtual void		        redrawUpdate(void) override;
 	virtual fp_Container*		getNewContainer(const fp_Container* pFirstContainer = nullptr) override;
 	virtual fl_SectionLayout *  getSectionLayout(void)  const override;
