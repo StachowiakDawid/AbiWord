@@ -32,9 +32,9 @@ public:
 
 	bool cmdCharInsert(const UT_UCS4Char * text, UT_uint32 count, bool bForce = false);
 private:
-	FL_SelectionPreserver ();
-	FL_SelectionPreserver (const FL_SelectionPreserver & other);
-	FL_SelectionPreserver& operator=(const FL_SelectionPreserver & other);
+	FL_SelectionPreserver() = delete;
+	FL_SelectionPreserver(const FL_SelectionPreserver & other) = delete;
+	FL_SelectionPreserver& operator=(const FL_SelectionPreserver & other) = delete;
 
 	FV_View * m_pView;
 	bool m_bHadSelection;

@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef FV_VIEW_DOUBLE_BUFFERING_H
-#define FV_VIEW_DOUBLE_BUFFERING_H
+#pragma once
 
 #include "gr_Graphics.h"
 #include "gr_Painter.h"
@@ -67,5 +66,3 @@ private:
 		const UT_Rect *clipRectFromGraphics,
 		bool bDirtyRunsOnly);
 };
-
-#endif
