@@ -21,6 +21,7 @@
 #pragma once
 
 #include "ut_std_string.h"
+#include "ut_stack.h"
 #include "ie_exp.h"
 #include "ie_Table.h"
 #include "pl_Listener.h"

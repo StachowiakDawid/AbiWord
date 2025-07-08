@@ -23,9 +23,9 @@
 
 #include <stdio.h>
 #include <list>
+#include <stack>
 #include "ut_types.h"
 #include "ut_growbuf.h"
-#include "ut_stack.h"
 #include "pt_Types.h"
 #include "pp_TableAttrProp.h"
 #include "pf_Fragments.h"
@@ -56,6 +56,7 @@ class fl_ContainerLayout;
 class ABI_EXPORT pt_PieceTable
 {
 	friend class PX_ChangeRecord;
+	typedef std::stack<pf_Frag_Strux*> StruxStack;
 public:
 	pt_PieceTable(PD_Document * pDocument);
 	~pt_PieceTable();
@@ -477,10 +478,10 @@ protected:
                                             PT_DocPosition& dpos2) const;
 	bool					_tweakDeleteSpanOnce(PT_DocPosition& dpos1,
 												 PT_DocPosition& dpos2,
-												 UT_Stack * pstDelayStruxDelete) const;
+												 StruxStack& pstDelayStruxDelete) const;
 	bool					_tweakDeleteSpan(PT_DocPosition& dpos1,
 											 PT_DocPosition& dpos2,
-											 UT_Stack * pstDelayStruxDelete) const;
+											 StruxStack& pstDelayStruxDelete) const;
 	bool					_deleteFormatting(PT_DocPosition dpos1,
 											  PT_DocPosition dpos2);
 
@@ -497,7 +498,7 @@ protected:
 
 	bool					_deleteComplexSpan(PT_DocPosition & dpos1,
 											   PT_DocPosition & dpos2,
-											   UT_Stack *stDelayStruxDelete);
+											   StruxStack& stDelayStruxDelete);
 
 
 	bool					_deleteComplexSpan_norec(PT_DocPosition dpos1,

@@ -3,6 +3,7 @@
  * Copyright (C) 1998 AbiSource, Inc.
  * Copyright (C) 2001,2002 Tomas Frydrych
  * Some change tracking code was added in 2011 by Ben Martin
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +29,6 @@
 #include "ut_assert.h"
 #include "ut_debugmsg.h"
 #include "ut_growbuf.h"
-#include "ut_stack.h"
 #include "pt_PieceTable.h"
 #include "pf_Frag.h"
 #include "pf_Frag_FmtMark.h"
@@ -1577,7 +1577,7 @@ bool pt_PieceTable::_isSimpleDeleteSpan(PT_DocPosition dpos1,
 
 bool pt_PieceTable::_tweakDeleteSpanOnce(PT_DocPosition & dpos1,
 										 PT_DocPosition & dpos2,
-										 UT_Stack * pstDelayStruxDelete) const
+										 StruxStack& pstDelayStruxDelete) const
 {
 	if(m_bDoNotTweakPosition)
 		return true;
@@ -1781,7 +1781,7 @@ bool pt_PieceTable::_tweakDeleteSpanOnce(PT_DocPosition & dpos1,
 					if ((pfs_BeforeSection == pfs_LastSection) && (dpos2 > dpos1 +1))
 					{
 						dpos2 -= pf_Last->getLength();
-						pstDelayStruxDelete->push(pf_Before);
+						pstDelayStruxDelete.push(static_cast<pf_Frag_Strux*>(pf_Before));
 						return true;
 					}
 				}
@@ -1794,7 +1794,7 @@ bool pt_PieceTable::_tweakDeleteSpanOnce(PT_DocPosition & dpos1,
 
 bool pt_PieceTable::_tweakDeleteSpan(PT_DocPosition & dpos1,
 									 PT_DocPosition & dpos2,
-									 UT_Stack * pstDelayStruxDelete) const
+									 StruxStack& pstDelayStruxDelete) const
 {
 	if(m_bDoNotTweakPosition)
 		return true;
@@ -1949,13 +1949,13 @@ bool pt_PieceTable::_tweakDeleteSpan(PT_DocPosition & dpos1,
 	{
 		PT_DocPosition old_dpos1 = dpos1;
 		PT_DocPosition old_dpos2 = dpos2;
-		UT_sint32 old_iStackSize = pstDelayStruxDelete->getDepth();
+		std::size_t old_iStackSize = pstDelayStruxDelete.size();
 
 		if(!_tweakDeleteSpanOnce(dpos1, dpos2, pstDelayStruxDelete))
 			return false;
 
 		if (dpos1 == old_dpos1 && dpos2 == old_dpos2
-			&& pstDelayStruxDelete->getDepth() == old_iStackSize)
+			&& pstDelayStruxDelete.size() == old_iStackSize)
 			return true;
 	}
 }
@@ -2208,7 +2208,7 @@ pt_PieceTable::_deleteComplexSpanHAR( pf_Frag_Object *pO,
  */
 bool pt_PieceTable::_deleteComplexSpan(PT_DocPosition & origPos1,
 									   PT_DocPosition & origPos2,
-									   UT_Stack * stDelayStruxDelete)
+									   StruxStack& stDelayStruxDelete)
 {
 	pf_Frag * pfNewEnd = nullptr;
 	UT_uint32 fragOffsetNewEnd = 0;
@@ -2339,7 +2339,7 @@ bool pt_PieceTable::_deleteComplexSpan(PT_DocPosition & origPos1,
 					fragOffsetNewEnd = 0;
 					pfsContainer = pfs;
 					dpos1 = dpos1 +  lengthInFrag;
-					stDelayStruxDelete->push(pfs);
+					stDelayStruxDelete.push(pfs);
 				}
 				else
 				{
@@ -2377,14 +2377,14 @@ bool pt_PieceTable::_deleteComplexSpan(PT_DocPosition & origPos1,
 							pfsContainer = pfs;
 							dpos1 = dpos1 +  lengthInFrag;
 							UT_DEBUGMSG(("Push footnote strux \n"));
-							stDelayStruxDelete->push(pfs);
+							stDelayStruxDelete.push(pfs);
 							iFootnoteCount++;
 							bPrevWasFootnote = true;
 						}
 						else
 						{
 							UT_DEBUGMSG(("Push endfootnote strux \n"));
-							stDelayStruxDelete->push(pfs);
+							stDelayStruxDelete.push(pfs);
 						}
 					}
 				}
@@ -2404,7 +2404,7 @@ bool pt_PieceTable::_deleteComplexSpan(PT_DocPosition & origPos1,
 					fragOffsetNewEnd = 0;
 					dpos1 = dpos1 + lengthInFrag;
 				}
-				stDelayStruxDelete->push(pfs);
+				stDelayStruxDelete.push(pfs);
 			}
 //
 // Look to see if we've reached the end of the table, if so delete it all now
@@ -2426,7 +2426,8 @@ bool pt_PieceTable::_deleteComplexSpan(PT_DocPosition & origPos1,
 //
 // First delete the EndTable Strux
 //
-					stDelayStruxDelete->pop(reinterpret_cast<void **>(&pfs));
+					pfs = stDelayStruxDelete.top();
+					stDelayStruxDelete.pop();
 					PT_DocPosition myPos2 = pfs->getPos();
 					_deleteFormatting(myPos2 - pfs->getLength(), myPos2);
 					UT_DEBUGMSG(("DELeteing EndTable Strux, pos= %d \n",pfs->getPos()));
@@ -2435,7 +2436,8 @@ bool pt_PieceTable::_deleteComplexSpan(PT_DocPosition & origPos1,
 													  &fragOffsetNewEnd);
 					while(bResult && myTable > 0)
 					{
-						stDelayStruxDelete->pop(reinterpret_cast<void **>(&pfs));
+						pfs = stDelayStruxDelete.top();
+						stDelayStruxDelete.pop();
 						if(pfs->getStruxType() == PTX_SectionTable)
 						{
 							myTable--;
@@ -2470,7 +2472,8 @@ bool pt_PieceTable::_deleteComplexSpan(PT_DocPosition & origPos1,
 // First delete the EndFootnote Strux
 //
 				UT_DEBUGMSG(("Doing Footnote delete immediately \n"));
-				stDelayStruxDelete->pop(reinterpret_cast<void **>(&pfs));
+				pfs = stDelayStruxDelete.top();
+				stDelayStruxDelete.pop();
 
 				PT_DocPosition myPos2 = pfs->getPos();
 				_deleteFormatting(myPos2 - pfs->getLength(), myPos2);
@@ -2485,7 +2488,8 @@ bool pt_PieceTable::_deleteComplexSpan(PT_DocPosition & origPos1,
 //
 				while(bResult && iFootnoteCount > 0)
 				{
-					stDelayStruxDelete->pop(reinterpret_cast<void **>(&pfs));
+					pfs = stDelayStruxDelete.top();
+					stDelayStruxDelete.pop();
 					if(isFootnote(pfs))
 					{
 						UT_DEBUGMSG(("Found and deleted footnote strux \n"));
@@ -2528,7 +2532,8 @@ bool pt_PieceTable::_deleteComplexSpan(PT_DocPosition & origPos1,
 // First delete the EndFrame Strux
 //
 				UT_DEBUGMSG(("Doing Frame delete now \n"));
-				stDelayStruxDelete->pop(reinterpret_cast<void **>(&pfs));
+				pfs = stDelayStruxDelete.top();
+				stDelayStruxDelete.pop();
 				PT_DocPosition myPos2 = pfs->getPos();
 				_deleteFormatting(myPos2 - pfs->getLength(), myPos2);
 				bool isFrame =  pfs->getStruxType() == PTX_SectionFrame;
@@ -2548,7 +2553,8 @@ bool pt_PieceTable::_deleteComplexSpan(PT_DocPosition & origPos1,
 //
 				while(bResult && !isFrame)
 				{
-					stDelayStruxDelete->pop(reinterpret_cast<void **>(&pfs));
+					pfs = stDelayStruxDelete.top();
+					stDelayStruxDelete.pop();
 					PT_DocPosition myPos = 0;
 					if(pfs)
 					{
@@ -3156,14 +3162,14 @@ bool pt_PieceTable::_realDeleteSpan(PT_DocPosition dpos1,
 	UT_return_val_if_fail (dpos2 > dpos1, false);
 
 	bool bSuccess = true;
-	UT_Stack stDelayStruxDelete;
+	pt_PieceTable::StruxStack stDelayStruxDelete;
 
 	PT_DocPosition old_dpos2 = dpos2;
 
 	//  Before we begin the delete proper, we might want to adjust the ends
 	//  of the delete slightly to account for expected behavior on
 	//  structural boundaries.
-	bSuccess = _tweakDeleteSpan(dpos1, dpos2, &stDelayStruxDelete);
+	bSuccess = _tweakDeleteSpan(dpos1, dpos2, stDelayStruxDelete);
 	if (!bSuccess)
 	{
 		return false;
@@ -3201,13 +3207,13 @@ bool pt_PieceTable::_realDeleteSpan(PT_DocPosition dpos1,
 		beginMultiStepGlob();
 	}
 
-	bool bIsSimple = _isSimpleDeleteSpan(dpos1, dpos2) && stDelayStruxDelete.getDepth() == 0;
+	bool bIsSimple = _isSimpleDeleteSpan(dpos1, dpos2) && stDelayStruxDelete.size() == 0;
 	if (bIsSimple)
 	{
 		//  If the delete is sure to be within a fragment, we don't
 		//  need to worry about much of the bookkeeping of a complex
 		//  delete.
-		bSuccess = _deleteComplexSpan(dpos1, dpos2, &stDelayStruxDelete);
+		bSuccess = _deleteComplexSpan(dpos1, dpos2, stDelayStruxDelete);
 	}
 	else
 	{
@@ -3216,23 +3222,24 @@ bool pt_PieceTable::_realDeleteSpan(PT_DocPosition dpos1,
 		//  first, and then the actual spans.
 		_changePointWithNotify(old_dpos2);
 
-		UT_sint32 oldDepth = stDelayStruxDelete.getDepth();
+		std::size_t oldDepth = stDelayStruxDelete.size();
 		bSuccess = _deleteFormatting(dpos1, dpos2);
 		if (bSuccess)
 		{
-			bSuccess = _deleteComplexSpan(dpos1, dpos2, &stDelayStruxDelete);
+			bSuccess = _deleteComplexSpan(dpos1, dpos2, stDelayStruxDelete);
 		}
 
 		bool prevDepthReached = false;
 		PT_DocPosition finalPos = dpos1;
-		while (bSuccess && stDelayStruxDelete.getDepth() > 0)
+		while (bSuccess && stDelayStruxDelete.size() > 0)
 		{
 			pf_Frag_Strux * pfs;
-			if(stDelayStruxDelete.getDepth() <= oldDepth)
+			if(stDelayStruxDelete.size() <= oldDepth)
 			{
 				prevDepthReached = true;
 			}
-			stDelayStruxDelete.pop(reinterpret_cast<void **>(&pfs));
+			pfs = stDelayStruxDelete.top();
+			stDelayStruxDelete.pop();
 
  			pf_Frag *pf;
 			PT_DocPosition dp;
@@ -3327,7 +3334,6 @@ bool pt_PieceTable::deleteFieldFrag(const pf_Frag * pf)
 	UT_return_val_if_fail (m_pts==PTS_Editing,false);
 
 	bool bSuccess = true;
-	UT_Stack stDelayStruxDelete;
 
 	PT_DocPosition dpos1 = getFragPosition(pf);
 	UT_return_val_if_fail (dpos1,false);
