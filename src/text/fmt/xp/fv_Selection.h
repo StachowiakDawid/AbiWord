@@ -71,7 +71,7 @@ public:
 	FV_SelectionMode      getPrevSelectionMode(void) const
 		{ return m_iPrevSelectionMode;}
 	void                  setTOCSelected(fl_TOCLayout * pTOCL);
-	fl_TOCLayout *        getSelectedTOC(void)
+	fl_TOCLayout *        getSelectedTOC(void) const
 		{ return m_pSelectedTOC;}
 	PT_DocPosition        getSelectionAnchor(void) const;
 	void                  setSelectionAnchor(PT_DocPosition pos);

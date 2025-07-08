@@ -19,8 +19,7 @@
  * Author: Carlos Garnacho <carlos@lanedo.com>
  */
 
-#ifndef FV_SELECTIONHANDLES_H
-#define FV_SELECTIONHANDLES_H
+#pragma once
 
 #include "pt_Types.h"
 #include "fv_Selection.h"
@@ -50,7 +49,5 @@ protected:
 	FV_Selection          m_pSelection;
 
 private:
-	bool _getPositionCoords(PT_DocPosition pos, UT_sint32& x, UT_sint32& y, UT_uint32& height);
+	bool _getPositionCoords(PT_DocPosition pos, UT_sint32& x, UT_sint32& y, UT_uint32& height) const;
 };
-
-#endif /* FV_SELECTIONHANDLES_H */

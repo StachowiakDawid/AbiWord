@@ -29,7 +29,7 @@ FV_SelectionHandles::FV_SelectionHandles (FV_View * pView, FV_Selection pSelecti
 {
 }
 
-bool FV_SelectionHandles::_getPositionCoords(PT_DocPosition pos, UT_sint32& x, UT_sint32& y, UT_uint32& height)
+bool FV_SelectionHandles::_getPositionCoords(PT_DocPosition pos, UT_sint32& x, UT_sint32& y, UT_uint32& height) const
 {
 	UT_sint32 x1, y1, x2, y2;
 	UT_uint32 h;

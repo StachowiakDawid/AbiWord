@@ -61,11 +61,11 @@ public:
 	static void 		  _autoScroll(UT_Worker * pTimer);
 	void                  clearCursor(void);
 	void                  abortDrag(void);
-	bool                  isNotdraggingImage(void)
+	bool                  isNotdraggingImage(void) const
 	  { return m_bNotDraggingImage;}
-	bool                  isDoingCopy(void)
+	bool                  isDoingCopy(void) const
 	  { return m_bDoingCopy;}
-	UT_Rect *             getCurFrame(void)
+	const UT_Rect *             getCurFrame(void) const
 	  { return &m_recCurFrame;}
  protected:
 	void                  _mouseDrag(UT_sint32 x, UT_sint32 y);
