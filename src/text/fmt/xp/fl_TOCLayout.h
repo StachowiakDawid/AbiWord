@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef TOCLAYOUT_H
-#define TOCLAYOUT_H
+#pragma once
 
 #include "ut_string_class.h"
 #include "ut_types.h"
@@ -49,25 +48,25 @@ public:
 			 bool bInherit,
 			 UT_sint32 iStartAt);
 
-	virtual ~ TOCEntry(void);
-	fl_BlockLayout *     getBlock(void)
+	virtual ~TOCEntry(void);
+	fl_BlockLayout *     getBlock(void) const
 		{ return m_pBlock;}
-	PT_DocPosition       getPositionInDoc(void);
-	UT_sint32            getLevel(void)
+	PT_DocPosition       getPositionInDoc(void) const;
+	UT_sint32            getLevel(void) const
 		{ return m_iLevel;}
-	UT_UTF8String &      getDispStyle(void)
+	const UT_UTF8String &      getDispStyle(void) const
 		{ return m_sDispStyle;}
 	bool                 hasLabel(void) const
 		{ return m_bHasLabel;}
-	bool                 doesInherit(void)
+	bool                 doesInherit(void) const
 		{ return m_bInherit;}
 	void                 setPosInList(UT_sint32 posInList);
-	UT_sint32            getPosInList(void)
+	UT_sint32            getPosInList(void) const
 		{ return m_iPosInList;}
-	void                 calculateLabel(TOCEntry * pPrevLevel);
-    UT_UTF8String &      getNumLabel(void)
+	void                 calculateLabel(const TOCEntry * pPrevLevel);
+    const UT_UTF8String &      getNumLabel(void) const
 		{ return m_sLabel;}
-	UT_UTF8String       getFullLabel(void);
+	UT_UTF8String       getFullLabel(void) const;
 private:
 	fl_BlockLayout *  m_pBlock;
 	UT_sint32         m_iLevel;
@@ -120,25 +119,25 @@ public:
 	bool                     isEndTOCIn(void) const {return m_bHasEndTOC;}
 	void                     setTOCEndIn(void);
 	TOCEntry *               createNewEntry(fl_BlockLayout * pBL);
-	PT_DocPosition           getDocPosition(void);
-	UT_uint32                getLength(void);
-    fl_BlockLayout  *        findMatchingBlock(fl_BlockLayout * pBlock);
-	UT_sint32                isInVector(fl_BlockLayout * pBlock, UT_GenericVector<TOCEntry *>* pVecBlocks);
+	PT_DocPosition           getDocPosition(void) const;
+	UT_uint32                getLength(void) const;
+    fl_BlockLayout  *        findMatchingBlock(const fl_BlockLayout * pBlock) const;
+	UT_sint32                isInVector(const fl_BlockLayout * pBlock, const UT_GenericVector<TOCEntry *>& pVecBlocks) const;
 	UT_uint32                getTOCPID(void) const { return m_iTOCPID;}
 	bool                     isTOCEmpty() const {return (m_vecEntries.getItemCount() == 0);}
-	bool                     isStyleInTOC(UT_UTF8String & sStyle);
-	bool                     isBlockInTOC(fl_BlockLayout * pBlock);
+	bool                     isStyleInTOC(const UT_UTF8String & sStyle) const;
+	bool                     isBlockInTOC(fl_BlockLayout * pBlock) const;
 	bool                     addBlock(fl_BlockLayout * pBlock, bool bVerifyRange = true);
 	bool                     removeBlock(fl_BlockLayout * pBlock);
-	fl_BlockLayout *         getMatchingBlock(fl_BlockLayout * pBlock);
-	UT_UTF8String &          getTOCListLabel(fl_BlockLayout * pBlock);
-	UT_UTF8String &          getTOCHeading(void) { return m_sTOCHeading;}
+	fl_BlockLayout *         getMatchingBlock(fl_BlockLayout * pBlock) const;
+	UT_UTF8String &          getTOCListLabel(fl_BlockLayout * pBlock) const;
+	const UT_UTF8String &    getTOCHeading(void) const { return m_sTOCHeading;}
 	UT_sint32                getCurrentLevel(void) const { return m_iCurrentLevel;}
-	FootnoteType             getNumType(UT_sint32 iLevel);
-	eTabLeader               getTabLeader(UT_sint32 iLevel);
-	UT_sint32                getTabPosition(UT_sint32 iLevel, const fl_BlockLayout * pBlock);
+	FootnoteType             getNumType(UT_sint32 iLevel) const;
+	eTabLeader               getTabLeader(UT_sint32 iLevel) const;
+	UT_sint32                getTabPosition(UT_sint32 iLevel, const fl_BlockLayout * pBlock) const;
 	void                     setSelected(bool bSetSelected);
-	bool                     isSelected(void) { return m_bIsSelected;}
+	bool                     isSelected(void) const { return m_bIsSelected;}
 
 	const UT_UTF8String &    getRangeBookmarkName() const {return m_sRangeBookmark;}
 	bool                     verifyBookmarkAssumptions();
@@ -152,7 +151,7 @@ private:
 	virtual void             _purgeLayout(void);
 	virtual void		     _lookupProperties(const PP_AttrProp* pAP) override;
 	void                     _createTOCContainer(void);
-	bool                     _isStyleInTOC(UT_UTF8String & sStyle, UT_UTF8String & sTOCStyle);
+	bool                     _isStyleInTOC(const UT_UTF8String & sStyle, const UT_UTF8String & sTOCStyle) const;
 	void                     _insertTOCContainer(fp_TOCContainer * pNewTOC);
 	void                     _localCollapse();
 
@@ -162,8 +161,8 @@ private:
 
 	void                     _addBlockInVec(fl_BlockLayout * pBlock,UT_UTF8String & sStyle);
 	void                     _removeBlockInVec(fl_BlockLayout * pBlock, bool bDontRecurse = false);
-	void                     _calculateLabels(void);
-	UT_sint32                _getStartValue(TOCEntry * pEntry);
+	void                     _calculateLabels(void) const;
+	UT_sint32                _getStartValue(const TOCEntry * pEntry) const;
 	bool                     m_bNeedsRebuild;
 	bool                     m_bNeedsFormat;
 	bool                     m_bIsOnPage;
@@ -262,5 +261,3 @@ private:
 	fl_ContainerLayout*			m_pCurrentBL;
 	PD_Style *                  m_pStyle;
 };
-
-#endif /* TOCLAYOUT_H */

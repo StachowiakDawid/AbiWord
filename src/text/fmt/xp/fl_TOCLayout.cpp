@@ -84,7 +84,7 @@ TOCEntry::~TOCEntry(void)
 	UT_DEBUGMSG(("Deleteing entry %p \n", (void*)this));
 }
 
-PT_DocPosition TOCEntry::getPositionInDoc(void)
+PT_DocPosition TOCEntry::getPositionInDoc(void) const
 {
 	PT_DocPosition pos = m_pBlock->getPosition();
 	return pos;
@@ -95,7 +95,7 @@ void TOCEntry::setPosInList(UT_sint32 posInList)
 	m_iPosInList = posInList;
 }
 
-void TOCEntry::calculateLabel(TOCEntry * pPrevLevel)
+void TOCEntry::calculateLabel(const TOCEntry * pPrevLevel)
 {
 	UT_String sVal;
 	sVal.clear();
@@ -110,7 +110,7 @@ void TOCEntry::calculateLabel(TOCEntry * pPrevLevel)
 	m_sLabel += sVal.c_str();
 }
 
-UT_UTF8String  TOCEntry::getFullLabel(void)
+UT_UTF8String  TOCEntry::getFullLabel(void) const
 {
 	static UT_UTF8String sFull;
 	sFull.clear();
@@ -174,9 +174,9 @@ fl_TOCLayout::~fl_TOCLayout()
  * This is very useful for determining the value of the footnote reference
  * and anchor. 
 */
-PT_DocPosition fl_TOCLayout::getDocPosition(void) 
+PT_DocPosition fl_TOCLayout::getDocPosition(void) const
 {
-	pf_Frag_Strux* sdh = getStruxDocHandle();
+	const pf_Frag_Strux* sdh = getStruxDocHandle();
     return 	m_pLayout->getDocument()->getStruxPosition(sdh);
 }
 
@@ -207,7 +207,7 @@ void fl_TOCLayout::setSelected(bool bIsSelected)
  * getDocPosition() + getLength() is one value beyond the the EndFootnote
  * strux
  */
-UT_uint32 fl_TOCLayout::getLength(void)
+UT_uint32 fl_TOCLayout::getLength(void) const
 {
 	PT_DocPosition startPos = getDocPosition();
 	const pf_Frag_Strux* sdhEnd = nullptr;
@@ -289,7 +289,7 @@ fl_SectionLayout * fl_TOCLayout::getSectionLayout(void) const
 	return nullptr;
 }
 
-FootnoteType fl_TOCLayout::getNumType(UT_sint32 iLevel)
+FootnoteType fl_TOCLayout::getNumType(UT_sint32 iLevel) const
 {
 	if(iLevel == 1)
 	{
@@ -312,7 +312,7 @@ FootnoteType fl_TOCLayout::getNumType(UT_sint32 iLevel)
 }
 
 
-eTabLeader fl_TOCLayout::getTabLeader(UT_sint32 iLevel)
+eTabLeader fl_TOCLayout::getTabLeader(UT_sint32 iLevel) const
 {
 	if(iLevel == 1)
 	{
@@ -334,9 +334,9 @@ eTabLeader fl_TOCLayout::getTabLeader(UT_sint32 iLevel)
 	return static_cast<eTabLeader>(0);
 }
 
-UT_sint32 fl_TOCLayout::getTabPosition(UT_sint32 iLevel, const fl_BlockLayout * pBlock)
+UT_sint32 fl_TOCLayout::getTabPosition(UT_sint32 iLevel, const fl_BlockLayout * pBlock) const
 {
-	fp_TOCContainer * pTOCC = static_cast<fp_TOCContainer *>(getFirstContainer());
+	const fp_TOCContainer * pTOCC = static_cast<const fp_TOCContainer *>(getFirstContainer());
 	if(pTOCC == nullptr)
 	{
 		UT_ASSERT(UT_SHOULD_NOT_HAPPEN);
@@ -807,16 +807,15 @@ void fl_TOCLayout::_addBlockInVec(fl_BlockLayout * pBlock, UT_UTF8String & sStyl
 	pBlock->setStyleInTOC(true);
 }
 
-UT_sint32 fl_TOCLayout::isInVector(fl_BlockLayout * pBlock, 
-								   UT_GenericVector<TOCEntry *>* pVecEntries)
+UT_sint32 fl_TOCLayout::isInVector(const fl_BlockLayout * pBlock,
+								   const UT_GenericVector<TOCEntry *>& pVecEntries) const
 {
-	TOCEntry * pThisEntry = nullptr;
-	fl_BlockLayout * pThisBL = nullptr;
-	UT_sint32 i = 0;
-	for(i=0; i< pVecEntries->getItemCount(); i++)
+	const TOCEntry * pThisEntry = nullptr;
+	const fl_BlockLayout * pThisBL = nullptr;
+	for (UT_sint32 i = 0; i < pVecEntries.getItemCount(); i++)
 	{
 
-		pThisEntry = pVecEntries->getNthItem(i);
+		pThisEntry = pVecEntries.getNthItem(i);
 		UT_nonnull_or_continue(pThisEntry);
 		pThisBL = pThisEntry->getBlock();
 		UT_nonnull_or_continue(pThisBL);
@@ -839,7 +838,7 @@ bool fl_TOCLayout::removeBlock(fl_BlockLayout * pBlock)
 	{
 		return false;
 	}
-	if(isInVector(pBlock,&m_vecEntries) >= 0)
+	if (isInVector(pBlock, m_vecEntries) >= 0)
 	{
 		fp_TOCContainer * pTOC = static_cast<fp_TOCContainer *>(getFirstContainer());
 		if(pTOC)
@@ -854,7 +853,7 @@ bool fl_TOCLayout::removeBlock(fl_BlockLayout * pBlock)
 }
 
 
-fl_BlockLayout * fl_TOCLayout::findMatchingBlock(fl_BlockLayout * pBlock)
+fl_BlockLayout * fl_TOCLayout::findMatchingBlock(const fl_BlockLayout * pBlock) const
 {
 	TOCEntry * pThisEntry = nullptr;
 	fl_BlockLayout * pThisBL = nullptr;
@@ -962,7 +961,7 @@ void fl_TOCLayout::_removeBlockInVec(fl_BlockLayout * pBlock, bool /*bDontRecurs
 
 }
 
-UT_sint32 fl_TOCLayout::_getStartValue(TOCEntry * pEntry)
+UT_sint32 fl_TOCLayout::_getStartValue(const TOCEntry * pEntry) const
 {
 	if(pEntry->getLevel() == 1)
 	{
@@ -982,7 +981,7 @@ UT_sint32 fl_TOCLayout::_getStartValue(TOCEntry * pEntry)
 	}
 }
 
-void fl_TOCLayout::_calculateLabels(void)
+void fl_TOCLayout::_calculateLabels(void) const
 {
 	UT_sint32 i = 0;
 	TOCEntry * pThisEntry = nullptr;
@@ -1074,7 +1073,7 @@ void fl_TOCLayout::_calculateLabels(void)
 	}
 }
 
-bool fl_TOCLayout::isStyleInTOC(UT_UTF8String & sStyle)
+bool fl_TOCLayout::isStyleInTOC(const UT_UTF8String & sStyle) const
 {
 	if(_isStyleInTOC(sStyle,m_sSourceStyle1))
 	{
@@ -1098,7 +1097,7 @@ bool fl_TOCLayout::isStyleInTOC(UT_UTF8String & sStyle)
 /*!
  * Does a case insensitive search of the basedon heirachy for a match.
  */
-bool fl_TOCLayout::_isStyleInTOC(UT_UTF8String & sStyle, UT_UTF8String & sTOCStyle)
+bool fl_TOCLayout::_isStyleInTOC(const UT_UTF8String & sStyle, const UT_UTF8String & sTOCStyle) const
 {
 	UT_UTF8String sTmpStyle = sStyle;
 	const char * sLStyle = sTOCStyle.utf8_str();
@@ -1131,10 +1130,10 @@ bool fl_TOCLayout::_isStyleInTOC(UT_UTF8String & sStyle, UT_UTF8String & sTOCSty
 }
 
 
-bool fl_TOCLayout::isBlockInTOC(fl_BlockLayout * pBlock)
+bool fl_TOCLayout::isBlockInTOC(fl_BlockLayout * pBlock) const
 {
-	TOCEntry * pEntry = nullptr;
-	pf_Frag_Strux* sdh = pBlock->getStruxDocHandle();
+	const TOCEntry * pEntry = nullptr;
+	const pf_Frag_Strux* sdh = pBlock->getStruxDocHandle();
 	UT_sint32 i = 0;
 	for(i=0; i< m_vecEntries.getItemCount(); i++)
 	{
@@ -1152,7 +1151,7 @@ bool fl_TOCLayout::isBlockInTOC(fl_BlockLayout * pBlock)
 }
 
 
-UT_UTF8String & fl_TOCLayout::getTOCListLabel(fl_BlockLayout * pBlock)
+UT_UTF8String & fl_TOCLayout::getTOCListLabel(fl_BlockLayout * pBlock) const
 {
 	static UT_UTF8String str;
 	str.clear();
@@ -1181,7 +1180,7 @@ UT_UTF8String & fl_TOCLayout::getTOCListLabel(fl_BlockLayout * pBlock)
 	return str;
 }
 
-fl_BlockLayout * fl_TOCLayout::getMatchingBlock(fl_BlockLayout * pBlock)
+fl_BlockLayout * fl_TOCLayout::getMatchingBlock(fl_BlockLayout * pBlock) const
 {
 	return findMatchingBlock(pBlock);
 }
