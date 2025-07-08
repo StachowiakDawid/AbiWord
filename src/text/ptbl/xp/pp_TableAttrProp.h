@@ -19,8 +19,7 @@
  */
 
 
-#ifndef PP_TABLEATTRPROP_H
-#define PP_TABLEATTRPROP_H
+#pragma once
 
 #include "ut_types.h"
 #include "ut_vector.h"
@@ -59,5 +58,3 @@ protected:
 	UT_GenericVector<PP_AttrProp *> m_vecTable;
 	UT_GenericVector<PP_AttrProp *>	m_vecTableSorted;
 };
-
-#endif /* PP_TABLEATTRPROP_H */

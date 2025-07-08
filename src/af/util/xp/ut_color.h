@@ -17,21 +17,13 @@
  * 02110-1301 USA.
  */
 
-#ifndef UTCOLOR_H
-#define UTCOLOR_H
+#pragma once
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
-
 
 #include <string>
 
@@ -54,12 +46,12 @@ public:
     // take ownership
     UT_RGBColor(const UT_ColorPatImpl * pattern);
     ~UT_RGBColor();
-	bool operator != (const UT_RGBColor &op1)
+	bool operator != (const UT_RGBColor &op1) const
 	{
 		return (op1.m_red != m_red || op1.m_grn != m_grn || op1.m_blu != m_blu);
 	}
 
-	bool operator == (const UT_RGBColor &op1)
+	bool operator == (const UT_RGBColor &op1) const
 	{
 		return (op1.m_red == m_red && op1.m_grn == m_grn && op1.m_blu == m_blu);
 	}
@@ -160,7 +152,7 @@ public:
 	const char * lookupNamedColor (const char * color_name); // "Orange" or "blue" or "LightGoldenRodYellow" or...
 	const char * setHashIfValid (const char * color_hash);   // "ff0013" or "AD5FE6" or... (NOTE: no '#')
 
-	const UT_RGBColor rgb (); // Call this *if* setColor () succeeds; otherwise defaults to black.
+	const UT_RGBColor rgb () const; // Call this *if* setColor () succeeds; otherwise defaults to black.
 };
 
 
@@ -171,5 +163,3 @@ public:
 // TODO maintainers please fix their platform
 typedef void AbiNativeWidget;
 #endif
-
-#endif /* UTCOLOR_H */

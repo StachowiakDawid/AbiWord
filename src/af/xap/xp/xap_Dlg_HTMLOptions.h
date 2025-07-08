@@ -19,17 +19,9 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_DIALOG_HTMLOPTIONS_H
-#define XAP_DIALOG_HTMLOPTIONS_H
+#pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
-
 #include "xap_Dialog.h"
 
 class XAP_App;
@@ -126,5 +118,3 @@ private:
 	XAP_App *				m_app;
 	UT_UTF8String *         m_pLinkCSS;
 };
-
-#endif /* XAP_DIALOG_HTMLOPTIONS_H */

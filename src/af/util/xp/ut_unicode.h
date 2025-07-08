@@ -21,14 +21,8 @@
 // 02110-1301 USA.
 //
 
-
-#ifndef __UT_UNICODE_H_
-#define __UT_UNICODE_H_
-
-#ifndef UT_TYPES_H
+#pragma once
 #include "ut_types.h"
-#endif
-
 
 /** contain various unicode function. Just a namespace */
 class ABI_EXPORT UT_Unicode
@@ -52,6 +46,3 @@ public:
  */
 	static bool UCS4_to_UTF8 (char *& buffer, size_t & length, UT_UCS4Char ucs4);
 };
-
-
-#endif

@@ -19,19 +19,11 @@
  * 02110-1301 USA.
  */
 
-
-#ifndef IE_IMP_ABIWORD_1_H
-#define IE_IMP_ABIWORD_1_H
+#pragma once
 
 #include <stdio.h>
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 #include "ut_hash.h"
 
 #include "ie_imp_XML.h"
@@ -102,5 +94,3 @@ protected:
 	bool                m_bInEmbed;
 	UT_uint32           m_iImageId;
 };
-
-#endif /* IE_IMP_ABIWORD_1_H */

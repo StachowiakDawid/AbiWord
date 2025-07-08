@@ -1,15 +1,8 @@
-#ifndef UT_BIJECTION_H
-#define UT_BIJECTION_H
+#pragma once
 
 #include <stdlib.h>
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 class ABI_EXPORT UT_Bijection
 {
@@ -40,5 +33,3 @@ private:
     char **m_first;
     char **m_second;
 };
-
-#endif

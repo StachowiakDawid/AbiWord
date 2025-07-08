@@ -17,17 +17,9 @@
  * 02110-1301 USA.
  */
 
+#pragma once
 
-#ifndef UT_ENCODING_H
-#define UT_ENCODING_H
-
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 struct enc_entry
 {
@@ -41,16 +33,14 @@ class ABI_EXPORT UT_Encoding
 public:
 	UT_Encoding();
 
-	UT_uint32	getCount();
-	const gchar * 	getNthEncoding(UT_uint32 n);
-	const gchar * 	getNthDescription(UT_uint32 n);
-	const gchar * 	getEncodingFromDescription(const gchar * desc);
-	UT_uint32 	getIndxFromEncoding(const gchar * enc);
-	UT_uint32 	getIdFromEncoding(const gchar * enc);
+	UT_uint32	getCount() const;
+	const gchar * 	getNthEncoding(UT_uint32 n) const;
+	const gchar * 	getNthDescription(UT_uint32 n) const;
+	const gchar * 	getEncodingFromDescription(const gchar * desc) const;
+	UT_uint32 	getIndxFromEncoding(const gchar * enc) const;
+	UT_uint32 	getIdFromEncoding(const gchar * enc) const;
 
 private:
 	static bool	s_Init;
 	static UT_uint32	s_iCount;
 };
-
-#endif

@@ -17,18 +17,9 @@
  * 02110-1301 USA.
  */
 
+#pragma once
 
-
-#ifndef UT_TIMER_H
-#define UT_TIMER_H
-
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 #include "ut_vector.h"
 #include "ut_worker.h"
 
@@ -54,7 +45,7 @@ public:
 	virtual void start(void) override = 0;		/* resume events */
 
 	void setIdentifier(UT_uint32);
-	UT_uint32 getIdentifier();
+	UT_uint32 getIdentifier() const;
 
 	static UT_Timer* findTimer(UT_uint32 iIdentifier);
 
@@ -72,5 +63,3 @@ protected:
  private:
 	UT_uint32 m_iIdentifier;
 };
-
-#endif /* UT_TIMER_H */

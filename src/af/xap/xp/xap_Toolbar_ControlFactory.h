@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_TOOLBAR_CONTROLFACTORY_H
-#define XAP_TOOLBAR_CONTROLFACTORY_H
+#pragma once
 
 /*****************************************************************
 ******************************************************************
@@ -28,13 +27,8 @@
 ******************************************************************
 *****************************************************************/
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
+
 /* #include "ut_vector.h" */
 
 /* #include "EV_Toolbar_Control.h" */
@@ -58,7 +52,7 @@ public:
 	XAP_Toolbar_ControlFactory(int nrElem, const struct _ctl_table * pDlgTable);
 	virtual ~XAP_Toolbar_ControlFactory(void);
 
-	EV_Toolbar_Control *		getControl(EV_Toolbar * pToolbar, XAP_Toolbar_Id id);
+	EV_Toolbar_Control *		getControl(EV_Toolbar * pToolbar, XAP_Toolbar_Id id) const;
 
 protected:
 	bool						_find_ControlInTable(XAP_Toolbar_Id id, UT_uint32 * pIndex) const;
@@ -66,5 +60,3 @@ protected:
 	UT_uint32					m_nrElementsCtlTable;
 	const _ctl_table *	m_ctl_table;			/* an array of elements */
 };
-
-#endif /* XAP_TOOLBAR_CONTROLFACTORY_H */

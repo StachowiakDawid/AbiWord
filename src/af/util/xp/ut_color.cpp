@@ -318,7 +318,7 @@ const char * UT_HashColor::setHashIfValid (const char * color_hash)
 	return static_cast<const char *>(m_colorBuffer);
 }
 
-const UT_RGBColor UT_HashColor::rgb ()
+const UT_RGBColor UT_HashColor::rgb() const
 {
 	unsigned char r = 0;
 	unsigned char g = 0;

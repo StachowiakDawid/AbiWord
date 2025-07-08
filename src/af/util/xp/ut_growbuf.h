@@ -17,22 +17,12 @@
  * 02110-1301 USA.
  */
 
-
-
-#ifndef UT_GROWBUF_H
-#define UT_GROWBUF_H
-
+#pragma once
 /*****************************************************************
 ** A buffer class which can grow and shrink
 *****************************************************************/
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 /* sigh... total hack here. Solaris does the following in unistd.h
  * #define truncate truncate64
@@ -72,5 +62,3 @@ private:
 	UT_uint32			m_iSpace;			/* space currently allocated */
 	UT_uint32			m_iChunk;			/* unit for g_try_realloc */
 };
-
-#endif /* UT_GROWBUF_H */

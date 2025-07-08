@@ -17,20 +17,13 @@
  * 02110-1301 USA.
  */
 
-#ifndef UT_DEBUGMSG_H
-#define UT_DEBUGMSG_H
+#pragma once
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 template<class T>
 class UT_DebugOnly
@@ -124,6 +117,3 @@ ABI_EXPORT void _UT_WarningMessage(const char *s, ...);
 #define _UT_WarningMessage _UT_OutputMessage
 #endif
 #define UT_WARNINGMSG(M) _UT_WarningMessage M
-
-
-#endif /* UT_DEBUGMSG_H */

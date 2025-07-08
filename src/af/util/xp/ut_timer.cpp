@@ -51,7 +51,7 @@ void UT_Timer::setIdentifier(UT_uint32 iIdentifier)
 	m_iIdentifier = iIdentifier;
 }
 
-UT_uint32 UT_Timer::getIdentifier()
+UT_uint32 UT_Timer::getIdentifier() const
 {
 	return m_iIdentifier;
 }

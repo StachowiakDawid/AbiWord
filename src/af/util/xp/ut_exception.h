@@ -18,16 +18,9 @@
  * 02110-1301 USA.
  */
 
-#ifndef UT_EXCEPTION_H
-#define UT_EXCEPTION_H
+#pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 //
 // I really want AbiWord to start using exceptions as soon as is possible
@@ -113,5 +106,3 @@ class ABI_EXPORT UT_Exception
 // yeah, so 99.9999/100 C++ compilers don't handle this properly. shucks.
 // #define UT_THROWS(x) throw x
 #define UT_THROWS(x)
-
-#endif /* UT_EXCEPTION_H */

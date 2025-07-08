@@ -85,7 +85,7 @@ public:
 	bool	    enumerateDlgLabels(UT_uint32 ndx,
 								   const char ** pszDesc,
 								   const char ** pszSuffixList,
-								   UT_ScriptIdType * ft);
+								   UT_ScriptIdType * ft) const;
 
 	UT_Error execute(const char * script, UT_ScriptIdType type = -1);
 
@@ -110,8 +110,8 @@ private:
 								UT_Script ** ppscript,
 								UT_ScriptIdType * pieft = nullptr);
 
-	UT_ScriptLibrary(const UT_ScriptLibrary&);
-	UT_ScriptLibrary& operator=(const UT_ScriptLibrary&);
+	UT_ScriptLibrary(const UT_ScriptLibrary&) = delete;
+	UT_ScriptLibrary& operator=(const UT_ScriptLibrary&) = delete;
 	static UT_ScriptLibrary * m_pInstance;
 	friend void __dummy_method_dont_use(void);
 

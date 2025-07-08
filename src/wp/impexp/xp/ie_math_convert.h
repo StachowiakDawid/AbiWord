@@ -17,14 +17,9 @@
  * 02110-1301 USA.
  */
 
-#ifndef IE_MATH_CONVERT_H
-#define IE_MATH_CONVERT_H
-#endif
+#pragma once
 
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
-
 #include "ut_string.h"
 #include "ut_string_class.h"
 

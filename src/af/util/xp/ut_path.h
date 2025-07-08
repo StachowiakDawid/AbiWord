@@ -17,8 +17,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef UT_PATH_H
-#define UT_PATH_H
+#pragma once
 
 #include <glib.h>
 #include <time.h>
@@ -40,14 +39,7 @@
 #error Huh, neither MAXPATHLEN nor PATH_MAX available, fix for this platform needed.
 #endif
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
-
 #include "ut_string_class.h"
 #include "ut_go_file.h"
 #include "ut_rand.h"
@@ -73,4 +65,4 @@ ABI_EXPORT size_t UT_fileSize(const char * filename);
 ABI_EXPORT time_t UT_mTime(const char* path);
 
 ABI_EXPORT bool UT_legalizeFileName(std::string &filename);
-#endif /* UT_PATH_H */
+

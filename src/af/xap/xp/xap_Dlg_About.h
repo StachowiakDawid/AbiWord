@@ -17,17 +17,9 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_DIALOG_ABOUT_H
-#define XAP_DIALOG_ABOUT_H
+#pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
-
 #include "xap_Dialog.h"
 #include "xav_View.h"
 
@@ -81,5 +73,3 @@ class ABI_EXPORT XAP_Dialog_About : public XAP_Dialog_NonPersistent
  protected:
 
 };
-
-#endif // XAP_DIALOG_ABOUT_H

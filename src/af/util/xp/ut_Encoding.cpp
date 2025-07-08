@@ -310,26 +310,26 @@ UT_Encoding::UT_Encoding()
 	}
 }
 
-UT_uint32 UT_Encoding::getCount()
+UT_uint32 UT_Encoding::getCount() const
 {
 	UT_ASSERT (s_Init == false);
 	return s_iCount;
 }
 
-const gchar * UT_Encoding::getNthEncoding(UT_uint32 n)
+const gchar * UT_Encoding::getNthEncoding(UT_uint32 n) const
 {
 	UT_ASSERT (s_Init == false);
 	return (s_Table[n].encs[0]);
 }
 
-const gchar * UT_Encoding::getNthDescription(UT_uint32 n)
+const gchar * UT_Encoding::getNthDescription(UT_uint32 n) const
 {
 	UT_ASSERT (s_Init == false);
 	return (s_Table[n].desc);
 }
 
 
-const gchar * UT_Encoding::getEncodingFromDescription(const gchar * desc)
+const gchar * UT_Encoding::getEncodingFromDescription(const gchar * desc) const
 {
 	UT_ASSERT (s_Init == false);
 	for (UT_uint32 i = 0; i < s_iCount; i++)
@@ -342,7 +342,7 @@ const gchar * UT_Encoding::getEncodingFromDescription(const gchar * desc)
 	return nullptr;
 }
 
-UT_uint32 UT_Encoding::getIndxFromEncoding(const gchar * enc)
+UT_uint32 UT_Encoding::getIndxFromEncoding(const gchar * enc) const
 {
 	UT_ASSERT(s_Init == false);
 	for (UT_uint32 i = 0; i < s_iCount; i++)
@@ -355,10 +355,10 @@ UT_uint32 UT_Encoding::getIndxFromEncoding(const gchar * enc)
 	return 0;
 }
 
-UT_uint32 UT_Encoding::getIdFromEncoding(const gchar * enc)
+UT_uint32 UT_Encoding::getIdFromEncoding(const gchar * enc) const
 {
 	UT_ASSERT (s_Init == false);
-	enc_entry * e = static_cast<enc_entry *>(bsearch(enc, s_Table, s_iCount, sizeof(enc_entry), s_compareB));
+	auto e = static_cast<const enc_entry *>(bsearch(enc, s_Table, s_iCount, sizeof(enc_entry), s_compareB));
 	if (e)
 	{
 		return e->id;
@@ -368,4 +368,3 @@ UT_uint32 UT_Encoding::getIdFromEncoding(const gchar * enc)
 		return 0;
 	}
 }
-

@@ -17,16 +17,9 @@
  * 02110-1301 USA.
  */
 
-#ifndef _UT_IDLE_H
-#define _UT_IDLE_H
+#pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 #include "ut_worker.h"
 
 class ABI_EXPORT UT_Idle : public UT_Worker
@@ -48,5 +41,3 @@ class ABI_EXPORT UT_Idle : public UT_Worker
  private:
 
 };
-
-#endif /* _UT_IDLE_H */

@@ -18,13 +18,11 @@
 * 02110-1301 USA.
 */
 
-#ifndef AP_PREVIEW_ANNOTATION_H
-#define AP_PREVIEW_ANNOTATION_H
+#pragma once
 
 #include <string>
-#ifndef UT_TYPES_H
+
 #include "ut_types.h"
-#endif
 #include "gr_Graphics.h"
 #include "xap_Preview.h"
 #include "xap_Dialog.h"
@@ -91,5 +89,3 @@ private:
 	UT_sint32			m_iDescent;
 	UT_sint32			m_iHeight;
 };
-
-#endif /* AP_PREVIEW_ANNOTATION_H */

@@ -17,17 +17,9 @@
  * 02110-1301 USA.
  */
 
-#ifndef UT_BASE64_H
-#define UT_BASE64_H
+#pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
-
 #include "ut_bytebuf.h"
 
 ABI_EXPORT bool UT_Base64Encode(const UT_ByteBufPtr & pDest, const UT_ConstByteBufPtr & pSrc);
@@ -40,6 +32,3 @@ ABI_EXPORT bool UT_UTF8_Base64Decode(char *& binptr, size_t & binlen, const char
 #include "ut_test.h"
 void UT_Base64_Test(FILE * fp);
 #endif
-
-#endif /* UT_BASE64_H */
-

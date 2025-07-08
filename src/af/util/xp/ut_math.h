@@ -17,18 +17,11 @@
  * 02110-1301 USA.
  */
 
-#ifndef UTMATH_H
-#define UTMATH_H
+#pragma once
 
 #include <math.h>
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 #define UT_E             2.7182818284590452354   /* e */
 #define UT_LOG2E         1.4426950408889634074   /* log 2e */
@@ -50,5 +43,3 @@ ABI_EXPORT double rint(double x);
 #endif /* _WIN32 */
 
 ABI_EXPORT UT_uint32 UT_newNumber ();
-
-#endif /* UTMATH_H */

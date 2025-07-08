@@ -23,9 +23,7 @@
 #include <string>
 #include <map>
 
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 #include "xap_Dlg_FontChooser.h"
 
 class GR_Graphics;

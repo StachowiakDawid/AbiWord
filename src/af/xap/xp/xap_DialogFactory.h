@@ -19,8 +19,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_DIALOGFACTORY_H
-#define XAP_DIALOGFACTORY_H
+#pragma once
 
 /*****************************************************************
 ******************************************************************
@@ -44,9 +43,7 @@
 
 #include <map>
 
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 #include "ut_misc.h"
 #include "ut_vector.h"
 
@@ -101,5 +98,3 @@ protected:
 private:
 	static void addPages(XAP_NotebookDialog* pDialog, XAP_Dialog_Id id);
 };
-
-#endif /* XAP_DIALOGFACTORY_H */

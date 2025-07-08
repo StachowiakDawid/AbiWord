@@ -38,9 +38,9 @@ class ABI_EXPORT auto_iconv
 
   explicit auto_iconv(const char * in_charset, const char *out_charset);
   ~auto_iconv();
-  operator UT_iconv_t();
+  operator UT_iconv_t() const;
 
-  UT_iconv_t getHandle ();
+  UT_iconv_t getHandle () const;
 
  private:
 

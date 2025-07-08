@@ -296,7 +296,7 @@ UT_Error UT_ScriptLibrary::constructScript(const char * szFilename,
 bool UT_ScriptLibrary::enumerateDlgLabels(UT_uint32 ndx,
 										  const char ** pszDesc,
 										  const char ** pszSuffixList,
-										  UT_ScriptIdType * ft)
+										  UT_ScriptIdType * ft) const
 {
 	UT_uint32 nrElements = getNumScripts();
 	if (ndx < nrElements)

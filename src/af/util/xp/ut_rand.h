@@ -17,21 +17,11 @@
  * 02110-1301 USA.
  */
 
-#ifndef UT_RAND_H
-#define UT_RAND_H
-
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
+#pragma once
 #include "ut_types.h"
-#endif
 
 ABI_EXPORT void UT_srandom (UT_uint32 seed);
 ABI_EXPORT UT_sint32 UT_rand ();
 
 #define UT_RAND_MAX ((UT_sint32)0x7fffffff)
-
-#endif /* UT_RAND_H */
 

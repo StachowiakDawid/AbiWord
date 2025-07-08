@@ -99,12 +99,12 @@ auto_iconv::~auto_iconv()
 /*!
  * Returns the internal iconv_t handle
  */
-auto_iconv::operator UT_iconv_t() 
+auto_iconv::operator UT_iconv_t() const
 { 
   return m_h;
 }
 
-UT_iconv_t auto_iconv::getHandle ()
+UT_iconv_t auto_iconv::getHandle () const
 {
   return m_h;
 }

@@ -21,17 +21,9 @@
  * 02110-1301 USA.
  */
 
-#ifndef XAP_RESOURCE_MANAGER_H
-#define XAP_RESOURCE_MANAGER_H
+#pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
-
 #include "xap_Resource.h"
 
 class UT_UTF8String;
@@ -101,5 +93,3 @@ private:
 
 	bool grow ();
 };
-
-#endif /* ! XAP_RESOURCE_MANAGER_H */
