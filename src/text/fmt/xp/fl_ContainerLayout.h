@@ -85,7 +85,7 @@ public:
 	virtual ~fl_ContainerLayout();
 
 	fl_ContainerType    getContainerType(void) const { return m_iConType; }
-	const char *        getContainerString(void);
+	const char *        getContainerString(void) const;
 	const char *                getAttribute(const char * pKey) const;
 	virtual fp_Container*		getFirstContainer() const;
 	virtual fp_Container*		getLastContainer() const;
@@ -96,7 +96,7 @@ public:
 
 	virtual fp_Container*		getNewContainer(const fp_Container* pFirstContainer = nullptr) = 0;
 	virtual FL_DocLayout *      getDocLayout(void) const;
-	UT_sint32           getLevelInList(void);
+	UT_sint32           getLevelInList(void) const;
 	virtual void		format(void) = 0;
 	virtual void        appendTextToBuf(UT_GrowBuf & buf) const;
 	virtual void		updateLayout(bool bDoAll) = 0;
@@ -142,8 +142,8 @@ public:
 
 // For Folded Text
 
-	UT_sint32               getFoldedLevel(void);
-	UT_uint32               getFoldedID(void);
+	UT_sint32               getFoldedLevel(void) const;
+	UT_uint32               getFoldedID(void) const;
     void                    lookupFoldedLevel(void);
 
 	void                    lookupProperties(void);
@@ -152,7 +152,7 @@ public:
 	fl_BlockLayout*         getNextBlockInDocument(void) const;
 	fl_BlockLayout*         getPrevBlockInDocument(void) const;
 
-	FPVisibility            getAP(const PP_AttrProp *& pAP)const;
+	FPVisibility            getAP(const PP_AttrProp *& pAP) const;
 	void                    getSpanAP(UT_uint32 blockPos, bool bLeft, const PP_AttrProp * &pSpanAP) const;
 
  // Embedded structures
@@ -172,7 +172,7 @@ private:
 
 	// This function must be overriden by any derrived class that can endup positioned
 	// outside of the normal printable area on page
-	virtual void            _lookupMarginProperties(const PP_AttrProp* /*pAP*/){}
+	virtual void            _lookupMarginProperties(const PP_AttrProp* /*pAP*/) {}
 
 	virtual bool            _canContainPoint() const {return true;}
 	void	                _insertFirst(fl_ContainerLayout * pL);

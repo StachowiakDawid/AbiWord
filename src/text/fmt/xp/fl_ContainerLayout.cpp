@@ -204,7 +204,7 @@ void fl_ContainerLayout::getSpanAP(UT_uint32 blockPos, bool bLeft, const PP_Attr
 }
 
 
-const char * fl_ContainerLayout::getContainerString(void)
+const char * fl_ContainerLayout::getContainerString(void) const
 {
 	switch(getContainerType())
 	{
@@ -260,12 +260,12 @@ const char*	fl_ContainerLayout::getAttribute(const char * pszName) const
 /*!
  * Return the nested List level of this structure.
  */
-UT_sint32 fl_ContainerLayout::getLevelInList(void)
+UT_sint32 fl_ContainerLayout::getLevelInList(void) const
 {
-      fl_BlockLayout * pBList = nullptr;
+      const fl_BlockLayout * pBList = nullptr;
       if(getContainerType() == FL_CONTAINER_BLOCK)
       {
-	   pBList = static_cast<fl_BlockLayout * >(this);
+	   pBList = static_cast<const fl_BlockLayout * >(this);
       }
       else
       {
@@ -340,7 +340,7 @@ UT_sint32 fl_ContainerLayout::getLevelInList(void)
 /*!
  * This method returns the folded level of the text.
  */
-UT_sint32 fl_ContainerLayout::getFoldedLevel(void)
+UT_sint32 fl_ContainerLayout::getFoldedLevel(void) const
 {
 	return m_iFoldedLevel;
 }
@@ -349,7 +349,7 @@ UT_sint32 fl_ContainerLayout::getFoldedLevel(void)
 /*!
  * This method returns the ID of the list that is folded.
  */
-UT_uint32 fl_ContainerLayout::getFoldedID(void)
+UT_uint32 fl_ContainerLayout::getFoldedID(void) const
 {
 	return m_iFoldedID;
 }
