@@ -2919,23 +2919,13 @@ bool PD_Document::isTOCAtPos(PT_DocPosition pos) const
     {
 		pf = pf->getPrev();
     }
-	bool b = (pf && (pf->getType() == pf_Frag::PFT_Strux));
-	if(b)
-	{
+	if (pf && (pf->getType() == pf_Frag::PFT_Strux)) {
 		auto pfs = static_cast<const pf_Frag_Strux *>(pf);
-		if(pfs->getStruxType() == PTX_SectionTOC)
-		{
+		if (pfs->getStruxType() == PTX_SectionTOC || pfs->getStruxType() == PTX_EndTOC)	{
 			return true;
 		}
 	}
-	if(b)
-	{
-		auto pfs = static_cast<const pf_Frag_Strux *>(pf);
-		if(pfs->getStruxType() == PTX_EndTOC)
-		{
-			return true;
-		}
-	}
+
 	return false;
 }
 
