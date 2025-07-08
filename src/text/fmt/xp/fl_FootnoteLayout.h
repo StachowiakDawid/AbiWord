@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef FOOTNOTELAYOUT_H
-#define FOOTNOTELAYOUT_H
+#pragma once
 
 #include "ut_types.h"
 #include "ut_vector.h"
@@ -77,7 +76,7 @@ public:
 	virtual void             markAllRunsDirty(void) override;
 	virtual fl_SectionLayout *  getSectionLayout(void)  const override;
 	virtual bool         recalculateFields(UT_uint32 iUpdateCount) override;
-	fl_BlockLayout *         getContainingBlock(void);
+	fl_BlockLayout *         getContainingBlock(void) const;
 	virtual void		     redrawUpdate(void) override;
 	virtual fp_Container*	 getNewContainer(const fp_Container* = nullptr) override = 0;
 	fl_DocSectionLayout*	 getDocSectionLayout(void) const override { return m_pDocSL; }
@@ -87,8 +86,8 @@ public:
 		{return m_bHasEndFootnote;}
 	void                     setFootnoteEndIn(void)
 		{ m_bHasEndFootnote = true;}
-	PT_DocPosition           getDocPosition(void);
-	UT_uint32                getLength(void);
+	PT_DocPosition           getDocPosition(void) const;
+	UT_uint32                getLength(void) const;
 	UT_sint32                getOldSize(void) const
 		{ return m_iOldSize;}
 	void                     setOldSize(UT_sint32 i)
@@ -170,7 +169,7 @@ public:
 					  PT_AttrPropIndex ap,
 					  fl_ContainerLayout * pMyContainerLayout);
 	virtual ~fl_AnnotationLayout();
-	fp_AnnotationRun *           getAnnotationRun(void);
+	fp_AnnotationRun *           getAnnotationRun(void) const;
 	virtual void		     format(void) override;
 	virtual void             collapse(void) override;
 	virtual fp_Container*	 getNewContainer(const fp_Container* = nullptr) override;
@@ -193,6 +192,3 @@ private:
 	UT_UTF8String            m_sDate;
 	UT_UTF8String            m_sTitle;
 };
-
-
-#endif /* FOOTNOTELAYOUT_H */

@@ -232,9 +232,9 @@ UT_sint32 fl_FrameLayout::getBoundingSpace(void) const
 /*!
  * Returns the position in the document of the PTX_SectionFrame strux
 */
-PT_DocPosition fl_FrameLayout::getDocPosition(void) 
+PT_DocPosition fl_FrameLayout::getDocPosition(void) const
 {
-	pf_Frag_Strux* sdh = getStruxDocHandle();
+	const pf_Frag_Strux* sdh = getStruxDocHandle();
     return 	m_pLayout->getDocument()->getStruxPosition(sdh);
 }
 
@@ -243,7 +243,7 @@ PT_DocPosition fl_FrameLayout::getDocPosition(void)
  * getDocPosition() + getLength() is one value beyond the the EndFrame
  * strux
  */
-UT_uint32 fl_FrameLayout::getLength(void)
+UT_uint32 fl_FrameLayout::getLength(void) const
 {
 	PT_DocPosition startPos = getDocPosition();
 	const pf_Frag_Strux* sdhEnd = nullptr;

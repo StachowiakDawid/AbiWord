@@ -104,8 +104,8 @@ public:
 	bool                     recalculateFields(UT_uint32 iUpdateCount) override;
 	virtual void		     redrawUpdate(void) override;
 	virtual fp_Container*	 getNewContainer(const fp_Container* = nullptr) override;
-	PT_DocPosition           getDocPosition(void);
-	UT_uint32                getLength(void);
+	PT_DocPosition           getDocPosition(void) const;
+	UT_uint32                getLength(void) const;
 	virtual void             setNeedsReformat(fl_ContainerLayout * pCL, UT_uint32 offset = 0) override;
 	void                     setContainerProperties(void);
 	UT_sint32                getBoundingSpace(void) const;
@@ -138,7 +138,7 @@ public:
 	void                setFrameYpos(UT_sint32 iY) { m_iYpos = iY;}
 	bool                isEndFrameIn(void) const
 		{ return m_bHasEndFrame;}
-	bool                isTightWrap(void)
+	bool                isTightWrap(void) const
 	  { return m_bIsTightWrap;}
 	bool                expandHeight(void) const
 	{ return m_bExpandHeight;}

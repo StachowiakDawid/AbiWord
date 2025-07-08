@@ -176,7 +176,7 @@ public:
 											  bool bEscapeXML) const;
 	PD_Document *				getDoc(void) const
 	{return m_pDoc;}
-	pf_Frag_Strux*			 getLastItemInHeiracy(void) const;
+	pf_Frag_Strux*			 getLastItemInHierarchy(void) const;
 protected:
 	void                        _setParent(const fl_AutoNumPtr & pParent);
 	void                        _setParentID(UT_uint32 iParentID);

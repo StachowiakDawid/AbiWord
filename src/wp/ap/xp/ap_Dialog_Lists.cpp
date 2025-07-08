@@ -269,8 +269,8 @@ void AP_Dialog_Lists::Apply(void)
 		PT_DocPosition posHigh = 0;
 		if(getView()->isSelectionEmpty() && pAuto)
 		{
-		      pf_Frag_Strux* sdhLow = pAuto->getFirstItem();
-		      pf_Frag_Strux* sdhHigh = pAuto->getLastItemInHeiracy();
+		      const pf_Frag_Strux* sdhLow = pAuto->getFirstItem();
+		      const pf_Frag_Strux* sdhHigh = pAuto->getLastItemInHierarchy();
 		      posLow = getView()->getDocument()->getStruxPosition(sdhLow)+1;
 		      posHigh = getView()->getDocument()->getStruxPosition(sdhHigh)+1;
 		}

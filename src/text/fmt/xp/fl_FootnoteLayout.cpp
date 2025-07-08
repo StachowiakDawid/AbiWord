@@ -78,9 +78,9 @@ fl_EmbedLayout::~fl_EmbedLayout()
  * This is very useful for determining the value of the footnote reference
  * and anchor. 
 */
-PT_DocPosition fl_EmbedLayout::getDocPosition(void) 
+PT_DocPosition fl_EmbedLayout::getDocPosition(void) const
 {
-	pf_Frag_Strux* sdh = getStruxDocHandle();
+	const pf_Frag_Strux* sdh = getStruxDocHandle();
 	UT_return_val_if_fail( m_pLayout, 0 );
     return 	m_pLayout->getDocument()->getStruxPosition(sdh);
 }
@@ -88,7 +88,7 @@ PT_DocPosition fl_EmbedLayout::getDocPosition(void)
 /*!
  * Return the block that contains this Embedded layout 
  */
-fl_BlockLayout * fl_EmbedLayout::getContainingBlock(void)
+fl_BlockLayout * fl_EmbedLayout::getContainingBlock(void) const
 {
   fl_ContainerLayout * pCL = getPrev();
   while(pCL && pCL->getContainerType() != FL_CONTAINER_BLOCK)
@@ -108,7 +108,7 @@ fl_BlockLayout * fl_EmbedLayout::getContainingBlock(void)
  * getDocPosition() + getLength() is one value beyond the the EndFootnote
  * strux
  */
-UT_uint32 fl_EmbedLayout::getLength(void)
+UT_uint32 fl_EmbedLayout::getLength(void) const
 {
 	UT_return_val_if_fail( m_pLayout, 0 );
 	PT_DocPosition startPos = getDocPosition();
@@ -829,10 +829,10 @@ void fl_AnnotationLayout::_localCollapse(void)
 	m_bNeedsReformat = true;
 }
 
-fp_AnnotationRun *  fl_AnnotationLayout::getAnnotationRun(void)
+fp_AnnotationRun *  fl_AnnotationLayout::getAnnotationRun(void) const
 {
         PT_DocPosition posFL = getDocPosition() - 1;
-	fl_ContainerLayout * pPrevL = static_cast<fl_ContainerLayout *>(m_pLayout->findBlockAtPosition(posFL));
+	auto pPrevL = static_cast<const fl_ContainerLayout *>(m_pLayout->findBlockAtPosition(posFL));
 
 	// get the owning container
 	if(pPrevL != nullptr)
@@ -843,7 +843,7 @@ fp_AnnotationRun *  fl_AnnotationLayout::getAnnotationRun(void)
 // Code to find the Line that contains the Annotation reference
 //
 			UT_ASSERT(pPrevL->getContainerType() == FL_CONTAINER_BLOCK);
-			fl_BlockLayout * pBL = static_cast<fl_BlockLayout *>(pPrevL);
+			auto pBL = static_cast<const fl_BlockLayout *>(pPrevL);
 			fp_Run * pRun = pBL->getFirstRun();
 			PT_DocPosition posBL = pBL->getPosition();
 			while(pRun && ((posBL + pRun->getBlockOffset() + pRun->getLength()) <= posFL))
@@ -852,10 +852,10 @@ fp_AnnotationRun *  fl_AnnotationLayout::getAnnotationRun(void)
 			}
 			if(pRun && (pRun->getType() == FPRUN_HYPERLINK))
 			{
-			    fp_HyperlinkRun * pHRun = static_cast<fp_HyperlinkRun *>(pRun);
+			    auto pHRun = static_cast<fp_HyperlinkRun *>(pRun);
 			    if(pHRun->getHyperlinkType() == HYPERLINK_ANNOTATION)
 			    {
-				fp_AnnotationRun * pARun = static_cast<fp_AnnotationRun * >(pHRun);
+				auto pARun = static_cast<fp_AnnotationRun * >(pHRun);
 				if(pARun->getPID() == getAnnotationPID())
 				{
 				    return pARun;

@@ -899,7 +899,7 @@ fl_AutoNumConstPtr fl_AutoNum::getAutoNumFromSdh(const pf_Frag_Strux* sdh) const
 	return pAuto;
 }
 
-pf_Frag_Strux* fl_AutoNum::getLastItemInHeiracy(void) const
+pf_Frag_Strux* fl_AutoNum::getLastItemInHierarchy(void) const
 {
        fl_AutoNumConstPtr pAuto = shared_from_this();
        pf_Frag_Strux*  pLastItem = nullptr;
