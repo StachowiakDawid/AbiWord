@@ -604,6 +604,7 @@ void AP_UnixApp::copyToClipboard(PD_DocumentRange * pDocRange, bool bUseClipboar
 		if (pODT != nullptr) {
 			delete pODT;
 		}
+		g_object_unref(outBuf);
 	}
 
     // create UTF-8 text buffer to put on the clipboard
