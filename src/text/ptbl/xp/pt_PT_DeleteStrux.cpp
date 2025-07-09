@@ -21,6 +21,8 @@
 
 // deleteStrux-related functions for class pt_PieceTable.
 
+#include <vector>
+
 #include "ut_types.h"
 #include "ut_misc.h"
 #include "ut_assert.h"
@@ -544,68 +546,68 @@ bool pt_PieceTable::_deleteHdrFtrsFromSectionStruxIfPresent(pf_Frag_Strux_Sectio
 	PT_AttrPropIndex indexAP = pfStruxSec->getIndexAP();
 	const PP_AttrProp * pAP = nullptr;
 	getAttrProp(indexAP, &pAP);
-	UT_Vector vecHdrFtr;
+	std::vector<const char*> vecHdrFtr;
 	UT_String HeaderV,HeaderEvenV,HeaderLastV,HeaderFirstV;
 	UT_String FooterV,FooterEvenV,FooterLastV,FooterFirstV;
-	vecHdrFtr.clear();
+
 	const gchar * szHeaderV = nullptr;
 	bool bres = pAP->getAttribute("header",szHeaderV);
 	if(szHeaderV && *szHeaderV && (strcmp(szHeaderV,"0") != 0))
 	{
 		HeaderV = szHeaderV;
-		vecHdrFtr.addItem((void *) HeaderV.c_str());
+		vecHdrFtr.push_back(HeaderV.c_str());
 	}
 	szHeaderV =  nullptr;
 	bres = pAP->getAttribute("header-even",szHeaderV);
 	if(szHeaderV && *szHeaderV && (strcmp(szHeaderV,"0") != 0))
 	{
 		HeaderEvenV = szHeaderV;
-		vecHdrFtr.addItem((void *) HeaderEvenV.c_str());
+		vecHdrFtr.push_back(HeaderEvenV.c_str());
 	}
 	szHeaderV =  nullptr;
 	bres = pAP->getAttribute("header-last",szHeaderV);
 	if(szHeaderV && *szHeaderV && (strcmp(szHeaderV,"0") != 0))
 	{
 		HeaderLastV = szHeaderV;
-		vecHdrFtr.addItem((void *) HeaderLastV.c_str());
+		vecHdrFtr.push_back(HeaderLastV.c_str());
 	}
 	szHeaderV =  nullptr;
 	bres = pAP->getAttribute("header-first",szHeaderV);
 	if(szHeaderV && *szHeaderV && (strcmp(szHeaderV,"0") != 0))
 	{
 		HeaderFirstV = szHeaderV;
-		vecHdrFtr.addItem((void *) HeaderFirstV.c_str());
+		vecHdrFtr.push_back(HeaderFirstV.c_str());
 	}
 	szHeaderV =  nullptr;
 	bres = pAP->getAttribute("footer",szHeaderV);
 	if(szHeaderV && *szHeaderV && (strcmp(szHeaderV,"0") != 0))
 	{
 		FooterV = szHeaderV;
-		vecHdrFtr.addItem((void *) FooterV.c_str());
+		vecHdrFtr.push_back(FooterV.c_str());
 	}
 	szHeaderV =  nullptr;
 	bres = pAP->getAttribute("footer-even",szHeaderV);
 	if(szHeaderV && *szHeaderV && (strcmp(szHeaderV,"0") != 0))
 	{
 		FooterEvenV = szHeaderV;
-		vecHdrFtr.addItem((void *) FooterEvenV.c_str());
+		vecHdrFtr.push_back(FooterEvenV.c_str());
 	}
 	szHeaderV =  nullptr;
 	bres = pAP->getAttribute("footer-last",szHeaderV);
 	if(szHeaderV && *szHeaderV && (strcmp(szHeaderV,"0") != 0))
 	{
 		FooterLastV = szHeaderV;
-		vecHdrFtr.addItem((void *) FooterLastV.c_str());
+		vecHdrFtr.push_back(FooterLastV.c_str());
 	}
 	szHeaderV =  nullptr;
 	bres = pAP->getAttribute("footer-first",szHeaderV);
 	if(szHeaderV && *szHeaderV && (strcmp(szHeaderV,"0") != 0))
 	{
 		FooterFirstV = szHeaderV;
-		vecHdrFtr.addItem((void *) FooterFirstV.c_str());
+		vecHdrFtr.push_back(FooterFirstV.c_str());
 	}
-	UT_sint32 countHdrFtr = vecHdrFtr.getItemCount();
-	UT_DEBUGMSG(("SEVIOR: Deleting HdrFtrs from Document, num Header/Footers %d\n",countHdrFtr));
+	std::size_t countHdrFtr = vecHdrFtr.size();
+	UT_DEBUGMSG(("SEVIOR: Deleting HdrFtrs from Document, num Header/Footers %lu\n", countHdrFtr));
 	if(0 == countHdrFtr)
 	{
 		return true;
@@ -618,7 +620,7 @@ bool pt_PieceTable::_deleteHdrFtrsFromSectionStruxIfPresent(pf_Frag_Strux_Sectio
 //
 // Do this loop for all and headers and footers.
 //
-	UT_sint32 i = 0;
+	std::size_t i = 0;
 	for(i=0; i< countHdrFtr; i++)
 	{
 		curFrag = static_cast<pf_Frag *>(pfStruxSec);
@@ -645,7 +647,7 @@ bool pt_PieceTable::_deleteHdrFtrsFromSectionStruxIfPresent(pf_Frag_Strux_Sectio
 					//
 					// Look for a match.
 					//
-						szHeaderV = (const char *) vecHdrFtr.getNthItem(i);
+						szHeaderV = (const char *) vecHdrFtr.at(i);
 						if(szHeaderV != nullptr && strcmp(szHeaderV,szID) == 0)
 						{
 							bFoundIt = true;
@@ -676,11 +678,10 @@ void pt_PieceTable::_deleteHdrFtrStruxWithNotify( pf_Frag_Strux * pfFragStruxHdr
 // First we need the document position of the header/footer strux.
 //
 	UT_DEBUGMSG(("SEVIOR: Deleting hdrftr \n"));
-	const pf_Frag * pfFrag = nullptr;
-	pfFrag = static_cast<pf_Frag *>(pfFragStruxHdrFtr);
+	pf_Frag * pfFrag = static_cast<pf_Frag *>(pfFragStruxHdrFtr);
 	// TODO HdrFtrPos is unused
 	UT_DebugOnly<PT_DocPosition> HdrFtrPos = getFragPosition(pfFrag);
-	UT_Vector vecFragStrux;
+	std::vector<pf_Frag_Strux*> vecFragStrux;
 	UT_DEBUGMSG(("SEVIOR: Deleting hdrftr Strux Pos = %d \n",(PT_DocPosition)HdrFtrPos));
 //
 // Now find the first Non-strux frag within this hdrftr
@@ -690,7 +691,7 @@ void pt_PieceTable::_deleteHdrFtrStruxWithNotify( pf_Frag_Strux * pfFragStruxHdr
 	PT_DocPosition posLastStrux = 0;
 	while((pfFrag->getType() == pf_Frag::PFT_Strux) && (pfFrag != getFragments().getLast()) && !bStop)
 	{
-		const pf_Frag_Strux * pfs = static_cast<const pf_Frag_Strux *>(pfFrag);
+		auto * pfs = static_cast<pf_Frag_Strux *>(pfFrag);
 		if(pfs != pfFragStruxHdrFtr && (pfs->getStruxType() != PTX_Block))
 		{
 			bStop = true;
@@ -703,7 +704,7 @@ void pt_PieceTable::_deleteHdrFtrStruxWithNotify( pf_Frag_Strux * pfFragStruxHdr
 		{
 			UT_DEBUGMSG(("Adding strux %p of type %d at Pos %d to strux vector for delete \n", (void*)pfs, pfs->getStruxType(), pfs->getPos()));
 			posLastStrux = pfs->getPos();
-			vecFragStrux.addItem((void *) pfFrag);
+			vecFragStrux.push_back(pfs);
 			pfFrag = pfFrag->getNext();
 		}
 	}
@@ -754,9 +755,9 @@ void pt_PieceTable::_deleteHdrFtrStruxWithNotify( pf_Frag_Strux * pfFragStruxHdr
 // Now delete the struxes at the start.
 //
 //
-	UT_uint32 count = vecFragStrux.getItemCount();
+	std::size_t count = vecFragStrux.size();
 	UT_return_if_fail (count > 0);
-	UT_uint32 i=0;
+	std::size_t i = 0;
 	bool bres = false;
 //
 // First delete the HdrFtr strux, then delete the blocks, this will enable the
@@ -766,7 +767,7 @@ void pt_PieceTable::_deleteHdrFtrStruxWithNotify( pf_Frag_Strux * pfFragStruxHdr
 	bres = _deleteStruxWithNotify(pfFragStruxHdrFtr->getPos(),pfFragStruxHdrFtr,nullptr,nullptr);
 	for(i=1; i<count; i++)
 	{
-		pf_Frag_Strux * pfs = (pf_Frag_Strux *) vecFragStrux.getNthItem(i);
+		pf_Frag_Strux * pfs = vecFragStrux.at(i);
 		if(static_cast<pf_Frag *>(pfs) ==  getFragments().getLast())
 		{
 			UT_DEBUGMSG(("Delete Last Strux type %d \n",pfs->getStruxType()));
