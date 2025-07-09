@@ -1,5 +1,6 @@
 /* AbiWord
  * Copyright (C) 2001 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,10 +24,11 @@
 #include "ie_exp.h"
 #include "ie_Table.h"
 #include "pl_Listener.h"
-#include "fl_AutoNum.h"
 
 class PD_Document;
 class s_XSL_FO_Listener;
+
+class ListHelper;
 
 // The exporter/writer for the XML/XSL FO spec
 
@@ -58,184 +60,6 @@ protected:
 private:
 	s_XSL_FO_Listener *	m_pListener;
 	UT_uint32 m_error;
-};
-
-
-// A little class to help export lists
-class ListHelper
-{
-public:
-	explicit ListHelper()
-		: m_pan(nullptr),
-		  m_iInc(-1),
-		  m_iCount(0),
-		  m_iStart(0)
-	{
-	}
-
-	void addList(const fl_AutoNumConstPtr & pAutoNum)
-	{
-		UT_return_if_fail(pAutoNum);
-
-		m_pan = pAutoNum;
-		m_iStart = m_pan->getStartValue32();
-
-		if(m_pan->getType() < BULLETED_LIST)
-			m_iInc = 1;
-
-		populateText(m_pan->getDelim());
-	}
-
-	UT_uint32 retrieveID()
-	{
-		return m_pan->getID();
-	}
-
-	std::string getNextLabel()
-	{
-		UT_return_val_if_fail(m_pan,"");
-
-		if(m_iInc > -1)
-		{
-			UT_uint32 val = m_iStart + (m_iInc * m_iCount);
-			m_iCount++;
-			return UT_std_string_sprintf("%s%d%s", m_sPreText.utf8_str(), val, m_sPostText.utf8_str());
-		}
-		else
-		{
-			UT_UTF8String bullet;
-			UT_UCS4Char symbol[2] = {'\0', '\0'};
-
-			//TODO: support all lists
-			//FIXME: most lists don't seem to work; looks like Bug 3601
-
-			switch(m_pan->getType())
-			{
-				//taken from fl_AutoNum.cpp
-
-				case BULLETED_LIST:
-				{
-					symbol[0] = (UT_UCS4Char) (unsigned char) 0xb7;
-					bullet.appendUCS4(symbol);
-					break;
-				}
-
-				case DASHED_LIST:
-				{
-					bullet = "-";
-					break;
-				}
-
-				case SQUARE_LIST:
-				{
-					symbol[0] = (UT_UCS4Char) (unsigned char) 0x6E;
-					bullet.appendUCS4(symbol);
-					break;
-				}
-
-				case TRIANGLE_LIST:
-				{
-					symbol[0] = (UT_UCS4Char) (unsigned char) 0x73;
-					bullet.appendUCS4(symbol);
-					break;
-				}
-
-				case DIAMOND_LIST:
-				{
-					symbol[0] = (UT_UCS4Char) (unsigned char) 0xA9;
-					bullet.appendUCS4(symbol);
-					break;
-				}
-
-				case STAR_LIST:
-				{
-					symbol[0] = (UT_UCS4Char) (unsigned char) 0x53;
-					bullet.appendUCS4(symbol);
-					break;
-				}
-
-				case IMPLIES_LIST:
-				{
-					symbol[0] = (UT_UCS4Char) (unsigned char) 0xDE;
-					bullet.appendUCS4(symbol);
-					break;
-				}
-
-				case TICK_LIST:
-				{
-					symbol[0] = (UT_UCS4Char) (unsigned char) 0x33;
-					bullet.appendUCS4(symbol);
-					break;
-				}
-
-				case BOX_LIST:
-				{
-					symbol[0] = (UT_UCS4Char) (unsigned char) 0x72;
-					bullet.appendUCS4(symbol);
-					break;
-				}
-
-				case HAND_LIST:
-				{
-					symbol[0] = (UT_UCS4Char) (unsigned char) 0x2B;
-					bullet.appendUCS4(symbol);
-					break;
-				}
-
-				case HEART_LIST:
-				{
-					symbol[0] = (UT_UCS4Char) (unsigned char) 0xAA;
-					bullet.appendUCS4(symbol);
-					break;
-				}
-
-				default:
-				{
-					UT_DEBUGMSG(("Unhandled list type in XSL-FO exporter: %d\n", m_pan->getType()));
-					break;
-				}
-			}
-
-			return bullet.utf8_str();
-		}
-	}
-
-protected:
-
-	void populateText(const gchar *lDelim)
-	{
-		UT_UCS4String text = lDelim;
-		bool bPre = true;
-
-		for(UT_uint32 i = 0; i < text.length(); i++)
-		{
-			if(bPre && (text[i] == '%') && ((i + 1) < text.length()) && (text[i+1] == 'L'))
-			{
-				bPre = false;
-				i++;
-			}
-			else if(bPre)
-			{
-				m_sPreText += text[i];
-			}
-			else
-			{
-				m_sPostText += text[i];
-			}
-		}
-
-		m_sPreText.escapeXML();
-		m_sPostText.escapeXML();
-	}
-
-private:
-
-	fl_AutoNumConstPtr m_pan;
-	UT_UTF8String m_sPostText; //text after "%L"
-	UT_UTF8String m_sPreText; //text before "%L"
-	UT_sint32 m_iInc;
-	UT_uint32 m_iCount;
-	UT_uint32 m_iStart;
 };
 
 /************************************************************/
