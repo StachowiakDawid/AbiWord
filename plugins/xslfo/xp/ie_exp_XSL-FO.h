@@ -21,7 +21,6 @@
 #pragma once
 
 #include "ut_std_string.h"
-#include "ut_stack.h"
 #include "ie_exp.h"
 #include "ie_Table.h"
 #include "pl_Listener.h"
@@ -156,6 +155,6 @@ private:
 
 	ie_Table			mTableHelper;
 	std::vector<std::string> m_utvDataIDs;
-	UT_NumberStack		m_utnsTagStack;
+	std::stack<UT_uint32>	m_utnsTagStack;
 	std::vector<ListHelper *> m_Lists;
 };

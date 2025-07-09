@@ -2,6 +2,7 @@
 
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,8 +20,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef IE_IMP_XSL_FO_H
-#define IE_IMP_XSL_FO_H
+#pragma once
 
 #include "ie_imp_XML.h"
 #include "ie_Table.h"
@@ -80,8 +80,6 @@ private:
 	bool				m_bInFootnote;
 	bool				m_bIgnoreFootnoteBlock;
 
-	UT_NumberStack				m_utnsTagStack;
+	std::stack<UT_uint32> m_utnsTagStack;
 	IE_Imp_TableHelperStack *	m_TableHelperStack;
 };
-
-#endif /* IE_IMP_XSL_FO_H */

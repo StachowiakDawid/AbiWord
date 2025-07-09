@@ -2,6 +2,7 @@
 
 /* AbiWord
  * Copyright (C) 2001 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -820,8 +821,9 @@ void IE_Imp_XSL_FO::endElement(const gchar *name)
 	// xml parser keeps running until buffer consumed
 	X_EatIfAlreadyError();
 	
-   	UT_uint32 tokenIndex = _mapNameToToken (name, s_Tokens, TokenTableSize), i = 0;
-	m_utnsTagStack.pop((UT_sint32*)&i);
+   	UT_uint32 tokenIndex = _mapNameToToken (name, s_Tokens, TokenTableSize);
+	UT_uint32 i = m_utnsTagStack.top();
+	m_utnsTagStack.pop();
 
 	if(i != tokenIndex)
 	{
@@ -1056,11 +1058,10 @@ bool IE_Imp_XSL_FO::_isInListTag(void)
 
 UT_uint32 IE_Imp_XSL_FO::_tagTop(void)
 {
-	UT_sint32 i = 0;
-
-	if (m_utnsTagStack.viewTop (i))
-		return (UT_uint32)i;
-	return 0;
+	if (m_utnsTagStack.empty()) {
+		return 0;
+	}
+	return m_utnsTagStack.top();
 }
 
 void IE_Imp_XSL_FO::createImage(const char *name, const gchar **atts)

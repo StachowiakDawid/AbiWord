@@ -1,5 +1,6 @@
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -318,7 +319,8 @@ void s_XSL_FO_Listener::_tagClose(UT_uint32 tagID, const UT_UTF8String & content
 	if(newline)
 		m_pie->write("\n");
 
-	m_utnsTagStack.pop((UT_sint32*)&i);
+	i = m_utnsTagStack.top();
+	m_utnsTagStack.pop();
 	m_iLastClosed = i;
 	xxx_UT_DEBUGMSG(("XSL-FO export: Popping %d off of stack\n",i));
 
@@ -364,11 +366,10 @@ void s_XSL_FO_Listener::_tagOpenClose(const UT_UTF8String & content, bool suppre
 
 UT_uint32 s_XSL_FO_Listener::_tagTop(void)
 {
-	UT_sint32 i = 0;
-
-	if (m_utnsTagStack.viewTop (i))
-		return (UT_uint32)i;
-	return 0;
+	if (m_utnsTagStack.empty()) {
+		return 0;
+	}
+	return m_utnsTagStack.top();
 }
 
 void s_XSL_FO_Listener::_closeTable(void)
