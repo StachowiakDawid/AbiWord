@@ -34,7 +34,6 @@
 #include "ev_Menu_Actions.h"
 #include "ev_EditMethod.h"
 #include "xap_Menu_Layouts.h"
-#include "ut_stack.h"
 #include "AbiGOffice.h"
 #include "AbiGOChart.h"
 #include "AbiGOComponent.h"

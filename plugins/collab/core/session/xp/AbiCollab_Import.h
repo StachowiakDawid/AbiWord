@@ -20,8 +20,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef ABI_COLLAB_IMPORT_H
-#define ABI_COLLAB_IMPORT_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -31,7 +30,6 @@
 #include "ut_types.h"
 #include "pt_Types.h"
 #include "px_ChangeRecord.h"
-#include "ut_stack.h"
 #include "xav_Listener.h"
 #include "pl_Listener.h"
 #include "ut_string_class.h"
@@ -40,7 +38,6 @@
 
 class FL_DocLayout;
 class PD_Document;
-class UT_Stack;
 class ABI_xmpp;
 class ChangeAdjust;
 
@@ -84,5 +81,3 @@ private:
 	std::vector<std::pair<BuddyPtr, UT_sint32> > m_revertSet; // only used by the session owner
 	std::deque<UT_sint32>				m_iAlreadyRevertedRevs; // only used by non-session owners
 };
-
-#endif /* ABI_COLLAB_IMPORT_H */

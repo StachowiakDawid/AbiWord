@@ -44,7 +44,6 @@
 #include "ie_types.h"
 #include "pd_Document.h"
 #include "ut_growbuf.h"
-#include "ut_stack.h"
 
 #include "xap_UnixFrameImpl.h"
 #include "xap_UnixDialogHelper.h"

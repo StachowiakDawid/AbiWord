@@ -2,6 +2,7 @@
 
 /* AbiWord
  * Copyright (C) 2008 Dominic Lachowicz (domlachowicz@gmail.com)
+ * Copyright (C) 2025 Hubert Figuière
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,7 +35,6 @@
 #include <string.h>
 #include <stdarg.h>
 
-#include "ut_stack.h"
 #include "ut_debugmsg.h"
 #include "ut_string.h"
 #include "ut_std_string.h"

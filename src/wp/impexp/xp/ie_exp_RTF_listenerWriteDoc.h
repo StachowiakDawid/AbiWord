@@ -21,7 +21,6 @@
 
 #include "ie_exp_RTF.h"
 #include "ut_wctomb.h"
-#include "ut_stack.h"
 #include "ie_Table.h"
 #include "pp_PropertyMap.h"
 

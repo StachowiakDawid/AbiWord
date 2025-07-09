@@ -1,6 +1,6 @@
 /* AbiSource
  * Copyright (C) 2002 Dom Lachowicz <cinamod@hotmail.com>
- * Copyright (C) 2009 Hubert Figuiere
+ * Copyright (C) 2009-2025 Hubert Figuiere
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -38,7 +38,6 @@
 #include "ut_bytebuf.h"
 #include "ut_hash.h"
 #include "ut_vector.h"
-#include "ut_stack.h"
 #include "ut_assert.h"
 
 class IE_Exp_OpenWriter : public IE_Exp

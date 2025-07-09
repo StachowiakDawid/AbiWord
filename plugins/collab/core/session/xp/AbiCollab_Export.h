@@ -20,8 +20,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef ABI_COLLAB_EXPORT_H
-#define ABI_COLLAB_EXPORT_H
+#pragma once
 
 #include "ut_types.h"
 #include "pt_Types.h"
@@ -33,7 +32,6 @@
 
 class FL_DocLayout;
 class PD_Document;
-class UT_Stack;
 class PX_ChangeRecord;
 class ChangeAdjust;
 class AbiCollab;
@@ -97,8 +95,6 @@ private:
 	//! Document which is client of this DocListener
 	PD_Document*		m_pDoc;
 
-	UT_Stack			m_sLastContainerLayout;
-
 	AV_ChangeMask		m_chgMaskCached;
 	bool				m_bCacheChanges;
 
@@ -109,5 +105,3 @@ private:
 	UT_GenericVector<ChangeAdjust *>        m_vecAdjusts;
 	GlobSessionPacket*	m_pGlobPacket;		// if set, we're in a glob
 };
-
-#endif /* ABI_COLLAB_EXPORT_H */

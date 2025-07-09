@@ -20,15 +20,13 @@
  * 02110-1301 USA.
  */
 
-#ifndef ABICOLLAB_PACKET_H
-#define ABICOLLAB_PACKET_H
+#pragma once
 
 #include <boost/format.hpp>
 
 #include "ut_types.h"
 #include "ut_string_class.h"
 #include "px_ChangeRecord.h"
-#include "ut_stack.h"
 #include "Serialization.h"
 
 #include <string>
@@ -660,5 +658,3 @@ public:
 private:
 	UT_sint32					m_iRev;
 };
-
-#endif /* ABICOLLAB_PACKET_H */

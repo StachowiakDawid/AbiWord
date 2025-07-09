@@ -18,13 +18,11 @@
  * 02110-1301 USA.
  */
 
-#ifndef ABICOLLABSERVICE_EXPORT_H
-#define ABICOLLABSERVICE_EXPORT_H
+#pragma once
 
 #include "ut_types.h"
 #include "pt_Types.h"
 #include "px_ChangeRecord.h"
-#include "ut_stack.h"
 #include "stdio.h"
 #include "xav_Listener.h"
 #include "pl_Listener.h"
@@ -32,7 +30,6 @@
 
 class FL_DocLayout;
 class PD_Document;
-class UT_Stack;
 class PX_ChangeRecord;
 class ChangeAdjust;
 class ServiceAccountHandler;
@@ -76,5 +73,3 @@ private:
 	PD_Document*		m_pDoc;
 	ServiceAccountHandler * m_pService;
 };
-
-#endif /* ABICOLLABSERVICE_EXPORT_H */
