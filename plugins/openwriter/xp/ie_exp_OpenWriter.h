@@ -18,6 +18,9 @@
  * 02110-1301 USA.
  */
 
+#pragma once
+
+#include <memory>
 #include <string>
 
 // abiword stuff
@@ -120,11 +123,11 @@ public:
    void addFont(const std::string & font);
    int getSpanStyleNum(const std::string &key) const;
    int getBlockStyleNum(const std::string & styleAtts, const std::string & styleProps) const;
-   UT_GenericVector<int*> * enumerateSpanStyles() const;
+   std::unique_ptr<UT_GenericVector<int*>> enumerateSpanStyles() const;
    UT_String * pickBlockAtts(const UT_String *key);
-   UT_GenericVector<const UT_String*> * getSpanStylesKeys() const;
-   UT_GenericVector<const UT_String*> * getBlockStylesKeys() const;
-   UT_GenericVector<const UT_String*> * getFontsKeys() const;
+   std::unique_ptr<UT_GenericVector<const UT_String*>> getSpanStylesKeys() const;
+   std::unique_ptr<UT_GenericVector<const UT_String*>> getBlockStylesKeys() const;
+   std::unique_ptr<UT_GenericVector<const UT_String*>> getFontsKeys() const;
 private:
    UT_GenericStringMap<int*> m_spanStylesHash;
    UT_GenericStringMap<UT_String*> m_blockAttsHash;

@@ -30,15 +30,13 @@
  * Destructor
  */
 ODe_FontFaceDecls::~ODe_FontFaceDecls() {
-    UT_GenericVector<UT_UTF8String*>* pVector;
     UT_uint32 i, count;
-    
-    pVector = m_fontDecls.enumerate();
+
+    auto pVector = m_fontDecls.enumerate();
     count = pVector->getItemCount();
     for (i=0; i<count; i++) {
         delete (*pVector)[i];
     }
-    DELETEP(pVector);
 }
 
 
@@ -70,10 +68,9 @@ void ODe_FontFaceDecls::addFont(const UT_UTF8String& rFontName) {
  * Write the <office:font-face-decls> element.
  */
 bool ODe_FontFaceDecls::write(GsfOutput* pODT) const {
-    UT_GenericVector<UT_UTF8String*>* pVector;
     UT_uint32 i, count;
 
-    pVector = m_fontDecls.enumerate();
+    auto pVector = m_fontDecls.enumerate();
     count = pVector->getItemCount();
     
     if (count > 0) {

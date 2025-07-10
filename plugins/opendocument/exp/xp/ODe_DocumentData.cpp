@@ -44,16 +44,14 @@ ODe_DocumentData::ODe_DocumentData(PD_Document* pAbiDoc) :
  * Destructor
  */
 ODe_DocumentData::~ODe_DocumentData() {
-    UT_GenericVector<ODe_Style_MasterPage*>* pMasterPageVector;
     UT_uint32 count, i;
-    
-    pMasterPageVector = m_masterStyles.enumerate();
+
+    auto pMasterPageVector = m_masterStyles.enumerate();
     count = pMasterPageVector->getItemCount();
     for (i=0; i<count; i++) {
         delete (*pMasterPageVector)[i];
-    }    
-    DELETEP(pMasterPageVector);
-    
+    }
+
     if (m_pOfficeTextTemp != nullptr) {
         ODe_gsf_output_close(m_pOfficeTextTemp);
     }
@@ -106,64 +104,60 @@ bool ODe_DocumentData::doPreListeningWork() {
  * Do all necessary work after having read the AbiWord document.
  */
 bool ODe_DocumentData::doPostListeningWork() {
-    
-    UT_GenericVector<ODe_Style_Style*>* pStylesVector;
-    UT_GenericVector<ODe_Style_List*>* pListStyles;
-    UT_GenericVector<ODe_ListLevelStyle*>* pListLevelStyles;
     UT_uint32 i, j, count, count2;
     
     ////
     // Build the <office:font-face-decls> element for the Styles XML file.
-    
-    pStylesVector = m_stylesAutoStyles.getParagraphStyles();
+
+    auto pStylesVector = m_stylesAutoStyles.getParagraphStyles();
     count = pStylesVector->getItemCount();
     for (i=0; i<count; i++) {
         m_stylesXMLFontDecls.addFont( (*pStylesVector)[i]->getFontName() );
     }
-    
+
     pStylesVector = m_stylesAutoStyles.getTextStyles();
     count = pStylesVector->getItemCount();
     for (i=0; i<count; i++) {
         m_stylesXMLFontDecls.addFont( (*pStylesVector)[i]->getFontName() );
     }
-    
+
     pStylesVector = m_styles.getParagraphStylesEnumeration();
     count = pStylesVector->getItemCount();
     for (i=0; i<count; i++) {
         m_stylesXMLFontDecls.addFont( (*pStylesVector)[i]->getFontName() );
     }
-    
+
     pStylesVector = m_styles.getTextStylesEnumeration();
     count = pStylesVector->getItemCount();
     for (i=0; i<count; i++) {
         m_stylesXMLFontDecls.addFont( (*pStylesVector)[i]->getFontName() );
     }
-    
+
     ////
     // Build the <office:font-face-decls> element for the Content XML file.
-    
+
     pStylesVector = m_contentAutoStyles.getParagraphStyles();
     count = pStylesVector->getItemCount();
     for (i=0; i<count; i++) {
         m_stylesXMLFontDecls.addFont( (*pStylesVector)[i]->getFontName() );
     }
-    
+
     pStylesVector = m_contentAutoStyles.getTextStyles();
     count = pStylesVector->getItemCount();
     for (i=0; i<count; i++) {
         m_contentXMLFontDecls.addFont( (*pStylesVector)[i]->getFontName() );
     }
-    
-    pListStyles = m_contentAutoStyles.getListStyles();
+
+    auto pListStyles = m_contentAutoStyles.getListStyles();
     count = pListStyles->getItemCount();
     for (i=0; i<count; i++) {
-        pListLevelStyles = pListStyles->getNthItem(i)->getListLevelStyles();
+        auto pListLevelStyles = pListStyles->getNthItem(i)->getListLevelStyles();
         count2 = pListLevelStyles->getItemCount();
         for (j=0; j<count2; j++) {
             m_contentXMLFontDecls.addFont((*pListLevelStyles)[j]->getFontName());
         }
     }
-    
+
     ////
     // Build/expand the <style:default-style> paragraph elements for the Styles
     // XML file based on the existence of AbiWord's default-tab-interval 
@@ -186,7 +180,7 @@ bool ODe_DocumentData::doPostListeningWork() {
     for (i=0; i<count; i++) {
         handleDefaultTabInterval((*pStylesVector)[i]);
     }
-    
+
     return true;
 }
 
@@ -225,7 +219,6 @@ void ODe_DocumentData::handleDefaultTabInterval(ODe_Style_Style* pStyle) {
  */
 bool ODe_DocumentData::writeStylesXML(GsfOutfile* pOdt) const {
     GsfOutput* pStylesStream;
-    UT_GenericVector<ODe_Style_MasterPage*>* pMasterPageVector;    
     bool ok;
     UT_uint32 count, i;
     
@@ -265,8 +258,8 @@ bool ODe_DocumentData::writeStylesXML(GsfOutfile* pOdt) const {
     m_stylesAutoStyles.write(pStylesStream);
     
     ODe_writeUTF8String(pStylesStream, " <office:master-styles>\n");
-    
-    pMasterPageVector = m_masterStyles.enumerate();
+
+    auto pMasterPageVector = m_masterStyles.enumerate();
     count = pMasterPageVector->getItemCount();
     for (i=0; i<count; i++) {
         ok = (*pMasterPageVector)[i]->write(pStylesStream);

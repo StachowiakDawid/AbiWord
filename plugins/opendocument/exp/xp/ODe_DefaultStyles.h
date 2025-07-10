@@ -18,10 +18,10 @@
  * 02110-1301 USA.
  */
 
-#ifndef _ODE_DEFAULTSTYLES_H_
-#define _ODE_DEFAULTSTYLES_H_
+#pragma once
 
 #include <map>
+#include <memory>
 #include <string>
 
 // AbiWord includes
@@ -35,7 +35,7 @@ class ODe_Style_Style;
 class ODe_DefaultStyles {
 public:
 
-    UT_GenericVector<ODe_Style_Style*>* enumerate() const;
+	std::unique_ptr<UT_GenericVector<ODe_Style_Style*>> enumerate() const;
     ODe_Style_Style* getStyle(std::string family);
     void storeStyle(std::string family, ODe_Style_Style* pStyle);
 
@@ -43,5 +43,3 @@ private:
 
     std::map<std::string, ODe_Style_Style*> m_styles;
 };
-
-#endif //_ODE_DEFAULTSTYLES_H_

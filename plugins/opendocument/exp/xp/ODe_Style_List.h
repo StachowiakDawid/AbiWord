@@ -19,8 +19,9 @@
  * 02110-1301 USA.
  */
 
-#ifndef ODE_STYLE_LIST_H_
-#define ODE_STYLE_LIST_H_
+#pragma once
+
+#include <memory>
 
 // AbiWord includes
 #include "ut_hash.h"
@@ -49,7 +50,7 @@ public:
     void setLevelStyle(UT_uint8 level, const PP_AttrProp& rBlockAP);
     const ODe_ListLevelStyle* getLevelStyle(UT_uint8 level) const;
 
-    UT_GenericVector<ODe_ListLevelStyle*>* getListLevelStyles() {
+	std::unique_ptr<UT_GenericVector<ODe_ListLevelStyle*>> getListLevelStyles() {
         return m_levelStyles.enumerate();
     }
 
@@ -62,5 +63,3 @@ private:
 
     UT_GenericStringMap<ODe_ListLevelStyle*> m_levelStyles;
 };
-
-#endif /*ODE_STYLE_LIST_H_*/

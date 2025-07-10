@@ -24,8 +24,8 @@
 // Interal includes
 #include "ODe_Style_Style.h"
 
-UT_GenericVector<ODe_Style_Style*>* ODe_DefaultStyles::enumerate() const {
-    UT_GenericVector<ODe_Style_Style*>* pVec = new UT_GenericVector<ODe_Style_Style*>(m_styles.size());
+std::unique_ptr<UT_GenericVector<ODe_Style_Style*>> ODe_DefaultStyles::enumerate() const {
+    auto pVec = std::make_unique<UT_GenericVector<ODe_Style_Style*>>(m_styles.size());
     
     std::map<std::string, ODe_Style_Style*>::const_iterator pos = m_styles.begin();
     for (; pos != m_styles.end(); pos++) {

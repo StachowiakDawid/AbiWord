@@ -35,11 +35,9 @@
  * Destructor
  */
 ODe_Style_List::~ODe_Style_List() {
-    UT_GenericVector<ODe_ListLevelStyle*>* pVector;
-    
-    pVector = m_levelStyles.enumerate();
+    auto pVector = m_levelStyles.enumerate();
     UT_VECTOR_PURGEALL(ODe_ListLevelStyle*, (*pVector));
-    
+
     m_levelStyles.clear();
 }
 
@@ -53,7 +51,6 @@ bool ODe_Style_List::write(GsfOutput* pODT,
     UT_uint32 i, count;
     UT_UTF8String subElementSpacesOffset;
     UT_UTF8String output;
-    UT_GenericVector<ODe_ListLevelStyle*>* pVector;
     bool ok;
     
     UT_UTF8String_sprintf(output, "%s<text:list-style style:name=\"%s\">\n",
@@ -63,7 +60,7 @@ bool ODe_Style_List::write(GsfOutput* pODT,
     subElementSpacesOffset = rSpacesOffset;
     subElementSpacesOffset += " ";
     
-    pVector = m_levelStyles.enumerate();
+    auto pVector = m_levelStyles.enumerate();
     count = pVector->getItemCount();
     for (i=0; i<count; i++) {
         ok = (*pVector)[i]->write(pODT, subElementSpacesOffset);

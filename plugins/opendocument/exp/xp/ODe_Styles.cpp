@@ -43,22 +43,19 @@ ODe_Styles::ODe_Styles(PD_Document* pAbiDoc)
  * Destructor
  */
 ODe_Styles::~ODe_Styles() {
-    UT_GenericVector<ODe_Style_Style*>* pStyleVector;
     UT_uint32 i, count;
-    
-    pStyleVector = m_textStyles.enumerate();
+
+    auto pStyleVector = m_textStyles.enumerate();
     count = pStyleVector->getItemCount();
     for (i=0; i<count; i++) {
         delete (*pStyleVector)[i];
     }
-    DELETEP(pStyleVector);
 
     pStyleVector = m_paragraphStyles.enumerate();
     count = pStyleVector->getItemCount();
     for (i=0; i<count; i++) {
         delete (*pStyleVector)[i];
     }
-    DELETEP(pStyleVector);
 }
 
 
@@ -210,7 +207,7 @@ bool ODe_Styles::write(GsfOutput* pODT) const {
     return true;
 }
 
-bool ODe_Styles::_writeStyles(GsfOutput* pODT, UT_GenericVector<ODe_Style_Style*>* pStyleVector) const
+bool ODe_Styles::_writeStyles(GsfOutput* pODT, const std::unique_ptr<UT_GenericVector<ODe_Style_Style*>>& pStyleVector) const
 {
     for (UT_sint32 i = 0; i < pStyleVector->getItemCount(); i++) {
         ODe_Style_Style* pStyle = (*pStyleVector)[i];

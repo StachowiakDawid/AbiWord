@@ -19,8 +19,9 @@
  * 02110-1301 USA.
  */
 
-#ifndef _ODE_STYLES_H_
-#define _ODE_STYLES_H_
+#pragma once
+
+#include <memory>
 
 // AbiWord includes
 #include "ut_hash.h"
@@ -59,15 +60,15 @@ public:
         return m_defaultStyles;
     }
 
-    UT_GenericVector<ODe_Style_Style*>* getParagraphStylesEnumeration() {
+	std::unique_ptr<UT_GenericVector<ODe_Style_Style*>> getParagraphStylesEnumeration() {
         return m_paragraphStyles.enumerate();
     }
 
-    UT_GenericVector<ODe_Style_Style*>* getTextStylesEnumeration() {
+    std::unique_ptr<UT_GenericVector<ODe_Style_Style*>> getTextStylesEnumeration() {
         return m_textStyles.enumerate();
     }
 
-    UT_GenericVector<ODe_Style_Style*>* getGraphicStylesEnumeration() {
+    std::unique_ptr<UT_GenericVector<ODe_Style_Style*>> getGraphicStylesEnumeration() {
         return m_graphicStyles.enumerate();
     }
 
@@ -81,7 +82,7 @@ public:
 
 private:
     bool _addStyle(const PP_AttrProp* pAP);
-    bool _writeStyles(GsfOutput* pODT, UT_GenericVector<ODe_Style_Style*>* pStyleVector) const;
+    bool _writeStyles(GsfOutput* pODT, const std::unique_ptr<UT_GenericVector<ODe_Style_Style*>>& pStyleVector) const;
 
 	PD_Document* m_pAbiDoc;
     ODe_DefaultStyles m_defaultStyles;
@@ -89,5 +90,3 @@ private:
     UT_GenericStringMap<ODe_Style_Style*> m_paragraphStyles;
 	UT_GenericStringMap<ODe_Style_Style*> m_graphicStyles;
 };
-
-#endif //_ODE_STYLES_H_

@@ -220,12 +220,11 @@ void ODe_Main_Listener::_openHeaderFooterSection(
     const gchar* pValue;
     const gchar* pId = nullptr;
     bool ok;
-    UT_GenericVector<ODe_Style_MasterPage*>* pMasterPageVector;
     UT_uint32 count, i;
     const ODe_Style_MasterPage* pMPageStyle;
     GsfOutput* pTextOutput = nullptr;
     
-    pMasterPageVector = m_rDocumentData.m_masterStyles.enumerate();
+    auto pMasterPageVector = m_rDocumentData.m_masterStyles.enumerate();
     count = pMasterPageVector->getItemCount();
 
     

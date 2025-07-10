@@ -25,6 +25,7 @@
 #pragma once
 
 #include <string.h>
+#include <memory>
 
 #include "ut_types.h"
 #include "ut_vector.h"
@@ -73,8 +74,8 @@ public:
 	 */
 	const gchar ** list ();
 
-	UT_GenericVector<T>* enumerate(bool strip_null_values = true) const;
-	UT_GenericVector<const UT_String*>* keys(bool strip_null_values = true) const;
+	std::unique_ptr<UT_GenericVector<T>> enumerate(bool strip_null_values = true) const;
+	std::unique_ptr<UT_GenericVector<const UT_String*>> keys(bool strip_null_values = true) const;
 
 	// getting the # keys
 	inline size_t size() const { return n_keys; }
@@ -554,9 +555,9 @@ void UT_GenericStringMap<T>::set(const UT_String& key, T value)
  * Later g_free with a call to delete
  */
 template <class T>
-UT_GenericVector<T>* UT_GenericStringMap<T>::enumerate (bool strip_null_values) const
+std::unique_ptr<UT_GenericVector<T>> UT_GenericStringMap<T>::enumerate (bool strip_null_values) const
 {
-	UT_GenericVector<T> * pVec = new UT_GenericVector<T>(size());
+	auto pVec = std::make_unique<UT_GenericVector<T>>(size());
 
 	UT_Cursor cursor(this);
 
@@ -580,9 +581,9 @@ UT_GenericVector<T>* UT_GenericStringMap<T>::enumerate (bool strip_null_values) 
  * You must FREEP the UT_Vector* but not the keys
  */
 template <class T>
-UT_GenericVector<const UT_String*>* UT_GenericStringMap<T>::keys (bool strip_null_values) const
+std::unique_ptr<UT_GenericVector<const UT_String*>> UT_GenericStringMap<T>::keys (bool strip_null_values) const
 {
-	UT_GenericVector<const UT_String*>* pVec = new UT_GenericVector<const UT_String*>(size());
+	auto pVec = std::make_unique<UT_GenericVector<const UT_String*>>(size());
 
 	UT_Cursor cursor(this);
 

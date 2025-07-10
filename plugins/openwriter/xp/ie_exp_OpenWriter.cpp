@@ -198,8 +198,8 @@ OO_WriterImpl::OO_WriterImpl(GsfOutfile *pOutfile, OO_StylesContainer *pStylesCo
 	UT_String styleString;
 
 	// span styles
-	UT_GenericVector<int*> *tempStylesValuesList = m_pStylesContainer->enumerateSpanStyles();
-	UT_GenericVector<const UT_String*> *tempStylesKeysList = m_pStylesContainer->getSpanStylesKeys();
+	auto tempStylesValuesList = m_pStylesContainer->enumerateSpanStyles();
+	auto tempStylesKeysList = m_pStylesContainer->getSpanStylesKeys();
 	
 	for (UT_sint32 i=0; i<tempStylesValuesList->size(); i++) 
 	{
@@ -210,11 +210,9 @@ OO_WriterImpl::OO_WriterImpl(GsfOutfile *pOutfile, OO_StylesContainer *pStylesCo
 	   UT_DEBUGMSG(("%s", styleString.c_str()));
 	   UT_DEBUGMSG(("\"%s\"\n", styleProps->c_str()));
 	}
-	DELETEP(tempStylesKeysList);
-	DELETEP(tempStylesValuesList);
 
 	// block styles
-	UT_GenericVector<const UT_String*> *tempBlockStylesKeysList = m_pStylesContainer->getBlockStylesKeys();
+	auto tempBlockStylesKeysList = m_pStylesContainer->getBlockStylesKeys();
 
 	for (UT_sint32 i=0; i < tempBlockStylesKeysList->size(); i++) 
 	{
@@ -225,7 +223,6 @@ OO_WriterImpl::OO_WriterImpl(GsfOutfile *pOutfile, OO_StylesContainer *pStylesCo
 		styleString += UT_String_sprintf("</style:style>");
 		writeString(m_pContentStream, styleString);
 	}
-	DELETEP(tempBlockStylesKeysList);
 
     //m_acc.writeStylePreamble(m_contentStream);
     
@@ -399,7 +396,7 @@ int OO_StylesContainer::getSpanStyleNum(const std::string &key) const
 int OO_StylesContainer::getBlockStyleNum(const std::string & /*styleAtts*/, 
                                          const std::string & styleProps) const
 {
-	UT_GenericVector<const UT_String*> *keys = m_blockAttsHash.keys();
+	auto keys = m_blockAttsHash.keys();
 
 	for (UT_sint32 i = 0; i < keys->size(); i++) 
 	{
@@ -412,7 +409,7 @@ int OO_StylesContainer::getBlockStyleNum(const std::string & /*styleAtts*/,
 	return -1;
 }
 
-UT_GenericVector<int*> * OO_StylesContainer::enumerateSpanStyles() const
+std::unique_ptr<UT_GenericVector<int*>> OO_StylesContainer::enumerateSpanStyles() const
 {
    return m_spanStylesHash.enumerate();
 }
@@ -422,17 +419,17 @@ UT_String * OO_StylesContainer::pickBlockAtts(const UT_String *key)
 	return m_blockAttsHash.pick(key->c_str());
 }
 
-UT_GenericVector<const UT_String*> * OO_StylesContainer::getSpanStylesKeys() const
+std::unique_ptr<UT_GenericVector<const UT_String*>> OO_StylesContainer::getSpanStylesKeys() const
 {
    return m_spanStylesHash.keys();
 }
 
-UT_GenericVector<const UT_String*> * OO_StylesContainer::getBlockStylesKeys() const
+std::unique_ptr<UT_GenericVector<const UT_String*>> OO_StylesContainer::getBlockStylesKeys() const
 {
    return m_blockAttsHash.keys();
 }
 
-UT_GenericVector<const UT_String*> * OO_StylesContainer::getFontsKeys() const
+std::unique_ptr<UT_GenericVector<const UT_String*>> OO_StylesContainer::getFontsKeys() const
 {
    return m_fontsHash.keys();
 }
@@ -986,7 +983,7 @@ bool OO_StylesWriter::writeStyles(PD_Document * pDoc, GsfOutfile * oo, OO_Styles
 
 void OO_StylesWriter::addFontDecls(UT_UTF8String & buffer, OO_StylesContainer & stylesContainer)
 {
-	UT_GenericVector<const UT_String*> *vecFonts = stylesContainer.getFontsKeys();
+	auto vecFonts = stylesContainer.getFontsKeys();
 	for (UT_sint32 i = 0; i < vecFonts->size(); i++) {
 		// FIXME ATM only variable width fonts
 		// check here by using pango?
@@ -995,7 +992,6 @@ void OO_StylesWriter::addFontDecls(UT_UTF8String & buffer, OO_StylesContainer & 
 		buffer += UT_UTF8String_sprintf("<style:font-decl style:name=\"%s\" fo:font-family=\"'%s'\" style:font-pitch=\"%s\"/>\n", 
 						font->c_str(), font->c_str(), pitch);
 	}
-	DELETEP(vecFonts);
 }
 
 void OO_StylesWriter::map(const PP_AttrProp * pAP, UT_UTF8String & styleAtts, UT_UTF8String & propAtts, UT_UTF8String & font) 

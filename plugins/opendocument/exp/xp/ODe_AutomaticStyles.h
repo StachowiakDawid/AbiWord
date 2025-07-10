@@ -20,8 +20,9 @@
  */
 
 
-#ifndef _ODE_AUTOMATICSTYLES_H_
-#define _ODE_AUTOMATICSTYLES_H_
+#pragma once
+
+#include <memory>
 
 // AbiWord includes
 #include "ut_hash.h"
@@ -66,15 +67,15 @@ public:
         return m_sectionStyles.size();
     }
 
-    UT_GenericVector<ODe_Style_Style*>* getParagraphStyles() {
+    std::unique_ptr<UT_GenericVector<ODe_Style_Style*>> getParagraphStyles() {
         return m_paragraphStyles.enumerate();
     }
 
-    UT_GenericVector<ODe_Style_Style*>* getTextStyles() {
+    std::unique_ptr<UT_GenericVector<ODe_Style_Style*>> getTextStyles() {
         return m_textStyles.enumerate();
     }
 
-    UT_GenericVector<ODe_Style_List*>* getListStyles() {
+    std::unique_ptr<UT_GenericVector<ODe_Style_List*>> getListStyles() {
         return m_listStyles.enumerate();
     }
 
@@ -97,5 +98,3 @@ private:
     UT_GenericStringMap<ODe_Style_PageLayout*> m_pageLayouts;
     UT_GenericStringMap<ODe_Style_List*> m_listStyles;
 };
-
-#endif //_ODE_AUTOMATICSTYLES_H_

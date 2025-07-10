@@ -219,7 +219,7 @@ bool XAP_Dictionary::save(void)
 	if (!_openFile("w"))
 		return false;
 
-	UT_GenericVector<UT_UCS4Char *> * pVec = m_hashWords.enumerate();
+	auto pVec = m_hashWords.enumerate();
 	UT_ASSERT(pVec);
 
 	UT_uint32 size = pVec->size();
@@ -233,7 +233,6 @@ bool XAP_Dictionary::save(void)
 
 	_closeFile();
 
-	delete pVec;
 	m_bDirty = false;
 
 	return true;
@@ -344,7 +343,7 @@ void XAP_Dictionary::suggestWord(UT_GenericVector<UT_UCS4Char *> * pVecSuggestio
   //
   // Get the words in the local dictionary
   //
-  UT_GenericVector<UT_UCS4Char *> * pVec = m_hashWords.enumerate();
+  auto pVec = m_hashWords.enumerate();
   UT_ASSERT(pVec);
   UT_uint32 i=0;
   UT_uint32 count = pVec->getItemCount();
@@ -379,7 +378,6 @@ void XAP_Dictionary::suggestWord(UT_GenericVector<UT_UCS4Char *> * pVecSuggestio
     }
   }
   FREEP(pszWord);
-  DELETEP(pVec);
 }
 
 /*!

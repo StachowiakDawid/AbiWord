@@ -35,49 +35,35 @@
  * Destructor
  */
 ODe_AutomaticStyles::~ODe_AutomaticStyles() {
-    UT_GenericVector<ODe_Style_Style*>* pStyleVector;
-    UT_GenericVector<ODe_Style_PageLayout*>* pPageLayoutVector;
-    UT_GenericVector<ODe_Style_List*>* pListStyleVector;
-    
-    pStyleVector = m_textStyles.enumerate();
+    auto pStyleVector = m_textStyles.enumerate();
     UT_VECTOR_PURGEALL(ODe_Style_Style*, (*pStyleVector));
-    DELETEP(pStyleVector);
 
     pStyleVector = m_paragraphStyles.enumerate();
     UT_VECTOR_PURGEALL(ODe_Style_Style*, (*pStyleVector));
-    DELETEP(pStyleVector);
 
     pStyleVector = m_sectionStyles.enumerate();
     UT_VECTOR_PURGEALL(ODe_Style_Style*, (*pStyleVector));
-    DELETEP(pStyleVector);
 
     pStyleVector = m_tableStyles.enumerate();
     UT_VECTOR_PURGEALL(ODe_Style_Style*, (*pStyleVector));
-    DELETEP(pStyleVector);
 
     pStyleVector = m_tableColumnStyles.enumerate();
     UT_VECTOR_PURGEALL(ODe_Style_Style*, (*pStyleVector));
-    DELETEP(pStyleVector);
 
     pStyleVector = m_tableRowStyles.enumerate();
     UT_VECTOR_PURGEALL(ODe_Style_Style*, (*pStyleVector));
-    DELETEP(pStyleVector);
 
     pStyleVector = m_tableCellStyles.enumerate();
     UT_VECTOR_PURGEALL(ODe_Style_Style*, (*pStyleVector));
-    DELETEP(pStyleVector);
 
     pStyleVector = m_graphicStyles.enumerate();
     UT_VECTOR_PURGEALL(ODe_Style_Style*, (*pStyleVector));
-    DELETEP(pStyleVector);
 
-    pPageLayoutVector = m_pageLayouts.enumerate();
+    auto pPageLayoutVector = m_pageLayouts.enumerate();
     UT_VECTOR_PURGEALL(ODe_Style_PageLayout*, (*pPageLayoutVector));
-    DELETEP(pPageLayoutVector);
 
-    pListStyleVector = m_listStyles.enumerate();
+    auto pListStyleVector = m_listStyles.enumerate();
     UT_VECTOR_PURGEALL(ODe_Style_List*, (*pListStyleVector));
-    DELETEP(pListStyleVector);
 }
 
 
@@ -232,23 +218,18 @@ void ODe_AutomaticStyles::addPageLayout(ODe_Style_PageLayout*& pPageLayout) {
  * Writes <office:automatic-styles> element.
  */
 void ODe_AutomaticStyles::write(GsfOutput* pContentStream) const {
-
-    UT_GenericVector<ODe_Style_Style*>* pStyleVector;
-    UT_GenericVector<ODe_Style_PageLayout*>* pPageLayoutVector;
-    UT_GenericVector<ODe_Style_List*>* pListStyleVector;
     UT_uint32 i, count;
     UT_UTF8String spacesOffset = "  ";
 
     ODe_writeUTF8String(pContentStream, " <office:automatic-styles>\n");
     
 #define ODE_WRITE_STYLES(styleMap) \
-    pStyleVector = styleMap.enumerate(); \
+    {auto pStyleVector = styleMap.enumerate(); \
     count = pStyleVector->getItemCount(); \
     for (i=0; i<count; i++) { \
         (*pStyleVector)[i]->write(pContentStream, spacesOffset); \
-    } \
-    DELETEP(pStyleVector);
-    
+    }}
+
     
     ODE_WRITE_STYLES (m_textStyles);
     ODE_WRITE_STYLES (m_paragraphStyles);
@@ -261,18 +242,18 @@ void ODe_AutomaticStyles::write(GsfOutput* pContentStream) const {
     
 #undef ODE_WRITE_STYLES
  
-    pPageLayoutVector = m_pageLayouts.enumerate();
+    auto pPageLayoutVector = m_pageLayouts.enumerate();
     count = pPageLayoutVector->getItemCount();
     for (i=0; i<count; i++) {
         (*pPageLayoutVector)[i]->write(pContentStream, spacesOffset);
     }
     
-    pListStyleVector = m_listStyles.enumerate();
+    auto pListStyleVector = m_listStyles.enumerate();
     count = pListStyleVector->getItemCount();
     for (i=0; i<count; i++) {
         (*pListStyleVector)[i]->write(pContentStream, spacesOffset);
     }
-    
+
     ODe_writeUTF8String(pContentStream, " </office:automatic-styles>\n");
 }
 
@@ -291,13 +272,12 @@ void ODe_AutomaticStyles::write(GsfOutput* pContentStream) const {
 void ODe_AutomaticStyles::_storeStyle(ODe_Style_Style*& rpStyle,
                      UT_GenericStringMap<ODe_Style_Style*>& rStyles,
                      const char* pNamingPrefix) {
-                        
-    UT_GenericVector<ODe_Style_Style*>* pStyleVector;
+
     ODe_Style_Style* pStyle;
     bool isDuplicated;
     UT_uint32 i, count;
     
-    pStyleVector = rStyles.enumerate();
+    auto pStyleVector = rStyles.enumerate();
     count = pStyleVector->getItemCount();
     
     for (i=0, isDuplicated=false; i<count && isDuplicated==false; i++) {

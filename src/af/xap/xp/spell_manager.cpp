@@ -194,11 +194,10 @@ void SpellChecker::correctWord (const UT_UCS4Char * /*toCorrect*/, size_t /*toCo
  */
 SpellManager::~SpellManager ()
 {
-	UT_GenericVector<void const *> *pVec = m_map.enumerate();
+	auto pVec = m_map.enumerate();
 	UT_ASSERT(pVec);
 	if (pVec) {
 		UT_VECTOR_PURGEALL (SpellCheckerClass *, (*pVec));
-		DELETEP(pVec);
 	}
 }
 
