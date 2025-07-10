@@ -144,8 +144,8 @@ public:
 		}
 
 private:
-	UT_GenericStringMap(const UT_GenericStringMap<T>&);	// no impl
-	void operator=(const UT_GenericStringMap<T>&);		// no impl
+	UT_GenericStringMap(const UT_GenericStringMap<T>&) = delete;
+	void operator=(const UT_GenericStringMap<T>&) = delete;
 
 
 	enum SM_search_type: uint8_t

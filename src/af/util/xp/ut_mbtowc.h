@@ -1,16 +1,9 @@
-#ifndef UT_MBTOWC_H
-#define UT_MBTOWC_H
+#pragma once
 
 #include "ut_misc.h"
 #include <limits.h>
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 #include "ut_iconv.h"
 
 // UTF-8 can use up to 6 bytes
@@ -51,9 +44,8 @@ class ABI_EXPORT UT_UCS2_mbtowc
   UT_UCS2_mbtowc ();
 
  private:
-  // no impls
-  UT_UCS2_mbtowc (const UT_UCS2_mbtowc & v);
-  UT_UCS2_mbtowc& operator=(const UT_UCS2_mbtowc &rhs);
+  UT_UCS2_mbtowc (const UT_UCS2_mbtowc & v) = delete;
+  UT_UCS2_mbtowc& operator=(const UT_UCS2_mbtowc &rhs) = delete;
 
   size_t m_bufLen;
   char m_buf[iMbLenMax];
@@ -92,12 +84,9 @@ class ABI_EXPORT UT_UCS4_mbtowc
   UT_UCS4_mbtowc ();
 
  private:
-  // no impls
-  UT_UCS4_mbtowc (const UT_UCS4_mbtowc & v);
-  UT_UCS4_mbtowc& operator=(const UT_UCS4_mbtowc &rhs);
+  UT_UCS4_mbtowc(const UT_UCS4_mbtowc & v) = delete;
+  UT_UCS4_mbtowc& operator=(const UT_UCS4_mbtowc &rhs) = delete;
 
   size_t m_bufLen;
   char m_buf[iMbLenMax];
 };
-
-#endif // UT_MBTOWC_H

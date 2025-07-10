@@ -16,16 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301 USA.
  */
-#ifndef UT_MUTEX_H
-#define UT_MUTEX_H
+#pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 class UT_MutexImpl;
 class UT_MutexAcquirer;
@@ -51,11 +44,8 @@ class ABI_EXPORT UT_Mutex
   void unlock ();
 
  private:
-
-
-  // no impls
-  UT_Mutex (const UT_Mutex & other);
-  UT_Mutex & operator=(const UT_Mutex & other);
+  UT_Mutex(const UT_Mutex & other) = delete;
+  UT_Mutex & operator=(const UT_Mutex & other) = delete;
 
   UT_MutexImpl * m_pimpl;
 };
@@ -91,12 +81,9 @@ class ABI_EXPORT UT_MutexAcquirer
     }
 
  private:
-  // no impls
-  UT_MutexAcquirer ();
-  UT_MutexAcquirer (const UT_MutexAcquirer & other);
-  UT_MutexAcquirer & operator=(const UT_MutexAcquirer &other);
+  UT_MutexAcquirer() = delete;
+  UT_MutexAcquirer(const UT_MutexAcquirer & other) = delete;
+  UT_MutexAcquirer & operator=(const UT_MutexAcquirer &other) = delete;
 
   UT_Mutex & m_mutex;
 };
-
-#endif /* UT_MUTEX_H */

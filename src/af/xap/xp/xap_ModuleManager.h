@@ -65,9 +65,8 @@ public:
 	const UT_GenericVector<XAP_Module*> * enumModules () const;
 
 private:
-
-	XAP_ModuleManager(const XAP_ModuleManager &);		// no impl
-	void operator=(const XAP_ModuleManager &);	        // no impl
+	XAP_ModuleManager(const XAP_ModuleManager &) = delete;
+	void operator=(const XAP_ModuleManager &) = delete;
 
 	UT_GenericVector<XAP_Module*> * m_modules;
 };

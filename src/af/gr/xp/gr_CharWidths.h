@@ -69,7 +69,7 @@ public:
 	UT_sint32		getWidth(UT_UCS4Char cIndex) const;
 
 private:
-	GR_CharWidths(GR_CharWidths &cp); // no impl
+	GR_CharWidths(GR_CharWidths &cp) = delete;
 
 	struct Array256 { UT_sint32 aCW[256]; };
 

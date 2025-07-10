@@ -49,8 +49,8 @@ class ABI_EXPORT UT_WorkerFactory
 					  UT_WorkerFactory::ConstructMode & outMode );
 
  private:
-  UT_WorkerFactory ();
-  ~UT_WorkerFactory ();
+  UT_WorkerFactory();
+  ~UT_WorkerFactory();
 };
 
 /*!
@@ -80,7 +80,7 @@ class ABI_EXPORT UT_Worker
   void _setInstanceData(void * data);
 
  private:
-  UT_Worker (UT_Worker &); // no impl
+  UT_Worker(UT_Worker &) = delete;
 
   void * m_pInstanceData;
   UT_WorkerCallback m_pCallback;

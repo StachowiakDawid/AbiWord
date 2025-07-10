@@ -18,8 +18,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef GR_CONTROL_H
-#define GR_CONTROL_H
+#pragma once
 
 #include "ut_types.h"
 #include "ut_bytebuf.h"
@@ -121,8 +120,8 @@ class ABI_EXPORT GR_Control
 
  private:
 
-  GR_Control ( const GR_Control & ); // no impl
-  GR_Control & operator=( const GR_Control & ); // no impl
+  GR_Control(const GR_Control &) = delete;
+  GR_Control& operator=(const GR_Control &) = delete;
 
   AV_View   * m_pView;
   XAP_Frame * m_pFrame;
@@ -202,9 +201,7 @@ class ABI_EXPORT GR_ControlFactory
 
  private:
 
-  void operator delete ( GR_ControlFactory * ); // no impl
-  GR_ControlFactory ( const GR_ControlFactory & ); // no impl
-  GR_ControlFactory & operator=( const GR_ControlFactory & ); // no impl
+  void operator delete(GR_ControlFactory *) = delete;
+  GR_ControlFactory(const GR_ControlFactory &) = delete;
+  GR_ControlFactory & operator=(const GR_ControlFactory &) = delete;
 };
-
-#endif // GR_CONTROL_H

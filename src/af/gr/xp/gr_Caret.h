@@ -20,8 +20,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301 USA.
  */
-#ifndef GR_CARET_H
-#define GR_CARET_H
+
+#pragma once
 
 #include "ut_color.h"
 #include "ut_timer.h"
@@ -70,9 +70,9 @@ public:
 	void                            setPendingBlink(void);
 	bool                            doBlinkIfNeeded(void);
 private:
-	GR_Caret(); // no impl
-	GR_Caret(const GR_Caret& rhs);			// no impl.
-	void operator=(const GR_Caret& rhs);	// no impl.
+	GR_Caret() = delete;
+	GR_Caret(const GR_Caret& rhs) = delete;
+	void operator=(const GR_Caret& rhs) = delete;
 
 	static void						s_work(UT_Worker * w);
 	static void						s_enable(UT_Worker * w);
@@ -149,13 +149,9 @@ class ABI_EXPORT GR_CaretDisabler
 		}
 
 private:
-	// no impls
-	GR_CaretDisabler ();
-	GR_CaretDisabler (const GR_CaretDisabler & other);
-	GR_CaretDisabler & operator=(const GR_CaretDisabler &other);
+	GR_CaretDisabler() = delete;
+	GR_CaretDisabler(const GR_CaretDisabler & other) = delete;
+	GR_CaretDisabler & operator=(const GR_CaretDisabler &other) = delete;
 
 	GR_Caret * m_pCaret;
 };
-
-
-#endif // GR_CARET_H

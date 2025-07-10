@@ -17,24 +17,15 @@
  * 02110-1301 USA.
  */
 
-#ifndef UT_SCRIPT_H
-#define UT_SCRIPT_H
+#pragma once
 
 #include <string>
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 typedef UT_sint32 UT_ScriptIdType;
 
-#ifndef UTVECTOR_H
 #include "ut_vector.h"
-#endif
 
 class UT_Script;
 class UT_ScriptLibrary;
@@ -79,8 +70,8 @@ protected:
 	UT_Script();
 
 private:
-	UT_Script(const UT_Script &); // no impl
-	UT_Script& operator=(const UT_Script &); // no impl
+	UT_Script(const UT_Script &) = delete;
+	UT_Script& operator=(const UT_Script &) = delete;
 };
 
 class ABI_EXPORT UT_ScriptLibrary
@@ -127,5 +118,3 @@ private:
 	UT_GenericVector<UT_ScriptSniffer *>* mSniffers;
 	std::string m_stErrMsg;
 };
-
-#endif /* UT_SCRIPT_H */

@@ -19,8 +19,7 @@
  * 02110-1301 USA.
  */
 
-#ifndef UT_MUTEXIMPL_H
-#define UT_MUTEXIMPL_H
+#pragma once
 
 #include <glib.h>
 #include "ut_assert.h"
@@ -73,9 +72,8 @@ public:
 
 private:
 
-	// no impls
-	UT_MutexImpl (const UT_MutexImpl & other);
-	UT_MutexImpl & operator=(const UT_MutexImpl & other);
+	UT_MutexImpl(const UT_MutexImpl & other) = delete;
+	UT_MutexImpl & operator=(const UT_MutexImpl & other) = delete;
 
 // TODO: when we require Glib 2.32 or up, we can remove all that
 // junk and just keep the static mutex.
@@ -88,5 +86,3 @@ private:
 	GThread *mLocker;
 	int iLockCount;
 };
-
-#endif /* UT_MUTEXIMPL_H */

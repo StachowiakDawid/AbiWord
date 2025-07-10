@@ -19,16 +19,9 @@
  * 02110-1301 USA.
  */
 
-#ifndef UT_ICONV_H
-#define UT_ICONV_H
+#pragma once
 
-/* pre-emptive dismissal; ut_types.h is needed by just about everything,
- * so even if it's commented out in-file that's still a lot of work for
- * the preprocessor to do...
- */
-#ifndef UT_TYPES_H
 #include "ut_types.h"
-#endif
 
 typedef void * UT_iconv_t;
 
@@ -51,8 +44,8 @@ class ABI_EXPORT auto_iconv
 
  private:
 
-  auto_iconv(const auto_iconv&);	// no impl
-  void operator=(const auto_iconv&);	// no impl
+  auto_iconv(const auto_iconv&) = delete;
+  void operator=(const auto_iconv&) = delete;
   UT_iconv_t m_h;
 };
 
@@ -87,9 +80,3 @@ ABI_EXPORT char *      UT_convert_cd (const char *str,
 			   UT_uint32 *bytes_written);
 
 G_END_DECLS
-
-#endif /* UT_ICONV_H */
-
-
-
-
