@@ -1241,11 +1241,6 @@ int AP_UnixApp::main(const char * szAppName, int argc, char ** argv)
 {
     // This is a static function.
 
-#if !GLIB_CHECK_VERSION(2,32,0)
-	if (!g_thread_supported ())
-		g_thread_init (nullptr);
-#endif
-
     // initialize our application.
 	int exit_status = 0;
 	AP_UnixApp * pMyUnixApp = new AP_UnixApp(szAppName);

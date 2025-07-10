@@ -2,6 +2,7 @@
 
 /* AbiSource Program Utilities
  * Copyright (C) 2002 Dom Lachowicz <cinamod@hotmail.com>
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,33 +33,20 @@ class UT_MutexImpl
 public:
 
 	UT_MutexImpl ()
-		: mMutex(nullptr)
 		{
-#if GLIB_CHECK_VERSION(2,32,0)
-			mMutex = &mStaticMutex;
 			g_mutex_init(&mStaticMutex);
-#else
-			if (!g_thread_supported ())
-				g_thread_init (nullptr);
-			mMutex = g_mutex_new () ;
-			UT_ASSERT ( mMutex ) ;
-#endif
 		}
 
 	~UT_MutexImpl ()
 		{
-#if GLIB_CHECK_VERSION(2,32,0)
 			g_mutex_clear(&mStaticMutex);
-#else
-			if ( mMutex )
-				g_mutex_free ( mMutex ) ;
-#endif
 		}
 
   void lock ()
 		{
-			if ( mMutex && mLocker != g_thread_self())
-				g_mutex_lock ( mMutex ) ;
+			if (mLocker != g_thread_self()) {
+				g_mutex_lock(&mStaticMutex);
+			}
 			mLocker = g_thread_self();
 			iLockCount++;
 		}
@@ -66,8 +54,9 @@ public:
   void unlock ()
 		{
 			UT_ASSERT(mLocker == g_thread_self());
-			if (--iLockCount == 0 && mMutex)
-				g_mutex_unlock ( mMutex ) ;
+			if (--iLockCount == 0) {
+				g_mutex_unlock(&mStaticMutex) ;
+			}
 		}
 
 private:
@@ -75,12 +64,7 @@ private:
 	UT_MutexImpl(const UT_MutexImpl & other) = delete;
 	UT_MutexImpl & operator=(const UT_MutexImpl & other) = delete;
 
-// TODO: when we require Glib 2.32 or up, we can remove all that
-// junk and just keep the static mutex.
-#if GLIB_CHECK_VERSION(2,32,0)
 	GMutex mStaticMutex;
-#endif
-	GMutex *mMutex;
 
 	// Damn it, recursive locking is not guaranteed.
 	GThread *mLocker;
