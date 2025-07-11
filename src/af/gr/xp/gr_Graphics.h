@@ -25,6 +25,7 @@
 #include <cstdint>
 #include <memory>
 #include <optional>
+#include <stack>
 
 #include "xap_Features.h"
 
@@ -38,7 +39,6 @@
 #include "gr_Transform.h"
 #include "gr_CharWidthsCache.h"
 #include "ut_vector.h"
-#include "ut_stack.h"
 #include "ut_TextIterator.h"
 
 #ifdef ABI_GRAPHICS_PLUGIN
@@ -898,7 +898,7 @@ class ABI_EXPORT GR_Graphics
 		DRAWING_SUSPENDED
 	};
 
-	UT_NumberStack m_DCSwitchManagementStack;
+	std::stack<UT_sint32> m_DCSwitchManagementStack;
 
  private:
 	GR_Caret *		 m_pCaret;

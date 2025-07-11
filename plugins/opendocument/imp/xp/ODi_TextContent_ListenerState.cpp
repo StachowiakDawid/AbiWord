@@ -1428,11 +1428,11 @@ void ODi_TextContent_ListenerState::_pushInlineFmt(const PP_PropertyVector & att
  */
 void ODi_TextContent_ListenerState::_popInlineFmt(void)
 {
-    UT_sint32 start;
-
-    if (!m_stackFmtStartIndex.pop(&start))
+    if (m_stackFmtStartIndex.empty())
         return;
 
+    UT_sint32 start = m_stackFmtStartIndex.top();
+    m_stackFmtStartIndex.pop();
     m_vecInlineFmt.erase(m_vecInlineFmt.begin() + (start - 1),
                            m_vecInlineFmt.end());
 }

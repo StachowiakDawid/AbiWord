@@ -82,8 +82,6 @@ libutil_la_SOURCES = \
 	xp/ut_rand.h \
 	xp/ut_Script.cpp \
 	xp/ut_Script.h \
-	xp/ut_stack.cpp \
-	xp/ut_stack.h \
 	xp/ut_std_algo.h \
 	xp/ut_std_map.h \
 	xp/ut_std_string.h \
@@ -143,6 +141,8 @@ libutil_la_SOURCES += \
 endif
 if PLATFORM_WIN
 libutil_la_SOURCES += \
+	xp/ut_stack.cpp \
+	xp/ut_stack.h \
 	win/ut_debugmsg.cpp \
 	win/ut_mutexImpl.h \
 	win/ut_path.cpp \

@@ -1,5 +1,6 @@
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,12 +18,12 @@
  * 02110-1301 USA.
  */
 
-#ifndef FL_DOCLISTENER_H
-#define FL_DOCLISTENER_H
+#pragma once
+
+#include <stack>
 
 #include "ut_types.h"
 #include "pt_Types.h"
-#include "ut_stack.h"
 #include "xav_Listener.h"
 #include "pl_Listener.h"
 
@@ -90,7 +91,7 @@ private:
 	//! SectionLayout currently being constructed (multi-step change
 	//! related?!?)
 	fl_SectionLayout*	   m_pCurrentSL;
-	UT_Stack               m_sLastContainerLayout;
+	std::stack<fl_ContainerLayout *> m_sLastContainerLayout;
 	bool                   m_bFootnoteInProgress;
 	bool                   m_bEndFootnoteProcessedInBlock;
 	AV_ChangeMask          m_chgMaskCached;
@@ -98,7 +99,3 @@ private:
 	AP_StatusBar *         m_pStatusBar;
 	UT_sint32              m_iFilled;
 };
-
-#endif /* FL_DOCLISTENER_H */
-
-

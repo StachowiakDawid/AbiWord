@@ -25,7 +25,9 @@
 
 #include "ut_types.h"
 
-class ABI_EXPORT UT_Stack
+class ABI_EXPORT
+[[deprecated("Use std::stack<> instead")]]
+UT_Stack
 {
 public:
 	void			push(void * pVoid);
@@ -40,7 +42,9 @@ private:
 
 /** A stack to store numbers
  */
-class ABI_EXPORT UT_NumberStack
+class ABI_EXPORT
+[[deprecated("Use std::stack<UT_uint32> instead")]]
+UT_NumberStack
 {
 public:
 	UT_NumberStack (UT_uint32 sizehint = 32);

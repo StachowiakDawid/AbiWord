@@ -2,6 +2,7 @@
 
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,9 +20,9 @@
  * 02110-1301 USA.
  */
 
+#pragma once
 
-#ifndef IE_IMP_DOCBOOK_H
-#define IE_IMP_DOCBOOK_H
+#include <stack>
 
 #include 	"ie_imp_XML.h"
 #include	"ie_Table.h"
@@ -99,7 +100,7 @@ protected:
 	bool m_bInTable;
 	bool m_bInTOC;
 	bool m_bReadBook;
-	UT_NumberStack m_utnsTagStack;
+	std::stack<UT_uint32> m_utnsTagStack;
 	UT_UTF8String m_sectionRole;
 	ie_Table * m_TableHelperStack;
 
@@ -110,5 +111,3 @@ protected:
 	const gchar ** getCondition (const gchar **atts);
 	UT_uint32 tagTop(void);
 };
-
-#endif /* IE_IMP_DocBook_H */

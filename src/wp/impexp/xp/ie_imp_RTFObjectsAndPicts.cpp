@@ -1088,8 +1088,8 @@ void IE_Imp_RTF::HandleShape(void)
 	delete parser;
 	
 	// restore state
-	pState = nullptr;
-	m_stateStack.pop((void**)(&pState));
+	pState = m_stateStack.top();
+	m_stateStack.pop();
 	m_currentRTFState = *pState;
 	delete pState;
 	

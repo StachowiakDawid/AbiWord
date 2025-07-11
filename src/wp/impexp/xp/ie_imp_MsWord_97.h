@@ -4,6 +4,7 @@
  * Copyright (C) 2001 AbiSource, Inc.
  * Copyright (C) 2001 Dom Lachowicz <dominicl@seas.upenn.edu>
  * Copyright (C) 2001-2003 Tomas Frydrych
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,6 +26,8 @@
 
 // The importer/reader for Microsoft Word Documents
 
+#include <stack>
+
 #include "ie_imp.h"
 #include "ut_string_class.h"
 #include "fl_DocLayout.h"
@@ -39,7 +42,6 @@ typedef struct _CHP CHP;
 typedef struct _PAP PAP;
 class PD_Document;
 class pf_Frag;
-class UT_Stack;
 
 struct field;
 
@@ -263,7 +265,7 @@ private:
 	UT_sint32	m_fieldRet;
 	UT_sint32	m_fieldDepth;
 #else
-	UT_Stack    m_stackField;
+	std::stack<field*>    m_stackField;
 #endif
 	//char *	  m_fieldA;
 	bool	   m_bIsLower;

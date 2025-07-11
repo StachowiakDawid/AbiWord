@@ -119,9 +119,9 @@ bool IE_Imp_RTF::PushRTFState(void)
 //
 bool IE_Imp_RTF::PopRTFState(void)
 {
-	xxx_UT_DEBUGMSG(("Pop RTF state depth %d \n",m_stateStack.getDepth()));
-	RTFStateStore* pState = nullptr;
-	m_stateStack.pop(reinterpret_cast<void**>(&pState));
+	xxx_UT_DEBUGMSG(("Pop RTF state depth %d \n", m_stateStack.size()));
+	RTFStateStore* pState = m_stateStack.top();
+	m_stateStack.pop();
 
 	if (pState != nullptr)	{
 		bool ok = FlushStoredChars();

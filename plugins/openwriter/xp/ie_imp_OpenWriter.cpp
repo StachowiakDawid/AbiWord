@@ -3,6 +3,7 @@
 /* AbiSource Program Utilities
  * Copyright (C) 2002-2003 Dom Lachowicz <cinamod@hotmail.com>
  * Copyright (C) 2005 Robert Staudinger <robsta@stereolyzer.net>
+ * Copyright (C) 2025 Hubert Figuière
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,6 +23,7 @@
 
 #include "ut_locale.h"
 #include <math.h>
+#include <stack>
 
 #include "ie_impexp_OpenWriter.h"
 #include "ie_impGraphic.h"
@@ -40,7 +42,6 @@
 #include "ut_bytebuf.h"
 #include "ut_hash.h"
 #include "ut_vector.h"
-#include "ut_stack.h"
 #include "ut_math.h"
 
 #include "ut_debugmsg.h"
@@ -1219,7 +1220,7 @@ private:
   UT_UTF8String m_curStyleName;
 
   PP_PropertyVector	m_vecInlineFmt;
-  UT_NumberStack		m_stackFmtStartIndex;
+  std::stack<UT_uint32>	m_stackFmtStartIndex;
   const OpenWriter_StylesStream_Listener * m_pSSListener;
 
   UT_uint32 m_imgCnt;
@@ -1763,9 +1764,11 @@ private:
   
   void _popInlineFmt(void)
   {
-    UT_sint32 start;
-    if (!m_stackFmtStartIndex.pop(&start))
+    if (m_stackFmtStartIndex.empty())
       return;
+
+    UT_uint32 start = m_stackFmtStartIndex.top();
+    m_stackFmtStartIndex.pop();
 
     m_vecInlineFmt.erase(m_vecInlineFmt.begin() + (start - 1),
                          m_vecInlineFmt.end());

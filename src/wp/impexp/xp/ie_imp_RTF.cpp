@@ -4,7 +4,7 @@
  * Copyright (C) 1999 AbiSource, Inc.
  * Copyright (C) 2003 Tomas Frydrych <tomas@frydrych.uklinux.net>
  * Copyright (C) 2003 Martin Sevior <msevior@physics.unimelb.edu.au> 
- * Copyright (C) 2001, 2004, 2009, 2011 Hubert Figuiere <hub@figuiere.net>
+ * Copyright (C) 2001, 2004, 2009, 2011-2025 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -1530,10 +1530,10 @@ IE_Imp_RTF::~IE_Imp_RTF()
 {
 	// Empty the state stack
 	UT_DEBUGMSG(("In RTF destructor %p \n", (void*)this));
-	while (m_stateStack.getDepth() > 0)
+	while (!m_stateStack.empty())
 	{
-		RTFStateStore* pItem = nullptr;
-		m_stateStack.pop((void**)(&pItem));
+		RTFStateStore* pItem = m_stateStack.top();
+		m_stateStack.pop();
 		UT_DEBUGMSG(("Deleting item %p in RTF destructor \n", (void*)pItem));
 		delete pItem;
 	}
@@ -1749,7 +1749,7 @@ void IE_Imp_RTF::RemoveRowInfo(void)
 
 UT_sint32 IE_Imp_RTF::getPasteDepth(void)
 {
-	return m_pasteTableStack.getDepth();
+	return m_pasteTableStack.size();
 }
 
 /*!
@@ -1757,10 +1757,10 @@ UT_sint32 IE_Imp_RTF::getPasteDepth(void)
  */
 void IE_Imp_RTF::closePastedTableIfNeeded(void)
 {
-	while(m_pasteTableStack.getDepth() > 0)
+	while(!m_pasteTableStack.empty())
 	{
-		ABI_Paste_Table * pPaste = nullptr;
-		m_pasteTableStack.pop((void**)(&pPaste));
+		ABI_Paste_Table * pPaste = m_pasteTableStack.top();
+		m_pasteTableStack.pop();
 		if(pPaste != nullptr)
 		{
 			if(pPaste->m_bHasPastedCellStrux && !pPaste->m_bHasPastedBlockStrux)
@@ -2212,7 +2212,7 @@ void IE_Imp_RTF::HandleRow(void)
 	m_bCellHandled = false;
 	m_bContentFlushed = false;
 	m_bRowJustPassed = true;
-	m_iStackLevelAtRow = m_stateStack.getDepth();
+	m_iStackLevelAtRow = m_stateStack.size();
 	m_bDoCloseTable = false;
 	m_iNoCellsSinceLastRow = 0;
 }
@@ -2286,8 +2286,9 @@ void IE_Imp_RTF::HandleNoteReference(void)
 
 		// now we pop the saved state off and restore the current state
 		RTFStateStore* pState = nullptr;
-		m_stateStack.pop(reinterpret_cast<void**>(&pState));
-		m_stateStack.pop(reinterpret_cast<void**>(&pState));
+		m_stateStack.pop();
+		pState = m_stateStack.top();
+		m_stateStack.pop();
 		m_currentRTFState = *pState;
 		DELETEP(pState);
 	}
@@ -2317,7 +2318,7 @@ void IE_Imp_RTF::HandleNote(void)
 		FlushStoredChars(true);
 	}
 
-	m_iDepthAtFootnote = m_stateStack.getDepth();
+	m_iDepthAtFootnote = m_stateStack.size();
 
 	std::string footpid;
 	if(m_bNoteIsFNote)
@@ -2451,11 +2452,10 @@ UT_Error IE_Imp_RTF::_parseText()
 	// remember the depth of stack on entry, and if the depth of stack
 	// drops bellow this level return (this is so that we can call
 	// this method recursively)
-	UT_sint32 iRTFStackDepth = m_stateStack.getDepth();
+	UT_sint32 iRTFStackDepth = m_stateStack.size();
 	UT_DEBUGMSG(("IE_Imp_RTF::_parseText: stack depth %d\n", iRTFStackDepth));
-	
-	
-	while (ok  &&  m_stateStack.getDepth() >= iRTFStackDepth && ReadCharFromFile(&c))
+
+	while (ok  &&  (UT_sint32)m_stateStack.size() >= iRTFStackDepth && ReadCharFromFile(&c))
 	{
 		if (m_currentRTFState.m_internalState == RTFStateStore::risBin)
 		{
@@ -2608,12 +2608,12 @@ UT_Error IE_Imp_RTF::_parseText()
 		}
 	}
 
-	/* m_stateStack.getDepth() == 0 if the functions PushRTFState and PopRTFState
+	/* m_stateStack.size() == 0 if the functions PushRTFState and PopRTFState
 	   have been called the same number of times. Each call to PushRTFState on an
 	   opening bracket ("{") should be followed by a call to PopRTFState on the
 	   corresponding closing bracket ("}"). This check is done only if the function
 	   has not been called recursively (iRTFStackDepth == 0).*/
-	UT_ASSERT((m_stateStack.getDepth() == 0) || (iRTFStackDepth > 0));
+	UT_ASSERT(m_stateStack.empty() || (iRTFStackDepth > 0));
 
 //	UT_DEBUGMSG(("dumping document\n"));
 //	getDoc()->__dump(stderr);
@@ -2838,11 +2838,11 @@ bool IE_Imp_RTF::AddChar(UT_UCS4Char ch)
 bool IE_Imp_RTF::isPastedTableOpen(void)
 {
 	ABI_Paste_Table * pPaste = nullptr;
-	if(m_pasteTableStack.getDepth() == 0)
+	if (m_pasteTableStack.empty())
 	{
 		return false;
 	}
-	m_pasteTableStack.viewTop(reinterpret_cast<void **>(&pPaste));
+	pPaste = m_pasteTableStack.top();
 	if(pPaste == nullptr)
 	{
 		return false;
@@ -2869,7 +2869,7 @@ bool IE_Imp_RTF::FlushStoredChars(bool forceInsertPara)
 // Don't insert anything if we're between a table strux and a cell or between
 // cell's
 //
-	xxx_UT_DEBUGMSG(("Level at check %d \n",m_stateStack.getDepth()));
+	xxx_UT_DEBUGMSG(("Level at check %d \n",m_stateStack.size()));
 	if(isPastedTableOpen() && !forceInsertPara)
 	{
 		return true;
@@ -2939,7 +2939,7 @@ bool IE_Imp_RTF::FlushStoredChars(bool forceInsertPara)
 		ok = ApplyCharacterAttributes();
 		m_bCellBlank = false;
 	}
-	if( ok && m_bInFootnote && (m_stateStack.getDepth() < m_iDepthAtFootnote))
+	if( ok && m_bInFootnote && ((UT_sint32)m_stateStack.size() < m_iDepthAtFootnote))
 	{
 		if(!bUseInsertNotAppend())
 		{
@@ -2963,13 +2963,13 @@ bool IE_Imp_RTF::FlushStoredChars(bool forceInsertPara)
 		m_bInFootnote = false;
 		m_iDepthAtFootnote = 0;
 	}
-	xxx_UT_DEBUGMSG(("Annotation level at check %d \n",m_stateStack.getDepth()));
-    if(ok && m_bInAnnotation && m_pAnnotation && (m_stateStack.getDepth() < m_pAnnotation->m_iRTFLevel))
+	xxx_UT_DEBUGMSG(("Annotation level at check %d \n",m_stateStack.size()));
+    if(ok && m_bInAnnotation && m_pAnnotation && ((UT_sint32)m_stateStack.size() < m_pAnnotation->m_iRTFLevel))
 		{
 			//
 			// Wind up the annotation
 			m_bInAnnotation = false;
-			xxx_UT_DEBUGMSG(("Finishing up the annotation depth %d RTFlevel %d \n",m_stateStack.getDepth(), m_pAnnotation->m_iRTFLevel ));
+			xxx_UT_DEBUGMSG(("Finishing up the annotation depth %d RTFlevel %d \n",m_stateStack.size(), m_pAnnotation->m_iRTFLevel ));
 			if(!bUseInsertNotAppend())
 			{
 				FlushStoredChars();
@@ -2992,7 +2992,7 @@ bool IE_Imp_RTF::FlushStoredChars(bool forceInsertPara)
 			m_posSavedDocPosition = 0;
 			xxx_UT_DEBUGMSG(("Annotation insert complete \n"));
 		}
-//	if( ok && m_bFrameOpen && (static_cast<UT_sint32>(m_stateStack.getDepth()) < m_iStackDepthAtFrame))	
+//	if( ok && m_bFrameOpen && (static_cast<UT_sint32>(m_stateStack.size()) < m_iStackDepthAtFrame))	
 //	{
 //		HandleEndShape();
 //	}
@@ -5685,7 +5685,7 @@ bool IE_Imp_RTF::HandleStarKeyword()
 	unsigned char keyword_star[MAX_KEYWORD_LEN];
 	UT_sint32 parameter_star = 0;
 	bool parameterUsed_star = false;
-	xxx_UT_DEBUGMSG(("RTF Level in HandlStarKeyword %d \n",m_stateStack.getDepth()));	
+	xxx_UT_DEBUGMSG(("RTF Level in HandlStarKeyword %d \n",m_stateStack.size()));	
 	m_currentRTFState.m_bInKeywordStar = true;
 	if (ReadKeyword(keyword_star, &parameter_star, &parameterUsed_star,
 					MAX_KEYWORD_LEN))
@@ -5810,7 +5810,7 @@ bool IE_Imp_RTF::HandleStarKeyword()
 							m_currentRTFState.m_destinationState = RTFStateStore::rdsSkip;
 							return true;
 						}
-						if(pView->isHdrFtrEdit() && (pView->isInTable() || m_pasteTableStack.getDepth() == 2) )
+						if(pView->isHdrFtrEdit() && (pView->isInTable() || m_pasteTableStack.size() == 2) )
 						{
 //
 // No nested Tables in header/footer
@@ -5876,7 +5876,7 @@ bool IE_Imp_RTF::HandleStarKeyword()
 					UT_DEBUGMSG(("Doing shpinst \n"));
 					SkipCurrentGroup();
 					/*
-					m_iStackDepthAtFrame = m_stateStack.getDepth();
+					m_iStackDepthAtFrame = m_stateStack.size();
 					m_bFrameOpen = true;
 					*/
 					return true;
@@ -6044,7 +6044,7 @@ bool IE_Imp_RTF::HandleStarKeyword()
 					//	UT_ASSERT(UT_SHOULD_NOT_HAPPEN);
 					//	return false;
 					//	}
-					m_pAnnotation->m_iRTFLevel = m_stateStack.getDepth();
+					m_pAnnotation->m_iRTFLevel = m_stateStack.size();
 					xxx_UT_DEBUGMSG(("Found annotation content depth %d \n",m_pAnnotation->m_iRTFLevel));
 					return true;
 				}
@@ -6053,7 +6053,7 @@ bool IE_Imp_RTF::HandleStarKeyword()
 					//
 					// Annotation reference number
 					UT_DEBUGMSG(("Write code to handle atnref \n"));
-					xxx_UT_DEBUGMSG(("RTF Level inside atnref %d \n",m_stateStack.getDepth()));
+					xxx_UT_DEBUGMSG(("RTF Level inside atnref %d \n",m_stateStack.size()));
 					return true;
 				}
 				break;
@@ -7696,8 +7696,7 @@ bool IE_Imp_RTF::ApplyParagraphAttributes(bool bDontInsert)
 		}
 		else if(bUseInsertNotAppend())
 		{
-			ABI_Paste_Table * pPaste = nullptr;
-			m_pasteTableStack.viewTop((void**)(&pPaste));
+			ABI_Paste_Table * pPaste = m_pasteTableStack.top();
 			if(pPaste != nullptr)
 			{
 				if(!pPaste->m_bHasPastedCellStrux && pPaste->m_bHasPastedTableStrux)
@@ -8932,7 +8931,7 @@ bool IE_Imp_RTF::ReadFontTable()
 	UT_sint32 parameter = 0;
 	bool paramUsed = false;
 	UT_Byte ch;
-	UT_Stack stateStack;
+	std::stack<SFontTableState *> stateStack;
 	// RTF state pointers.
 	struct SFontTableState *currentState = new SFontTableState;
 	UT_DEBUGMSG(("Made new currentState -1 %p \n", (void*)currentState));
@@ -8964,7 +8963,7 @@ bool IE_Imp_RTF::ReadFontTable()
 			// Keep a pointer to the current state.
 			oldState = currentState;
 			// Push the current state onto the stack...
-			stateStack.push(reinterpret_cast<void*>(currentState));
+			stateStack.push(currentState);
 			// ...allocate a new one...
 			currentState = new SFontTableState;
 			UT_DEBUGMSG(("Made new currentState -2 %p \n", (void*)currentState));
@@ -8983,7 +8982,7 @@ bool IE_Imp_RTF::ReadFontTable()
 			UT_DEBUGMSG(("Deleting currentState -4 %p \n", (void*)currentState));
 			DELETEP(currentState);
 			// Pop an old state off the stack .
-			if (!stateStack.pop(reinterpret_cast<void**>(&currentState))) 
+			if (stateStack.empty())
 			{
 				// If there's no state on the stack then this must be the
 				// bracket that ends the font table.
@@ -8991,6 +8990,9 @@ bool IE_Imp_RTF::ReadFontTable()
 				// Put the closing brace back onto the input stream.
 				SkipBackChar('}');
 				currentState = nullptr;
+			} else {
+				currentState = stateStack.top();
+				stateStack.pop();
 			}
 			break;
 		case RTF_TOKEN_DATA:
@@ -9193,8 +9195,10 @@ IEImpRTF_ReadFontTable_ErrorExit:
 	// Delete the current state and everything on the state stack.
 	UT_DEBUGMSG(("Deleting currentState -2 %p \n", (void*)currentState));
 	DELETEP(currentState);
-	while (stateStack.pop(reinterpret_cast<void**>(&currentState))) 
+	while (!stateStack.empty())
 	{
+		currentState = stateStack.top();
+		stateStack.pop();
 		UT_DEBUGMSG(("Deleting currentState -3  %p \n", (void*)currentState));
 		DELETEP(currentState);
 	}
@@ -10212,8 +10216,7 @@ bool IE_Imp_RTF::HandleAbiTable(void)
 
 bool IE_Imp_RTF::HandleAbiEndTable(void)
 {
-	ABI_Paste_Table * pPaste = nullptr;
-	m_pasteTableStack.viewTop((void**)(&pPaste));
+	ABI_Paste_Table * pPaste = m_pasteTableStack.top();
 	if(pPaste == nullptr)
 	{
 		return false;
@@ -10269,7 +10272,8 @@ bool IE_Imp_RTF::HandleAbiEndTable(void)
 	}
 
 	insertStrux(PTX_EndTable);
-	m_pasteTableStack.pop((void**)(&pPaste));
+	pPaste = m_pasteTableStack.top();
+	m_pasteTableStack.pop();
 	delete pPaste;
 	return true;
 }
@@ -10283,8 +10287,7 @@ bool IE_Imp_RTF::markPasteBlock(void)
 	{
 		return false;
 	}
-	ABI_Paste_Table * pPaste = nullptr;
-	m_pasteTableStack.viewTop((void**)(&pPaste));
+	ABI_Paste_Table * pPaste = m_pasteTableStack.top();
 	if(pPaste == nullptr)
 	{
 		return false;
@@ -10300,11 +10303,11 @@ bool IE_Imp_RTF::markPasteBlock(void)
 bool IE_Imp_RTF::isBlockNeededForPasteTable(void)
 {
 	ABI_Paste_Table * pPaste = nullptr;
-	if(m_pasteTableStack.getDepth() == 0)
+	if (m_pasteTableStack.empty())
 	{
 		return false;
 	}
-	m_pasteTableStack.viewTop((void**)(&pPaste));
+	pPaste = m_pasteTableStack.top();
 	if(pPaste == nullptr)
 	{
 		return false;
@@ -10318,8 +10321,7 @@ bool IE_Imp_RTF::isBlockNeededForPasteTable(void)
 
 bool IE_Imp_RTF::HandleAbiEndCell(void)
 {
-	ABI_Paste_Table * pPaste = nullptr;
-	m_pasteTableStack.viewTop((void**)(&pPaste));
+	ABI_Paste_Table * pPaste = m_pasteTableStack.top();
 	if(pPaste == nullptr)
 	{
 		return false;
@@ -10357,8 +10359,7 @@ bool IE_Imp_RTF::HandleAbiCell(void)
 			return false;
 	}
 
-	ABI_Paste_Table * pPaste = nullptr;
-	m_pasteTableStack.viewTop((void**)(&pPaste));
+	ABI_Paste_Table * pPaste = m_pasteTableStack.top();
 	if(pPaste == nullptr)
 	{
 		return false;
@@ -10471,7 +10472,7 @@ bool IE_Imp_RTF::insertStrux(PTStruxType pts , const PP_PropertyVector & attrs, 
 				return true;
 			}
 		}
-		if((m_pasteTableStack.getDepth() > 2) && 
+		if((m_pasteTableStack.size() > 2) && 
 		   ((pts == PTX_SectionTable) || (pts == PTX_SectionCell) || (pts == PTX_EndTable) || (pts == PTX_EndCell)))
 		{
 			return true;

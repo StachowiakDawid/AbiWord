@@ -1,6 +1,7 @@
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
  * Copyright (C) 2002 Martin Sevior (msevior@physics.unimelb.edu.au>
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -986,7 +987,7 @@ void fl_TOCLayout::_calculateLabels(void) const
 	UT_sint32 i = 0;
 	TOCEntry * pThisEntry = nullptr;
 	TOCEntry * pPrevEntry = nullptr;
-	UT_Stack stEntry;
+	std::stack<TOCEntry*> stEntry;
 	stEntry.push(nullptr);
 	UT_sint32 iCount = m_vecEntries.getItemCount();
 	if(iCount == 0)
@@ -1010,10 +1011,8 @@ void fl_TOCLayout::_calculateLabels(void) const
 		if(pThisEntry->getLevel() == pPrevEntry->getLevel())
 		{
 			pThisEntry->setPosInList(pPrevEntry->getPosInList()+1);
-			void * pTmp = nullptr;
-			UT_ASSERT(stEntry.getDepth() > 0);
-			stEntry.viewTop(&pTmp);
-			TOCEntry * pPrevLevel = static_cast<TOCEntry*>(pTmp);
+			UT_ASSERT(!stEntry.empty());
+			TOCEntry * pPrevLevel = stEntry.top();
 			if(pPrevLevel && pPrevLevel->getLevel() < pThisEntry->getLevel())
 			{
 				UT_ASSERT(pPrevLevel->getLevel() >= 0);
@@ -1035,12 +1034,11 @@ void fl_TOCLayout::_calculateLabels(void) const
 		else
 		{
 			bool bStop = false;
-			while((stEntry.getDepth()>1) && !bStop)
+			while((stEntry.size() > 1) && !bStop)
 			{
-				void * pTmp;
-				UT_ASSERT(stEntry.getDepth() > 0);
-				stEntry.pop(&pTmp);
-				pPrevEntry = static_cast<TOCEntry*>(pTmp);
+				UT_ASSERT(!stEntry.empty());
+				pPrevEntry = stEntry.top();
+				stEntry.pop();
 				if(pPrevEntry->getLevel() == pThisEntry->getLevel())
 				{
 					bStop = true;
@@ -1049,10 +1047,8 @@ void fl_TOCLayout::_calculateLabels(void) const
 			if(bStop)
 			{
 				pThisEntry->setPosInList(pPrevEntry->getPosInList()+1);
-				void * pTmp;
-				UT_ASSERT(stEntry.getDepth() > 0);
-				stEntry.viewTop(&pTmp);
-				TOCEntry * pPrevLevel = static_cast<TOCEntry*>(pTmp);
+				UT_ASSERT(!stEntry.empty());
+				TOCEntry * pPrevLevel = stEntry.top();
 				if(pPrevLevel && pPrevLevel->getLevel() < pThisEntry->getLevel())
 				{
 					pThisEntry->calculateLabel(pPrevLevel);

@@ -27,6 +27,8 @@
 #include <string>
 #include <map>
 #include <set>
+#include <list>
+#include <stack>
 
 #include <gsf/gsf.h>
 
@@ -35,9 +37,8 @@
 #include "ODi_ListenerState.h"
 
 #include "ut_types.h"
-#include "ut_stack.h"
 #include "ut_vector.h"
-
+#include "pp_Property.h"
 
 // Internal classes
 class ODi_Office_Styles;
@@ -48,10 +49,6 @@ class ODi_Abi_Data;
 // AbiWord classes
 class PD_Document;
 class pf_Frag_Strux;
-
-#include <list>
-
-#include "pp_Property.h"
 
 /**
  * It parses the regular content of a text document. It is used to parse the
@@ -150,7 +147,7 @@ private:
     } m_currentODSection;
 
     PP_PropertyVector m_vecInlineFmt;
-    UT_NumberStack m_stackFmtStartIndex;
+    std::stack<UT_uint32> m_stackFmtStartIndex;
 
     UT_sint8 m_elementParsingLevel;
 

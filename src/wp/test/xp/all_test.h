@@ -27,8 +27,6 @@
 #undef TFSUITE
 #include "src/af/util/xp/t/ut_vector.t.cpp"
 #undef TFSUITE
-#include "src/af/util/xp/t/ut_stack.t.cpp"
-#undef TFSUITE
 #include "src/af/util/xp/t/ut_string.t.cpp"
 #undef TFSUITE
 #include "src/af/util/xp/t/ut_std_string.t.cpp"

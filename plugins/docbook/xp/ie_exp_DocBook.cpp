@@ -2,6 +2,7 @@
  * Copyright (C) 1998 AbiSource, Inc.
  * Copyright (C) 2000-2002 Dom Lachowicz 
  * Copyright (C) 2002 Screetch
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -216,7 +217,8 @@ void s_DocBook_Listener::_tagClose(UT_uint32 tagID, const UT_UTF8String & conten
 	if(newline)
 		m_pie->write("\n");
 
-	m_utnsTagStack.pop((UT_sint32*)&i);
+	i = m_utnsTagStack.top();
+	m_utnsTagStack.pop();
 	m_iLastClosed = i;
 	xxx_UT_DEBUGMSG(("Popping %d off of stack\n",i));
 
@@ -270,10 +272,10 @@ void s_DocBook_Listener::_tagOpenClose(const UT_UTF8String & content, bool suppr
 
 UT_uint32 s_DocBook_Listener::_tagTop(void)
 {
-	UT_sint32 i = 0;
+	if (!m_utnsTagStack.empty()) {
+		return m_utnsTagStack.top();
+	}
 
-	if (m_utnsTagStack.viewTop (i))
-		return (UT_uint32)i;
 	return 0;
 }
 

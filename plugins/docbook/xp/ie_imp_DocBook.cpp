@@ -2,6 +2,7 @@
 
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -2414,9 +2415,9 @@ void IE_Imp_DocBook::endElement(const gchar *name)
 
 	if(bPop)
 	{
-		UT_uint32 i = 0;
+		UT_uint32 i = m_utnsTagStack.top();
 
-		m_utnsTagStack.pop((UT_sint32*)&i);
+		m_utnsTagStack.pop();
 		xxx_UT_DEBUGMSG(("Popping %d off of stack\n",i));
 
 		if(i != tokenIndex) {
@@ -2917,10 +2918,9 @@ void IE_Imp_DocBook::createImage(const char *name, const gchar **atts)
 
 UT_uint32 IE_Imp_DocBook::tagTop(void)
 {
-	UT_sint32 i = 0;
-
-	if (m_utnsTagStack.viewTop (i))
-		return (UT_uint32)i;
+	if (!m_utnsTagStack.empty()) {
+		return m_utnsTagStack.top();
+	}
 	return 0;
 }
 

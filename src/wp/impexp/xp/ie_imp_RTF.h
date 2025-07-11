@@ -21,18 +21,17 @@
 
 /* RTF importer by Peter Arnold <petera@intrinsica.co.uk> */
 
-#ifndef IE_IMP_RTF_H
-#define IE_IMP_RTF_H
+#pragma once
 
 #include <stdio.h>
 
 #include <memory>
+#include <stack>
 #include <string>
 #include <vector>
 
 #include "ie_imp.h"
 #include "ut_growbuf.h"
-#include "ut_stack.h"
 #include "pt_Types.h"
 #include "pd_Document.h"
 #include "pp_Revision.h"
@@ -901,7 +900,7 @@ private:
 	UT_uint32       m_currentFtrLastID;
 
 
-	UT_Stack m_stateStack;
+	std::stack<RTFStateStore*> m_stateStack;
 	RTFStateStore m_currentRTFState;
 
 	std::vector<RTFFontTableItem*> m_fontTable;
@@ -966,7 +965,7 @@ private:
 	UT_uint32             m_iHyperlinkOpen;
 	UT_uint32             m_iRDFAnchorOpen;
 	bool                  m_bBidiMode;
-	UT_Stack              m_pasteTableStack;
+	std::stack<ABI_Paste_Table*>  m_pasteTableStack;
 	bool                  m_bFootnotePending;
 	bool                  m_bFtnReferencePending;
 	bool                  m_bNoteIsFNote;
@@ -1008,6 +1007,3 @@ private:
 	std::map< std::string, std::string > m_rdfAnchorCloseXMLIDs;
 
 };
-
-#endif /* IE_IMP_RTF_H */
-

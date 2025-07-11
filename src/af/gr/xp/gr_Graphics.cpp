@@ -2,6 +2,7 @@
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
  * Copyright (C) 2002 Tomas Frydrych, <tomas@frydrych.uklinux.net>
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -37,7 +38,6 @@
 #include "ut_std_string.h"
 #include "ut_units.h"
 #include "ut_sleep.h"
-#include "ut_stack.h"
 #include "ut_std_map.h"
 #include "ut_growbuf.h"
 #include "ut_debugmsg.h"
@@ -330,7 +330,7 @@ GR_Graphics::~GR_Graphics()
 bool GR_Graphics::beginDoubleBuffering()
 {
 	if(m_bDoubleBufferingActive) return false;
-	m_DCSwitchManagementStack.push((int)SWITCHED_TO_BUFFER);
+	m_DCSwitchManagementStack.push(SWITCHED_TO_BUFFER);
 	_DeviceContext_SwitchToBuffer();
 	m_bDoubleBufferingActive = true;
 	return true;
@@ -341,10 +341,9 @@ void GR_Graphics::endDoubleBuffering(bool token)
 	// check prerequisites
 	if(token == false) return;
 
-	UT_ASSERT(m_DCSwitchManagementStack.getDepth() > 0);
+	UT_ASSERT(m_DCSwitchManagementStack.size() > 0);
 	
-	UT_sint32 topMostSwitch;
-	m_DCSwitchManagementStack.viewTop(topMostSwitch);
+	UT_sint32 topMostSwitch = m_DCSwitchManagementStack.top();
 	UT_ASSERT(topMostSwitch == (UT_sint32)SWITCHED_TO_BUFFER);
 
 	_DeviceContext_SwitchToScreen();
@@ -355,7 +354,7 @@ void GR_Graphics::endDoubleBuffering(bool token)
 bool GR_Graphics::suspendDrawing()
 {
 	if(m_bDrawingSuspended) return false;
-	m_DCSwitchManagementStack.push((int)DRAWING_SUSPENDED);
+	m_DCSwitchManagementStack.push(DRAWING_SUSPENDED);
 	_DeviceContext_SuspendDrawing();
 	m_bDrawingSuspended = true;
 	return true;
@@ -366,10 +365,9 @@ void GR_Graphics::resumeDrawing(bool token)
 	// check prerequisites
 	if(token == false) return;
 
-	UT_ASSERT(m_DCSwitchManagementStack.getDepth() > 0);
+	UT_ASSERT(m_DCSwitchManagementStack.size() > 0);
 	
-	UT_sint32 topMostSwitch;
-	m_DCSwitchManagementStack.viewTop(topMostSwitch);
+	UT_sint32 topMostSwitch = m_DCSwitchManagementStack.top();
 	UT_ASSERT(topMostSwitch == (UT_sint32)DRAWING_SUSPENDED);
 
 	// take action only if the caller has the good token

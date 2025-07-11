@@ -1,5 +1,6 @@
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,10 +20,11 @@
 
 #pragma once
 
+#include <stack>
+
 #include	"ie_exp.h"
 #include	"pl_Listener.h"
 #include	"pp_AttrProp.h"
-#include	"ut_stack.h"
 #include "ie_Table.h"
 
 class PD_Document;
@@ -178,8 +180,7 @@ private:
 	bool                 m_bWasSpace;
 	bool				m_bExternal;
 
-	UT_Stack			m_utsListStack;
-	UT_NumberStack		m_utnsTagStack;
+	std::stack<UT_uint32> m_utnsTagStack;
 
 	UT_Vector		m_utvDataIDs;	// list of data ids for image enumeration
 	ie_Table mTableHelper;

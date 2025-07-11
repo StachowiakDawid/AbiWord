@@ -114,7 +114,7 @@ fl_DocListener::fl_DocListener(PD_Document* doc, FL_DocLayout *pLayout)
 */
 fl_DocListener::~fl_DocListener()
 {
-	UT_ASSERT(m_sLastContainerLayout.getDepth() == 1);
+	UT_ASSERT(m_sLastContainerLayout.size() == 1);
 }
 
 /*!
@@ -911,7 +911,7 @@ bool fl_DocListener::populateStrux(pf_Frag_Strux* sdh,
  */
 void fl_DocListener::pushContainerLayout(fl_ContainerLayout * pCL)
 {
-	m_sLastContainerLayout.push((void *) pCL);
+	m_sLastContainerLayout.push(pCL);
 }
 
 /*!
@@ -919,9 +919,7 @@ void fl_DocListener::pushContainerLayout(fl_ContainerLayout * pCL)
  */
 fl_ContainerLayout * fl_DocListener::getTopContainerLayout(void)
 {
-	static fl_ContainerLayout * pCL;
-	m_sLastContainerLayout.viewTop((void**)&pCL);
-	return pCL;
+	return m_sLastContainerLayout.top();
 }
 
 /*!
@@ -929,8 +927,8 @@ fl_ContainerLayout * fl_DocListener::getTopContainerLayout(void)
  */
 fl_ContainerLayout * fl_DocListener::popContainerLayout(void)
 {
-	static fl_ContainerLayout * pCL;
-	m_sLastContainerLayout.pop((void**)&pCL);
+	fl_ContainerLayout * pCL = m_sLastContainerLayout.top();
+	m_sLastContainerLayout.pop();
 	return pCL;
 }
 

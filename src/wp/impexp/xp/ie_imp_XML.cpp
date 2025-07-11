@@ -426,7 +426,7 @@ void IE_Imp_XML::charData(const gchar *s, int len)
 
 UT_uint32 IE_Imp_XML::_getInlineDepth(void) const
 {
-	return m_nstackFmtStartIndex.getDepth();
+	return m_nstackFmtStartIndex.size();
 }
 
 void IE_Imp_XML::_pushInlineFmt(const PP_PropertyVector & atts)
@@ -440,9 +440,11 @@ void IE_Imp_XML::_pushInlineFmt(const PP_PropertyVector & atts)
 
 void IE_Imp_XML::_popInlineFmt(void)
 {
-	UT_sint32 start;
-	if (!m_nstackFmtStartIndex.pop(&start))
+	if (m_nstackFmtStartIndex.empty()) {
 		return;
+	}
+	UT_sint32 start = m_nstackFmtStartIndex.top();
+	m_nstackFmtStartIndex.pop();
 
 	m_vecInlineFmt.erase(m_vecInlineFmt.begin() + (start - 1),
 						 m_vecInlineFmt.end());

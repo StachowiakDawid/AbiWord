@@ -23,7 +23,6 @@ testharness_la_SOURCES = \
 	xp/AbiTest.h \
 	@top_srcdir@/src/af/util/xp/t/ut_bytebuf.t.cpp \
 	@top_srcdir@/src/af/util/xp/t/ut_misc.t.cpp \
-	@top_srcdir@/src/af/util/xp/t/ut_stack.t.cpp \
 	@top_srcdir@/src/af/util/xp/t/ut_string_class.t.cpp \
 	@top_srcdir@/src/af/util/xp/t/ut_std_string.t.cpp \
 	@top_srcdir@/src/af/util/xp/t/ut_types.t.cpp \

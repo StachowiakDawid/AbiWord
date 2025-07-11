@@ -4,6 +4,7 @@
  * Copyright (C) 1998-2000 AbiSource, Inc.
  * Copyright (C) 2001 Dom Lachowicz <dominicl@seas.upenn.edu>
  * Copyright (C) 2001-2003 Tomas Frydrych
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -38,7 +39,6 @@
 #include "ut_math.h"
 #include "ut_assert.h"
 #include "ut_debugmsg.h"
-#include "ut_stack.h"
 
 #include "xap_App.h"
 #include "xap_Frame.h"
@@ -3426,10 +3426,10 @@ int IE_Imp_MsWord_97::_fieldProc (wvParseStruct *ps, U16 eachchar,
 	
 	if (eachchar == 0x13) // beginning of a field
 	{
-		if(m_stackField.getDepth() > 0)
+		if (!m_stackField.empty())
 		{
 			// see what kind of field we are in
-			m_stackField.viewTop((void**)&f);
+			f = m_stackField.top();
 			UT_return_val_if_fail(f,0);
 
 			switch(f->type)
@@ -3488,11 +3488,11 @@ int IE_Imp_MsWord_97::_fieldProc (wvParseStruct *ps, U16 eachchar,
 		f->fieldI = 0;
 		f->fieldRet = 1;
 		f->type = F_OTHER;
-		m_stackField.push((void*)f);
+		m_stackField.push(f);
 	}
 	else if (eachchar == 0x14) // field trigger
 	{
-		m_stackField.viewTop((void**)&f);
+		f = !m_stackField.empty() ? m_stackField.top() : nullptr;
 		UT_return_val_if_fail(f,0);
 		
 		f->command[f->fieldI] = 0;
@@ -3509,7 +3509,7 @@ int IE_Imp_MsWord_97::_fieldProc (wvParseStruct *ps, U16 eachchar,
 	}
 	if(!f)
 	{
-		m_stackField.viewTop((void**)&f);
+		f = m_stackField.top();
 	}
 	
 	UT_return_val_if_fail(f,0);
@@ -3546,8 +3546,9 @@ int IE_Imp_MsWord_97::_fieldProc (wvParseStruct *ps, U16 eachchar,
 		_handleFieldEnd (f->fieldC, ps->currentcp);
 		wvFree (f->fieldC);
 		iRet = f->fieldRet;
-		
-		m_stackField.pop((void**)&f);
+
+		f = m_stackField.top();
+		m_stackField.pop();
 		UT_return_val_if_fail(f,0);
 		delete f;
 	}
@@ -3559,9 +3560,9 @@ bool IE_Imp_MsWord_97::_handleFieldEnd (char *command, UT_uint32 /*iDocPosition*
 	Doc_Field_t tokenIndex = F_OTHER;
 	char *token;
 	field * f = nullptr;
-	m_stackField.viewTop((void**)&f);
+	f = m_stackField.top();
 	UT_return_val_if_fail(f, true);
-	
+
 	if (*command != 0x13)
 	{
 		UT_DEBUGMSG (("field did not begin with 0x13\n"));
@@ -4030,8 +4031,7 @@ bool IE_Imp_MsWord_97::_handleCommandField (char *command)
 	
 	Doc_Field_t tokenIndex = F_OTHER;
 	char *token = nullptr;
-	field * f = nullptr;
-	m_stackField.viewTop((void**)&f);
+	field * f = m_stackField.top();
 	UT_return_val_if_fail(f,true);
 	bool bTypeSet = false;
 	

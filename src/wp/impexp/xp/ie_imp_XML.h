@@ -2,6 +2,7 @@
 
 /* AbiWord
  * Copyright (C) 2001 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,6 +22,7 @@
 
 #pragma once
 
+#include <stack>
 #include <stdio.h>
 #include <string>
 #include <map>
@@ -29,7 +31,6 @@
 #include "ut_xml.h"
 
 #include "ut_vector.h"
-#include "ut_stack.h"
 #include "ie_imp.h"
 #include "ut_bytebuf.h"
 #include "ut_string_class.h"
@@ -154,7 +155,7 @@ protected:
     bool            m_bWasSpace;
 
     PP_PropertyVector m_vecInlineFmt;
-    UT_NumberStack		m_nstackFmtStartIndex;
+    std::stack<UT_sint32> m_nstackFmtStartIndex;
 
     UT_ByteBufPtr	m_currentDataItem;
     std::string		m_currentDataItemName;
