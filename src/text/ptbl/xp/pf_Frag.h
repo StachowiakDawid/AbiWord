@@ -55,7 +55,7 @@ public:
 		PFT_FmtMark
 	};
 
-	pf_Frag(pt_PieceTable * pPT, PFType type, UT_uint32 length);
+	pf_Frag(pt_PieceTable * pPT, PFType type, UT_uint32 length, PT_AttrPropIndex indexAP);
 	virtual ~pf_Frag();
 
 	PFType			getType(void) const
@@ -140,8 +140,9 @@ protected:
 
 	fd_Field *              m_pField;
 	pt_PieceTable *			m_pPieceTable;
+private:
 	PT_AttrPropIndex		m_indexAP;
-
+protected:
 	/* in PT_DocPosition-space - gives length of this fragment */
 	UT_uint32				m_length;
 

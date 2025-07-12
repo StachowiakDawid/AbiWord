@@ -30,14 +30,13 @@
 pf_Frag_Object::pf_Frag_Object(pt_PieceTable * pPT,
                                PTObjectType objectType,
                                PT_AttrPropIndex indexAP)
-    : pf_Frag(pPT, pf_Frag::PFT_Object, pf_FRAG_OBJECT_LENGTH)
+    : pf_Frag(pPT, pf_Frag::PFT_Object, pf_FRAG_OBJECT_LENGTH, indexAP)
 {
     m_pObjectSubclass = nullptr;
     m_objectType = objectType;
-    m_indexAP = indexAP;
     const PP_AttrProp * pAP = nullptr;
-    xxx_UT_DEBUGMSG(("Frag Object created indexAP %x \n",m_indexAP));
-    m_pPieceTable->getAttrProp(m_indexAP,&pAP);
+    xxx_UT_DEBUGMSG(("Frag Object created indexAP %x \n", indexAP));
+    m_pPieceTable->getAttrProp(indexAP,&pAP);
     UT_return_if_fail (pAP);
     const gchar* pszType = nullptr;
     const gchar* pszName = nullptr;
@@ -464,8 +463,8 @@ bool pf_Frag_Object::createSpecialChangeRecord(PX_ChangeRecord ** ppcr,
     UT_return_val_if_fail (ppcr,false);
 	
     PX_ChangeRecord_Object * pcr
-    	 = new PX_ChangeRecord_Object(PX_ChangeRecord::PXT_InsertObject,
-                                     dpos, m_indexAP, getXID(), m_objectType,
+         = new PX_ChangeRecord_Object(PX_ChangeRecord::PXT_InsertObject,
+                                     dpos, getIndexAP(), getXID(), m_objectType,
                                      blockOffset, m_pField,
 				      this);
 

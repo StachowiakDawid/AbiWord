@@ -24,11 +24,11 @@
 #include "pt_PieceTable.h"
 #include "pf_Fragments.h"
 
-pf_Frag::pf_Frag(pt_PieceTable * pPT, PFType type, UT_uint32 length):
+pf_Frag::pf_Frag(pt_PieceTable * pPT, PFType type, UT_uint32 length, PT_AttrPropIndex indexAP):
 	m_type(type),
 	m_pField(nullptr),
 	m_pPieceTable(pPT),
-	m_indexAP(0),
+	m_indexAP(indexAP),
 	m_length(length),
 	m_leftTreeLength(0),
 	m_iXID(0),

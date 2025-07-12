@@ -85,7 +85,7 @@ void pt_PieceTable::setPieceTableState(PTState pts)
 		// transition from loading to editing.
 		// tack on an EOD fragment to the fragment list.
 		// this allows us to safely go to the end of the document.
-		pf_Frag * pfEOD = new pf_Frag(this,pf_Frag::PFT_EndOfDoc,0);
+		pf_Frag * pfEOD = new pf_Frag(this, pf_Frag::PFT_EndOfDoc, 0, 0);
 		m_fragments.appendFrag(pfEOD);
 	}
 

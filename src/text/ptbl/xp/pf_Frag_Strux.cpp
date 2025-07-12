@@ -1,6 +1,7 @@
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
- * 
+ * Copyright (C) 2025 Hubert Figuière
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -25,10 +26,9 @@ pf_Frag_Strux::pf_Frag_Strux(pt_PieceTable * pPT,
 							 PTStruxType struxType,
 							 UT_uint32 length,
 							 PT_AttrPropIndex indexAP)
-	: pf_Frag(pPT, pf_Frag::PFT_Strux, length)
+	: pf_Frag(pPT, pf_Frag::PFT_Strux, length, indexAP)
+	, m_struxType(struxType)
 {
-	m_struxType = struxType;
-	m_indexAP = indexAP;
 }
 
 pf_Frag_Strux::~pf_Frag_Strux()
@@ -55,14 +55,17 @@ PTStruxType pf_Frag_Strux::getStruxType(void) const
 
 fl_ContainerLayout* pf_Frag_Strux::getFmtHandle(PL_ListenerId lid) const
 {
-	if (m_vecFmtHandle.size() <= static_cast<int>(lid))
+	if (m_vecFmtHandle.size() <= static_cast<std::size_t>(lid))
 		return nullptr;
-	return m_vecFmtHandle.getNthItem(lid);
+	return m_vecFmtHandle.at(lid);
 }
 
-bool pf_Frag_Strux::setFmtHandle(PL_ListenerId lid, fl_ContainerLayout* sfh)
+void pf_Frag_Strux::setFmtHandle(PL_ListenerId lid, fl_ContainerLayout* sfh)
 {
-	return (m_vecFmtHandle.setNthItem(lid,sfh,nullptr) == 0);
+	if (m_vecFmtHandle.size() <= static_cast<std::size_t>(lid)) {
+		m_vecFmtHandle.resize(lid + 1, nullptr);
+	}
+	m_vecFmtHandle[lid] = sfh;
 }
 
 bool pf_Frag_Strux::createSpecialChangeRecord(PX_ChangeRecord ** ppcr,
@@ -72,7 +75,7 @@ bool pf_Frag_Strux::createSpecialChangeRecord(PX_ChangeRecord ** ppcr,
 	
 	PX_ChangeRecord_Strux * pcr
 		= new PX_ChangeRecord_Strux(PX_ChangeRecord::PXT_InsertStrux,
-									dpos, m_indexAP, getXID(), m_struxType);
+									dpos, getIndexAP(), getXID(), m_struxType);
 	if (!pcr)
 		return false;
 

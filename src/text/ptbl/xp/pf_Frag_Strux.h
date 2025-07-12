@@ -1,5 +1,6 @@
 /* AbiWord
  * Copyright (C) 1998 AbiSource, Inc.
+ * Copyright (C) 2025 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,9 +18,9 @@
  * 02110-1301 USA.
  */
 
+#pragma once
 
-#ifndef PF_FRAG_STRUX_H
-#define PF_FRAG_STRUX_H
+#include <vector>
 
 #include "ut_types.h"
 #include "pf_Frag.h"
@@ -50,7 +51,7 @@ public:
 
 	PTStruxType				getStruxType(void) const;
 	fl_ContainerLayout*		getFmtHandle(PL_ListenerId lid) const;
-	bool					setFmtHandle(PL_ListenerId lid, fl_ContainerLayout* sfh);
+	void					setFmtHandle(PL_ListenerId lid, fl_ContainerLayout* sfh);
 	void                    clearAllFmtHandles() {m_vecFmtHandle.clear();}
 
 	virtual bool			createSpecialChangeRecord(PX_ChangeRecord ** ppcr,
@@ -68,7 +69,5 @@ protected:
 
 	virtual bool            _isContentEqual(const pf_Frag &f2) const override;
 	PTStruxType				m_struxType;
-	UT_GenericVector<fl_ContainerLayout*>	m_vecFmtHandle;
+	std::vector<fl_ContainerLayout*>	m_vecFmtHandle;
 };
-
-#endif /* PF_FRAG_STRUX_H */

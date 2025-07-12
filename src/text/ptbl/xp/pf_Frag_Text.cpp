@@ -30,11 +30,10 @@ pf_Frag_Text::pf_Frag_Text(pt_PieceTable * pPT,
 						   UT_uint32 length,
 						   PT_AttrPropIndex indexAP,
                            fd_Field * pField)
-	: pf_Frag(pPT,pf_Frag::PFT_Text,length)
+	: pf_Frag(pPT, pf_Frag::PFT_Text, length, indexAP)
+	, m_bufIndex(bufIndex)
 {
-	m_bufIndex = bufIndex;
-    m_indexAP = indexAP;
-    m_pField = pField;
+	m_pField = pField;
 }
 
 pf_Frag_Text::~pf_Frag_Text()
@@ -79,7 +78,7 @@ bool pf_Frag_Text::createSpecialChangeRecord(PX_ChangeRecord ** ppcr,
 	
 	PX_ChangeRecord * pcr
 		= new PX_ChangeRecord_Span(PX_ChangeRecord::PXT_InsertSpan,
-								   dpos, m_indexAP,
+								   dpos, getIndexAP(),
 								   m_bufIndex,m_length,blockOffset,m_pField);
 	if (!pcr)
 		return false;
@@ -101,7 +100,7 @@ bool pf_Frag_Text::createSpecialChangeRecord(PX_ChangeRecord ** ppcr,
 	PX_ChangeRecord * pcr
 		= new PX_ChangeRecord_Span(PX_ChangeRecord::PXT_InsertSpan,
 								   dpos+startFragOffset,
-								   m_indexAP,
+								   getIndexAP(),
 								   m_bufIndex+startFragOffset,
 								   (endFragOffset-startFragOffset),
 								   blockOffset+startFragOffset,m_pField);

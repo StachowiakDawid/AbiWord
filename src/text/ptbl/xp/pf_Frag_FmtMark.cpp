@@ -26,9 +26,8 @@
 
 pf_Frag_FmtMark::pf_Frag_FmtMark(pt_PieceTable * pPT,
 								 PT_AttrPropIndex indexAP)
-	: pf_Frag(pPT,pf_Frag::PFT_FmtMark,0)
+	: pf_Frag(pPT, pf_Frag::PFT_FmtMark, 0, indexAP)
 {
-	m_indexAP = indexAP;
 }
 
 pf_Frag_FmtMark::~pf_Frag_FmtMark()
@@ -43,7 +42,7 @@ bool pf_Frag_FmtMark::createSpecialChangeRecord(PX_ChangeRecord ** ppcr,
 	
 	PX_ChangeRecord * pcr
 		= new PX_ChangeRecord_FmtMark(PX_ChangeRecord::PXT_InsertFmtMark,
-									  dpos, m_indexAP, blockOffset);
+									  dpos, getIndexAP(), blockOffset);
 	if (!pcr)
 		return false;
 
