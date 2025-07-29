@@ -146,9 +146,14 @@ UT_Error IE_ImpGraphic_GdkPixbuf::importGraphic(const UT_ConstByteBufPtr & pBB, 
 
 	if(mimetype == "image/jpeg") 
 	{
+		// Why do we load the pixbuf like that? This is...
+		// Because we we want to keep the JPEG stream as is.
+		// But then this ignore Exif orientation.
+		// XXX we should short circuit the GdkPixbuf loading on JPEG.
+		g_object_unref(G_OBJECT(pixbuf));
+		pixbuf = nullptr;
 		m_pPngBB = pBB;
-		if(!pFGR->setRaster_JPEG(m_pPngBB)) 
-		{
+		if (!pFGR->setRaster_JPEG(m_pPngBB)) {
 			m_pPngBB.reset();
 			return UT_IE_FAKETYPE;
 		}
@@ -162,16 +167,15 @@ UT_Error IE_ImpGraphic_GdkPixbuf::importGraphic(const UT_ConstByteBufPtr & pBB, 
 			return err;
 		}
 
+		// This take ownership of the pixbuf
 		err = _png_write(pixbuf);
+		pixbuf = nullptr;
 
 		if(err == UT_OK) {
-		
-			if(!pFGR->setRaster_PNG(m_pPngBB)) 
-			{
+			if (!pFGR->setRaster_PNG(m_pPngBB)) {
 				m_pPngBB.reset();
 				return UT_IE_FAKETYPE;
 			}
-		
 		}
 	}
 	pfg = std::move(pFGR);
