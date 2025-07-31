@@ -182,7 +182,9 @@ UT_Error OXMLi_PackageManager::parseChildById( GsfInput * parent, const char * i
 {
 	GsfInput * pInput = getChildById(parent, id);
 	UT_return_val_if_fail(pInput != nullptr, UT_ERROR);
-	return _parseStream( pInput, pListener);
+	auto error = _parseStream( pInput, pListener);
+	g_object_unref(pInput);
+	return error;
 }
 
 UT_Error OXMLi_PackageManager::parseChildByType( GsfInput * parent, OXML_PartType type, OXMLi_StreamListener * pListener)
@@ -191,7 +193,9 @@ UT_Error OXMLi_PackageManager::parseChildByType( GsfInput * parent, OXML_PartTyp
 	if(!pInput)
 		return UT_ERROR;
 
-	return _parseStream( pInput, pListener);
+	auto error =  _parseStream( pInput, pListener);
+	g_object_unref(pInput);
+	return error;
 }
 
 const char * OXMLi_PackageManager::_getFullType( OXML_PartType type )
