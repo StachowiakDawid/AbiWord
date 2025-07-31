@@ -29,7 +29,24 @@
   </screenshots>
   <releases>
     <release version="@VERSION@" date="2021-07-01" />
-    <release version="3.0.6" type="stable" date="2021-07-04" />
+    <release version="3.0.7" type="stable" date="2025-07-30">
+      <description>
+        <ul>
+          <li>Fix memory leaks in Styles, Font Chooser, Borders, List,
+          Clip Art, Replace, Tabs and Table dialogs.</li>
+          <li>Fix memory leaks in XHTML import.</li>
+          <li>Fix memory leaks in cut and paste.</li>
+          <li>Fix memory leaks in the ODF exporter.</li>
+          <li>Fix memory leaks in the GdkPixbuf importer.</li>
+          <li>Fix crash when editing lists.</li>
+          <li>Fix crash when inserting a JPEG image.</li>
+          <li>Restored icons from page setup dialog (Removed XPM in
+          3.0.6).</li>
+          <li>Minor spacing adjustement in the status bar.</li>
+        </ul>
+      </description>
+    </release>
+    <release version="3.0.6" type="stable" date="2021-11-03" />
     <release version="3.0.5" type="stable" date="2021-07-03" />
     <release version="3.0.4" type="stable" date="2019-11-27">
       <url>https://www.abisource.com/changelogs/3.0.4.phtml</url>
