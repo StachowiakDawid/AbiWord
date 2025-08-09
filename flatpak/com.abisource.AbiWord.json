@@ -367,7 +367,7 @@
         {
           "type" : "git",
           "url" : "https://gitlab.gnome.org/World/AbiWord.git",
-          "branch": "master"
+          "branch": "main"
         },
         {
           "type" : "shell",
