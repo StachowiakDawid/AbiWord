@@ -1,5 +1,5 @@
 /* AbiCollab - Code to enable the modification of remote documents.
- * Copyright (C) 2007 by Ryan Pavlik <abiryan@ryand.net>
+ * Copyright (C) 2007 by Rylie Pavlik <rylie@ryliepavlik.com>
  * Copyright (C) 2006 by Marc Maurer <uwog@uwog.net>
  * Copyright (C) 2009 by AbiSource Corporation B.V.
  *

@@ -2,7 +2,7 @@
 #include <windows.h>
 #include <commctrl.h>
 // AbiWord
-// Copyright (C) 2008 Ryan Pavlik <abiryan@ryand.net>
+// Copyright (C) 2008 Rylie Pavlik <rylie@ryliepavlik.com>
 // Copyright (C) 1998 AbiSource, Inc.
 // 
 // This program is free software; you can redistribute it and/or
