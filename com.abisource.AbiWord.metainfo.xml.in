@@ -26,8 +26,8 @@
   <screenshots>
     <screenshot type="default">
       <image>https://gitlab.gnome.org/World/AbiWord/-/raw/9cb12d0442a399c4ae1a5f334225d7d2eb0f9280/docs/AbiWord-screenshot-302.png</image>
+      <caption>Main Window</caption>
     </screenshot>
-    <caption>Main Window</caption>
   </screenshots>
   <releases>
     <release version="@VERSION@" date="2021-07-01" />
