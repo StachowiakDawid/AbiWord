@@ -187,14 +187,18 @@ bool  AP_UnixClipboard::getSupportedData(T_AllowGet tFrom,
 										 const void ** ppData, UT_uint32 * pLen,
 										 const char **pszFormatFound)
 {
-	if (getData(tFrom, rtfszFormatsAccepted, (void**)ppData, pLen, pszFormatFound))
+	// We prioritize image data. This because when pasting from
+	// Firefox, we also get HTML and some other "text" format when
+	// pasting a copied image. The assumption is that for text-only
+	// we'll never get images.
+	if (getData(tFrom, imgszFormatsAccepted, (void**)ppData, pLen, pszFormatFound))
+		return true;
+	else if (getData(tFrom, rtfszFormatsAccepted, (void**)ppData, pLen, pszFormatFound))
 		return true;
 	else if (getData (tFrom, htmlszFormatsAccepted, (void**)ppData, pLen, pszFormatFound))
 		return true;
 	else if (!vec_DynamicFormatsAccepted.empty() && getData(tFrom, &vec_DynamicFormatsAccepted[0], (void**)ppData, pLen, pszFormatFound))
-		return true;  
-	else if (getData(tFrom, imgszFormatsAccepted, (void**)ppData, pLen, pszFormatFound))
-		return true;  
+		return true;
 	else if (getTextData (tFrom, ppData, pLen, pszFormatFound))
 		return true;
 	return false;
