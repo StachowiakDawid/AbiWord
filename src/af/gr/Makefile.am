@@ -10,7 +10,6 @@ libgr_la_SOURCES = \
 	xp/gr_CharWidthsCache.h \
 	xp/gr_CharWidths.cpp \
 	xp/gr_CharWidths.h \
-	xp/gr_Control.h \
 	xp/gr_DrawArgs.cpp \
 	xp/gr_DrawArgs.h \
 	xp/gr_EmbedManager.cpp \
