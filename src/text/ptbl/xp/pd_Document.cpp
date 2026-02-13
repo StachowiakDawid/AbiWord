@@ -859,8 +859,11 @@ UT_Error PD_Document::_importFile(GsfInput * input, int ieft,
 	bHidden |= (!isMarkRevisions() && !isShowRevisions() && getRevisions().size());
 
 	// note: the GsfInput could be a memory stream, and thus we have could have no filename yet
-	if(pFrame && szFilename && (strstr(szFilename, "normal.awt") == nullptr))
-		XAP_App::getApp()->getPrefs()->addRecent(szFilename);
+	if (pFrame && szFilename && (strstr(szFilename, "normal.awt") == nullptr)) {
+		auto prefs = XAP_App::getApp()->getPrefs();
+		prefs->addRecent(szFilename);
+		prefs->savePrefsFile();
+	}
 
 	if(pFrame && bHidden)
 	{
@@ -1130,8 +1133,11 @@ UT_Error PD_Document::_saveAs(const char * szFilename, int ieft, bool cpy,
 		signalListeners(PD_SIGNAL_DOCNAME_CHANGED);	
 	}
 
-	if (szFilename)
-		XAP_App::getApp()->getPrefs()->addRecent(szFilename);
+	if (szFilename) {
+		auto prefs = XAP_App::getApp()->getPrefs();
+		prefs->addRecent(szFilename);
+		prefs->savePrefsFile();
+	}
 
 	return UT_OK;
 }
@@ -1189,8 +1195,11 @@ UT_Error PD_Document::_saveAs(GsfOutput *output, int ieft, bool cpy, const char 
 		signalListeners(PD_SIGNAL_DOCNAME_CHANGED);	
 	}
 
-	if (szFilename)
-		XAP_App::getApp()->getPrefs()->addRecent(szFilename);
+	if (szFilename) {
+		auto prefs = XAP_App::getApp()->getPrefs();
+		prefs->addRecent(szFilename);
+		prefs->savePrefsFile();
+	}
 
 	return UT_OK;
 }
