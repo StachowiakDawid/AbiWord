@@ -2,7 +2,7 @@
 
 /* AbiSource Application Framework
  * Copyright (C) 1998,1999 AbiSource, Inc.
- * Copyright (C) 2004-2021 Hubert Figuière
+ * Copyright (C) 2004-2026 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -218,8 +218,6 @@ public:
 	void						setEnableSmoothScrolling(bool b);
 	bool						isSmoothScrollingEnabled(void) { return m_bEnableSmoothScrolling; }
 
-	void						setBonoboRunning(void) { m_bBonoboRunning = true; }
-	bool						isBonoboRunning(void) const { return m_bBonoboRunning; }
 	virtual void getDefaultGeometry(UT_uint32& /*width*/,
                                     UT_uint32& /*height*/,
                                     UT_uint32& /*flags*/) const {}
@@ -315,7 +313,6 @@ protected:
 	bool						m_bAllowCustomizing;
 	bool						m_bAreCustomized;
 	bool						m_bDebugBool;
-	bool						m_bBonoboRunning;
 	bool						m_bEnableSmoothScrolling;
 	bool						m_bDisableDoubleBuffering;
 	bool						m_bNoGUI;

@@ -1,7 +1,7 @@
 /* -*- mode: C++; tab-width: 4; c-basic-offset: 4; indent-tabs-mode:t -*- */
 /* AbiWord
  * Copyright (C) 1998-2000 AbiSource, Inc.
- * Copyright (C) 2009, 2019 Hubert Figuière
+ * Copyright (C) 2009, 2019-2026 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -449,12 +449,11 @@ XAP_Frame * AP_UnixApp::newFrame(void)
 */
 bool AP_UnixApp::shutdown(void)
 {
-	if(!isBonoboRunning())
-	{
-		if (m_prefs->getAutoSavePrefs())
-			m_prefs->savePrefsFile();
-		XAP_UnixApp::shutdown();
+	if (m_prefs->getAutoSavePrefs()) {
+		m_prefs->savePrefsFile();
 	}
+	XAP_UnixApp::shutdown();
+
     return true;
 }
 

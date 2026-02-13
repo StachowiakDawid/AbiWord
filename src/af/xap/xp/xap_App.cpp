@@ -1,7 +1,7 @@
 /* -*- mode: C++; tab-width: 4; c-basic-offset: 4; indent-tabs-mode:t; -*- */
 /* AbiSource Application Framework
  * Copyright (C) 1998, 1999 AbiSource, Inc.
- * Copyright (C) 2004-2021 Hubert Figuière
+ * Copyright (C) 2004-2026 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -96,7 +96,6 @@ XAP_App::XAP_App(const char * szAppName)
 	  m_bAllowCustomizing(true),
 	  m_bAreCustomized(true),
 	  m_bDebugBool(false),
-	  m_bBonoboRunning(false),
 	  m_bEnableSmoothScrolling(true),
       m_bDisableDoubleBuffering(false),
       m_bNoGUI(false),

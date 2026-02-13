@@ -2,7 +2,7 @@
 /* AbiSource Application Framework
  * Copyright (C) 1998-2000 AbiSource, Inc.
  * Copyright (C) 2002 William Lachance
- * Copyright (C) 2019-2025 Hubert Figuière
+ * Copyright (C) 2019-2026 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -1164,8 +1164,6 @@ gint XAP_UnixFrameImpl::_fe::delete_event(GtkWidget * w, GdkEvent * /*event*/, g
 	XAP_Frame* pFrame = pUnixFrameImpl->getFrame();
 	XAP_App * pApp = XAP_App::getApp();
 	UT_return_val_if_fail(pApp,FALSE);
-	if(pApp->isBonoboRunning())
-		return FALSE;
 
 	UT_ASSERT(pApp->getMenuActionSet());
 
