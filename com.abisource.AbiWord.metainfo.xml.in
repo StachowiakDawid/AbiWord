@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2019 Hubert Figuière -->
+<!-- Copyright 2019-2026 Hubert Figuière -->
 <component type="desktop-application">
   <id>com.abisource.AbiWord</id>
   <translation type="gettext">abiword</translation>
@@ -31,6 +31,25 @@
   </screenshots>
   <releases>
     <release version="@VERSION@" date="2021-07-01" />
+    <release version="3.0.8" date="2026-02-17">
+      <description>
+        <ul>
+          <li>Fix memory leaks with a collab Telepathy error.</li>
+          <li>Fix paste of images from Firefox.</li>
+          <li>Fix memory leaks in styles dialog, Gtk text input.</li>
+          <li>Fix use after free and memory leak with list
+          numbering.</li>
+          <li>Fix memory leak with text drag and drop.</li>
+          <li>Fix memory leak in OpenXML importer/exporter.</li>
+          <li>Remove babelfish and freetranslation plugins.</li>
+          <li>Fix appstream for newer flathub requirements.</li>
+          <li>Properly remember the recent files even if AbiWord
+          crashes.</li>
+          <li>wordperfect: Use the more recent version of libwpd
+          libwpg and libwps.</li>
+        </ul>
+      </description>
+    </release>
     <release version="3.0.7" type="stable" date="2025-07-30">
       <description>
         <ul>
