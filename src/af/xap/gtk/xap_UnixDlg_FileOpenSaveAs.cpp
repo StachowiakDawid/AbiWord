@@ -2,7 +2,7 @@
 
 /* AbiSource Application Framework
  * Copyright (C) 1998 AbiSource, Inc.
- * Copyright (C) 2009-2024 Hubert Figuière
+ * Copyright (C) 2009-2026 Hubert Figuière
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -285,10 +285,10 @@ bool XAP_UnixDialog_FileOpenSaveAs::_run_main_loop(XAP_Frame * pFrame,
 
 				if (nFileType > 0 && getDialogId() != XAP_DIALOG_ID_FILE_SAVE_IMAGE) // 0 means autodetect
 				{
-					if (!UT_pathSuffix(dialogFilename).empty())	{
+					if (!UT_pathSuffix(dialogFilename).empty()) {
 						// warn if we have a suffix that doesn't match the selected file type
 						IE_ExpSniffer* pSniffer = IE_Exp::snifferForFileType(m_nTypeList[nIndex]);
-						if (pSniffer && !pSniffer->recognizeSuffix(UT_pathSuffix(dialogFilename).c_str()))	{
+						if (pSniffer && !pSniffer->recognizeSuffix(UT_pathSuffix(dialogFilename).c_str())) {
 							std::string msg;
 							const XAP_StringSet * pSS = m_pApp->getStringSet();
 							pSS->getValueUTF8(XAP_STRING_ID_DLG_FOSA_ExtensionDoesNotMatch, msg);
@@ -603,8 +603,8 @@ void XAP_UnixDialog_FileOpenSaveAs::runModal(XAP_Frame * pFrame)
 	abiSetupModalDialog(GTK_DIALOG(m_FC), pFrame, this, GTK_RESPONSE_ACCEPT);
 	GtkWidget * filetypes_pulldown = nullptr;
 
-    std::string s;
-	
+	std::string s;
+
 	/*
 	  Add a drop-down list of known types to facilitate a file-types selection.
 	  We store an indexer in the user data for each menu item in the popup, so
@@ -730,10 +730,9 @@ void XAP_UnixDialog_FileOpenSaveAs::runModal(XAP_Frame * pFrame)
 
 	// use the persistence info and/or the suggested filename
 	// to properly seed the dialog.
-	
-	gchar * szPersistDirectory = nullptr;	// we must g_free this
 
-	if (!m_initialPathname.empty())	{
+	gchar * szPersistDirectory = nullptr;	// we must g_free this
+	if (m_initialPathname.empty()) {
 		// the caller did not supply initial pathname
 		// (or supplied an empty one).  see if we have
 		// some persistent info.
