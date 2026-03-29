@@ -53,8 +53,8 @@
 
 namespace rpv1 = realm::protocolv1;
 
-XAP_Dialog_Id ServiceAccountHandler::m_iDialogGenericInput = 0;
-XAP_Dialog_Id ServiceAccountHandler::m_iDialogGenericProgress = 0;
+XAP_Dialog_Id ServiceAccountHandler::m_iDialogGenericInput = static_cast<XAP_Dialog_Id>(0);
+XAP_Dialog_Id ServiceAccountHandler::m_iDialogGenericProgress = static_cast<XAP_Dialog_Id>(0);
 AbiCollabSaveInterceptor ServiceAccountHandler::m_saveInterceptor = AbiCollabSaveInterceptor();
 
 bool ServiceAccountHandler::askPassword(const std::string& email, std::string& password)

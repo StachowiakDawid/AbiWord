@@ -75,7 +75,7 @@ AbiCollabSaveInterceptor::AbiCollabSaveInterceptor()
 	
 	// install the new menu action with our custom save edit method
 	XAP_App::getApp()->getMenuActionSet()->setAction(
-			AP_MENU_ID_FILE_SAVE,
+			static_cast<XAP_Menu_Id>(AP_MENU_ID_FILE_SAVE),
 			false, /* holds submenu */
 			false, /* raises dialog */
 			false, /* is checkable */
@@ -88,7 +88,7 @@ AbiCollabSaveInterceptor::AbiCollabSaveInterceptor()
 	
 	// install the new toolbar action with our custom save edit method
 	XAP_App::getApp()->getToolbarActionSet()->setAction(
-			AP_TOOLBAR_ID_FILE_SAVE,
+			static_cast<XAP_Toolbar_Id>(AP_TOOLBAR_ID_FILE_SAVE),
 			EV_TBIT_PushButton,
 			SAVE_INTERCEPTOR_EM,
 			AV_CHG_ALL,
