@@ -46,59 +46,6 @@
 // everywhere).
 extern int ABI_EXPORT UT_Win32ThrowAssert(const char * pCondition, const char * pFile, int iLine, int iCount);
 
-// The best way of stepping into debugger is by generating the appropriate interupt
-// instruction, so if we are on Intel x86, we will issue int 3.  If we are not on x86, we
-// will use the win32 DebugBreak() function (the disadvantage of that is that the
-// execution is interupted not in our code, but in one of the system libs, so you have to
-// step out of that system function to get into our code; its rather non-intuitive.
-
-#  undef UT_DEBUG_BREAK
-
-// I am not sure which is the standard GCC macro for the x86 platform; we are supposed to
-// be able to get all the predefined macros by running 'cpp -dM' but it would not work on
-// my cygwin
-#  if defined(__GNUC__) && (defined(_X86) || defined(__i386) || defined(i386))
-     // Inline assembly for GCC on x86
-#    define UT_DEBUG_BREAK asm("int3");
-#  elif defined(__GNUC__) && (defined(__ia64) || defined(ia64))
-#    error "This branch has not been tested."
-     // On Itanium we use the intrinsic function __break(); defined in ia64intrin.h
-     // I am not sure whether we need to tell the compiler this one is intrinsic (MSVC
-     // uses a #pragma for this
-     void __break(int);
-#    define UT_DEBUG_BREAK __break(0x80016);
-#  elif defined(_MSC_VER) && defined(_M_IX86)
-     // inline assmebly for MSVC on x86
-#    define UT_DEBUG_BREAK _asm {int 3}
-#  elif defined(_MSC_VER) && (defined(_M_IA64) || defined(_M_AMD64))
-#    error "This branch has not been tested."
-     // On Itanium we use the intrinsic function __break();
-     // I assume this will also work for AMD64, but I am not 100% sure
-     void __break(int);
-     // this forces __break() to be generated as inline code (see MSDN)
-#    pragma intrinsic (__break)
-#    define UT_DEBUG_BREAK __break(0x80016);
-#  endif
-
-# ifndef UT_DEBUG_BREAK
-// Some compiler/architecture for which we do not know how to generate inline assembly to pass
-// control to the debugger; we use win32s DebugBreak().
-//
-// TODO !!! This currently does not work; if someone one day wants to build AW on non-x86
-// win32 architecture, they will need to fix this (including <windows.h> from here, which
-// is what would work, screws up things in MS Word importer, because the wv library
-// redefines some of the win32 structures; but we probably do not want to include
-// windows.h from here anyway because of the overhead -- ut_assert.h gets included in
-// almost everything.). Really, we want to do something similar as we do for x86.
-#  error "Proper implementation needed for this compiler/architecture"
-
-#    ifndef _WINBASE_
-       __declspec(dllimport) void __stdcall DebugBreak(void);
-#    endif /* ifdef _WINBASE_ */
-
-#    define UT_DEBUG_BREAK DebugBreak();
-#  endif /* ifndef UT_DEBUG_BREAK */
-
 // We want to track the number of times we have been through this assert and have the
 // option of disabling this assert for the rest of the session; we use the __iCount and
 // __bOnceOnly vars for this (this adds a few bytes to the code and footprint, but on
@@ -113,7 +60,7 @@ extern int ABI_EXPORT UT_Win32ThrowAssert(const char * pCondition, const char * 
 		int __iRet = UT_Win32ThrowAssert(#x,__FILE__, __LINE__, __iCount);  \
         if(__iRet == 0)                                                     \
 		{                                                                   \
-		   UT_DEBUG_BREAK                                                   \
+		   G_BREAKPOINT();                                                  \
 		}                                                                   \
 		else if(__iRet < 0)                                                 \
 		{                                                                   \
