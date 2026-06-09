@@ -3313,7 +3313,7 @@ bool pt_PieceTable::_realDeleteSpan(PT_DocPosition dpos1,
 		     }
 		}
 		auto pfs = static_cast<const pf_Frag_Strux *>(p_frag_before);
-		if(bDoit && ((pfs->getStruxType() == PTX_Block) || (p_frag_before->getType() == pf_Frag::PFT_EndOfDoc) ))
+		if (bDoit && ((p_frag_before->getType() == pf_Frag::PFT_EndOfDoc) || (pfs->getType() == pf_Frag::PFT_Strux && pfs->getStruxType() == PTX_Block)))
 			_insertFmtMarkFragWithNotify(PTC_AddFmt, dpos1, &AttrProp_Before);
 
 	}
