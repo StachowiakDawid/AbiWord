@@ -133,6 +133,8 @@ void AP_CocoaDialog_Lists::runModeless (XAP_Frame * /*pFrame*/)
 	m_pApp->rememberModelessId(sid, (XAP_Dialog_Modeless *) m_pDialog);
 
 	NSPanel* window = (NSPanel*)m_dlg.window;
+	ConstructWindowName();
+	[window setTitle:[NSString stringWithUTF8String:getWindowName()]];
 
 	// Populate the dialog
 	updateDialog();
@@ -589,6 +591,10 @@ void AP_CocoaDialog_Lists::loadXPDataIntoLocal(void)
 		[m_dlg->_fontPopup selectItemWithTitle:[NSString stringWithUTF8String:getFont().c_str()]];
 	}
 	[m_dlg->_startAtData setIntValue:getiStartValue()];
+	// keep the steppers in sync, they continue from these values
+	[m_dlg->_textAlignStepper setFloatValue:[m_dlg->_textAlignData floatValue]];
+	[m_dlg->_labelAlignStepper setFloatValue:[m_dlg->_labelAlignData floatValue]];
+	[m_dlg->_startAtStepper setIntValue:getiStartValue()];
 
 	[m_dlg->_levelDelimData setStringValue:[NSString stringWithUTF8String:getDecimal().c_str()]];
 	[m_dlg->_formatData setStringValue:[NSString stringWithUTF8String:getDelim().c_str()]];
@@ -714,6 +720,33 @@ void AP_CocoaDialog_Lists::_gatherData(void)
 	_xap->_fillBulletedStyleMenu(m_listStyleBulleted_menu);
 	[_stylePopup setMenu:m_listStyleNone_menu];
 	
+	// Show "0.5" rather than "0.49999998", and parse with the same locale
+	// rules used for display (e.g. a decimal comma).
+	NSNumberFormatter * inches = [[NSNumberFormatter alloc] init];
+	[inches setNumberStyle:NSNumberFormatterDecimalStyle];
+	[inches setMinimumFractionDigits:1];
+	[inches setMaximumFractionDigits:2];
+	[inches setMinimum:@0];
+	[_textAlignData setFormatter:inches];
+	[_labelAlignData setFormatter:inches];
+	NSNumberFormatter * integer = [[NSNumberFormatter alloc] init];
+	[integer setNumberStyle:NSNumberFormatterNoStyle];
+	[integer setMinimum:@0];
+	[_startAtData setFormatter:integer];
+
+	// The pop-ups truncate their items ("Numbered...", font names): widen
+	// them into the free space left of the preview.
+	NSRect previewFrame = [_previewBox convertRect:[_previewBox bounds] toView:nil];
+	for (NSPopUpButton * popup in @[_typePopup, _stylePopup, _fontPopup]) {
+		NSRect frame = [popup frame];
+		NSRect inWindow = [popup convertRect:[popup bounds] toView:nil];
+		CGFloat room = NSMinX(previewFrame) - 16.0 - NSMaxX(inWindow);
+		if (room > 0) {
+			frame.size.width += MIN(room, 80.0);
+			[popup setFrame:frame];
+		}
+	}
+
 	LocalizeControl(_typeLabel, pSS, AP_STRING_ID_DLG_Lists_Type);
 	LocalizeControl(_styleLabel, pSS, AP_STRING_ID_DLG_Lists_Style);
 	LocalizeControl(_setDefaultBtn, pSS, AP_STRING_ID_DLG_Lists_SetDefault);
@@ -824,15 +857,17 @@ void AP_CocoaDialog_Lists::_gatherData(void)
 	_xap->destroy();
 }
 
+/* the text field's action: the stepper follows the typed value */
 - (IBAction)labelAlignAction:(id)sender
 {
-	[_labelAlignData setFloatValue:[_labelAlignStepper floatValue]];
+	[_labelAlignStepper setFloatValue:[_labelAlignData floatValue]];
 	[self valueChangedAction:sender];
 }
 
+/* the stepper's action: the text field follows the stepper */
 - (IBAction)labelAlignActionStepper:(id)sender
 {
-	[_labelAlignStepper setFloatValue:[_labelAlignData floatValue]];
+	[_labelAlignData setFloatValue:[_labelAlignStepper floatValue]];
 	[self valueChangedAction:sender];
 }
 

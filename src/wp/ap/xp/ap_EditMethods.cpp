@@ -11014,17 +11014,8 @@ Defun1(dlgBullets)
 //
   // Dialog for Bullets and Lists
   //
-#if defined(TARGET_OS_MAC)
-	UT_return_val_if_fail(pAV_View, false);
-	XAP_Frame * pFrame = static_cast<XAP_Frame *> ( pAV_View->getParentData());
-	UT_return_val_if_fail(pFrame, false);
-
-	s_TellNotImplemented(pFrame, "Lists dialog", __LINE__);
-	return true;
-#else // enable for GTK+ & Gnome builds only
 	ABIWORD_VIEW;
 	return s_doBullets(pView);
-#endif
 }
 
 /***********************************************************************************/
