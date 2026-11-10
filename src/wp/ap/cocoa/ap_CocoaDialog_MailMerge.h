@@ -86,7 +86,6 @@ protected:
 
 	AP_CocoaDialog_MailMerge *	_xap;
 }
-- (void)dealloc;
 
 - (void)windowToFront;
 

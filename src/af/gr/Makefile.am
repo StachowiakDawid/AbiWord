@@ -50,7 +50,7 @@ endif
 
 if TOOLKIT_COCOA
 AM_CPPFLAGS += \
-	-x objective-c++
+	-x objective-c++ -fobjc-arc
 libgr_la_SOURCES += \
 	cocoa/gr_CoreGraphicsUtils.h \
 	cocoa/gr_CocoaGraphics.h \

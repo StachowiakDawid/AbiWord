@@ -52,7 +52,6 @@ public:
 		{
 			if (m_error)
 			{
-				[m_error release];
 				m_error = 0;
 			}
 		}
@@ -64,7 +63,6 @@ public:
 				if (!m_error)
 				{
 					m_error = [NSString stringWithFormat:@"Error while parsing \"%@\"", path];
-					[m_error retain];
 				}
 			}
 			return m_error;
@@ -93,7 +91,6 @@ public:
 				m_parser.stop();
 
 				m_error = @"Simple XML parser stopped by callback method \"startElement:attributes:\".";
-				[m_error retain];
 			}
 		}
 
@@ -106,7 +103,6 @@ public:
 				m_parser.stop();
 
 				m_error = @"Simple XML parser stopped by callback method \"endElement:\".";
-				[m_error retain];
 			}
 		}
 
@@ -119,7 +115,6 @@ public:
 				m_parser.stop();
 
 				m_error = @"Simple XML parser stopped by callback method \"characterData:\".";
-				[m_error retain];
 			}
 		}
 };
@@ -139,7 +134,6 @@ public:
 - (void)dealloc
 {
 	// 
-	[super dealloc];
 }
 
 - (BOOL)loadBundleWithPath:(NSString *)path
@@ -161,7 +155,6 @@ public:
 						}
 						if (!bLoaded)
 						{
-							[instance release];
 						}
 					}
 				}

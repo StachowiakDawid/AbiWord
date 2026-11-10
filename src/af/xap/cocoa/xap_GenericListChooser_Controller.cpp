@@ -29,7 +29,7 @@
 + (XAP_GenericListChooser_Controller *)loadFromNib
 {
 	XAP_GenericListChooser_Controller * dlg = [[XAP_GenericListChooser_Controller alloc] initWithWindowNibName:@"xap_GenericListChooser_Controller"];
-	return [dlg autorelease];
+	return dlg;
 }
 
 - (void)windowDidLoad

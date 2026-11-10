@@ -78,7 +78,6 @@ void AP_CocoaDialog_FormatTOC::destroy(void)
 {
 	if (m_dlg)
 		{
-			[m_dlg release];
 			m_dlg = nil;
 		}
 	finalize();
@@ -128,7 +127,6 @@ void AP_CocoaDialog_FormatTOC::_populateWindowData(void)
 - (void)dealloc
 {
 	// 
-	[super dealloc];
 }
 
 - (void)setXAPOwner:(XAP_Dialog *)owner

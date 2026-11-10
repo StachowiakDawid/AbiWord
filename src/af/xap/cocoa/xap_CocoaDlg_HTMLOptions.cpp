@@ -58,7 +58,6 @@ void XAP_CocoaDialog_HTMLOptions::runModal (XAP_Frame * /*pFrame*/)
 	[NSApp runModalForWindow:window];
 
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 }
 
@@ -176,10 +175,6 @@ void XAP_CocoaDialog_HTMLOptions::event_Cancel ()
 	_xap = nullptr;
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {

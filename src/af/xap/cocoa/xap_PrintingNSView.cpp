@@ -29,7 +29,6 @@
 - (void)dealloc
 {
 	DELETEP(_printingDelegate);
-	[super dealloc];
 }
 
 - (void)setPrintingDelegate:(XAP_PrintingDelegate*)delegate

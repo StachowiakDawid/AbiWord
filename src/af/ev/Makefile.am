@@ -61,7 +61,7 @@ endif
 
 if TOOLKIT_COCOA
 AM_CPPFLAGS += \
-	-x objective-c++
+	-x objective-c++ -fobjc-arc
 
 libev_la_SOURCES += \
 	cocoa/ev_CocoaKeyboard.h \

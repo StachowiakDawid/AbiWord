@@ -46,7 +46,7 @@ int UT_UNIXTimer::s_lastTimerId = 1;
   XAP_TimerInvocation * obj = [XAP_TimerInvocation alloc];
   obj->proc = pr;
   obj->param = p; 
-  return [obj autorelease];
+  return obj;
 }
 
 -(void)invoke
@@ -103,13 +103,12 @@ void XAP_stopCocoaTimer (UT_uint32 timerId)
 		_checkLock();
 		[UT_UNIXTimer::s_timerMutex lock];
 		NSNumber* key = [NSNumber numberWithInt:timerId];
-		pTimer = [[UT_UNIXTimer::s_timerIds objectForKey:key] retain];
+		pTimer = [UT_UNIXTimer::s_timerIds objectForKey:key];
 		[UT_UNIXTimer::s_timerIds removeObjectForKey:key];
 		[UT_UNIXTimer::s_timerMutex unlock];
 	}
 	
 	[pTimer invalidate];
-	[pTimer release];
 }
 
 

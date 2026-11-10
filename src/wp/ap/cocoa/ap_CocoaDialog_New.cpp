@@ -74,7 +74,6 @@ void AP_CocoaDialog_New::runModal(XAP_Frame * pFrame)
 
 //	_storeWindowData();
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 	m_pFrame = nullptr;
 }
@@ -172,12 +171,6 @@ void AP_CocoaDialog_New::event_ToggleStartNew ()
 
 @implementation AP_CocoaDialog_NewController
 
-- (void)dealloc
-{
-	[m_templates release];
-	[_dataSource release];
-	[super dealloc];
-}
 
 
 - (id)initFromNib
@@ -232,7 +225,6 @@ void AP_CocoaDialog_New::event_ToggleStartNew ()
         }
     }
 
-	[templateDirs release];
 	
 	[_templateList setDataSource:_dataSource];
 	[_templateList setDelegate:self];

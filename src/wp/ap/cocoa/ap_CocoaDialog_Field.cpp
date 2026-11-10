@@ -84,11 +84,8 @@ void AP_CocoaDialog_Field::runModal(XAP_Frame * /*pFrame*/)
 
 	[m_dlg discardXAP];
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 
-	[m_typeList release];
-	[m_fieldList release];
 }
 
 void AP_CocoaDialog_Field::event_OK(void)
@@ -214,7 +211,6 @@ void AP_CocoaDialog_Field::setFieldsList(void)
 -(void)dealloc
 {
 	// 
-	[super dealloc];
 }
 
 -(void)discardXAP

@@ -59,7 +59,6 @@ void AP_CocoaDialog_Background::runModal(XAP_Frame * /*pFrame*/)
 			[NSApp runModalForWindow:[dlg window]];
 
 			[dlg close];
-			[dlg release];
 			dlg = nil;
 		}
 }
@@ -77,7 +76,6 @@ void AP_CocoaDialog_Background::runModal(XAP_Frame * /*pFrame*/)
 - (void)dealloc
 {
 	// 
-	[super dealloc];
 }
 
 - (void)setXAPOwner:(XAP_Dialog *)owner

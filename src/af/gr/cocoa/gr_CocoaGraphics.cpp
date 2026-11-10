@@ -116,41 +116,41 @@ void GR_CocoaGraphics::_initColorAndImage(void)
     if (path) {
         m_imageBlue16x15 = [[NSImage alloc] initWithContentsOfFile:path];
         if (m_imageBlue16x15) {
-            m_colorBlue16x15 = [[NSColor colorWithPatternImage:m_imageBlue16x15] retain];
+            m_colorBlue16x15 = [NSColor colorWithPatternImage:m_imageBlue16x15];
         }
     }
     if (!m_colorBlue16x15) {
-        m_colorBlue16x15 = [NSColor.blueColor retain];
+        m_colorBlue16x15 = NSColor.blueColor;
     }
     path = [bundle pathForResource:@"Blue11x16" ofType:@"png"];
     if (path) {
         m_imageBlue11x16 = [[NSImage alloc] initWithContentsOfFile:path];
         if (m_imageBlue11x16) {
-            m_colorBlue11x16 = [[NSColor colorWithPatternImage:m_imageBlue11x16] retain];
+            m_colorBlue11x16 = [NSColor colorWithPatternImage:m_imageBlue11x16];
         }
     }
     if (!m_colorBlue11x16) {
-        m_colorBlue11x16 = [NSColor.blueColor retain];
+        m_colorBlue11x16 = NSColor.blueColor;
     }
     path = [bundle pathForResource:@"Grey16x15" ofType:@"png"];
     if (path) {
         m_imageGrey16x15 = [[NSImage alloc] initWithContentsOfFile:path];
         if (m_imageGrey16x15) {
-            m_colorGrey16x15 = [[NSColor colorWithPatternImage:m_imageGrey16x15] retain];
+            m_colorGrey16x15 = [NSColor colorWithPatternImage:m_imageGrey16x15];
         }
     }
     if (!m_colorGrey16x15) {
-        m_colorGrey16x15 = [NSColor.grayColor retain];
+        m_colorGrey16x15 = NSColor.grayColor;
     }
     path = [bundle pathForResource:@"Grey11x16" ofType:@"png"];
     if (path) {
         m_imageGrey11x16 = [[NSImage alloc] initWithContentsOfFile:path];
         if (m_imageGrey11x16) {
-            m_colorGrey11x16 = [[NSColor colorWithPatternImage:m_imageGrey11x16] retain];
+            m_colorGrey11x16 = [NSColor colorWithPatternImage:m_imageGrey11x16];
         }
     }
     if (!m_colorGrey11x16) {
-        m_colorGrey11x16 = [NSColor.grayColor retain];
+        m_colorGrey11x16 = NSColor.grayColor;
     }
 
     // Cursors
@@ -159,89 +159,80 @@ void GR_CocoaGraphics::_initColorAndImage(void)
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_E = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(7, 7)];
-            [image release];
         }
     }
     if (!m_Cursor_E) {
-        m_Cursor_E = [NSCursor.arrowCursor retain];
+        m_Cursor_E = NSCursor.arrowCursor;
     }
     path = [bundle pathForResource:@"Cursor_N" ofType:@"png"];
     if (path) {
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_N = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(7, 8)];
-            [image release];
         }
     }
     if (!m_Cursor_N) {
-        m_Cursor_N = [NSCursor.arrowCursor retain];
+        m_Cursor_N = NSCursor.arrowCursor;
     }
     path = [bundle pathForResource:@"Cursor_NE" ofType:@"png"];
     if (path) {
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_NE = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(8, 7)];
-            [image release];
         }
     }
     if (!m_Cursor_NE) {
-        m_Cursor_NE = [NSCursor.arrowCursor retain];
+        m_Cursor_NE = NSCursor.arrowCursor;
     }
     path = [bundle pathForResource:@"Cursor_NW" ofType:@"png"];
     if (path) {
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_NW = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(7, 7)];
-            [image release];
         }
     }
     if (!m_Cursor_NW) {
-        m_Cursor_NW = [NSCursor.arrowCursor retain];
+        m_Cursor_NW = NSCursor.arrowCursor;
     }
     path = [bundle pathForResource:@"Cursor_S" ofType:@"png"];
     if (path) {
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_S = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(7, 7)];
-            [image release];
         }
     }
     if (!m_Cursor_S) {
-        m_Cursor_S = [NSCursor.arrowCursor retain];
+        m_Cursor_S = NSCursor.arrowCursor;
     }
     path = [bundle pathForResource:@"Cursor_SE" ofType:@"png"];
     if (path) {
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_SE = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(8, 8)];
-            [image release];
         }
     }
     if (!m_Cursor_SE) {
         m_Cursor_SE = [NSCursor arrowCursor];
-        [m_Cursor_SE retain];
     }
     path = [bundle pathForResource:@"Cursor_SW" ofType:@"png"];
     if (path) {
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_SW = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(7, 8)];
-            [image release];
         }
     }
     if (!m_Cursor_SW) {
-        m_Cursor_SW = [NSCursor.arrowCursor retain];
+        m_Cursor_SW = NSCursor.arrowCursor;
     }
     path = [bundle pathForResource:@"Cursor_W" ofType:@"png"];
     if (path) {
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_W = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(8, 7)];
-            [image release];
         }
     }
     if (!m_Cursor_W) {
-        m_Cursor_W = [NSCursor.arrowCursor retain];
+        m_Cursor_W = NSCursor.arrowCursor;
     }
 
     path = [bundle pathForResource:@"Cursor_Wait" ofType:@"png"];
@@ -249,110 +240,100 @@ void GR_CocoaGraphics::_initColorAndImage(void)
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_Wait = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(8, 7)];
-            [image release];
         }
     }
     if (!m_Cursor_Wait) {
-        m_Cursor_Wait = [NSCursor.arrowCursor retain];
+        m_Cursor_Wait = NSCursor.arrowCursor;
     }
     path = [bundle pathForResource:@"Cursor_LeftArrow" ofType:@"png"];
     if (path) {
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_LeftArrow = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(7, 8)];
-            [image release];
         }
     }
     if (!m_Cursor_LeftArrow) {
-        m_Cursor_LeftArrow = [NSCursor.arrowCursor retain];
+        m_Cursor_LeftArrow = NSCursor.arrowCursor;
     }
     path = [bundle pathForResource:@"Cursor_RightArrow" ofType:@"png"];
     if (path) {
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_RightArrow = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(8, 7)];
-            [image release];
         }
     }
     if (!m_Cursor_RightArrow) {
-        m_Cursor_RightArrow = [NSCursor.arrowCursor retain];
+        m_Cursor_RightArrow = NSCursor.arrowCursor;
     }
     path = [bundle pathForResource:@"Cursor_Compass" ofType:@"png"];
     if (path) {
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_Compass = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(7, 7)];
-            [image release];
         }
     }
     if (!m_Cursor_Compass) {
-        m_Cursor_Compass = [NSCursor.arrowCursor retain];
+        m_Cursor_Compass = NSCursor.arrowCursor;
     }
     path = [bundle pathForResource:@"Cursor_Exchange" ofType:@"png"];
     if (path) {
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_Exchange = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(7, 7)];
-            [image release];
         }
     }
     if (!m_Cursor_Exchange) {
-        m_Cursor_Exchange = [NSCursor.arrowCursor retain];
+        m_Cursor_Exchange = NSCursor.arrowCursor;
     }
     path = [bundle pathForResource:@"leftright_cursor" ofType:@"png"];
     if (path) {
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_LeftRight = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(8, 8)];
-            [image release];
         }
     }
     if (!m_Cursor_LeftRight) {
-        m_Cursor_LeftRight = [NSCursor.arrowCursor retain];
+        m_Cursor_LeftRight = NSCursor.arrowCursor;
     }
     path = [bundle pathForResource:@"updown_cursor" ofType:@"png"];
     if (path) {
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_UpDown = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(8, 8)];
-            [image release];
         }
     }
     if (!m_Cursor_UpDown) {
-        m_Cursor_UpDown = [NSCursor.arrowCursor retain];
+        m_Cursor_UpDown = NSCursor.arrowCursor;
     }
     path = [bundle pathForResource:@"Cursor_Crosshair" ofType:@"png"];
     if (path) {
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_Crosshair = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(7, 7)];
-            [image release];
         }
     }
     if (!m_Cursor_Crosshair) {
-        m_Cursor_Crosshair = [NSCursor.arrowCursor retain];
+        m_Cursor_Crosshair = NSCursor.arrowCursor;
     }
     path = [bundle pathForResource:@"Cursor_HandPointer" ofType:@"png"];
     if (path) {
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_HandPointer = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(6, 0)];
-            [image release];
         }
     }
     if (!m_Cursor_HandPointer) {
-        m_Cursor_HandPointer = [NSCursor.arrowCursor retain];
+        m_Cursor_HandPointer = NSCursor.arrowCursor;
     }
     path = [bundle pathForResource:@"Cursor_DownArrow" ofType:@"png"];
     if (path) {
         image = [[NSImage alloc] initWithContentsOfFile:path];
         if (image) {
             m_Cursor_DownArrow = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(6, 0)];
-            [image release];
         }
     }
     if (!m_Cursor_DownArrow) {
-        m_Cursor_DownArrow = [NSCursor.arrowCursor retain];
+        m_Cursor_DownArrow = NSCursor.arrowCursor;
     }
 
     m_colorAndImageInited = true;
@@ -391,20 +372,13 @@ GR_CocoaGraphics::GR_CocoaGraphics(XAP_CocoaNSView* view)
     /* resolution does not change thru the life of the object */
     m_screenResolution = lrintf(_getScreenResolution());
 
-    m_currentColor = [[NSColor blackColor] retain];
+    m_currentColor = [NSColor blackColor];
 
     m_cs = GR_Graphics::GR_COLORSPACE_COLOR;
     m_cursor = GR_CURSOR_INVALID;
     setCursor(GR_CURSOR_DEFAULT);
 }
 
-#ifndef RELEASEP
-#define RELEASEP(X)  \
-    do {             \
-        [X release]; \
-        X = nil;     \
-    } while (0)
-#endif
 
 GR_CocoaGraphics::~GR_CocoaGraphics()
 {
@@ -412,7 +386,6 @@ GR_CocoaGraphics::~GR_CocoaGraphics()
 
     _destroyFonts();
 
-    UT_std_vector_releaseall(m_cacheArray);
     UT_std_vector_sparsepurgeall(m_cacheRectArray);
 
     [m_view setGraphics:nullptr];
@@ -678,10 +651,9 @@ void GR_CocoaGraphics::setFont(const GR_Font* pFont)
     const GR_CocoaFont* pUFont = static_cast<const GR_CocoaFont*>(pFont);
     UT_ASSERT(pUFont);
     m_pFont = pUFont;
-    [m_fontForGraphics release];
     NSFont* font = pUFont->getNSFont();
-    m_fontForGraphics = [[[NSFontManager sharedFontManager] convertFont:font
-                                                                 toSize:[font pointSize] * (getZoomPercentage() / 100.)] retain];
+    m_fontForGraphics = [[NSFontManager sharedFontManager] convertFont:font
+                                                                 toSize:[font pointSize] * (getZoomPercentage() / 100.)];
 }
 
 UT_uint32 GR_CocoaGraphics::getFontHeight(const GR_Font* fnt)
@@ -780,8 +752,7 @@ void GR_CocoaGraphics::getColor(UT_RGBColor& clr)
 void GR_CocoaGraphics::_setColor(NSColor* c)
 {
     UT_DEBUGMSG(("GR_CocoaGraphics::_setColor(NSColor*): setting NSColor\n"));
-    [m_currentColor release];
-    m_currentColor = [c retain];
+    m_currentColor = c;
 
     if (m_view.in_draw_rect) {
         _ASSERT_CG_CONTEXT;
@@ -1396,7 +1367,7 @@ void GR_CocoaGraphics::_utNSColorToRGBColor(NSColor* c, UT_RGBColor& clr)
         clr.setPattern(new GR_CocoaPatternImpl(img));
     } else {
         CGFloat r, g, b, a;
-        [[c colorUsingColorSpaceName:NSDeviceRGBColorSpace] getRed:&r green:&g blue:&b alpha:&a];
+        [[c colorUsingColorSpace:[NSColorSpace deviceRGBColorSpace]] getRed:&r green:&g blue:&b alpha:&a];
         UT_DEBUGMSG(("color rgba is %f %f %f %f\n", r, g, b, a));
         clr.m_red = static_cast<uint8_t>(r * 255.0f);
         clr.m_grn = static_cast<uint8_t>(g * 255.0f);

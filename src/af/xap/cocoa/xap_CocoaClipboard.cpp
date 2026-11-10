@@ -63,7 +63,6 @@ bool XAP_CocoaClipboard::addData(const char* format, void* pData, UT_sint32 iNum
 	else if (strcmp(format, XAP_CLIPBOARD_TEXTPLAIN_8BIT) == 0) {
 		[pb setData:data forType:NSPasteboardTypeString];
 	}
-	[data release];
 	return true;
 }
 

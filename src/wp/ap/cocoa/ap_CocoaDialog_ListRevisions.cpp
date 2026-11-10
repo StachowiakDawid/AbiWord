@@ -68,8 +68,6 @@ static const NSString * COMMENT_COL_ID = @"comment";
 
 - (oneway void)dealloc
 {
-	[_array release];
-	[super dealloc];
 }
 
 - (void)addLine:(const char*)col1 withCol2:(const char*)col2 withCol3:(const char*)col3
@@ -139,7 +137,6 @@ AP_CocoaDialog_ListRevisions::AP_CocoaDialog_ListRevisions(XAP_DialogFactory * p
 
 AP_CocoaDialog_ListRevisions::~AP_CocoaDialog_ListRevisions(void)
 {
-	[m_dataSource release];
 }
 
 
@@ -205,9 +202,7 @@ void AP_CocoaDialog_ListRevisions::runModal(XAP_Frame * /*pFrame*/)
 
 	[m_dlg discardXAP];
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
-	[m_dataSource release];
 	m_dataSource = nil;
 }
 
@@ -223,10 +218,6 @@ void AP_CocoaDialog_ListRevisions::runModal(XAP_Frame * /*pFrame*/)
 	_xap = nullptr;
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {

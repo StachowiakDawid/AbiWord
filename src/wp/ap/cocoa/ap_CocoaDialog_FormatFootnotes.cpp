@@ -74,7 +74,6 @@ void AP_CocoaDialog_FormatFootnotes::runModal(XAP_Frame * pFrame)
 
 	[m_dlg discardXAP];
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 }
 
@@ -218,10 +217,6 @@ void AP_CocoaDialog_FormatFootnotes::event_EndRestartSection(NSButton* widget)
 	_xap = nullptr;
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {

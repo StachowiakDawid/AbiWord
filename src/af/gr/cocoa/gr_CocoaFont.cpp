@@ -43,7 +43,7 @@ GR_CocoaFont::GR_CocoaFont()
 
 GR_CocoaFont::GR_CocoaFont(NSFont* font)
     : GR_Font()
-    , m_font([font retain])
+    , m_font(font)
     , _m_coverage(nullptr)
 {
     m_hashKey = [[font fontName] UTF8String];
@@ -66,7 +66,6 @@ GR_CocoaFont::GR_CocoaFont(const GR_CocoaFont& copy)
 GR_CocoaFont::~GR_CocoaFont()
 {
     // release on nil is completely safe
-    [m_font release];
     DELETEP(_m_coverage);
 }
 
@@ -323,7 +322,6 @@ UT_UCS4Char GR_CocoaFont::remapChar(UT_UCS4Char charCode, RemapFont rf)
         [helperDictionary setObject:helper forKey:family];
 
         [helper addFontReferences:referenceDictionary];
-        [helper release];
     }
     return helperDictionary;
 }
@@ -333,7 +331,7 @@ UT_UCS4Char GR_CocoaFont::remapChar(UT_UCS4Char charCode, RemapFont rf)
     if (![super init]) {
         return nil;
     }
-    m_FontFamilyName = [fontFamilyName retain];
+    m_FontFamilyName = fontFamilyName;
 
     m_indexRegular = -1;
     m_indexItalic = -1;
@@ -409,17 +407,6 @@ UT_UCS4Char GR_CocoaFont::remapChar(UT_UCS4Char charCode, RemapFont rf)
     return self;
 }
 
-- (void)dealloc
-{
-    [m_FontFamilyName release];
-    [m_AttributedFontFamilyName release];
-
-    [m_FontNames release];
-    [m_FontMembers release];
-    [m_AttributedFontMembers release];
-
-    [super dealloc];
-}
 
 - (NSString*)fontFamilyName
 {
@@ -480,7 +467,6 @@ UT_UCS4Char GR_CocoaFont::remapChar(UT_UCS4Char charCode, RemapFont rf)
 
         [referenceDictionary setObject:fontRef forKey:fontName];
 
-        [fontRef release];
     }
 }
 
@@ -493,21 +479,14 @@ UT_UCS4Char GR_CocoaFont::remapChar(UT_UCS4Char charCode, RemapFont rf)
     if (![super init]) {
         return nil;
     }
-    m_FontFamily = [fontFamily retain];
+    m_FontFamily = fontFamily;
 
-    m_FontFamilyHelper = [helper retain];
+    m_FontFamilyHelper = helper;
 
     m_index = index;
     return self;
 }
 
-- (void)dealloc
-{
-    [m_FontFamily release];
-    [m_FontFamilyHelper release];
-
-    [super dealloc];
-}
 
 - (NSString*)fontFamily
 {

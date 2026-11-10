@@ -72,7 +72,6 @@ void AP_CocoaDialog_MergeCells::destroy(void)
 	finalize();
 
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 }
 
@@ -111,10 +110,6 @@ void AP_CocoaDialog_MergeCells::_storeWindowData(void)
 	return self;
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {

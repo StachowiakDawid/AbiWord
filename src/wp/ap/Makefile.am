@@ -402,7 +402,7 @@ if TOOLKIT_COCOA
 include $(top_srcdir)/src/wp/main/cocoa/bundle.mk
 
 AM_CPPFLAGS += \
-	-x objective-c++
+	-x objective-c++ -fobjc-arc
 
 libap_la_SOURCES += \
 	cocoa/ap_CocoaApp.h \

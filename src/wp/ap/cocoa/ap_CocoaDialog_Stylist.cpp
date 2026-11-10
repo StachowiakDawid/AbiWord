@@ -47,7 +47,6 @@
 	int _col;
 }
 -(id)initWithValue:(const char*)value row:(int)row andCol:(int)col;
--(void)dealloc;
 
 -(void)addChild:(id)child;
 -(NSArray*)children;
@@ -69,12 +68,6 @@
 }
 
 
--(void)dealloc
-{
-	[_value release];
-	[_children release];
-	[super dealloc];
-}
 
 -(void)addChild:(id)child
 {
@@ -123,7 +116,6 @@ AP_CocoaDialog_Stylist::AP_CocoaDialog_Stylist(XAP_DialogFactory * pDlgFactory, 
 
 AP_CocoaDialog_Stylist::~AP_CocoaDialog_Stylist(void)
 {
-	[m_items release];
 }
 
 void AP_CocoaDialog_Stylist::event_Close(void)
@@ -170,7 +162,6 @@ void AP_CocoaDialog_Stylist::setStyleInGUI(void)
 void AP_CocoaDialog_Stylist::destroy(void)
 {
 	finalize();
-	[m_dlg release];
 	m_dlg = nil;
 }
 
@@ -239,7 +230,6 @@ void AP_CocoaDialog_Stylist::runModal(XAP_Frame * /*pFrame*/)
 	{
 		[m_dlg discardXAP];
 		[m_dlg close];
-		[m_dlg release];
 
 		m_dlg = nil;
 	}
@@ -312,7 +302,7 @@ void  AP_CocoaDialog_Stylist::_fillTree(void)
 			UT_ASSERT(UT_SHOULD_NOT_HAPPEN);
 			break;
 		}
-		currentChild = [[[StyleNode alloc] initWithValue:sTmp.c_str() row:row andCol:0] autorelease];
+		currentChild = [[StyleNode alloc] initWithValue:sTmp.c_str() row:row andCol:0];
 		if(pStyleTree->getNumCols(row) > 0)
 		{
 			UT_DEBUGMSG(("Adding Heading %s at row %d \n",sTmp.c_str(),row));
@@ -326,7 +316,7 @@ void  AP_CocoaDialog_Stylist::_fillTree(void)
 					UT_ASSERT(UT_SHOULD_NOT_HAPPEN);
 					break;
 				}
-				[currentChild addChild:[[[StyleNode alloc] initWithValue:sTmp2.c_str() row:row andCol:col] autorelease]];
+				[currentChild addChild:[[StyleNode alloc] initWithValue:sTmp2.c_str() row:row andCol:col]];
 				UT_DEBUGMSG(("Adding style %s at row %d col %d \n", sTmp2.c_str(), row, col + 1));
 			}
 		}
@@ -363,10 +353,6 @@ void  AP_CocoaDialog_Stylist::_populateWindowData(void)
 	_xap = nullptr;
 }
 
-- (void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {
@@ -513,7 +499,7 @@ void  AP_CocoaDialog_Stylist::_populateWindowData(void)
 {
 	UT_UNUSED(outlineView);
 	UT_UNUSED(tableColumn);
-	return [item value];
+	return [(StyleNode *)item value];
 }
 
 - (void)outlineView:(NSOutlineView *)outlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item

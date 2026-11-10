@@ -126,7 +126,6 @@ enum XAP_CocoaAppMenu_Id
 + (XAP_CocoaAppController*)sharedAppController;
 
 - (id)init;
-- (void)dealloc;
 
 - (void)setAutoLoadPluginsAfterLaunch:(BOOL)autoLoadPluginsAfterLaunch;
 

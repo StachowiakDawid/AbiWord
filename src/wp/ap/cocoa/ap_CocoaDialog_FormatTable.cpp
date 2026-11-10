@@ -174,7 +174,6 @@ void AP_CocoaDialog_FormatTable::destroy(void)
 {
 	finalize();
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 }
 
@@ -220,10 +219,6 @@ void AP_CocoaDialog_FormatTable::_storeWindowData(void)
 	_xap = nullptr;
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {

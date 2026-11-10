@@ -47,7 +47,6 @@ class PD_Document;
 	id <NSObject>		m_Target;
 }
 - (id)init;
-- (void)dealloc;
 
 - (const char *)editMethodName;
 
@@ -88,7 +87,6 @@ class PD_Document;
 + (AP_CocoaPlugin_ContextMenuItem *)itemWithLabel:(NSString *)label;
 
 - (id)initWithLabel:(NSString *)label;
-- (void)dealloc;
 
 - (void)setLabel:(NSString *)label;
 - (NSString *)label;
@@ -114,7 +112,6 @@ class PD_Document;
 + (AP_CocoaPlugin_FramelessDocument *)documentFromFile:(NSString *)path importOptions:(NSDictionary *)options;
 
 - (id)initWithPDDocument:(PD_Document *)document;
-- (void)dealloc;
 
 /* XAP_CocoaPlugin_FramelessDocument
  */

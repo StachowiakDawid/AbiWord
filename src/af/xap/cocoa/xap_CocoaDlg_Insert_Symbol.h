@@ -70,7 +70,6 @@ class XAP_CocoaDialog_Insert_Symbol;
 - (IBAction)aRemapGlyphs:(id)sender;
 
 - (id)initFromNib;
-- (void)dealloc;
 - (void)setXAPOwner:(XAP_Dialog *)owner;
 - (void)discardXAP;
 - (void)windowDidLoad;

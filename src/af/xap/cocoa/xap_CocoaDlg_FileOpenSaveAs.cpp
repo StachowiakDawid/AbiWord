@@ -45,6 +45,23 @@
 #include "ie_impGraphic.h"
 #include "ie_types.h"
 
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+
+/*!
+ * Restrict a panel to files with these extensions (nil or empty: any file).
+ * Replaces the deprecated -setAllowedFileTypes:.
+ */
+static void s_setAllowedFileExtensions(NSSavePanel * panel, NSArray * extensions)
+{
+	NSMutableArray<UTType *> * types = [NSMutableArray array];
+	for (NSString * ext in extensions) {
+		if (UTType * type = [UTType typeWithFilenameExtension:ext]) {
+			[types addObject:type];
+		}
+	}
+	[panel setAllowedContentTypes:types];
+}
+
 #define PREVIEW_WIDTH 100
 #define PREVIEW_HEIGHT 100
 
@@ -139,16 +156,14 @@ XAP_CocoaDialog_FileOpenSaveAs::XAP_CocoaDialog_FileOpenSaveAs(XAP_DialogFactory
 XAP_CocoaDialog_FileOpenSaveAs::~XAP_CocoaDialog_FileOpenSaveAs(void)
 {
     if (m_accessoryViewsController) {
-        [m_accessoryViewsController release];
     }
     if (m_fileTypes) {
-        [m_fileTypes release];
     }
 }
 
 NSSavePanel* XAP_CocoaDialog_FileOpenSaveAs::_makeOpenPanel()
 {
-    NSOpenPanel* openPanel = [[NSOpenPanel openPanel] retain];
+    NSOpenPanel* openPanel = [NSOpenPanel openPanel];
 
     [openPanel setAllowsMultipleSelection:NO];
     [openPanel setCanChooseDirectories:NO];
@@ -164,16 +179,16 @@ NSSavePanel* XAP_CocoaDialog_FileOpenSaveAs::_makeOpenPanel()
         addSuffixesToFileTypes(m_fileTypes, m_szSuffixes[i]);
     }
     if ([m_fileTypes count]) {
-        [openPanel setAllowedFileTypes:m_fileTypes];
+        s_setAllowedFileExtensions(openPanel, m_fileTypes);
     } else {
-        [openPanel setAllowedFileTypes:nil];
+        s_setAllowedFileExtensions(openPanel, nil);
     }
     return openPanel;
 }
 
 NSSavePanel* XAP_CocoaDialog_FileOpenSaveAs::_makeSavePanel(const std::string& fileTypeLabel)
 {
-    NSSavePanel* savePanel = [[NSSavePanel savePanel] retain];
+    NSSavePanel* savePanel = [NSSavePanel savePanel];
 
     // this call is 10.3 only.
     if ([savePanel respondsToSelector:@selector(setCanCreateDirectories:)])
@@ -430,10 +445,10 @@ void XAP_CocoaDialog_FileOpenSaveAs::runModal(XAP_Frame* /*pFrame*/)
             }
 
             if ([m_fileTypes count]) {
-                [openPanel setAllowedFileTypes:m_fileTypes];
+                s_setAllowedFileExtensions(openPanel, m_fileTypes);
             } else {
                 // can't be empty...
-                [openPanel setAllowedFileTypes:nil];
+                s_setAllowedFileExtensions(openPanel, nil);
             }
             if (szPersistDirectory) {
                 [openPanel setDirectoryURL:
@@ -447,7 +462,7 @@ void XAP_CocoaDialog_FileOpenSaveAs::runModal(XAP_Frame* /*pFrame*/)
             if ([m_fileTypes count]) {
                 NSString* type = (NSString*)[m_fileTypes objectAtIndex:0];
                 // XXX should we just pass m_fileTypes?
-                [m_panel setAllowedFileTypes:[NSArray arrayWithObjects:type, nil]];
+                s_setAllowedFileExtensions(m_panel, [NSArray arrayWithObjects:type, nil]);
 
                 if (szPersistFile) {
                     NSString* extension = [szPersistFile pathExtension];
@@ -461,7 +476,7 @@ void XAP_CocoaDialog_FileOpenSaveAs::runModal(XAP_Frame* /*pFrame*/)
                     }
                 }
             } else {
-                [m_panel setAllowedFileTypes:nil];
+                s_setAllowedFileExtensions(m_panel, nil);
             }
 
             //			[m_panel setPanelCanOrderOut:YES];
@@ -511,9 +526,9 @@ void XAP_CocoaDialog_FileOpenSaveAs::_setSelectedFileType(UT_sint32 type)
     }
 
     if ([m_fileTypes count]) {
-        [m_panel setAllowedFileTypes:m_fileTypes];
+        s_setAllowedFileExtensions(m_panel, m_fileTypes);
     } else {
-        [m_panel setAllowedFileTypes:nil];
+        s_setAllowedFileExtensions(m_panel, nil);
     }
     [m_panel update];
     //	if (m_bPanelActive) {

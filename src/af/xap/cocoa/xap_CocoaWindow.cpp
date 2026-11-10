@@ -129,8 +129,6 @@ XAP_CocoaWindow::~XAP_CocoaWindow ()
 	if (m_controller) {
 		[m_controller close];
 	}
-	[m_controller release];
-	[m_window release];
 	
 
 	if (m_isToolbar) 

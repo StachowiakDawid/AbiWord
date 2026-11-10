@@ -230,7 +230,7 @@ include $(top_srcdir)/src/wp/main/cocoa/bundle.mk
 
 AM_CPPFLAGS += \
 	-I$(top_srcdir)/src/wp/ap/cocoa \
-	-x objective-c++
+	-x objective-c++ -fobjc-arc
 
 libxap_la_SOURCES += \
 	cocoa/xap_CocoaAbiConversions.h \

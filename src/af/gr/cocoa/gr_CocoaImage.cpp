@@ -129,10 +129,24 @@ GR_Image* GR_CocoaImage::createImageSegment(GR_Graphics* pG, const UT_Rect& rec)
     sName += sSub;
 
     GR_CocoaImage* image = new GR_CocoaImage(sName.c_str());
-    NSImage* realImage = image->getNSImage();
-    [realImage lockFocusFlipped:YES];
-    [m_image drawAtPoint:NSMakePoint(0, 0) fromRect:NSMakeRect(x, y, width, height) operation:NSCompositingOperationCopy fraction:1.0];
-    [realImage unlockFocus];
+    if (!m_image || width <= 0 || height <= 0) {
+        return image;
+    }
+    // Draw the requested part (display units, top-left origin) into a new
+    // bitmap; the old code drew into an image that was never created.
+    NSBitmapImageRep* rep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:nullptr
+        pixelsWide:width pixelsHigh:height bitsPerSample:8 samplesPerPixel:4
+        hasAlpha:YES isPlanar:NO colorSpaceName:NSDeviceRGBColorSpace bytesPerRow:0 bitsPerPixel:0];
+    if (rep) {
+        NSGraphicsContext* context = [NSGraphicsContext graphicsContextWithBitmapImageRep:rep];
+        [NSGraphicsContext saveGraphicsState];
+        [NSGraphicsContext setCurrentContext:context];
+        // whole image at display size, shifted so the segment lands at the origin
+        NSRect dest = NSMakeRect(-x, y + height - dH, dW, dH);
+        [m_image drawInRect:dest fromRect:NSZeroRect operation:NSCompositingOperationCopy fraction:1.0];
+        [NSGraphicsContext restoreGraphicsState];
+        image->setFromImageRep(rep);
+    }
     return image;
 }
 

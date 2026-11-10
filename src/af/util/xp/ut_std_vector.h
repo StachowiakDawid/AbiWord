@@ -54,14 +54,3 @@ void UT_std_vector_freeall(V & v, F free_func = g_free)
 	}
 }
 
-#ifdef __OBJC__
-template <class V>
-void UT_std_vector_releaseall(V & v)
-{
-    for (id elem : v) {
-        if (elem) {
-            [elem release];
-        }
-    }
-}
-#endif

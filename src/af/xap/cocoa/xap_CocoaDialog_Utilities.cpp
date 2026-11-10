@@ -47,7 +47,6 @@ void _SetNSControlLabel (id control, const char *label)
 	else {
 		NSLog(@"Unknown control type to localize: %@", [control class]);
 	}
-	[str release];
 }
 
 

@@ -106,7 +106,6 @@ void XAP_CocoaDialog_Insert_Symbol::destroy(void)
 	if (m_dlg)
 		{
 			[m_dlg close];
-			[m_dlg release];
 			m_dlg = nil;
 		}
 }
@@ -145,7 +144,6 @@ void XAP_CocoaDialog_Insert_Symbol::windowClosed(void)
 
 	modeless_cleanup();
 
-	[m_dlg release];
 	m_dlg = nil;
 }
 
@@ -242,7 +240,6 @@ static unichar s_remap[224] = {
 			{
 				UT_DEBUGMSG(("XAP_CocoaDlg_Insert_Symbol -initFromNib: no usable font families?\n"));
 
-				[m_FontList release];
 				m_FontList = nil;
 			}
 		}
@@ -253,7 +250,6 @@ static unichar s_remap[224] = {
 	}
 	if (!m_FontList)
 	{
-		[self dealloc];
 		return nil;
 	}
 	return self;
@@ -265,36 +261,26 @@ static unichar s_remap[224] = {
 
 	for (i = 0; i < 14; i++)
 		{
-			if ( m_OffsetString[i])
-				[m_OffsetString[i] release];
 			m_OffsetString[i] = nil;
 		}
 	for (i = 0; i < 224; i++)
 		{
-			if ( m_SymbolString[i])
-				[m_SymbolString[i] release];
 			m_SymbolString[i] = nil;
 
-			if ( m_Remap_String[i])
-				[m_Remap_String[i] release];
 			m_Remap_String[i] = nil;
 		}
 	if (m_FontList)
 		{
-			[m_FontList release];
 			m_FontList = nil;
 		}
 	if (m_CurrentFont)
 		{
-			[m_CurrentFont release];
 			m_CurrentFont = nil;
 		}
 	if (m_CurrentFontName)
 		{
-			[m_CurrentFontName release];
 			m_CurrentFontName = nil;
 		}
-	[super dealloc];
 }
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
@@ -465,19 +451,15 @@ static unichar s_remap[224] = {
 
 	if (m_CurrentFontName)
 		{
-			[m_CurrentFontName release];
 			m_CurrentFontName = nil;
 		}
 	m_CurrentFontName = [font objectAtIndex:0];
-	[m_CurrentFontName retain];
 
 	if (m_CurrentFont)
 		{
-			[m_CurrentFont release];
 			m_CurrentFont = nil;
 		}
 	m_CurrentFont = [NSFont fontWithName:m_CurrentFontName size:12.0f];
-	[m_CurrentFont retain];
 
 	[self recalculateSymbolWidths];
 
@@ -507,11 +489,9 @@ static unichar s_remap[224] = {
 				{
 					if (m_CurrentFontName)
 						{
-							[m_CurrentFontName release];
 							m_CurrentFontName = nil;
 						}
 					m_CurrentFontName = [font objectAtIndex:0];
-					[m_CurrentFontName retain];
 				}
 			[oFont addItemWithTitle:[font objectAtIndex:1]];
 		}
@@ -519,11 +499,9 @@ static unichar s_remap[224] = {
 
 	if (m_CurrentFont)
 		{
-			[m_CurrentFont release];
 			m_CurrentFont = nil;
 		}
 	m_CurrentFont = [NSFont fontWithName:m_CurrentFontName size:12.0f];
-	[m_CurrentFont retain];
 
 	[self recalculateSymbolWidths];
 }

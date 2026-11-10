@@ -198,7 +198,7 @@ void XAP_CocoaDialog_FontChooser::sizeRowChanged(void)
 void XAP_CocoaDialog_FontChooser::_colorChanged(NSColor * color, const gchar * attr, char * buf)
 {
 	CGFloat r,g,b,a;
-	color = [color colorUsingColorSpaceName:NSDeviceRGBColorSpace];
+	color = [color colorUsingColorSpace:[NSColorSpace deviceRGBColorSpace]];
 	[color getRed:&r green:&g blue:&b alpha:&a];
 	snprintf(buf, 7, "%02x%02x%02x",
 			(unsigned int) (r * 255.0),
@@ -260,7 +260,7 @@ void XAP_CocoaDialog_FontChooser::runModal(XAP_Frame * /*pFrame*/)
 		[m_dlg setTextColor:color];
 	}
 	else {
-		[m_dlg setTextColor:[[NSColor blackColor] colorUsingColorSpaceName:NSDeviceRGBColorSpace]];	
+		[m_dlg setTextColor:[[NSColor blackColor] colorUsingColorSpace:[NSColorSpace deviceRGBColorSpace]]];	
 	}
 	
 	// Set color in the color selector
@@ -275,7 +275,7 @@ void XAP_CocoaDialog_FontChooser::runModal(XAP_Frame * /*pFrame*/)
 	}
 	else
 	{
-		[m_dlg setBgColor:[[NSColor whiteColor] colorUsingColorSpaceName:NSDeviceRGBColorSpace]];	
+		[m_dlg setBgColor:[[NSColor whiteColor] colorUsingColorSpace:[NSColorSpace deviceRGBColorSpace]]];	
 	}
 
 	// set the strikeout and underline check buttons
@@ -295,7 +295,6 @@ void XAP_CocoaDialog_FontChooser::runModal(XAP_Frame * /*pFrame*/)
 
 	[m_dlg discardXAP];
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 
 	UT_DEBUGMSG(("FontChooserEnd: Family[%s%s] Size[%s%s] Weight[%s%s] Style[%s%s] Color[%s%s] Underline[%d%s] StrikeOut[%d%s]\n",
@@ -384,13 +383,6 @@ void XAP_CocoaDialog_FontChooser::_deleteGC(void)
 	}
 }
 
--(void)dealloc
-{
-	[m_sizeDataSource release];
-	[m_stylesDataSource release];
-	[m_fontDataSource release];
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {

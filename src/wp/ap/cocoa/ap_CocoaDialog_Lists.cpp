@@ -116,7 +116,6 @@ void AP_CocoaDialog_Lists::runModal( XAP_Frame * /*pFrame*/)
 //
 //  We've finished here.
 //
-	[m_dlg release];
 	m_dlg = nil;
 	DELETEP (m_pPreviewWidget);
 }
@@ -233,7 +232,6 @@ void AP_CocoaDialog_Lists::destroy(void)
 		modeless_cleanup();
 
 		[m_dlg close];
-		[m_dlg release];
 		m_dlg = 0;
 
 		DELETEP(m_pAutoUpdateLists);
@@ -426,7 +424,6 @@ void AP_CocoaDialog_Lists::_fillNoneStyleMenu(NSMenu *listmenu)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)NOT_A_LIST];
 	[listmenu addItem:item];
-	[item release];
 }
 
 void AP_CocoaDialog_Lists::_fillNumberedStyleMenu(NSMenu *listmenu)
@@ -439,37 +436,31 @@ void AP_CocoaDialog_Lists::_fillNumberedStyleMenu(NSMenu *listmenu)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)NUMBERED_LIST];
 	[listmenu addItem:item];
-	[item release];
 	
 	item = [[NSMenuItem alloc] initWithTitle:LocalizedString(pSS, AP_STRING_ID_DLG_Lists_Lower_Case_List)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)LOWERCASE_LIST];
 	[listmenu addItem:item];
-	[item release];
 
 	item = [[NSMenuItem alloc] initWithTitle:LocalizedString(pSS, AP_STRING_ID_DLG_Lists_Upper_Case_List)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)UPPERCASE_LIST];
 	[listmenu addItem:item];
-	[item release];
 
 	item = [[NSMenuItem alloc] initWithTitle:LocalizedString(pSS, AP_STRING_ID_DLG_Lists_Lower_Roman_List)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)LOWERROMAN_LIST];
 	[listmenu addItem:item];
-	[item release];
 
 	item = [[NSMenuItem alloc] initWithTitle:LocalizedString(pSS, AP_STRING_ID_DLG_Lists_Upper_Roman_List)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)UPPERROMAN_LIST];
 	[listmenu addItem:item];
-	[item release];
 
 	item = [[NSMenuItem alloc] initWithTitle:LocalizedString(pSS, AP_STRING_ID_DLG_Lists_Hebrew_List)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)HEBREW_LIST];
 	[listmenu addItem:item];
-	[item release];
 }
 
 
@@ -484,73 +475,61 @@ void AP_CocoaDialog_Lists::_fillBulletedStyleMenu(NSMenu *listmenu)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)BULLETED_LIST];
 	[listmenu addItem:item];
-	[item release];
 
 	item = [[NSMenuItem alloc] initWithTitle:LocalizedString(pSS, AP_STRING_ID_DLG_Lists_Dashed_List)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)DASHED_LIST];
 	[listmenu addItem:item];
-	[item release];
 
 	item = [[NSMenuItem alloc] initWithTitle:LocalizedString(pSS, AP_STRING_ID_DLG_Lists_Square_List)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)SQUARE_LIST];
 	[listmenu addItem:item];
-	[item release];
 
 	item = [[NSMenuItem alloc] initWithTitle:LocalizedString(pSS, AP_STRING_ID_DLG_Lists_Triangle_List)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)TRIANGLE_LIST];
 	[listmenu addItem:item];
-	[item release];
 
 	item = [[NSMenuItem alloc] initWithTitle:LocalizedString(pSS, AP_STRING_ID_DLG_Lists_Diamond_List)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)DIAMOND_LIST];
 	[listmenu addItem:item];
-	[item release];
 
 	item = [[NSMenuItem alloc] initWithTitle:LocalizedString(pSS, AP_STRING_ID_DLG_Lists_Star_List)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)STAR_LIST];
 	[listmenu addItem:item];
-	[item release];
 
 	item = [[NSMenuItem alloc] initWithTitle:LocalizedString(pSS, AP_STRING_ID_DLG_Lists_Implies_List)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)IMPLIES_LIST];
 	[listmenu addItem:item];
-	[item release];
 
 	item = [[NSMenuItem alloc] initWithTitle:LocalizedString(pSS, AP_STRING_ID_DLG_Lists_Tick_List)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)TICK_LIST];
 	[listmenu addItem:item];
-	[item release];
 
 	item = [[NSMenuItem alloc] initWithTitle:LocalizedString(pSS, AP_STRING_ID_DLG_Lists_Box_List)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)BOX_LIST];
 	[listmenu addItem:item];
-	[item release];
 
 	item = [[NSMenuItem alloc] initWithTitle:LocalizedString(pSS, AP_STRING_ID_DLG_Lists_Hand_List)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)HAND_LIST];
 	[listmenu addItem:item];
-	[item release];
 
 	item = [[NSMenuItem alloc] initWithTitle:LocalizedString(pSS, AP_STRING_ID_DLG_Lists_Heart_List)
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)HEART_LIST];
 	[listmenu addItem:item];
-	[item release];
 
 	item = [[NSMenuItem alloc] initWithTitle:LocalizedString(pSS, AP_STRING_ID_DLG_Lists_Arrowhead_List)  
 			action:nil keyEquivalent:@""];
 	[item setTag:(int)ARROWHEAD_LIST];
 	[listmenu addItem:item];
-	[item release];
 }
 
 void AP_CocoaDialog_Lists::_setRadioButtonLabels(void)

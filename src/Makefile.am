@@ -130,7 +130,7 @@ if TOOLKIT_COCOA
 macos_PROGRAMS = AbiWord
 
 AbiWord_CPPFLAGS = \
-	-x objective-c++ \
+	-x objective-c++ -fobjc-arc \
 	$(libabiword_@ABIWORD_SERIES@_la_CPPFLAGS)
 
 AbiWord_LDFLAGS = \

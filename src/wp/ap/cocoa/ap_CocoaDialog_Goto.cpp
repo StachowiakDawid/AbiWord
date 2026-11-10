@@ -82,7 +82,6 @@ void AP_CocoaDialog_Goto::destroy (void)
 {
 	modeless_cleanup();
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 }
 
@@ -117,10 +116,6 @@ void AP_CocoaDialog_Goto::notifyActiveFrame(XAP_Frame * /*pFrame*/)
 	_xap = nullptr;
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {

@@ -63,7 +63,6 @@ void AP_CocoaDialog_Annotation::runModal(XAP_Frame *)
 	[NSApp runModalForWindow:window];
 	
 	[m_dlg discardXAP];
-	[m_dlg release];
 	m_dlg = nil;
 }
 
@@ -79,10 +78,6 @@ void AP_CocoaDialog_Annotation::runModal(XAP_Frame *)
 	_xap = nullptr;
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {

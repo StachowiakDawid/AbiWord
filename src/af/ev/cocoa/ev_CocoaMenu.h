@@ -62,7 +62,6 @@ class AP_CocoaFrame;
 	NSMutableArray *	m_Fonts;
 }
 - (id)init;
-- (void)dealloc;
 - (NSMenuItem *)fontMenuItem:(NSString *)title;
 - (void)menuSelected:(id)sender;
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem;

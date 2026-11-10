@@ -54,7 +54,6 @@
 {
 	EV_CocoaToolbar*	_xap;
 }
-- (void)dealloc;
 - (void)setColor:(XAP_Toolbar_Id)tlbrid;
 - (IBAction)aColor_FG:(id)sender;
 - (IBAction)aColor_BG:(id)sender;
@@ -71,7 +70,6 @@
 
 	[colorPanel setAction:nil];
 	[colorPanel setTarget:nil];
-	[super dealloc];
 }
 
 
@@ -182,7 +180,7 @@
 				size = 100; // TODO: ??
 
 			char buf[8];
-			sprintf(buf, "%d", size);
+			snprintf(buf, sizeof(buf), "%d", size);
 
 			UT_UCS4String ucsText(buf);
 
@@ -219,7 +217,7 @@
 					size = 1000; // TODO: ??
 
 				char buf[8];
-				sprintf(buf, "%d", size);
+				snprintf(buf, sizeof(buf), "%d", size);
 
 				UT_UCS4String ucsText(buf);
 
@@ -262,9 +260,6 @@ EV_CocoaToolbar::EV_CocoaToolbar(AP_CocoaFrame * pCocoaFrame,
 EV_CocoaToolbar::~EV_CocoaToolbar(void)
 {
 	_releaseListener();
-	UT_ASSERT ([m_target retainCount] == 1);
-	[m_target release];
-	[m_wToolbar release];
 }
 
 
@@ -408,7 +403,6 @@ NSButton * EV_CocoaToolbar::_makeToolbarButton (int type, EV_Toolbar_Label * pLa
 			[btn setToolTip:[NSString stringWithUTF8String:szToolTip]];
 
 		[parent addSubview:btn];
-		[btn release];
 	}
 	return btn;
 }
@@ -530,8 +524,6 @@ bool EV_CocoaToolbar::synthesize(void)
 	
 	UT_uint32 nrLabelItemsInLayout = m_pToolbarLayout->getLayoutItemCount();
 	UT_ASSERT(nrLabelItemsInLayout > 0);
-
-	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 
 #if 0
 	XAP_CocoaToolbarWindow_Controller * pToolbarWinCtrl = [XAP_CocoaToolbarWindow_Controller sharedToolbar];
@@ -804,7 +796,6 @@ bool EV_CocoaToolbar::synthesize(void)
 			UT_ASSERT(box);
 			[box setBoxType:NSBoxSeparator];
 			[m_wToolbar addSubview:box];
-			[box release];
 			break;
 		}
 
@@ -816,7 +807,6 @@ bool EV_CocoaToolbar::synthesize(void)
 
 	[m_wToolbar setFrame:viewBounds];
 
-	[pool release];
 	//TODO here we should add the toolbar
 	return true;
 }
@@ -1035,7 +1025,6 @@ bool EV_CocoaToolbar::refreshToolbar(AV_View * pView, AV_ChangeMask mask)
 						else {
 							[item selectItemWithObjectValue:value];
 						}
-						[value release];
 					}
 				}
 				break;
@@ -1127,7 +1116,6 @@ bool EV_CocoaToolbar::repopulateStyles(void)
 		if (str) {
 			/* make sure the object is not nil or this raises an exception */
 			[item addItemWithObjectValue:str];
-			[str release];
 		}
 		else {
 			NSLog(@"Discarded style name in combox box: '%s'", sz);

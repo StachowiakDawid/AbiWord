@@ -67,7 +67,6 @@ AP_CocoaDialog_Options::~AP_CocoaDialog_Options()
 {
 	// 
 	if(ctrl) {
-		[ctrl release];
 	}
 }
 
@@ -87,7 +86,6 @@ void AP_CocoaDialog_Options::runModal(XAP_Frame * pFrame)
 		[NSApp runModalForWindow:[ctrl window]];
 
 		[ctrl close];
-		[ctrl release];
 		ctrl = nil;
 	}
 }
@@ -109,7 +107,6 @@ void AP_CocoaDialog_Options::_setupSmartQuotesCombos(NSPopUpButton * popup)
 			action:nil	keyEquivalent:@""];
 		[menuItem setTag:i];
 		[menu addItem:menuItem];
-		[menuItem release];
 	}
 }
 
@@ -416,7 +413,6 @@ void AP_CocoaDialog_Options::_populateWindowData(void)
 
 - (oneway void)dealloc
 {
-	[super dealloc];
 }
 
 - (void)windowDidLoad
@@ -472,7 +468,6 @@ void AP_CocoaDialog_Options::_populateWindowData(void)
 			keyEquivalent:@""];
 		[menuItem setTag:iter->second];
 		[menu addItem:menuItem];
-		[menuItem release];
 	}
 	
 	 // create user data tControl -> stored in widgets

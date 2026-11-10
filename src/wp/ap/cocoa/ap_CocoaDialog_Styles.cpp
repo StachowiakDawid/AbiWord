@@ -210,7 +210,6 @@ void AP_CocoaDialog_Styles::runModal(XAP_Frame * pFrame)
 	
 	[m_dlg discardXAP];
 	[m_dlg close];
-	[m_dlg release];
 	DELETEP (m_pParaPreviewWidget);
 	DELETEP (m_pCharPreviewWidget);
 	m_dlg = nil;
@@ -375,7 +374,7 @@ void AP_CocoaDialog_Styles::event_Modify_OK(void)
 
 	// TODO save out state of radio items
 	m_answer = AP_Dialog_Styles::a_OK;
-	[NSApp endSheet:[m_modifyDlg window]];
+	[[[m_modifyDlg window] sheetParent] endSheet:[m_modifyDlg window]];
 }
 
 /*!
@@ -394,7 +393,7 @@ void AP_CocoaDialog_Styles::new_styleName(void)
 		std::string label1, label2;
 		pSS->getValueUTF8(AP_STRING_ID_DLG_Styles_ErrNotTitle1, label1);
 		pSS->getValueUTF8(AP_STRING_ID_DLG_Styles_ErrNotTitle2, label2);
-		sprintf(message,"%s%s%s",label1.c_str(),	psz, label2.c_str());
+		snprintf(message, sizeof(message),"%s%s%s",label1.c_str(),	psz, label2.c_str());
 		//FIXME
 		//messageBoxOK((const char *) message);
 		return;
@@ -406,7 +405,7 @@ void AP_CocoaDialog_Styles::new_styleName(void)
 		std::string label1, label2;
 		pSS->getValueUTF8(AP_STRING_ID_DLG_Styles_ErrNotTitle1, label1);
 		pSS->getValueUTF8(AP_STRING_ID_DLG_Styles_ErrNotTitle2, label2);
-		sprintf(message,"%s%s%s",label1.c_str(),	psz, label2.c_str());
+		snprintf(message, sizeof(message),"%s%s%s",label1.c_str(),	psz, label2.c_str());
 		//FIXME
 		//messageBoxOK((const char *) message);
 		return;
@@ -439,7 +438,6 @@ void AP_CocoaDialog_Styles::rebuildDeleteProps(void)
 		const std::string & value = *iter;
 		NSString *str =  [[NSString alloc] initWithUTF8String:value.c_str()];
 		[delCombo addItemWithObjectValue:str];
-		[str release];
 		++iter;
 		if (iter == m_vecAllProps.cend()) {
 			break;
@@ -491,7 +489,7 @@ void AP_CocoaDialog_Styles::event_styleType(void)
 void AP_CocoaDialog_Styles::event_Modify_Cancel(void)
 {
 	m_answer = AP_Dialog_Styles::a_CANCEL;
-	[NSApp endSheet:[m_modifyDlg window]];
+	[[[m_modifyDlg window] sheetParent] endSheet:[m_modifyDlg window]];
 }
 
 
@@ -519,8 +517,10 @@ void  AP_CocoaDialog_Styles::modifyRunModal(void)
 		_populateAbiPreview(isNew());
 		event_ModifyPreviewExposed();
 	
-		[NSApp beginSheet:window modalForWindow:m_dlg.window modalDelegate:m_modifyDlg
-				didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:) contextInfo:nil];
+		AP_CocoaDialog_StylesModifyController * modifyDlg = m_modifyDlg;
+		[m_dlg.window beginSheet:window completionHandler:^(NSModalResponse returnCode) {
+			[modifyDlg sheetDidEnd:window returnCode:(int)returnCode contextInfo:nullptr];
+		}];
 	}
 }
 
@@ -549,7 +549,6 @@ void AP_CocoaDialog_Styles::event_modifySheetDidEnd(int /*code*/)
 	DELETEP(m_pAbiPreviewWidget);
 	
 	[m_modifyDlg close];
-	[m_modifyDlg release];
 }
 
 void AP_CocoaDialog_Styles::event_ModifyPreviewExposed(void)
@@ -838,11 +837,6 @@ void   AP_CocoaDialog_Styles::event_ModifyTabs()
 	_xap = nullptr;
 }
 
--(void)dealloc
-{
-	[m_stylesDataSource release];
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {
@@ -955,10 +949,6 @@ void   AP_CocoaDialog_Styles::event_ModifyTabs()
 	}
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {

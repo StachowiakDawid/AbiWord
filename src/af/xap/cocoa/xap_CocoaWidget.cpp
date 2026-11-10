@@ -84,7 +84,6 @@ void XAP_CocoaWidget::setValueString(const UT_UTF8String &val)
 	NSString *str = [[NSString alloc ]initWithUTF8String:val.utf8_str()];
 
 	[m_widget setStringValue:str];
-	[str release];
 }
 
 /** get the widget value as string */

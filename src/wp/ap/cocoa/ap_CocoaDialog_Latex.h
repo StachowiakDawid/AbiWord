@@ -71,7 +71,6 @@ protected:
 	AP_CocoaDialog_Latex *	_xap;
 }
 - (id)initFromNib;
-- (void)dealloc;
 
 - (void)setXAPOwner:(XAP_Dialog *)owner;
 - (void)discardXAP;

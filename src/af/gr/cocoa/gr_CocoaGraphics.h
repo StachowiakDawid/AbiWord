@@ -344,7 +344,6 @@ public:
     }
     ~GR_CocoaPatternImpl()
     {
-        [m_pattern release];
     }
     virtual UT_ColorPatImpl* clone() const override
     {

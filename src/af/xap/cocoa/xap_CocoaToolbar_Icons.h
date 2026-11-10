@@ -40,7 +40,7 @@
 @interface XAP_CocoaToolbarButton : NSButton
 {
 	NSMenu *	m_menu;
-	id <XAP_CocoaButtonController>	m_controller;
+	__weak id <XAP_CocoaButtonController>	m_controller;	/* the palette owns the buttons */
 }
 - (id)initWithFrame:(NSRect)frameRect;
 - (void)setMenu:(NSMenu *)menu withController:(id <XAP_CocoaButtonController>)controller;

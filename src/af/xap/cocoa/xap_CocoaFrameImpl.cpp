@@ -74,7 +74,7 @@ XAP_CocoaFrameImpl::XAP_CocoaFrameImpl(XAP_Frame* frame)
 	// referenced from a nib.
 	XAP_FrameNSWindow *p = nil;
 	if (0) {
-		p = [[[XAP_FrameNSWindow alloc] init] autorelease];
+		p = [[XAP_FrameNSWindow alloc] init];
 	}
 #endif
 }
@@ -98,7 +98,6 @@ XAP_CocoaFrameImpl::~XAP_CocoaFrameImpl(void)
 {
 	// only delete the things we created...
 	if 	(m_frameController != nil) {
-		[m_frameController release];
 	}
 
 	DELETEP(m_pCocoaPopup);
@@ -370,7 +369,7 @@ UT_RGBColor XAP_CocoaFrameImpl::getColorSelBackground () const
 	if (c == nullptr) {
 		c = new UT_RGBColor();
 		GR_CocoaGraphics::_utNSColorToRGBColor ([[NSColor selectedTextBackgroundColor] 
-					colorUsingColorSpaceName:NSCalibratedRGBColorSpace], *c);
+					colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]], *c);
 	}
 	return *c;
 }
@@ -487,7 +486,6 @@ EV_Menu* XAP_CocoaFrameImpl::_getMainMenu()
 void XAP_CocoaFrameImpl::_setController (XAP_CocoaFrameController * ctrl)
 {
 	if ((m_frameController) && (ctrl != m_frameController)){
-		[m_frameController release];
 	}
 	m_frameController = ctrl; 
 }
@@ -604,7 +602,7 @@ void XAP_CocoaFrameImpl::_setController (XAP_CocoaFrameController * ctrl)
 {
 	UT_DEBUGMSG (("Cocoa: createFrom:frame\n"));
 	XAP_CocoaFrameController *obj = [[XAP_CocoaFrameController alloc] initWith:frame];
-	return [obj autorelease];
+	return obj;
 }
 
 - (id)initWith:(XAP_CocoaFrameImpl *)frame
@@ -635,12 +633,12 @@ void XAP_CocoaFrameImpl::_setController (XAP_CocoaFrameController * ctrl)
 	return m_frame;
 }
 
-- (void)setTextView:(NSView <NSTextInput>*)tv
+- (void)setTextView:(NSView <NSTextInputClient>*)tv
 {
 	m_textView = tv;
 }
 
-- (NSView <NSTextInput>*)textView
+- (NSView <NSTextInputClient>*)textView
 {
 	return m_textView;
 }

@@ -39,11 +39,9 @@ public:
 		: AP_StatusBarFieldListener(pStatusBarField) 
 	{
 		m_pLabel = pLabel; 
-		[m_pLabel retain];
 	}
 	virtual ~ap_csb_TextListener()
 	{
-		[m_pLabel release];
 	}
 	virtual void notify(); 
 
@@ -59,7 +57,6 @@ void ap_csb_TextListener::notify()
 
 	NSString* str = [[NSString alloc] initWithUTF8String:textInfo->getBuf().c_str()];
 	[m_pLabel setStringValue:str];
-	[str release];
 
 	// we conditionally update the size request, if the representative string (or an earlier
 	// size) wasn't large enough, if the element uses the representative string method
@@ -111,7 +108,6 @@ AP_CocoaStatusBar::~AP_CocoaStatusBar(void)
 	if ((m_hidden) && ([m_wStatusBar superview] == nil))
 	{
 		[m_wStatusBar setXAPOwner:nil];
-		[m_wStatusBar release];
 		[[NSNotificationCenter defaultCenter] removeObserver:m_wStatusBar];
 	}
 }
@@ -169,7 +165,6 @@ XAP_CocoaNSStatusBar * AP_CocoaStatusBar::createWidget(void)
 		  case REPRESENTATIVE_STRING:
 			str = [[NSString alloc] initWithUTF8String:pf_TextInfo->getRepresentativeString()];
 			[pStatusBarElementLabel setStringValue:str];
-			[str release];
 			[pStatusBarElementLabel sizeToFit];
 			[pStatusBarElementLabel setStringValue:@""];
 			frame = [pStatusBarElementLabel bounds];
@@ -189,7 +184,6 @@ XAP_CocoaNSStatusBar * AP_CocoaStatusBar::createWidget(void)
 		  UT_DEBUGMSG(("added status bar element. Frame = %f %f %f %f\n",
 				frame.origin.x, frame.origin.y, frame.size.width, frame.size.height));
 
-		  [pStatusBarElementLabel release];
 		  currentX += frame.size.width + FIELD_SPACING;
 		}
 	}
@@ -232,7 +226,6 @@ void AP_CocoaStatusBar::show(void)
 	UT_DEBUGMSG(("AP_CocoaStatusBar::show(void)\n"));
 	if ([m_wStatusBar superview] == nil) {
 		[m_superView addSubview:m_wStatusBar];
-		[m_wStatusBar release];	
 	}
 	m_hidden = false;
 }
@@ -243,7 +236,6 @@ void AP_CocoaStatusBar::hide(void)
 	if ([m_wStatusBar superview] != nil) {
 		m_superView = [m_wStatusBar superview];
 		UT_ASSERT (m_superView);
-		[m_wStatusBar retain];
 		[m_wStatusBar removeFromSuperview];
 	}
 	// TODO Check about resizing / layout changes

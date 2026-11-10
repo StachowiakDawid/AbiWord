@@ -52,7 +52,6 @@ class XAP_CocoaModule;
 }
 - (id)initWithModule:(XAP_CocoaModule *)module;
 - (id)initWithPlugin:(XAP_CocoaPlugin *)plugin;
-- (void)dealloc;
 
 - (void)setActive:(BOOL)active;
 
@@ -91,7 +90,6 @@ class XAP_CocoaModule;
 	NSMutableArray *	m_PluginRefs;
 }
 - (id)initFromNib;
-- (void)dealloc;
 
 - (IBAction)closeAction:(id)sender;
 - (IBAction)installAction:(id)sender;

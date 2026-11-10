@@ -62,7 +62,6 @@ AP_CocoaDialog_Replace::AP_CocoaDialog_Replace(XAP_DialogFactory * pDlgFactory,
 AP_CocoaDialog_Replace::~AP_CocoaDialog_Replace(void)
 {
 	if (m_dlg) {
-		[m_dlg release];
 	}
 }
 
@@ -199,7 +198,6 @@ void AP_CocoaDialog_Replace::destroy(void)
 	_storeWindowData();
 	modeless_cleanup();
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 }
 
@@ -260,10 +258,6 @@ void AP_CocoaDialog_Replace::_updateLists()
 	_xap = nullptr;
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {

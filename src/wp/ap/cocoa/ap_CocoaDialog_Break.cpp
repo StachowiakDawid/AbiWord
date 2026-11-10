@@ -72,7 +72,6 @@ void AP_CocoaDialog_Break::runModal(XAP_Frame * /*pFrame*/)
 
 	_storeWindowData();
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 }
 

@@ -29,8 +29,6 @@ bool XAP_CocoaAppImpl::openURL(const char * url)
 	NSWorkspace * space = [NSWorkspace sharedWorkspace];
 	[space openURL:URL];
 
-	[URL release];
-	[str release];
 	
 	return true;
 }

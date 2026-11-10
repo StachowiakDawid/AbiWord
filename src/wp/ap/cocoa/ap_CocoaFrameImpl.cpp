@@ -307,7 +307,6 @@ void AP_CocoaFrameImpl::_showTopRulerNSView(void)
 		[vRuler setFrame:vRulerFrame];
 	}
 	[[mainView superview] addSubview:ruler];
-	[ruler release];	/* when we hide the ruler we retain the object before the removeFromSuperview */
 }
 
 
@@ -339,7 +338,6 @@ void AP_CocoaFrameImpl::_hideTopRulerNSView(void)
 	}
 //	rulerFrame.origin.y = mainFrame.origin.y + mainFrame.size.height + rulerFrame.size.height;
 //	[ruler setFrame:rulerFrame];
-	[ruler retain];	
 	[ruler removeFromSuperview];
 }
 
@@ -370,7 +368,6 @@ void AP_CocoaFrameImpl::_showLeftRulerNSView(void)
 	rulerFrame.size.height = mainFrame.size.height;
 	[ruler setFrame:rulerFrame];
 	[[mainView superview] addSubview:ruler];
-	[ruler release];	/* when we hide the ruler we retain the object before the removeFromSuperview */
 }
 
 
@@ -394,7 +391,6 @@ void AP_CocoaFrameImpl::_hideLeftRulerNSView(void)
 	mainFrame.size.width += mainFrame.origin.x;
 	mainFrame.origin.x = 0;
 	[mainView setFrame:mainFrame];
-	[ruler retain];	
 	[ruler removeFromSuperview];
 }
 
@@ -604,7 +600,7 @@ NSString *	AP_CocoaFrameImpl::_getNibName ()
 XAP_CocoaFrameController *AP_CocoaFrameImpl::_createController()
 {
 	UT_DEBUGMSG (("AP_CocoaFrame::_createController()\n"));
-	return [[AP_CocoaFrameController createFrom:this] retain];
+	return [AP_CocoaFrameController createFrom:this];
 }
 
 
@@ -644,7 +640,7 @@ void AP_CocoaFrameImpl::giveFocus()
 {
 	UT_DEBUGMSG (("Cocoa: @AP_CocoaFrameController createFrom:frame\n"));
 	AP_CocoaFrameController *obj = [[AP_CocoaFrameController alloc] initWith:frame];
-	return [obj autorelease];
+	return obj;
 }
 
 - (id)initWith:(XAP_CocoaFrameImpl *)frame

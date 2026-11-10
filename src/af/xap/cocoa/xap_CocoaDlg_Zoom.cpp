@@ -79,7 +79,6 @@ void XAP_CocoaDialog_Zoom::runModal(XAP_Frame * pFrame)
 	_storeWindowData();
 	
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 
 	m_pFrame = nullptr;

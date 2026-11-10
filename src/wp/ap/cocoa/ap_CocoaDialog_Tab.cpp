@@ -63,7 +63,6 @@ AP_CocoaDialog_Tab::AP_CocoaDialog_Tab(XAP_DialogFactory * pDlgFactory,
 
 AP_CocoaDialog_Tab::~AP_CocoaDialog_Tab(void)
 {
-	[m_dataSource release];
 }
 
 /*****************************************************************/
@@ -101,7 +100,6 @@ void AP_CocoaDialog_Tab::runModal(XAP_Frame * pFrame)
 	};
 	
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 }
 
@@ -305,7 +303,6 @@ void AP_CocoaDialog_Tab::_clearList()
 - (void)dealloc
 {
 	DELETEP(_proxy);
-	[super dealloc];
 }
 
 

@@ -152,11 +152,6 @@ bool EV_CocoaMenuPopup::refreshMenu(AV_View * /*pView*/)
 	return self;
 }
 
-- (void)dealloc
-{
-	[m_Fonts release];
-	[super dealloc];
-}
 
 - (NSMenuItem *)fontMenuItem:(NSString *)title
 {
@@ -192,7 +187,6 @@ bool EV_CocoaMenuPopup::refreshMenu(AV_View * /*pView*/)
 				NSAttributedString * attr_title = [[NSAttributedString alloc] initWithString:Family attributes:attr];
 				
 				[member_item setAttributedTitle:attr_title];
-				[attr_title release];
 			}
 			[member_item setTarget:self];
 			[member_item setAction:@selector(menuSelected:)];
@@ -200,7 +194,6 @@ bool EV_CocoaMenuPopup::refreshMenu(AV_View * /*pView*/)
 			
 			[family_menu addItem:member_item];
 			
-			[member_item release];
 			
 			[m_Fonts addObject:font_name];
 			
@@ -223,7 +216,6 @@ bool EV_CocoaMenuPopup::refreshMenu(AV_View * /*pView*/)
 				
 				[family_item setAttributedTitle:attr_title];
 				
-				[attr_title release];
 			}
 			[family_item setTarget:self];
 			// [family_item setAction:@selector(menuSelected:)];
@@ -247,7 +239,6 @@ bool EV_CocoaMenuPopup::refreshMenu(AV_View * /*pView*/)
 					
 					[member_item setAttributedTitle:attr_title];
 					
-					[attr_title release];
 				}
 				[member_item setTarget:self];
 				[member_item setAction:@selector(menuSelected:)];
@@ -255,21 +246,16 @@ bool EV_CocoaMenuPopup::refreshMenu(AV_View * /*pView*/)
 				
 				[member_menu addItem:member_item];
 				
-				[member_item release];
 				
 				[m_Fonts addObject:font_name];
 				
 				tag++;
 			}
 			[family_item setSubmenu:member_menu];
-			[member_menu release];
 			[family_menu addItem:family_item];
-			[family_item release];
 		}
 	}
 	[item setSubmenu:family_menu];
-	[family_menu release];
-	[item autorelease];
 	return item;
 }
 
@@ -344,8 +330,6 @@ EV_CocoaMenu::EV_CocoaMenu(const char * szMenuLayoutName, const char * szMenuLab
 
 EV_CocoaMenu::~EV_CocoaMenu()
 {
-	[m_menuTarget release];
-	[m_fontTarget release];
 	DELETEPV(m_buffer);
 }
 
@@ -493,8 +477,6 @@ void EV_CocoaMenu::addToAppMenu(XAP_Menu_Id menuid, const EV_Menu_Action * pActi
 		
 		MenuStack_push(menu);
 		
-		[menu release];
-		[item release];
 	}
 	break;
 	
@@ -561,7 +543,6 @@ void EV_CocoaMenu::addToAppMenu(XAP_Menu_Id menuid, const EV_Menu_Action * pActi
 			
 			addToAppMenu(item);
 			
-			[item release];
 		}
 		break;
 		}
@@ -812,7 +793,6 @@ void EV_CocoaMenu::MenuStack_clear()
 
 void EV_CocoaMenu::MenuStack_push(NSMenu * menu)
 {
-	[menu retain];
 	m_menuStack->push(menu);
 }
 
@@ -826,7 +806,6 @@ NSMenu * EV_CocoaMenu::MenuStack_pop()
 		m_menuStack->pop();
 	}
 
-	[menu autorelease];
 	return menu;
 }
 
@@ -1012,7 +991,6 @@ bool EV_CocoaMenuBar::synthesizeMenuBar(NSMenu *menu)
 	{
 		XAP_CocoaApplication * sharedApplication = (XAP_CocoaApplication *) NSApp;
 		[sharedApplication setMenuDelegate:menuDelegate];
-		[menuDelegate release];
 	}
 	return true;
 }
@@ -1241,7 +1219,6 @@ EV_CocoaDockMenu * EV_CocoaMenuBar::synthesizeDockMenu(const UT_Vector & vecDocs
 					[pMenuItem setState:NSControlStateValueOn];
 				}
 				[pDockMenu addItem:pMenuItem];
-				[pMenuItem release];
 			}
 		}
 		[pDockMenu addItem:[NSMenuItem separatorItem]];
@@ -1285,7 +1262,6 @@ void EV_CocoaMenuBar::releaseDockMenu(EV_CocoaDockMenu * pMenu)
 	{
 		[pMenu removeItem:s_pMenuItem_FileOpen];
 	}
-	[pMenu release];
 }
 
 #endif

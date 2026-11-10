@@ -100,7 +100,6 @@ void AP_CocoaDialog_Latex::destroy(void)
 	modeless_cleanup();
 
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 }
 
@@ -148,7 +147,6 @@ bool AP_CocoaDialog_Latex::getLatexFromGUI(void)
 - (void)dealloc
 {
 	// ...
-	[super dealloc];
 }
 
 - (void)setXAPOwner:(XAP_Dialog *)owner

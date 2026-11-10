@@ -17,7 +17,7 @@
  * 02110-1301 USA.
  */
 /*
-	Implements the text view that supports the NSTextInput protocol
+	Implements the text view that supports the NSTextInputClient protocol
  */
 
 #pragma once
@@ -28,7 +28,7 @@
 
 class AV_View;
 
-@interface XAP_CocoaTextView : XAP_CocoaNSView <NSTextInput, NSTextInputClient> {
+@interface XAP_CocoaTextView : XAP_CocoaNSView <NSTextInputClient> {
 	NSRange m_selectedRange;
 	BOOL m_hasMarkedText;
 }

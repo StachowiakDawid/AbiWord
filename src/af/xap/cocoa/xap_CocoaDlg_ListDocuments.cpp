@@ -133,7 +133,6 @@ void XAP_CocoaDialog_ListDocuments::runModal(XAP_Frame * /*pFrame*/)
 	[NSApp runModalForWindow:window];
 	[m_dlg close];
 
-	[m_dataSource release];
 
 	m_dlg = nil;	
 }

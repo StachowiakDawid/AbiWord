@@ -60,12 +60,10 @@ public:
 		m_Importer(importer),
 		m_DataSet(dataset)
 	{
-		[m_DataSet retain];
 	}
 
 	virtual ~XAP_Cocoa_MailMerge_Listener()
 	{
-		[m_DataSet release];
 	}
 		
 	virtual PD_Document * getMergeDocument() const
@@ -106,7 +104,7 @@ static unsigned long s_EditMethod_Number = 0;
 
 static bool s_EditMethod_CtxtFn (AV_View * /*pView*/, EV_EditMethodCallData * /*pCallData*/, void * context)
 {
-	AP_CocoaPlugin_EditMethod * editMethod = (AP_CocoaPlugin_EditMethod *) context;
+	AP_CocoaPlugin_EditMethod * editMethod = (__bridge AP_CocoaPlugin_EditMethod *) context;
 
 	[editMethod trigger];
 	return true;
@@ -126,9 +124,9 @@ static bool s_EditMethod_CtxtFn (AV_View * /*pView*/, EV_EditMethodCallData * /*
 
 		EV_EditMethodContainer * pEMC = XAP_App::getApp()->getEditMethodContainer();
 		if (pEMC) {
-			sprintf(m_EditMethod_Name, "[%lX] CocoaPlugin EditMethod", s_EditMethod_Number++);
+			snprintf(m_EditMethod_Name, sizeof(m_EditMethod_Name), "[%lX] CocoaPlugin EditMethod", s_EditMethod_Number++);
 
-			m_EditMethod = new EV_EditMethod(m_EditMethod_Name, s_EditMethod_CtxtFn, 0, "", self);
+			m_EditMethod = new EV_EditMethod(m_EditMethod_Name, s_EditMethod_CtxtFn, 0, "", (__bridge void *)self);
 		}
 		if (m_EditMethod) {
 			if (!pEMC->addEditMethod(m_EditMethod))	{
@@ -136,7 +134,6 @@ static bool s_EditMethod_CtxtFn (AV_View * /*pView*/, EV_EditMethodCallData * /*
 			}
 		}
 		if (!m_EditMethod) {
-			[self release];
 			return nil;
 		}
 	}
@@ -155,7 +152,6 @@ static bool s_EditMethod_CtxtFn (AV_View * /*pView*/, EV_EditMethodCallData * /*
 				}
 			m_EditMethod = 0;
 		}
-	[super dealloc];
 }
 
 - (const char *)editMethodName
@@ -200,7 +196,6 @@ static bool s_EditMethod_CtxtFn (AV_View * /*pView*/, EV_EditMethodCallData * /*
 {
 	AP_CocoaPlugin_MenuIDRef * ref = [[AP_CocoaPlugin_MenuIDRef alloc] initWithMenuItem:menuItem];
 
-	[ref autorelease];
 
 	return ref;
 }
@@ -270,9 +265,6 @@ static const char * s_GetMenuItemComputedLabel_Fn (const EV_Menu_Label * pLabel,
 
 	if (label) {
 		item = [[AP_CocoaPlugin_ContextMenuItem alloc] initWithLabel:label];
-		if (item) {
-			[item autorelease];
-		}
 	}
 	return item;
 }
@@ -280,7 +272,7 @@ static const char * s_GetMenuItemComputedLabel_Fn (const EV_Menu_Label * pLabel,
 - (id)initWithLabel:(NSString *)label
 {
 	if (self = [super init]) {
-		m_Label = [label retain];
+		m_Label = label;
 
 		m_Tag = 0;
 
@@ -332,7 +324,6 @@ static const char * s_GetMenuItemComputedLabel_Fn (const EV_Menu_Label * pLabel,
 			}
 		}
 		if (!m_pAction) {
-			[self release];
 			return nil;
 		}
 	}
@@ -352,16 +343,13 @@ static const char * s_GetMenuItemComputedLabel_Fn (const EV_Menu_Label * pLabel,
 			pFact->removeMenuItem("contextText", 0, [m_Label UTF8String]);
 		}
 
-	[m_Label release];
 
-	[super dealloc];
 }
 
 - (void)setLabel:(NSString *)label
 {
 	if (label) {
-		[m_Label release];
-		m_Label = [label retain];
+		m_Label = label;
 	}
 }
 
@@ -448,7 +436,6 @@ static const char * s_GetMenuItemComputedLabel_Fn (const EV_Menu_Label * pLabel,
 		}
 
 	AP_CocoaPlugin_FramelessDocument * FD = [[AP_CocoaPlugin_FramelessDocument alloc] initWithPDDocument:pNewDoc];
-	[FD autorelease];
 
 	UNREFP(pNewDoc);
 
@@ -466,7 +453,6 @@ static const char * s_GetMenuItemComputedLabel_Fn (const EV_Menu_Label * pLabel,
 - (void)dealloc
 {
 	UNREFP(m_pDocument);
-	[super dealloc];
 }
 
 /* This identifies target file type by the path extension (e.g., .html)
@@ -511,9 +497,6 @@ static const char * s_GetMenuItemComputedLabel_Fn (const EV_Menu_Label * pLabel,
 
 	if (XAP_Frame * pFrame = pApp->getLastFocussedFrame()) {
 		pImpl = [[AP_CocoaPlugin_Document alloc] initWithXAPFrame:pFrame];
-		if (pImpl) {
-			[pImpl autorelease];
-		}
 	}
 	return pImpl;
 }
@@ -538,7 +521,6 @@ static const char * s_GetMenuItemComputedLabel_Fn (const EV_Menu_Label * pLabel,
 				AP_CocoaPlugin_Document * pImpl = [[AP_CocoaPlugin_Document alloc] initWithXAPFrame:pFrame];
 				if (pImpl) {
 					[documentArray addObject:pImpl];
-					[pImpl release];
 				}
 			}
 		}

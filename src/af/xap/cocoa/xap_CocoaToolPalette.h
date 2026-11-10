@@ -74,7 +74,6 @@ private:
 	NSMutableArray *	m_Palette;
 }
 - (id)init;
-- (void)dealloc;
 
 - (void)addPalette:(const struct XAP_CocoaPaletteRef *)palette;
 
@@ -88,7 +87,6 @@ private:
 	NSMutableArray *	m_PropertyLevels;
 }
 - (id)initWithOutlineView:(NSOutlineView *)outlineView;
-- (void)dealloc;
 
 - (void)syncWithView:(FV_View *)pView;
 
@@ -110,7 +108,6 @@ private:
 	IBOutlet NSTextField *oPreview;
 }
 - (id)init;
-- (void)dealloc;
 - (void)windowDidLoad;
 - (void)toggleVisibility:(id)sender;
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem;
@@ -185,7 +182,6 @@ private:
 + (BOOL)instantiated;
 
 - (id)init;
-- (void)dealloc;
 
 - (void)windowDidLoad;
 - (void)close;

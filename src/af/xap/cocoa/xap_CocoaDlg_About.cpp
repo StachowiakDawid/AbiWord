@@ -73,7 +73,6 @@ void XAP_CocoaDialog_About::runModal(XAP_Frame * )
 
 	[m_dlg discardXAP];
 	[m_dlg close];
-	[m_dlg release];
 }
 
 void XAP_CocoaDialog_About::event_OK(void)

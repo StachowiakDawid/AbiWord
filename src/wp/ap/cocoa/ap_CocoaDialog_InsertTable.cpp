@@ -74,7 +74,6 @@ void AP_CocoaDialog_InsertTable::runModal(XAP_Frame * /*pFrame*/)
 
 	[m_dlg discardXAP];
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 }
 
@@ -120,10 +119,6 @@ void AP_CocoaDialog_InsertTable::_storeWindowData(void)
 	_xap = nullptr;
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {

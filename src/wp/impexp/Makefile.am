@@ -118,7 +118,7 @@ endif
 
 if TOOLKIT_COCOA
 AM_CPPFLAGS += \
-	-x objective-c++
+	-x objective-c++ -fobjc-arc
 libimpexp_la_SOURCES += \
 	cocoa/ie_impexp_RegisterCocoa.cpp \
 	cocoa/ie_impGraphic_Cocoa.cpp \

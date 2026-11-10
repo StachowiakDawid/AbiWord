@@ -53,7 +53,6 @@ public:
 
 	AP_CocoaDialog_Background *	_xap;
 }
-- (void)dealloc;
 
 - (IBAction)aColor:(id)sender;
 - (IBAction)aClear:(id)sender;

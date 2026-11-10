@@ -100,8 +100,6 @@ void AP_CocoaDialog_InsertHyperlink::runModal(XAP_Frame * /*pFrame*/)
 
 	[m_dlg discardXAP];
 	[m_dlg close];
-	[m_dlg release];
-	[m_pBookmarks release];
 	m_dlg = nil;
 }
 
@@ -141,10 +139,6 @@ void AP_CocoaDialog_InsertHyperlink::event_Cancel(void)
 	_xap = nullptr;
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {

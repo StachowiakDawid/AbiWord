@@ -78,7 +78,6 @@ void XAP_CocoaDialog_PluginManager::runModal(XAP_Frame * pFrame)
 		[NSApp runModalForWindow:window];
 
 		[pDialog close];
-		[pDialog release];
 	}
 }
 
@@ -104,7 +103,6 @@ void XAP_CocoaDialog_PluginManager::runModal(XAP_Frame * pFrame)
 	m_plugin = 0;
 
 	if (!m_module) {
-		[self release];
 		return nil;
 	}
 	const XAP_ModuleInfo * mi = m_module->getModuleInfo();
@@ -131,11 +129,6 @@ void XAP_CocoaDialog_PluginManager::runModal(XAP_Frame * pFrame)
 	if (m_usage == 0)
 		m_usage = @"";
 
-	[m_name retain];
-	[m_author retain];
-	[m_version retain];
-	[m_description retain];
-	[m_usage retain];
 
 	m_entry = [[NSAttributedString alloc] initWithString:m_name];
 	return self;
@@ -159,12 +152,10 @@ void XAP_CocoaDialog_PluginManager::runModal(XAP_Frame * pFrame)
 
 	if (!m_plugin)
 	{
-		[self release];
 		return nil;
 	}
 	else if (![m_plugin delegate])
 	{
-		[self release];
 		return nil;
 	}
 
@@ -187,11 +178,6 @@ void XAP_CocoaDialog_PluginManager::runModal(XAP_Frame * pFrame)
 	if (m_usage == 0)
 		m_usage = @"";
 
-	[m_name retain];
-	[m_author retain];
-	[m_version retain];
-	[m_description retain];
-	[m_usage retain];
 
 	NSDictionary * attr = 0;
 
@@ -204,20 +190,9 @@ void XAP_CocoaDialog_PluginManager::runModal(XAP_Frame * pFrame)
 	return self;
 }
 
-- (void)dealloc
-{
-	[m_name release];
-	[m_author release];
-	[m_version release];
-	[m_description release];
-	[m_usage release];
-	[m_entry release];
-	[super dealloc];
-}
 
 - (void)setActive:(BOOL)active
 {
-	[m_entry release];
 	m_entry = nil;
 
 	NSDictionary * attr = 0;
@@ -280,11 +255,6 @@ void XAP_CocoaDialog_PluginManager::runModal(XAP_Frame * pFrame)
 	return self;
 }
 
-- (void)dealloc
-{
-	[m_PluginRefs release];
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog*)owner
 {
@@ -311,7 +281,6 @@ void XAP_CocoaDialog_PluginManager::runModal(XAP_Frame * pFrame)
 			if (pRef)
 			{
 				[m_PluginRefs addObject:pRef];
-				[pRef release];
 			}
 		}
 	}
@@ -329,7 +298,6 @@ void XAP_CocoaDialog_PluginManager::runModal(XAP_Frame * pFrame)
 		if (pRef)
 		{
 			[m_PluginRefs addObject:pRef];
-			[pRef release];
 		}
 	}
 }

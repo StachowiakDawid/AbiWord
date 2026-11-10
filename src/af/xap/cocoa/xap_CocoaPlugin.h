@@ -532,7 +532,6 @@
 /**
  * (For internal use only.)
  */
-- (void)dealloc;
 
 /**
  * (For internal use only.)

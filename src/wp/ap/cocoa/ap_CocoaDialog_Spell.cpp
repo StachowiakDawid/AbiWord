@@ -56,7 +56,6 @@ AP_CocoaDialog_Spell::AP_CocoaDialog_Spell(XAP_DialogFactory * pDlgFactory, XAP_
 
 AP_CocoaDialog_Spell::~AP_CocoaDialog_Spell(void)
 {
-	[m_suggestionList release];
 }
 
 /************************************************************/
@@ -107,9 +106,7 @@ void AP_CocoaDialog_Spell::runModal(XAP_Frame * pFrame)
 		_storeWindowData();
 		
 		[m_dlg close];
-		[m_dlg release];
 		m_dlg = nil;
-		[m_suggestionList release];
 		m_suggestionList = nil;
 	}
    
@@ -134,7 +131,7 @@ void AP_CocoaDialog_Spell::_showMisspelledWord(void)
 	p = m_pWordIterator->getPreWord(iLengthPre);
 	if (0 < iLengthPre) {
 		UT_UTF8String str(p,iLengthPre);
-		buffer = [[[NSAttributedString alloc] initWithString:[NSString stringWithUTF8String:str.utf8_str()]] autorelease];
+		buffer = [[NSAttributedString alloc] initWithString:[NSString stringWithUTF8String:str.utf8_str()]];
 		[attrStr appendAttributedString:buffer];
 	}
 
@@ -147,7 +144,7 @@ void AP_CocoaDialog_Spell::_showMisspelledWord(void)
 
 		NSDictionary * attr = [NSDictionary dictionaryWithObject:[NSColor redColor] forKey:NSForegroundColorAttributeName];
 
-		buffer = [[[NSAttributedString alloc] initWithString:word attributes:attr] autorelease];
+		buffer = [[NSAttributedString alloc] initWithString:word attributes:attr];
 	}
 	[attrStr appendAttributedString:buffer];
 		
@@ -156,8 +153,8 @@ void AP_CocoaDialog_Spell::_showMisspelledWord(void)
 	if (0 < iLengthPost) {
 		UT_UTF8String str(p,iLengthPost);
 		[attrStr appendAttributedString:
-		            [[[NSAttributedString alloc] initWithString:
-					         [NSString stringWithUTF8String:str.utf8_str()]] autorelease]];
+		            [[NSAttributedString alloc] initWithString:
+					         [NSString stringWithUTF8String:str.utf8_str()]]];
 	}
 
 	float offset = static_cast<float>(iLengthPre + iLength) / static_cast<float>(iLengthPre + iLength + iLengthPost);
@@ -184,7 +181,6 @@ void AP_CocoaDialog_Spell::_showMisspelledWord(void)
 		[m_dlg suggestionSelected:nil];
 	}
 
-	[attrStr release];
 }
 
 void AP_CocoaDialog_Spell::_populateWindowData(void)
@@ -300,10 +296,6 @@ void AP_CocoaDialog_Spell::event_ReplacementChanged()
 	_xap = nullptr;
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {
@@ -384,9 +376,7 @@ void AP_CocoaDialog_Spell::event_ReplacementChanged()
 	[_unknownData setString:@""];
 
 	if (attr) {
-		[_unknownData setEditable:YES];
-		[_unknownData insertText:attr];
-		[_unknownData setEditable:NO];
+		[[_unknownData textStorage] setAttributedString:attr];
 
 		NSClipView * clipView = (NSClipView *) [_unknownData superview];
 

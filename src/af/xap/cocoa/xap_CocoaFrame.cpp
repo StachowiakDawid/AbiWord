@@ -57,7 +57,7 @@
 	if (![super initWithFrame:windowFrame]) {
 		return nil;
 	}
-    m_name = [name retain];
+    m_name = name;
 	m_pFrame = frame;
 	m_pGR = nullptr;
 	m_drawable = nullptr;
@@ -75,13 +75,10 @@
 
 - (void)dealloc
 {
-	[_eventDelegate release];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-    [m_name release];
 	if (m_layer) {
 		::CGLayerRelease(m_layer);
 	}
-	[super dealloc];
 }
 
 - (BOOL)acceptsFirstResponder
@@ -262,14 +259,12 @@
 
 - (void)setCursor:(NSCursor*)cursor
 {
-	[_cursor release];
-	_cursor = [cursor retain];
+	_cursor = cursor;
 }
 
 - (void)setEventDelegate:(NSObject <XAP_MouseEventDelegate>*)delegate
 {
-	[_eventDelegate release];
-	_eventDelegate = [delegate retain];
+	_eventDelegate = delegate;
 }
 
 - (void)hasBeenResized:(NSNotification*)notif
@@ -296,20 +291,17 @@
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
-	if (NSInputManager * inputManager = [NSInputManager currentInputManager])
-		[inputManager markedTextAbandoned:[theEvent window]];
+	[[self inputContext] discardMarkedText];	// a click ends IME composition
 	[_eventDelegate mouseDown:theEvent from:self];
 }
 - (void)rightMouseDown:(NSEvent *)theEvent
 {
-	if (NSInputManager * inputManager = [NSInputManager currentInputManager])
-		[inputManager markedTextAbandoned:[theEvent window]];
+	[[self inputContext] discardMarkedText];	// a click ends IME composition
 	[_eventDelegate mouseDown:theEvent from:self];
 }
 - (void)otherMouseDown:(NSEvent *)theEvent
 {
-	if (NSInputManager * inputManager = [NSInputManager currentInputManager])
-		[inputManager markedTextAbandoned:[theEvent window]];
+	[[self inputContext] discardMarkedText];	// a click ends IME composition
 	[_eventDelegate mouseDown:theEvent from:self];
 }
 

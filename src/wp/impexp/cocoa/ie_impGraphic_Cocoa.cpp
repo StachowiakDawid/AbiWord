@@ -75,7 +75,6 @@ UT_Confidence_t IE_ImpGraphicCocoa_Sniffer::recognizeContents(const char * szBuf
 	else  {
 		conf = UT_CONFIDENCE_POOR;
 	}
-	[data release];
 	return conf;
 }
 
@@ -148,7 +147,6 @@ static NSData* convertImageDataToPNG(NSData* data)
 	NSData *returned;
 	NSImage* image = [[NSImage alloc] initWithData: data];
 	returned = convertImageToPNG(image);
-	[image release];
 	return returned;
 }
 
@@ -158,7 +156,6 @@ UT_Error IE_ImpGraphic_Cocoa::_convertGraphic(const UT_ConstByteBufPtr & pBB)
 	UT_uint32 length;
 	NSData* data = [[NSData alloc] initWithBytes:pBB->getPointer(0) length:pBB->getLength()];
 	converted = convertImageDataToPNG(data);
-	[data release];
 	length = [converted length];
 	UT_ByteBufPtr bb(new UT_ByteBuf); /* Byte Buffer for Converted Data */	
 	bb->append((UT_Byte*)[converted bytes], length);

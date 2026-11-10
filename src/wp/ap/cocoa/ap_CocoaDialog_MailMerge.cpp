@@ -97,7 +97,6 @@ void AP_CocoaDialog_MailMerge::destroy(void)
 	if (m_dlg)
 	{
 		[m_dlg close];
-		[m_dlg release];
 
 		modeless_cleanup();
 	}
@@ -130,7 +129,6 @@ void AP_CocoaDialog_MailMerge::setFieldList()
 		m_AvailableFields = [[NSMutableArray alloc] initWithCapacity:32];
 		if (!m_AvailableFields)
 		{
-			[self release];
 			return nil;
 		}
 	}
@@ -141,10 +139,8 @@ void AP_CocoaDialog_MailMerge::setFieldList()
 {
 	if (m_AvailableFields)
 		{
-			[m_AvailableFields release];
 			m_AvailableFields = nil;
 		}
-	[super dealloc];
 }
 
 - (void)setXAPOwner:(XAP_Dialog *)owner

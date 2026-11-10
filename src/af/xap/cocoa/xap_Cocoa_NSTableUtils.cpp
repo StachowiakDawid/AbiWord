@@ -34,8 +34,6 @@
 
 - (oneway void)dealloc
 {
-	[_array release];
-	[super dealloc];
 }
 
 /* NSTableDataSource */
@@ -67,14 +65,12 @@
 {
 	NSString *str = [[NSString alloc] initWithUTF8String:string];
 	[_array addObject:str];		
-	[str release];
 }
 
 - (NSUInteger)rowWithCString:(const char *)cString
 {
 	NSString *string = [[NSString alloc] initWithUTF8String:cString];
 	NSUInteger idx = [_array indexOfObject:string];
-	[string release];
 	if (idx == NSNotFound) { 
 		return -1;
 	}

@@ -76,7 +76,6 @@ void AP_CocoaDialog_InsertBookmark::runModal(XAP_Frame * /*pFrame*/)
 
 	[m_dlg discardXAP];
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 }
 
@@ -116,10 +115,6 @@ void AP_CocoaDialog_InsertBookmark::event_Cancel(void)
 	_xap = nullptr;
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {

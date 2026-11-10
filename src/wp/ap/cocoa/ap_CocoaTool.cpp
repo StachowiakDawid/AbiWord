@@ -43,7 +43,6 @@ static void s_addToolToProvider (XAP_CocoaToolProvider * provider, EV_Toolbar_La
 
 	[provider addTool:tool];
 // [tool tool]; // TODO: remove
-	[tool release];
 }
 
 static void s_addToolsToProvider (XAP_CocoaToolProvider * provider)
@@ -91,11 +90,7 @@ static NSImage * s_findImage (NSString * filename)
 	NSString * path = XAP_CocoaToolbar_Icons::getFilenameForIcon(filename);
 
 	image = [[NSImage alloc] initWithContentsOfFile:path];
-	if (image)
-	{
-		[image autorelease];
-	}
-	else
+	if (!image)
 	{
 		UT_ASSERT(image);
 		image = [NSImage imageNamed:@"NSApplicationIcon"];
@@ -115,13 +110,10 @@ static NSImage * s_findImage (NSString * filename)
 	if (self = [super init])
 	{
 		m_identifier = identifier;
-		[m_identifier retain];
 
 		m_description = description;
-		[m_description retain];
 
 		m_icon_name = iconName;
-		[m_icon_name retain];
 
 		m_toolbarID = tlbrid;
 
@@ -130,13 +122,6 @@ static NSImage * s_findImage (NSString * filename)
 	return self;
 }
 
-- (void)dealloc
-{
-	[m_identifier  release];
-	[m_description release];
-	[m_icon_name   release];
-	[super dealloc];
-}
 
 - (NSString *)identifier
 {
@@ -182,7 +167,6 @@ static NSImage * s_findImage (NSString * filename)
 
 			instance = SB;
 
-			[SB autorelease];
 		}
 		break;
 	}
@@ -198,21 +182,16 @@ static NSImage * s_findImage (NSString * filename)
 	if (self = [super init]) {
 		m_tool = tool;
 
-		[m_tool retain];
 
 		m_toolbarID = tlbrid;
 
 		m_defaultImage = XAP_CocoaToolbar_Icons::getPNGNameForIcon([[m_tool iconName] UTF8String]);
 		m_defaultAltImage = m_defaultImage;
 
-		[m_defaultImage    retain];
-		[m_defaultAltImage retain];
 
 		m_configImage    = m_defaultImage;
 		m_configAltImage = m_defaultAltImage;
 
-		[m_configImage    retain];
-		[m_configAltImage retain];
 
 		NSRect frame;
 		frame.origin.x = 0.0f;
@@ -251,21 +230,6 @@ static NSImage * s_findImage (NSString * filename)
 	return self;
 }
 
-- (void)dealloc
-{
-	[m_tool release];
-
-	[m_button release];
-	[m_item   release];
-
-	[m_defaultImage    release];
-	[m_defaultAltImage release];
-
-	[m_configImage     release];
-	[m_configAltImage  release];
-
-	[super dealloc];
-}
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
@@ -340,9 +304,7 @@ static NSImage * s_findImage (NSString * filename)
 {
 	if ([imageFilename isEqualToString:@"auto"])
 	{
-		[m_configImage release];
 		m_configImage = m_defaultImage;
-		[m_configImage retain];
 
 		NSImage * image = nil;
 		image = s_findImage(m_configImage);
@@ -353,9 +315,7 @@ static NSImage * s_findImage (NSString * filename)
 	}
 	else if (imageFilename)
 	{
-		[m_configImage release];
 		m_configImage = imageFilename;
-		[m_configImage retain];
 
 		NSImage * image = nil;
 		image = s_findImage(m_configImage);
@@ -370,9 +330,7 @@ static NSImage * s_findImage (NSString * filename)
 {
 	if ([imageFilename isEqualToString:@"auto"])
 	{
-		[m_configAltImage release];
 		m_configAltImage = m_defaultAltImage;
-		[m_configAltImage retain];
 
 		NSImage * image = nil;
 		image = s_findImage(m_configAltImage);
@@ -383,9 +341,7 @@ static NSImage * s_findImage (NSString * filename)
 	}
 	else if (imageFilename)
 	{
-		[m_configAltImage release];
 		m_configAltImage = imageFilename;
-		[m_configAltImage retain];
 
 		NSImage * image = nil;
 		image = s_findImage(m_configAltImage);

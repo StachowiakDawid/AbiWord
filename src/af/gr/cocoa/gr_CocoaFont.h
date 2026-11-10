@@ -112,7 +112,6 @@ private:
 + (NSMutableDictionary*)fontFamilyHelperDictionary:(NSMutableDictionary*)referenceDictionary;
 
 - (id)initWithFontFamilyName:(NSString*)fontFamilyName known:(BOOL)known;
-- (void)dealloc;
 
 - (NSString*)fontFamilyName;
 - (NSAttributedString*)attributedFontFamilyName;
@@ -139,7 +138,6 @@ private:
     NSUInteger m_index;
 }
 - (id)initWithFontFamily:(NSString*)fontFamily helper:(GR_CocoaFontFamilyHelper*)helper index:(NSUInteger)index;
-- (void)dealloc;
 
 - (NSString*)fontFamily;
 - (GR_CocoaFontFamilyHelper*)fontFamilyHelper;

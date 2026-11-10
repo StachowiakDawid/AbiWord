@@ -79,7 +79,6 @@ void XAP_CocoaDialog_Language::runModal(XAP_Frame * /*pFrame*/)
 	}
 
 	[m_dlg close];
-	[m_dlg release];
 
 	m_dlg = nil;
 }
@@ -104,18 +103,11 @@ void XAP_CocoaDialog_Language::runModal(XAP_Frame * /*pFrame*/)
 	return self;
 }
 
-- (void)dealloc
-{
-	[m_Languages release];
-	[m_Selection release];
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {
 if (m_Selection)
 	{
-		[m_Selection release];
 		m_Selection = nil;
 	}
 	m_SelectionIndex = -1;
@@ -127,7 +119,6 @@ if (m_Selection)
 {
 	if (m_Selection)
 	{
-		[m_Selection release];
 		m_Selection = nil;
 	}
 	m_SelectionIndex = -1;
@@ -200,7 +191,6 @@ if (m_Selection)
 	UT_UNUSED(sender);
 	if (m_Selection)
 	{
-		[m_Selection release];
 		m_Selection = nil;
 	}
 	m_SelectionIndex = -1;
@@ -221,7 +211,6 @@ if (m_Selection)
 	UT_UNUSED(sender);
 	if (m_Selection)
 	{
-		[m_Selection release];
 		m_Selection = nil;
 	}
 	m_SelectionIndex = [_languageTable selectedRow];
@@ -230,7 +219,7 @@ if (m_Selection)
 	{
 		if ((unsigned) m_SelectionIndex < [m_Languages count])
 		{
-			m_Selection = [[m_Languages objectAtIndex:((unsigned) m_SelectionIndex)] retain];
+			m_Selection = [m_Languages objectAtIndex:((unsigned) m_SelectionIndex)];
 		}
 		else // huh?
 		{

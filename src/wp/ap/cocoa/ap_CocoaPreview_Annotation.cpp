@@ -47,7 +47,6 @@ void AP_CocoaPreview_Annotation::runModeless(XAP_Frame * pFrame)
 	setActiveFrame(pFrame);
 	if(m_pPreviewWindow)
 	{
-		[m_pPreviewWindow release];
 		m_pPreviewWindow = nil;
 		m_pDrawingArea = nil;
 		DELETEP(m_gc);
@@ -112,7 +111,6 @@ void  AP_CocoaPreview_Annotation::destroy(void)
 		//sleep(4);
 		//UT_DEBUGMSG(("sleep over\n"));
 		
-		[m_pPreviewWindow release];
 		m_pPreviewWindow = nil;
 		m_pDrawingArea = nil;
 		DELETEP(m_gc);

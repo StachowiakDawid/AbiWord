@@ -946,9 +946,8 @@ int AP_CocoaApp::main(const char * szAppName, int argc, char ** argv)
     UT_DEBUGMSG(("Compile Date:\t%s\n", XAP_App::s_szBuild_CompileDate));
     UT_DEBUGMSG(("Compile Time:\t%s\n", XAP_App::s_szBuild_CompileTime));
     
-	/* we create this autorelease pool because app startup will create a lot of things */
-	/* we'll delete it before starting the main loop to cleanup memory */
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	/* app startup and shutdown create a lot of autoreleased objects */
+	@autoreleasepool {
 
     // initialize our application.
 	[XAP_CocoaApplication sharedApplication];
@@ -1007,12 +1006,9 @@ int AP_CocoaApp::main(const char * szAppName, int argc, char ** argv)
 
 		if (true) // really don't want to be opening files atm anyway
 		{
-			[pool release];
 
 			// turn over control to Cocoa
 			[NSApp run];
-
-			pool = [[NSAutoreleasePool alloc] init];
 		}
 		else
 		{
@@ -1025,11 +1021,7 @@ int AP_CocoaApp::main(const char * szAppName, int argc, char ** argv)
 
 	}
     delete pMyCocoaApp;
-    
-	if (pool)
-	{
-		[pool release];
-	}
+	} // @autoreleasepool
     return 0;
 }
 

@@ -37,7 +37,6 @@
 + (void)addStandardToolsToProvider:(XAP_CocoaToolProvider *)provider;
 
 - (id)initWithIdentifier:(NSString *)identifier description:(NSString *)description iconName:(NSString *)iconName toolbarID:(unsigned)tlbrid;
-- (void)dealloc;
 
 - (NSString *)identifier;
 - (NSString *)description;
@@ -65,7 +64,6 @@
 	NSString *		m_configAltImage;
 }
 - (id)initWithTool:(AP_CocoaTool *)tool toolbarID:(unsigned)tlbrid;
-- (void)dealloc;
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem;
 

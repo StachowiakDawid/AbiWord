@@ -84,7 +84,7 @@ XAP_CocoaApp::XAP_CocoaApp(const char* szAppName, const char* /*app_id*/)
 
         NSLog(@"Failed to find main bundle");
     }
-    m_priv->nibObjects = [objects retain];
+    m_priv->nibObjects = objects;
 
     _setAbiSuiteLibDir();
 
@@ -126,7 +126,6 @@ XAP_CocoaApp::~XAP_CocoaApp()
 
     delete m_controlFactory;
     delete m_dialogFactory;
-    [m_priv->nibObjects release];
     delete m_priv;
 }
 

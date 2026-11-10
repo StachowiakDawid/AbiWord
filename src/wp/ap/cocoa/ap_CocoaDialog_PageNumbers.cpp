@@ -130,7 +130,6 @@ void AP_CocoaDialog_PageNumbers::runModal(XAP_Frame * /*pFrame*/)
 
 	[m_dlg discardXAP];
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 	DELETEP(m_pG);
 }
@@ -147,10 +146,6 @@ void AP_CocoaDialog_PageNumbers::runModal(XAP_Frame * /*pFrame*/)
 	_xap = nullptr;
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {

@@ -32,7 +32,6 @@
 
 	[AP_CocoaTool addStandardToolsToProvider:provider];
 
-	[provider autorelease];
 
 	return provider;
 }
@@ -46,20 +45,12 @@
 	UT_ASSERT(name);
 
 	m_name = name;
-	[m_name retain];
 
 	m_identifiers = [[NSMutableArray      alloc] initWithCapacity:16];
 	m_tools       = [[NSMutableDictionary alloc] initWithCapacity:16];
 	return self;
 }
 
-- (void)dealloc
-{
-	[m_name release];
-	[m_identifiers release];
-	[m_tools release];
-	[super dealloc];
-}
 
 /**
  * Get the name of the provider.

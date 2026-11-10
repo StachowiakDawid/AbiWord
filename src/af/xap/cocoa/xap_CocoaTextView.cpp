@@ -19,7 +19,7 @@
  * 02110-1301 USA.
  */
 /*
-	Implements the text view that supports the NSTextInput protocol
+	Implements the text view that supports the NSTextInputClient protocol
  */
  
 #include "ut_assert.h"
@@ -327,20 +327,14 @@
 }
 
 
-/* NSTextInput protocol */
+/* NSTextInputClient protocol */
 - (NSAttributedString *)attributedSubstringForProposedRange:(NSRange)range actualRange:(NSRangePointer)actualRange
 {
-	NSAttributedString * substring = [self attributedSubstringFromRange:range];
+	UT_UNUSED(range);
+	// The document text is not exposed to the input method.
 	if (actualRange) {
-		*actualRange = substring ? range : NSMakeRange(NSNotFound, 0);
+		*actualRange = NSMakeRange(NSNotFound, 0);
 	}
-	return substring;
-}
-
-- (NSAttributedString *)attributedSubstringFromRange:(NSRange)theRange
-{
-	UT_UNUSED(theRange);
-	UT_ASSERT_NOT_REACHED();
 	return nil;
 }
 
@@ -348,15 +342,10 @@
 - (NSUInteger)characterIndexForPoint:(NSPoint)thePoint
 {
 	UT_UNUSED(thePoint);
-	UT_ASSERT_NOT_REACHED();
+	// asked by the system (e.g. dictionary lookup); not supported
 	return NSNotFound;
 }
 
-
-- (long)conversationIdentifier
-{
-	return (long)self;
-}
 
 - (void)doCommandBySelector:(SEL)aSelector
 {
@@ -374,13 +363,6 @@
 	if (actualRange) {
 		*actualRange = theRange;
 	}
-	return [self firstRectForCharacterRange:theRange];
-}
-
-- (NSRect)firstRectForCharacterRange:(NSRange)theRange
-{
-	// UT_ASSERT_NOT_REACHED();
-	UT_DEBUG_ONLY_ARG(theRange);
 	UT_DEBUGMSG(("characterRange=(location=%u,length=%u)\n",theRange.location,theRange.length));
 	return NSZeroRect;
 }
@@ -396,11 +378,6 @@
 - (void)insertText:(id)aString replacementRange:(NSRange)replacementRange
 {
 	UT_UNUSED(replacementRange);
-	[self insertText:aString];
-}
-
-- (void)insertText:(id)aString
-{
 	if ([aString isKindOfClass:[NSAttributedString class]]) {
 		aString = [aString string];
 	}
@@ -447,11 +424,6 @@
 - (void)setMarkedText:(id)aString selectedRange:(NSRange)selRange replacementRange:(NSRange)replacementRange
 {
 	UT_UNUSED(replacementRange);
-	[self setMarkedText:aString selectedRange:selRange];
-}
-
-- (void)setMarkedText:(id)aString selectedRange:(NSRange)selRange
-{
 	[XAP_CocoaToolPalette setPreviewText:aString];
 
 	m_selectedRange = selRange;

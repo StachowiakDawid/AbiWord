@@ -36,7 +36,6 @@
 + (XAP_CocoaToolProvider *)AbiWordToolProvider; // don't use this method; use XAP_CocoaAppController's toolProvider:@"AbiWord"
 
 - (id)initWithName:(NSString *)name;
-- (void)dealloc;
 
 /**
  * Get the name of the provider.

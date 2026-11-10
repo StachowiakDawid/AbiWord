@@ -108,7 +108,6 @@ void AP_CocoaDialog_Columns::runModal(XAP_Frame * pFrame)
 
 	[m_dlg discardXAP];
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 }
 
@@ -220,10 +219,6 @@ void AP_CocoaDialog_Columns::enableLineBetweenControl(bool /*bState*/)
 	_xap = nullptr;
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {

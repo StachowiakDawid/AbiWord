@@ -72,7 +72,6 @@ void XAP_CocoaDialog_DocComparison::runModal(XAP_Frame * /*pFrame*/)
 
 	[NSApp runModalForWindow:window];
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 }
 
@@ -94,10 +93,6 @@ void XAP_CocoaDialog_DocComparison::_populateWindowData(void)
 	_xap = nullptr;
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {

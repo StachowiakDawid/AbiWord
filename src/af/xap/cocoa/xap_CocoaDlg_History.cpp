@@ -73,7 +73,6 @@ void XAP_CocoaDialog_History::runModal(XAP_Frame * /*pFrame*/)
 	[NSApp runModalForWindow:window];
 
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 }
 
@@ -108,10 +107,6 @@ void XAP_CocoaDialog_History::event_Cancel()
 	_xap = nullptr;
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {
@@ -125,7 +120,6 @@ static void addCol(NSTableView *table, XAP_CocoaDialog_History* xap, int idx)
 	[col setEditable:NO];
 	[[col headerCell] setTitle:[NSString stringWithUTF8String:xap->getListHeader(idx)]];
 	[table addTableColumn:col];
-	[col release];
 }
 
 

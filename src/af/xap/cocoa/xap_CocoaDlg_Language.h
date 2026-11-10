@@ -76,7 +76,6 @@ private:
 }
 
 - (id)initFromNib;
-- (void)dealloc;
 - (void)setXAPOwner:(XAP_Dialog *)owner;
 - (void)discardXAP;
 - (void)windowDidLoad;

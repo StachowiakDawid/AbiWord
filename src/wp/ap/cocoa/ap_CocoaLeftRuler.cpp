@@ -66,7 +66,6 @@ AP_CocoaLeftRuler::~AP_CocoaLeftRuler(void)
 	if (m_delegate) {
 		[[NSNotificationCenter defaultCenter] removeObserver:m_delegate];
 		[m_wLeftRuler setEventDelegate:nil];
-		[m_delegate release];
 	}
 }
 
@@ -218,7 +217,6 @@ void AP_CocoaLeftRuler::_drawCellMark(UT_Rect *prDrag, bool bUp)
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[super dealloc];
 }
 
 

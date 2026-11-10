@@ -83,7 +83,6 @@ void AP_CocoaDialog_Paragraph::runModal(XAP_Frame * pFrame)
 	
 	
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 }
 

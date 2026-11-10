@@ -510,7 +510,6 @@ static XAP_CocoaAppController * XAP_AppController_Instance = nil;
     m_FontReferenceDictionary = [[NSMutableDictionary alloc] initWithCapacity:128];
     m_FontFamilyDictionary    = [GR_CocoaFontFamilyHelper fontFamilyHelperDictionary:m_FontReferenceDictionary];
 
-    [m_FontFamilyDictionary retain];
     
 	m_MenuIDRefDictionary = [[NSMutableDictionary alloc] initWithCapacity:16];
 
@@ -518,26 +517,11 @@ static XAP_CocoaAppController * XAP_AppController_Instance = nil;
 	m_PluginsTools = [[NSMutableArray alloc] initWithCapacity:16];
 
 	m_PluginsToolsSeparator = [NSMenuItem separatorItem];
-	[m_PluginsToolsSeparator retain];
 
 	m_ToolProviders = [[NSMutableArray alloc] initWithCapacity:4];
 	return self;
 }
 
-- (void)dealloc
-{
-	[m_FilesRequestedDuringLaunch release];
-	[m_PanelMenu release];
-	[m_ContextMenu release];
-    [m_FontReferenceDictionary release];
-    [m_FontFamilyDictionary release];
-	[m_MenuIDRefDictionary release];
-	[m_Plugins release];
-	[m_PluginsTools release];
-	[m_PluginsToolsSeparator release];
-	[m_ToolProviders release];
-	[super dealloc];
-}
 
 - (void)setAutoLoadPluginsAfterLaunch:(BOOL)autoLoadPluginsAfterLaunch
 {
@@ -564,7 +548,6 @@ static XAP_CocoaAppController * XAP_AppController_Instance = nil;
 		{
 			[menu addItem:item];
 			[item setSubmenu:m_PanelMenu];
-			[item release];
 		}
 	}
 }
@@ -973,7 +956,6 @@ static XAP_CocoaAppController * XAP_AppController_Instance = nil;
        [m_FontFamilyDictionary setObject:helper forKey:fontFamilyName];
 
        [helper addFontReferences:m_FontReferenceDictionary];
-       [helper release];
 
        return helper;
 }
@@ -1128,7 +1110,6 @@ static XAP_CocoaAppController * XAP_AppController_Instance = nil;
 	}
 	else
 	{
-		[cocoa_plugin release];
 		cocoa_plugin = nil;
 	}
 	return cocoa_plugin;

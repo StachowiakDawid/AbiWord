@@ -92,7 +92,6 @@ void AP_CocoaDialog_MetaData::runModal(XAP_Frame * /*pFrame*/)
 	[NSApp runModalForWindow:window];
 
 	[m_dlg close];
-	[m_dlg release];
 }
 
 void AP_CocoaDialog_MetaData::okAction(void)
@@ -190,7 +189,6 @@ void AP_CocoaDialog_MetaData::cancelAction(void)
 {
 	NSString *s = [[NSString alloc] initWithUTF8String:str.utf8_str()];
 	[m_titleData setStringValue:s];
-	[s release];
 }
 
 
@@ -203,7 +201,6 @@ void AP_CocoaDialog_MetaData::cancelAction(void)
 {
 	NSString *s = [[NSString alloc] initWithUTF8String:str.utf8_str()];
 	[m_subjectData setStringValue:s];
-	[s release];
 }
 
 - (NSString*)GUIAuthor
@@ -215,7 +212,6 @@ void AP_CocoaDialog_MetaData::cancelAction(void)
 {
 	NSString *s = [[NSString alloc] initWithUTF8String:str.utf8_str()];
 	[m_authorData setStringValue:s];
-	[s release];
 }
 
 - (NSString*)GUIPublisher
@@ -227,7 +223,6 @@ void AP_CocoaDialog_MetaData::cancelAction(void)
 {
 	NSString *s = [[NSString alloc] initWithUTF8String:str.utf8_str()];
 	[m_publisherData setStringValue:s];
-	[s release];
 }
 
 - (NSString*)GUICoAuthor
@@ -239,7 +234,6 @@ void AP_CocoaDialog_MetaData::cancelAction(void)
 {
 	NSString *s = [[NSString alloc] initWithUTF8String:str.utf8_str()];
 	[m_coAuthorData setStringValue:s];
-	[s release];
 }
 
 - (NSString*)GUICategory
@@ -251,7 +245,6 @@ void AP_CocoaDialog_MetaData::cancelAction(void)
 {
 	NSString *s = [[NSString alloc] initWithUTF8String:str.utf8_str()];
 	[m_categoryData setStringValue:s];
-	[s release];
 }
 
 - (NSString*)GUIKeywords
@@ -263,7 +256,6 @@ void AP_CocoaDialog_MetaData::cancelAction(void)
 {
 	NSString *s = [[NSString alloc] initWithUTF8String:str.utf8_str()];
 	[m_keywordData setStringValue:s];
-	[s release];
 }
 
 - (NSString*)GUILanguages
@@ -275,7 +267,6 @@ void AP_CocoaDialog_MetaData::cancelAction(void)
 {
 	NSString *s = [[NSString alloc] initWithUTF8String:str.utf8_str()];
 	[m_languageData setStringValue:s];
-	[s release];
 }
 
 - (NSString*)GUISource
@@ -287,7 +278,6 @@ void AP_CocoaDialog_MetaData::cancelAction(void)
 {
 	NSString *s = [[NSString alloc] initWithUTF8String:str.utf8_str()];
 	[m_sourceData setStringValue:s];
-	[s release];
 }
 
 - (NSString*)GUIRelation
@@ -299,7 +289,6 @@ void AP_CocoaDialog_MetaData::cancelAction(void)
 {
 	NSString *s = [[NSString alloc] initWithUTF8String:str.utf8_str()];
 	[m_relationData setStringValue:s];
-	[s release];
 }
 
 - (NSString*)GUICoverage
@@ -311,7 +300,6 @@ void AP_CocoaDialog_MetaData::cancelAction(void)
 {
 	NSString *s = [[NSString alloc] initWithUTF8String:str.utf8_str()];
 	[m_coverageData setStringValue:s];
-	[s release];
 }
 
 - (NSString*)GUIRights
@@ -323,7 +311,6 @@ void AP_CocoaDialog_MetaData::cancelAction(void)
 {
 	NSString *s = [[NSString alloc] initWithUTF8String:str.utf8_str()];
 	[m_rightsData setStringValue:s];
-	[s release];
 }
 
 - (NSString*)GUIDescription

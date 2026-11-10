@@ -142,7 +142,6 @@ void AP_CocoaDialog_WordCount::destroy(void)
 	modeless_cleanup();
 
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 }
 

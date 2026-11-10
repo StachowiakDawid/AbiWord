@@ -71,7 +71,6 @@ void AP_CocoaDialog_SplitCells::destroy(void)
 	finalize();
 
 	[m_dlg close];
-	[m_dlg release];
 	m_dlg = nil;
 }
 void AP_CocoaDialog_SplitCells::activate(void)
@@ -107,10 +106,6 @@ void AP_CocoaDialog_SplitCells::_storeWindowData(void)
 	return self;
 }
 
--(void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)setXAPOwner:(XAP_Dialog *)owner
 {

@@ -66,7 +66,6 @@ AP_CocoaTopRuler::~AP_CocoaTopRuler(void)
 	if (m_delegate) {
 		[[NSNotificationCenter defaultCenter] removeObserver:m_delegate];
 		[m_wTopRuler setEventDelegate:nil];
-		[m_delegate release];
 	}
 }
 
@@ -402,7 +401,6 @@ void AP_CocoaTopRuler::_drawCellMark(UT_Rect * prDrag, bool bUp)
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[super dealloc];
 }
 
 - (void)setXAPOwner:(AP_CocoaTopRuler*)owner

@@ -89,7 +89,6 @@ void AP_CocoaDialog_PageSetup::runModal(XAP_Frame * pFrame)
 			break;
 		}
 	}
-	[m_ctrl release];
 
 	m_pFrame = 0;
 }
