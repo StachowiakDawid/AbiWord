@@ -250,7 +250,7 @@ void AP_CocoaDialog_Border_Shading::notifyActiveFrame(XAP_Frame * /*pFrame*/)
 
 static NSTextField * s_label(const XAP_StringSet * pSS, XAP_String_Id sid)
 {
-	return [NSTextField labelWithString:LocalizedString(pSS, sid)];
+	return [NSTextField labelWithString:LocalizedLabel(pSS, sid)];
 }
 
 static NSTextField * s_header(const XAP_StringSet * pSS, XAP_String_Id sid)
@@ -307,7 +307,7 @@ static NSPopUpButton * s_sizePopup(id target, SEL action)
 	_stylePopup.target = self;
 	_stylePopup.action = @selector(styleAction:);
 
-	_shadingCheck = [NSButton checkboxWithTitle:LocalizedString(pSS, AP_STRING_ID_DLG_BorderShading_Use_Shading)
+	_shadingCheck = [NSButton checkboxWithTitle:LocalizedLabel(pSS, AP_STRING_ID_DLG_BorderShading_Use_Shading)
 	                                     target:self action:@selector(shadingAction:)];
 	_shadingColorWell = [NSColorWell colorWellWithStyle:NSColorWellStyleMinimal];
 	_shadingColorWell.target = self;
@@ -349,10 +349,10 @@ static NSPopUpButton * s_sizePopup(id target, SEL action)
 	body.alignment = NSLayoutAttributeTop;
 	body.spacing = 20;
 
-	NSButton * closeBtn = [NSButton buttonWithTitle:LocalizedString(pSS, XAP_STRING_ID_DLG_Close)
+	NSButton * closeBtn = [NSButton buttonWithTitle:LocalizedLabel(pSS, XAP_STRING_ID_DLG_Close)
 	                                         target:self action:@selector(closeAction:)];
 	closeBtn.keyEquivalent = @"\033";
-	NSButton * applyBtn = [NSButton buttonWithTitle:LocalizedString(pSS, XAP_STRING_ID_DLG_Apply)
+	NSButton * applyBtn = [NSButton buttonWithTitle:LocalizedLabel(pSS, XAP_STRING_ID_DLG_Apply)
 	                                         target:self action:@selector(applyAction:)];
 	applyBtn.keyEquivalent = @"\r";
 	NSStackView * buttons = [NSStackView stackViewWithViews:@[closeBtn, applyBtn]];

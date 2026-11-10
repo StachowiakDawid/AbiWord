@@ -35,6 +35,8 @@ void SetNSControlLabel (id control, const UT_UTF8String &label);
 void SetNSControlLabel (id control, const std::string &label);
 void LocalizeControl (id control, const XAP_StringSet * pSS, XAP_String_Id stringId);
 NSString* LocalizedString (const XAP_StringSet * pSS, XAP_String_Id stringId);
+/* LocalizedString() without the & mnemonic markers, for control titles. */
+NSString* LocalizedLabel (const XAP_StringSet * pSS, XAP_String_Id stringId);
 void AppendLocalizedMenuItem (NSPopUpButton* menu, const XAP_StringSet * pSS, XAP_String_Id stringId, int tag);
 void _convertLabelToMac (char * buf, size_t bufSize, const char * label);
 /* First available SF Symbol of names (nil-terminated), else imageNamed:fallback. */

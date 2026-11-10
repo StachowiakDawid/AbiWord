@@ -19,6 +19,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#include <vector>
+
 #include "xap_CocoaDialog_Utilities.h"
 
 void _SetNSControlLabel (id control, const char *label)
@@ -95,6 +97,15 @@ NSString* LocalizedString (const XAP_StringSet * pSS, XAP_String_Id stringId)
 	std::string label;
 	pSS->getValueUTF8(stringId, label);
 	return [NSString stringWithUTF8String:label.c_str()];
+}
+
+NSString* LocalizedLabel (const XAP_StringSet * pSS, XAP_String_Id stringId)
+{
+	std::string label;
+	pSS->getValueUTF8(stringId, label);
+	std::vector<char> buf(label.size() + 1);
+	_convertLabelToMac(buf.data(), buf.size(), label.c_str());
+	return [NSString stringWithUTF8String:buf.data()];
 }
 
 /*!
