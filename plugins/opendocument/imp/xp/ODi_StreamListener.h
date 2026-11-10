@@ -104,12 +104,16 @@ private:
     GsfInfile* m_pGsfInfile;
     ODi_Office_Styles* m_pStyles;
     ODi_Abi_Data& m_rAbiData;
+
+    // Must be declared (and so initialized) before m_fontFaceDecls, which
+    // keeps a reference to the stack.
+    ODi_ElementStack* m_pElementStack;
+    bool m_ownStack;
+
     ODi_FontFaceDecls m_fontFaceDecls;
 
     // Used by the current listener state to signal state changes, etc.
     ODi_ListenerStateAction m_stateAction;
-
-    ODi_ElementStack* m_pElementStack;
 
     enum ODi_StreamListenerAction {
         ODI_NONE,
@@ -153,7 +157,6 @@ private:
 
     ODi_ListenerState* m_pCurrentState;
     bool m_deleteCurrentWhenPop;
-    bool m_ownStack;
 
     std::stack<ODi_StreamListener::StackCell> m_stateStack;
     std::vector<ODi_Postpone_ListenerState*> m_postponedParsing;

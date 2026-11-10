@@ -51,26 +51,20 @@ ODi_StreamListener::ODi_StreamListener(PD_Document* pAbiDocument,
       m_pGsfInfile(pGsfInfile),
       m_pStyles(pStyles),
       m_rAbiData(rAbiData),
-      m_fontFaceDecls(*pElementStack),
+      // A stack is passed in for nested StreamListeners (used when resuming
+      // postponed elements); otherwise we own one. It must exist before
+      // m_fontFaceDecls binds to it: dereferencing a null pElementStack here
+      // let the compiler drop the null check, leaving m_pElementStack null.
+      m_pElementStack(pElementStack ? pElementStack : new ODi_ElementStack),
+      m_ownStack(pElementStack == nullptr),
+      m_fontFaceDecls(*m_pElementStack),
       m_currentAction(ODI_NONE),
       m_pCurrentState(nullptr),
-      m_deleteCurrentWhenPop(false),
-      m_ownStack(false)
+      m_deleteCurrentWhenPop(false)
 {
     UT_ASSERT_HARMLESS(m_pAbiDocument);
     UT_ASSERT_HARMLESS(m_pGsfInfile);
     UT_ASSERT_HARMLESS(m_pStyles);
-
-
-    // This is done for supporting nested StreamListeners, used when we are
-    // resuming postponed elements.    
-    if (pElementStack == nullptr) {
-        m_pElementStack = new ODi_ElementStack;
-        m_ownStack = true;
-    } 
-    else {
-        m_pElementStack = pElementStack;
-    }
 }
 
 
