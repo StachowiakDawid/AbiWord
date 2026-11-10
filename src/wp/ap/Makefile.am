@@ -501,6 +501,7 @@ libap_la_SOURCES += \
 	cocoa/ap_CocoaPrefs.cpp \
 	cocoa/ap_CocoaPreview_Annotation.h \
 	cocoa/ap_CocoaPreview_Annotation.cpp \
+	cocoa/ap_CocoaRDFSemanticItems.cpp \
 	cocoa/ap_Cocoa_ResourceIDs.h \
 	cocoa/ap_Cocoa_ResourceIDs.cpp \
 	cocoa/ap_CocoaStatusBar.h \
