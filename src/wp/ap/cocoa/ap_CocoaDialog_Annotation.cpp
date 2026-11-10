@@ -61,7 +61,8 @@ void AP_CocoaDialog_Annotation::runModal(XAP_Frame *)
 	NSWindow * window = [m_dlg window];
 
 	[NSApp runModalForWindow:window];
-	
+	[m_dlg close]; // stopModal ends the session but leaves the window up
+
 	[m_dlg discardXAP];
 	m_dlg = nil;
 }
