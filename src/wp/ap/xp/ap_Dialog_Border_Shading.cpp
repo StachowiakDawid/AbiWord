@@ -338,6 +338,9 @@ void AP_Dialog_Border_Shading::finalize(void)
 {
 	stopUpdater();
 	modeless_cleanup();
+	// The window is gone: a reopened one must be filled even if the
+	// insertion point has not moved.
+	m_iOldPos = 0;
 }
 
 /*!
