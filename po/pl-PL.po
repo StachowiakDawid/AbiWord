@@ -270,7 +270,7 @@ msgstr "Znak podział&u"
 #. MENU_LABEL_TABLE_SELECT_CELL
 #: po/tmp/ap_String_Id.h
 msgid "&Cell"
-msgstr "Ko&amp;mórkę"
+msgstr "Ko&mórkę"
 
 #. MENU_LABEL_TABLE_INSERT_CELLS
 #. MENU_LABEL_TABLE_DELETE_CELLS
@@ -302,7 +302,7 @@ msgstr "Zamknij"
 #. MENU_LABEL_TABLE_DELETE_COLUMNS
 #: po/tmp/ap_String_Id.h
 msgid "&Column"
-msgstr "&amp;Kolumnę"
+msgstr "&Kolumnę"
 
 #. DLG_Break_ColumnBreak
 #: po/tmp/ap_String_Id.h
@@ -367,7 +367,7 @@ msgstr "&Ustawienia strony"
 #. MENU_LABEL_TOOLS_HISTORY
 #: po/tmp/ap_String_Id.h
 msgid "&Document History"
-msgstr "Historia &amp;dokumentu"
+msgstr "Historia &dokumentu"
 
 #. MENU_LABEL_WINDOW
 #: po/tmp/ap_String_Id.h
@@ -589,7 +589,7 @@ msgstr "Cały akapit na t&ej samej stronie"
 #. MENU_LABEL_INSERT_DIRECTIONMARKER_LRM
 #: po/tmp/ap_String_Id.h
 msgid "&LRM"
-msgstr "&L --&gt; P"
+msgstr "&L --> P"
 
 #. DLG_PageSetup_Landscape
 #: po/tmp/ap_String_Id.h
@@ -609,7 +609,7 @@ msgstr "Do &lewej"
 #. MENU_LABEL_FMT_DIRECTION_DO_LTR
 #: po/tmp/ap_String_Id.h
 msgid "&Left-to-right text"
-msgstr "Tekst &L --&gt; P"
+msgstr "Tekst &L --> P"
 
 #. DLG_Para_LabelLeft
 #. DLG_PageSetup_Left
@@ -791,7 +791,7 @@ msgstr "&RDF"
 #. MENU_LABEL_INSERT_DIRECTIONMARKER_RLM
 #: po/tmp/ap_String_Id.h
 msgid "&RLM"
-msgstr "L &lt;-- &P"
+msgstr "L <-- &P"
 
 #. MENU_LABEL_EDIT_REDO
 #: po/tmp/ap_String_Id.h
@@ -831,7 +831,7 @@ msgstr "Do p&rawej"
 #. MENU_LABEL_FMT_DIRECTION_DO_RTL
 #: po/tmp/ap_String_Id.h
 msgid "&Right-to-left text"
-msgstr "Tekst L &lt;-- &P"
+msgstr "Tekst L <-- &P"
 
 #. DLG_Para_LabelRight
 #. DLG_PageSetup_Right
@@ -3472,12 +3472,12 @@ msgstr "Wymusza od-prawej-do-lewej (kierunek tekstu)"
 #. TOOLBAR_LABEL_FMT_DIR_OVERRIDE_LTR
 #: po/tmp/ap_String_Id.h
 msgid "Force text LTR"
-msgstr "Wymuś tekst L --&gt; P"
+msgstr "Wymuś tekst L --> P"
 
 #. TOOLBAR_LABEL_FMT_DIR_OVERRIDE_RTL
 #: po/tmp/ap_String_Id.h
 msgid "Force text RTL"
-msgstr "Wymuś tekst P --&gt; L"
+msgstr "Wymuś tekst P --> L"
 
 #. DLG_Styles_ModifyFormat
 #. TB_Format
@@ -4058,12 +4058,12 @@ msgstr "Wstawia hiperłącze wewnętrzne lub zewnętrzne"
 #. MENU_STATUSLINE_INSERT_DIRECTIONMARKER_LRM
 #: po/tmp/ap_String_Id.h
 msgid "Insert left-to-right direction marker (LRM)"
-msgstr "Wstawia znacznik od-lewej-do-prawej (L --&gt; P)"
+msgstr "Wstawia znacznik od-lewej-do-prawej (L --> P)"
 
 #. MENU_STATUSLINE_INSERT_DIRECTIONMARKER_RLM
 #: po/tmp/ap_String_Id.h
 msgid "Insert right-to-left direction marker (RLM)"
-msgstr "Wstawia znacznik od-prawej-do-lewej (L &lt;-- P)"
+msgstr "Wstawia znacznik od-prawej-do-lewej (L <-- P)"
 
 #. MENU_STATUSLINE_TOOLS_ANNOTATIONS_INSERT_FROMSEL
 #: po/tmp/ap_String_Id.h
@@ -5980,12 +5980,12 @@ msgstr "Ustaw jako źródło elementu semantycznego"
 #. MENU_STATUSLINE_FMT_DIRECTION_DOCD_RTL
 #: po/tmp/ap_String_Id.h
 msgid "Set dominant direction of document to RTL"
-msgstr "Ustawia domyślny kierunek dokumentu L &lt; P"
+msgstr "Ustawia domyślny kierunek dokumentu L < P"
 
 #. MENU_STATUSLINE_FMT_DIRECTION_DD_RTL
 #: po/tmp/ap_String_Id.h
 msgid "Set dominant direction of paragraph to RTL"
-msgstr "Ustawia domyślny kierunek akapitu L &lt; P"
+msgstr "Ustawia domyślny kierunek akapitu L < P"
 
 #. MENU_STATUSLINE_FMT_DIRECTION_SD_RTL
 #: po/tmp/ap_String_Id.h
