@@ -268,62 +268,141 @@ EV_CocoaToolbar::~EV_CocoaToolbar(void)
 }
 
 
-NSButton * EV_CocoaToolbar::_makeToolbarButton (int type, EV_Toolbar_Label * pLabel, 
+/*!
+ * SF Symbol used for a toolbar item, or nil to fall back to the bundled
+ * bitmap icon. Symbols adapt to light/dark mode, accent colours and the
+ * display scale, unlike the legacy PNG icons.
+ */
+static NSString * s_symbolNameForToolbarId(XAP_Toolbar_Id tlbrid)
+{
+	switch (tlbrid) {
+	case AP_TOOLBAR_ID_FILE_NEW:				return @"doc.badge.plus";
+	case AP_TOOLBAR_ID_FILE_OPEN:				return @"folder";
+	case AP_TOOLBAR_ID_FILE_SAVE:				return @"square.and.arrow.down";
+	case AP_TOOLBAR_ID_FILE_PRINT_PREVIEW:		return @"doc.text.magnifyingglass";
+	case AP_TOOLBAR_ID_FILE_PRINT:				return @"printer";
+	case AP_TOOLBAR_ID_EDIT_UNDO:				return @"arrow.uturn.backward";
+	case AP_TOOLBAR_ID_EDIT_REDO:				return @"arrow.uturn.forward";
+	case AP_TOOLBAR_ID_EDIT_CUT:				return @"scissors";
+	case AP_TOOLBAR_ID_EDIT_COPY:				return @"doc.on.doc";
+	case AP_TOOLBAR_ID_EDIT_PASTE:				return @"doc.on.clipboard";
+	case AP_TOOLBAR_ID_FMTPAINTER:				return @"paintbrush.pointed";
+	case AP_TOOLBAR_ID_SPELLCHECK:				return @"textformat.abc.dottedunderline";
+	case AP_TOOLBAR_ID_REVISIONS_NEW:			return @"plus.square.on.square";
+	case AP_TOOLBAR_ID_REVISIONS_SELECT:		return @"clock.arrow.circlepath";
+	case AP_TOOLBAR_ID_REVISIONS_SHOW_FINAL:	return @"eye";
+	case AP_TOOLBAR_ID_REVISIONS_FIND_PREV:		return @"chevron.up";
+	case AP_TOOLBAR_ID_REVISIONS_FIND_NEXT:		return @"chevron.down";
+	case AP_TOOLBAR_ID_FMT_BOLD:				return @"bold";
+	case AP_TOOLBAR_ID_FMT_ITALIC:				return @"italic";
+	case AP_TOOLBAR_ID_FMT_UNDERLINE:			return @"underline";
+	case AP_TOOLBAR_ID_FMT_STRIKE:				return @"strikethrough";
+	case AP_TOOLBAR_ID_FMT_SUPERSCRIPT:			return @"textformat.superscript";
+	case AP_TOOLBAR_ID_FMT_SUBSCRIPT:			return @"textformat.subscript";
+	case AP_TOOLBAR_ID_ALIGN_LEFT:				return @"text.alignleft";
+	case AP_TOOLBAR_ID_ALIGN_CENTER:			return @"text.aligncenter";
+	case AP_TOOLBAR_ID_ALIGN_RIGHT:				return @"text.alignright";
+	case AP_TOOLBAR_ID_ALIGN_JUSTIFY:			return @"text.justify";
+	case AP_TOOLBAR_ID_LISTS_NUMBERS:			return @"list.number";
+	case AP_TOOLBAR_ID_LISTS_BULLETS:			return @"list.bullet";
+	case AP_TOOLBAR_ID_COLOR_FORE:				return @"paintpalette";
+	case AP_TOOLBAR_ID_COLOR_BACK:				return @"highlighter";
+	case AP_TOOLBAR_ID_INSERT_TABLE:			return @"tablecells";
+	case AP_TOOLBAR_ID_ADD_ROW:					return @"rectangle.split.1x2";
+	case AP_TOOLBAR_ID_ADD_COLUMN:				return @"rectangle.split.2x1";
+	case AP_TOOLBAR_ID_MERGE_CELLS:				return @"rectangle.compress.vertical";
+	case AP_TOOLBAR_ID_SPLIT_CELLS:				return @"rectangle.expand.vertical";
+	case AP_TOOLBAR_ID_FMT_HYPERLINK:			return @"link";
+	case AP_TOOLBAR_ID_FMT_BOOKMARK:			return @"bookmark";
+	case AP_TOOLBAR_ID_INSERT_SYMBOL:			return @"character";
+	case AP_TOOLBAR_ID_SINGLE_SPACE:			return @"line.3.horizontal";
+	case AP_TOOLBAR_ID_EDIT_HEADER:				return @"rectangle.topthird.inset.filled";
+	case AP_TOOLBAR_ID_EDIT_FOOTER:				return @"rectangle.bottomthird.inset.filled";
+	default:
+		return nil;
+	}
+}
+
+/*!
+ * Toggle/group toolbar button. The bezel is hidden unless hovered, except
+ * while the button is on, so active formatting (bold, alignment...) shows.
+ */
+@interface EV_CocoaToolbarToggleButton : NSButton
+@end
+
+@implementation EV_CocoaToolbarToggleButton
+
+- (void)setState:(NSControlStateValue)value
+{
+	[super setState:value];
+	[self setShowsBorderOnlyWhileMouseInside:(value != NSControlStateValueOn)];
+}
+
+@end
+
+static NSImage * s_imageForToolbarItem(XAP_Toolbar_Id tlbrid, EV_Toolbar_Label * pLabel)
+{
+	if (NSString * symbol = s_symbolNameForToolbarId(tlbrid)) {
+		NSString * description = nil;
+		if (const char * szLabel = pLabel->getToolbarLabel()) {
+			description = [NSString stringWithUTF8String:szLabel];
+		}
+		NSImage * image = [NSImage imageWithSystemSymbolName:symbol accessibilityDescription:description];
+		if (image) {
+			NSImageSymbolConfiguration * config =
+				[NSImageSymbolConfiguration configurationWithPointSize:14.0 weight:NSFontWeightRegular
+															scale:NSImageSymbolScaleMedium];
+			return [image imageWithSymbolConfiguration:config];
+		}
+	}
+	UT_ASSERT(g_ascii_strcasecmp(pLabel->getIconName(),"NoIcon")!=0);
+	return static_cast<XAP_CocoaApp*>(XAP_App::getApp())->getToolbarIcons()->getPixmapForIcon(pLabel->getIconName());		// autoreleased
+}
+
+NSButton * EV_CocoaToolbar::_makeToolbarButton (int type, EV_Toolbar_Label * pLabel,
 												XAP_Toolbar_Id tlbrid, NSView *parent,
 												CGFloat& btnX)
 {
 	const CGFloat BTN_WIDTH = getButtonWidth ();
 	const CGFloat BTN_HEIGHT = getButtonHeight ();
 
-	NSButton * btn = nil;
-	
 	NSRect btnFrame;
 	btnFrame.origin.x = btnX;
 	btnFrame.origin.y = 0;
 	btnFrame.size.width = BTN_WIDTH;
 	btnFrame.size.height = BTN_HEIGHT;
-	btnX += BTN_WIDTH;
-	
+	btnX += BTN_WIDTH + getButtonSpacing();
+
+	const bool bToggle = (type == EV_TBIT_ToggleButton) || (type == EV_TBIT_GroupButton);
+	NSButton * btn = bToggle ? [[EV_CocoaToolbarToggleButton alloc] initWithFrame:btnFrame]
+							 : [[NSButton alloc] initWithFrame:btnFrame];
+
 	switch (type) {
 	case EV_TBIT_PushButton:
-		{
-			btn = [[NSButton alloc] initWithFrame:btnFrame];
-
-		//  [btn setButtonType:NSToggleButton];
-			[btn setButtonType:NSButtonTypeMomentaryPushIn];
-		}
+		[btn setButtonType:NSButtonTypeMomentaryPushIn];
 		break;
-
 	case EV_TBIT_ToggleButton:
 	case EV_TBIT_GroupButton:
-		{
-			btnFrame.origin.y = -1;
-
-			btn = [[XAP_CocoaToolbarButton alloc] initWithFrame:btnFrame];
-
-			[btn setButtonType:NSButtonTypePushOnPushOff];
-
-			NSButtonCell * cell = (NSButtonCell *) [btn cell];
-
-			[cell setShowsStateBy:NSNoCellMask];
-			[cell setHighlightsBy:NSNoCellMask];
-		}
+		[btn setButtonType:NSButtonTypePushOnPushOff];
 		break;
 	default:
 		UT_ASSERT (UT_SHOULD_NOT_HAPPEN);
 	}
 	if (btn) {
-		[btn setBezelStyle:NSBezelStyleRegularSquare];
-		[btn setBordered:NO];
+		// Standard macOS toolbar look: the bezel only appears on hover,
+		// while pressed, or when a toggle is on.
+		[btn setBezelStyle:NSBezelStyleToolbar];
+		[btn setBordered:YES];
+		[btn setShowsBorderOnlyWhileMouseInside:YES];
+		[btn setImagePosition:NSImageOnly];
+		[btn setImageScaling:NSImageScaleProportionallyDown];
 		[btn setTag:(int)tlbrid];
 		[btn setTarget:m_target];
 		[btn setAction:@selector(toolbarSelected:)];
 
-		UT_ASSERT(g_ascii_strcasecmp(pLabel->getIconName(),"NoIcon")!=0);
-		NSImage* wPixmap =
-			static_cast<XAP_CocoaApp*>(XAP_App::getApp())->getToolbarIcons()->getPixmapForIcon(pLabel->getIconName());		// autoreleased
-		UT_ASSERT(wPixmap);
-		[btn setImage:wPixmap];
+		NSImage * image = s_imageForToolbarItem(tlbrid, pLabel);
+		UT_ASSERT(image);
+		[btn setImage:image];
 
 		if (const char * szToolTip = pLabel->getToolTip())
 			[btn setToolTip:[NSString stringWithUTF8String:szToolTip]];
@@ -417,21 +496,23 @@ void EV_CocoaToolbar::rebuildToolbar(UT_sint32 /*oldpos*/)
 #endif
 }
 
+/* Transparent container: the window's titlebar material shows through,
+ * like a native NSToolbar. */
 @interface EV_CocoaToolbarView : NSView
-- (void)drawRect:(NSRect)aRect;
 @end
 
 @implementation EV_CocoaToolbarView
-
-- (void)drawRect:(NSRect)aRect
-{
-	UT_UNUSED(aRect);
-	[[NSColor lightGrayColor] set];
-
-	[NSBezierPath strokeRect:[self frame]];
-}
-
 @end
+
+/* Vertically centre a control of its natural height in a toolbar row. */
+static void s_centreInRow(NSControl * control, CGFloat x, CGFloat width, CGFloat rowHeight)
+{
+	CGFloat height = [control fittingSize].height;
+	if (height <= 0 || height > rowHeight) {
+		height = rowHeight - 4.0;
+	}
+	[control setFrame:NSMakeRect(x, rint((rowHeight - height) / 2.0), width, height)];
+}
 
 bool EV_CocoaToolbar::synthesize(void)
 {
@@ -556,7 +637,7 @@ bool EV_CocoaToolbar::synthesize(void)
 				switch (tlbrID)
 				{
 				case AP_TOOLBAR_ID_ZOOM:
-					fWidth = 130;
+					fWidth = 160;	// room for translations ("Szerokość strony")
 					break;
 				case AP_TOOLBAR_ID_FMT_STYLE:
 					fWidth = 180;
@@ -574,11 +655,7 @@ bool EV_CocoaToolbar::synthesize(void)
 					break;
 				}
 
-				NSRect btnFrame;
-				btnFrame.origin.x = btnX + 1.0f;
-				btnFrame.size.width = fWidth;
-				btnFrame.size.height = (bIsCombo ? 26.0f : 25.0f);
-				btnFrame.origin.y = rintf((BTN_HEIGHT - 26.0f) / 2.0f /* - (bIsCombo ? 0.0f : 1.0f) */);
+				NSRect btnFrame = NSMakeRect(btnX + 2.0, 0.0, fWidth, BTN_HEIGHT - 4.0);
 
 				NSComboBox * comboBox = nil;
 				NSPopUpButton * popupButton = nil;
@@ -590,14 +667,17 @@ bool EV_CocoaToolbar::synthesize(void)
 
 					[m_wToolbar addSubview:comboBox];
 
-					// [comboBox setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
-
+					[comboBox setControlSize:NSControlSizeRegular];
 					[comboBox setTag:(int)tlbrID];
 					[comboBox setEditable:YES];
 					[comboBox setTarget:m_target];
 					[comboBox setAction:@selector(toolbarSelected:)];
+					if (szToolTip) {
+						[comboBox setToolTip:[NSString stringWithUTF8String:szToolTip]];
+					}
+					s_centreInRow(comboBox, btnFrame.origin.x, fWidth, BTN_HEIGHT);
 
-					btnX += [comboBox frame].size.width;
+					btnX += fWidth + 4.0;
 				}
 				else
 				{
@@ -606,11 +686,16 @@ bool EV_CocoaToolbar::synthesize(void)
 
 					[m_wToolbar addSubview:popupButton];
 
+					[popupButton setControlSize:NSControlSizeRegular];
 					[popupButton setTag:(int)tlbrID];
 					[popupButton setTarget:m_target];
 					[popupButton setAction:@selector(toolbarSelected:)];
+					if (szToolTip) {
+						[popupButton setToolTip:[NSString stringWithUTF8String:szToolTip]];
+					}
+					s_centreInRow(popupButton, btnFrame.origin.x, fWidth, BTN_HEIGHT);
 
-					btnX += [popupButton frame].size.width;
+					btnX += fWidth + 4.0;
 				}
 
 				/* populate it
@@ -707,13 +792,14 @@ bool EV_CocoaToolbar::synthesize(void)
 			// Append to the vector even if spacer, to sync up with refresh
 			// which expects each item in the layout to have a place in the
 			// vector.
+			const CGFloat SEP_HEIGHT = 18.0;
 			NSRect btnFrame;
-			btnFrame.origin.x = btnX + 1.0f;
-			btnFrame.size.width = 1.0f;
-			btnFrame.size.height = BTN_HEIGHT; 
-			btnFrame.origin.y = (BTN_HEIGHT - btnFrame.size.height) / 2;
-			btnX += btnFrame.size.width + 3.0f;
-			
+			btnFrame.origin.x = btnX + 4.0;
+			btnFrame.size.width = 1.0;
+			btnFrame.size.height = SEP_HEIGHT;
+			btnFrame.origin.y = rint((BTN_HEIGHT - SEP_HEIGHT) / 2.0);
+			btnX += btnFrame.size.width + 9.0;
+
 			NSBox * box = [[NSBox alloc] initWithFrame:btnFrame];
 			UT_ASSERT(box);
 			[box setBoxType:NSBoxSeparator];

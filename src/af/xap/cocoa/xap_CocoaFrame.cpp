@@ -64,6 +64,7 @@
 	m_layer = nullptr;
 	m_layer_needs_resize = false;
 	m_layer_needs_redraw = true;
+	m_layer_dirty_rect = NSZeroRect;
 	if (frame) {
 		[[NSNotificationCenter defaultCenter] addObserver:self
 						selector:@selector(hasBeenResized:)
@@ -152,6 +153,43 @@
 	m_layer_needs_redraw = true;
 }
 
+/// Re-render only part of the layer. The rect uses the top-left origin of
+/// the GR drawing code, like the update callback.
+- (void)invalidateDrawingLayerInRect:(NSRect)rect
+{
+	m_layer_dirty_rect = NSIsEmptyRect(m_layer_dirty_rect) ? rect : NSUnionRect(m_layer_dirty_rect, rect);
+}
+
+/// The cached drawing layer has a fixed size: recreate it when the view
+/// is resized (rulers too, not just the document view).
+- (void)setFrameSize:(NSSize)newSize
+{
+	[super setFrameSize:newSize];
+	if (m_layer) {
+		m_layer_needs_resize = true;
+	}
+	m_layer_needs_redraw = true;
+}
+
+/// Moved to a display with a different scale factor.
+- (void)viewDidChangeBackingProperties
+{
+	[super viewDidChangeBackingProperties];
+	if (m_layer) {
+		m_layer_needs_resize = true;
+	}
+	m_layer_needs_redraw = true;
+	[self setNeedsDisplay:YES];
+}
+
+/// Light/dark mode switch: the cached drawing uses the old colours.
+- (void)viewDidChangeEffectiveAppearance
+{
+	[super viewDidChangeEffectiveAppearance];
+	m_layer_needs_redraw = true;
+	[self setNeedsDisplay:YES];
+}
+
 /// Draw the layer in the current context.
 - (void)drawLayer
 {
@@ -159,9 +197,7 @@
 		NSGraphicsContext* gc = [NSGraphicsContext currentContext];
 		if (gc) {
 			CGContextRef context = gc.CGContext;
-			CGSize layerSize = ::CGLayerGetSize(m_layer);
 			GR_CGStateSave state(context);
-			NSLog(@"layer size W=%lf, H=%lf", layerSize.width, layerSize.height);
 			::CGContextDrawLayerAtPoint(context, CGPointMake(0, 0), m_layer);
 		}
 	}
@@ -172,14 +208,16 @@
 	UT_UNUSED(aRect);
 	_in_draw_rect = true;
 	[self makeDrawingLayer];
-	if (m_pGR && m_layer && m_layer_needs_redraw) {
+	NSRect bounds = self.bounds;
+	NSRect dirty = m_layer_needs_redraw ? bounds : NSIntersectionRect(m_layer_dirty_rect, bounds);
+	if (m_pGR && m_layer && !NSIsEmptyRect(dirty)) {
 		m_layer_needs_redraw = false;
+		m_layer_dirty_rect = NSZeroRect;
 		GR_Painter painter(m_pGR);
-		NSRect bounds = self.bounds;
 		if (m_drawable) {
 			m_drawable->drawImmediate();
 		} else {
-			m_pGR->_callUpdateCallback(&bounds);
+			m_pGR->_callUpdateCallback(&dirty);
 		}
 	}
 	[self drawLayer];
@@ -245,9 +283,7 @@
 			m_pFrame->quickZoom(); // was update zoom
 		}
 	}
-	if (m_layer) {
-		m_layer_needs_resize = true;
-	}
+	// the drawing layer itself is resized from -setFrameSize:
 }
 
 

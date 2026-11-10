@@ -34,6 +34,7 @@
 #include "xap_CocoaToolPalette.h"
 #include "xap_CocoaToolProvider.h"
 #include "xap_App.h"
+#include "xap_Strings.h"
 #include "xap_Frame.h"
 
 #include "ie_types.h"
@@ -77,7 +78,173 @@ static struct EV_CocoaKeyEquiv KeyEquiv[] = {
 	{	AP_MENU_ID__BOGUS1__,				nullptr,		0													}
 };
 
+/*
+ * The dialog nibs place push buttons edge to edge (e.g. Cancel | Tabs... |
+ * OK). The old Aqua bezel was drawn about 6pt inside its frame, which gave
+ * visible gaps; the current bezel fills the frame, so the buttons touch.
+ * Restore the intended spacing by insetting buttons that touch a neighbour.
+ */
+static bool s_isPushButton(NSView * view)
+{
+	if (![view isKindOfClass:[NSButton class]]) {
+		return false;
+	}
+	NSButton * button = (NSButton *)view;
+	return [button isBordered] && ([button bezelStyle] == NSBezelStylePush) && ([button frame].size.height >= 28.0);
+}
+
+static void s_spaceAdjacentPushButtons(NSView * container)
+{
+	const CGFloat kOldBezelInset = 6.0;
+
+	NSMutableArray * buttons = [NSMutableArray array];
+	for (NSView * subview in [container subviews]) {
+		if (s_isPushButton(subview)) {
+			[buttons addObject:subview];
+		} else {
+			s_spaceAdjacentPushButtons(subview);
+		}
+	}
+	[buttons sortUsingComparator:^NSComparisonResult(NSView * a, NSView * b) {
+		CGFloat ax = [a frame].origin.x, bx = [b frame].origin.x;
+		return (ax < bx) ? NSOrderedAscending : (ax > bx) ? NSOrderedDescending : NSOrderedSame;
+	}];
+
+	NSMutableSet * touching = [NSMutableSet set];
+	for (NSView * a in buttons) {
+		for (NSView * b in buttons) {
+			if (a == b) {
+				continue;
+			}
+			NSRect fa = [a frame], fb = [b frame];
+			bool sameRow = fabs(NSMidY(fa) - NSMidY(fb)) < 2.0;
+			CGFloat gap = NSMinX(fb) - NSMaxX(fa);	// some nibs even overlap a little
+			if (sameRow && gap > -kOldBezelInset && gap <= 4.0) {
+				[touching addObject:a];
+				[touching addObject:b];
+			}
+		}
+	}
+	for (NSButton * button in touching) {
+		NSRect frame = [button frame];
+		CGFloat needed = [button fittingSize].width;
+		CGFloat inset = MIN(kOldBezelInset, MAX(0.0, (frame.size.width - needed) / 2.0));
+		[button setFrame:NSInsetRect(frame, inset, 0.0)];
+	}
+}
+
+/* A fixed (non-dynamic) pure white, as hard-coded by many dialog nibs. */
+static bool s_isFixedWhite(NSColor * color)
+{
+	if (!color || [color type] != NSColorTypeComponentBased) {
+		return false;
+	}
+	NSColor * rgb = [color colorUsingColorSpace:[NSColorSpace sRGBColorSpace]];
+	return rgb && [rgb redComponent] > 0.99 && [rgb greenComponent] > 0.99 && [rgb blueComponent] > 0.99;
+}
+
+/*
+ * Many nibs hard-code white backgrounds on lists and text areas while the
+ * text uses system colours. In dark mode that is white text on white (the
+ * Insert Symbol grid was blank). Switch those backgrounds to the adaptive
+ * system colours.
+ */
+static void s_adaptFixedWhiteBackgrounds(NSView * view)
+{
+	if ([view isKindOfClass:[NSTableView class]]) {
+		NSTableView * table = (NSTableView *)view;
+		if (s_isFixedWhite([table backgroundColor])) {
+			[table setBackgroundColor:[NSColor controlBackgroundColor]];
+		}
+	} else if ([view isKindOfClass:[NSTextView class]]) {
+		NSTextView * text = (NSTextView *)view;
+		if (s_isFixedWhite([text backgroundColor])) {
+			[text setBackgroundColor:[NSColor textBackgroundColor]];
+			[text setTextColor:[NSColor textColor]];
+		}
+	} else if ([view isKindOfClass:[NSClipView class]]) {
+		NSClipView * clip = (NSClipView *)view;
+		if (s_isFixedWhite([clip backgroundColor])) {
+			[clip setBackgroundColor:[NSColor controlBackgroundColor]];
+		}
+	} else if ([view isKindOfClass:[NSScrollView class]]) {
+		NSScrollView * scroll = (NSScrollView *)view;
+		if (s_isFixedWhite([scroll backgroundColor])) {
+			[scroll setBackgroundColor:[NSColor controlBackgroundColor]];
+		}
+	}
+	for (NSView * subview in [view subviews]) {
+		s_adaptFixedWhiteBackgrounds(subview);
+	}
+}
+
+static void s_collectPushButtons(NSView * view, NSMutableArray * buttons)
+{
+	if (s_isPushButton(view)) {
+		[buttons addObject:view];
+	}
+	for (NSView * subview in [view subviews]) {
+		s_collectPushButtons(subview, buttons);
+	}
+}
+
+/*
+ * Some dialogs (e.g. Set Language) have no default button, so Return does
+ * nothing and OK is not highlighted. Make the OK button the default when no
+ * button already answers to Return.
+ */
+static void s_ensureDefaultButton(NSWindow * window)
+{
+	NSMutableArray * buttons = [NSMutableArray array];
+	s_collectPushButtons([window contentView], buttons);
+	for (NSButton * button in buttons) {
+		if ([[button keyEquivalent] isEqualToString:@"\r"]) {
+			return;
+		}
+	}
+	const XAP_StringSet * pSS = XAP_App::getApp()->getStringSet();
+	const char * szOK = pSS ? pSS->getValue(XAP_STRING_ID_DLG_OK) : nullptr;
+	if (!szOK) {
+		return;
+	}
+	NSString * ok = [NSString stringWithUTF8String:szOK];
+	for (NSButton * button in buttons) {
+		if ([[button title] isEqualToString:ok] && [[button keyEquivalent] length] == 0) {
+			[button setKeyEquivalent:@"\r"];
+			return;
+		}
+	}
+}
+
+static void s_modernizeDialogLayout(NSWindow * window)
+{
+	static NSHashTable * s_done = [NSHashTable weakObjectsHashTable];
+	if (!window || [s_done containsObject:window]) {
+		return;
+	}
+	[s_done addObject:window];
+	s_spaceAdjacentPushButtons([window contentView]);
+	s_adaptFixedWhiteBackgrounds([window contentView]);
+}
+
 @implementation XAP_CocoaApplication
+
+- (NSModalResponse)runModalForWindow:(NSWindow *)window
+{
+	s_modernizeDialogLayout(window);
+	s_ensureDefaultButton(window);
+	return [super runModalForWindow:window];
+}
+
+- (void)finishLaunching
+{
+	[super finishLaunching];
+	// modeless panels (Word Count, Find...) are not run modally
+	[[NSNotificationCenter defaultCenter] addObserverForName:NSWindowDidBecomeKeyNotification object:nil
+		queue:nil usingBlock:^(NSNotification * note) {
+			s_modernizeDialogLayout([note object]);
+		}];
+}
 
 - (void)terminate:(id)sender
 {
@@ -312,7 +479,7 @@ static XAP_CocoaAppController * XAP_AppController_Instance = nil;
 	if (!XAP_AppController_Instance)
 	{
 		UT_DEBUGMSG(("sharedAppController does not exist.\n"));
-		[[XAP_CocoaAppController alloc] init];
+		(void)[[XAP_CocoaAppController alloc] init];	// -init sets XAP_AppController_Instance
 	}
 	return XAP_AppController_Instance;
 }
@@ -477,11 +644,7 @@ static XAP_CocoaAppController * XAP_AppController_Instance = nil;
 		UT_DEBUGMSG(("[...FinishLaunching] No file opened during launch, so opening untitled document:\n"));
 		[self applicationOpenUntitledFile:NSApp];
 	}
-	if (@available(macOS 14.0, *)) {
-		[NSApp activate];
-	} else {
-		[NSApp activateIgnoringOtherApps:YES];
-	}
+	[NSApp activate];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender // probably unused now that NSApp's terminate is overridden
@@ -523,7 +686,10 @@ static XAP_CocoaAppController * XAP_AppController_Instance = nil;
 	XAP_App * pApp = XAP_App::getApp();
 	XAP_Frame * pNewFrame = pApp->newFrame();
 
-	bool result = (UT_OK == pNewFrame->loadDocument([filename UTF8String], IEFT_Unknown));
+	// The document code expects a URI, not a plain path (a plain path makes
+	// the window title code crash on a null basename).
+	NSString * uri = [[NSURL fileURLWithPath:filename] absoluteString];
+	bool result = (UT_OK == pNewFrame->loadDocument([uri UTF8String], IEFT_Unknown));
 	/*
 	 * TODO: check what we should really do now
 	 */

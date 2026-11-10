@@ -28,7 +28,8 @@
 #include "ap_CocoaStatusBar.h"
 #import "xap_CocoaFrameImpl.h"
 
-#define FIELD_SPACING 4.0f
+#define FIELD_SPACING 1.0f	/* room for the divider line */
+#define FIELD_PADDING 8.0f	/* text inset on each side of a field */
 
 class ap_csb_TextListener : public AP_StatusBarFieldListener
 {
@@ -141,10 +142,15 @@ XAP_CocoaNSStatusBar * AP_CocoaStatusBar::createWidget(void)
 		  NSTextField *pStatusBarElementLabel = [[NSTextField alloc] initWithFrame:frame];
 		  pf->setListener(static_cast<AP_StatusBarFieldListener *>(new ap_csb_TextListener
 				(pf_TextInfo, pStatusBarElementLabel)));
+		  // Plain labels, like the bottom bar of native macOS document windows.
 		  [pStatusBarElementLabel setFont:font];
 		  [pStatusBarElementLabel setEditable:NO];
-		  [pStatusBarElementLabel setBezeled:YES];
+		  [pStatusBarElementLabel setBezeled:NO];
+		  [pStatusBarElementLabel setBordered:NO];
+		  [pStatusBarElementLabel setDrawsBackground:NO];
 		  [pStatusBarElementLabel setSelectable:NO];
+		  [pStatusBarElementLabel setTextColor:[NSColor secondaryLabelColor]];
+		  [[pStatusBarElementLabel cell] setLineBreakMode:NSLineBreakByTruncatingTail];
 		// align text
 		  switch (pf_TextInfo->getAlignmentMethod()) {
 		  case LEFT:
@@ -167,7 +173,7 @@ XAP_CocoaNSStatusBar * AP_CocoaStatusBar::createWidget(void)
 			[pStatusBarElementLabel sizeToFit];
 			[pStatusBarElementLabel setStringValue:@""];
 			frame = [pStatusBarElementLabel bounds];
-			height = frame.size.height;
+			frame.size.width += 2.0f * FIELD_PADDING;
 			m_requestedWidth += frame.size.width + FIELD_SPACING;
 			[pStatusBarElementLabel setTag:lrintf(frame.size.width)];
 			UT_DEBUGMSG(("New size is: w=%f h=%f\n", frame.size.width, frame.size.height));
@@ -194,7 +200,8 @@ XAP_CocoaNSStatusBar * AP_CocoaStatusBar::createWidget(void)
 
 void AP_CocoaStatusBar::_repositionFields(NSArray *fields)
 {
-	float maxWidth = [m_wStatusBar bounds].size.width;
+	NSRect barBounds = [m_wStatusBar bounds];
+	float maxWidth = barBounds.size.width;
 	float freeWidth = maxWidth - m_requestedWidth;
 	float prevX = 0;
 
@@ -202,16 +209,20 @@ void AP_CocoaStatusBar::_repositionFields(NSArray *fields)
     while(NSTextField *obj = [e nextObject])
     {
         int tag = [obj tag];
-        NSRect frame = [obj frame];
-        frame.origin.x = prevX;
-
-        if (tag == -1)
-            frame.size.width = (freeWidth / (float)m_numMaxWidth) - FIELD_SPACING;
-        prevX += frame.size.width + FIELD_SPACING;
+        // slot = the field's share of the bar; the label is inset in it
+        float slotWidth = (tag == -1) ? (freeWidth / (float)m_numMaxWidth) - FIELD_SPACING : (float)tag;
+        float textHeight = [[obj cell] cellSize].height;
+        NSRect frame;
+        frame.origin.x = prevX + FIELD_PADDING;
+        frame.size.width = MAX(0.0f, slotWidth - 2.0f * FIELD_PADDING);
+        frame.size.height = textHeight;
+        frame.origin.y = rint((barBounds.size.height - textHeight) / 2.0);
+        prevX += slotWidth + FIELD_SPACING;
         [obj setFrame:frame];
         UT_DEBUGMSG(("resized status bar element. Frame = %f %f %f %f\n",
                     frame.origin.x, frame.origin.y, frame.size.width, frame.size.height));
     }
+    [m_wStatusBar setNeedsDisplay:YES];
 }
 
 
@@ -252,6 +263,26 @@ void AP_CocoaStatusBar::hide(void)
 - (void)setXAPOwner:(AP_CocoaStatusBar*)owner
 {
 	_xap = owner;
+}
+
+- (void)drawRect:(NSRect)dirtyRect
+{
+	UT_UNUSED(dirtyRect);
+	NSRect bounds = [self bounds];
+	[[NSColor windowBackgroundColor] setFill];
+	NSRectFill(bounds);
+
+	[[NSColor separatorColor] setFill];
+	// hairline separating the bar from the document area
+	NSRectFill(NSMakeRect(0, NSMaxY(bounds) - 1.0, bounds.size.width, 1.0));
+	// short dividers between the fields
+	NSArray * fields = [self subviews];
+	NSUInteger count = [fields count];
+	for (NSUInteger i = 0; i + 1 < count; i++) {
+		NSRect f = [[fields objectAtIndex:i] frame];
+		CGFloat x = rint(NSMaxX(f) + FIELD_PADDING);
+		NSRectFill(NSMakeRect(x, 4.0, 1.0, bounds.size.height - 8.0));
+	}
 }
 
 - (void)statusBarDidResize:(NSNotification *)notification

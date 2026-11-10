@@ -195,11 +195,7 @@ NSImage * XAP_CocoaToolbar_Icons::getPixmapForIcon(const char * szIconID)
 	{
 		pixmap = [[NSImage alloc] initWithContentsOfFile:path];
 
-		if (pixmap)
-		{
-			[pixmap autorelease];
-		}
-		else
+		if (!pixmap)
 		{
 			UT_ASSERT(pixmap);
 			pixmap = [NSImage imageNamed:@"NSApplicationIcon"];

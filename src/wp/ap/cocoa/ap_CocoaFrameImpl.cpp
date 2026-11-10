@@ -189,6 +189,8 @@ void AP_CocoaFrameImpl::_setHScrollbarValues()
 		[m_hScrollbar setKnobProportion:knob];
 		[m_hScrollbar setDoubleValue:value];
 	}
+	// Overlay scrollbars disappear when there is nothing to scroll.
+	[m_hScrollbar setHidden:(knob >= 1.0 && [NSScroller preferredScrollerStyle] == NSScrollerStyleOverlay)];
 	[m_hScrollbar setNeedsDisplay:YES];
 	[[(AP_CocoaFrameController*)_getController() getHRuler] setNeedsDisplay:YES];
 }
@@ -214,9 +216,10 @@ void AP_CocoaFrameImpl::_setVScrollbarValues()
 		[m_vScrollbar setEnabled:NO];
 	} else {
 		[m_vScrollbar setEnabled:YES];
-		[m_hScrollbar setKnobProportion:knob];
-		[m_hScrollbar setDoubleValue:value];
+		[m_vScrollbar setKnobProportion:knob];
+		[m_vScrollbar setDoubleValue:value];
 	}
+	[m_vScrollbar setHidden:(knob >= 1.0 && [NSScroller preferredScrollerStyle] == NSScrollerStyleOverlay)];
 	[m_vScrollbar setNeedsDisplay:YES];
 	// [[(_getController()) getVRuler] setNeedsDisplay:YES]; // ??
 }
@@ -227,7 +230,6 @@ void AP_CocoaFrameImpl::_scrollAction(id sender)
 	float newValue = [sender floatValue];
 	NSScrollerPart part = [sender hitPart];
 	AV_View * pView = getFrame()->getCurrentView();
-	GR_Graphics * pGr = pView->getGraphics();
 
 	UT_DEBUGMSG(("newValue = %f\n", newValue));
 	switch (part) {
@@ -251,22 +253,7 @@ void AP_CocoaFrameImpl::_scrollAction(id sender)
 			_setHScrollValue(m_HCurrentScroll + m_HVisible);
 		}
 		break;
-    case NSScrollerDecrementLine:
-		UT_DEBUGMSG(("NSScrollerDecrementLine\n"));
-		if (sender == m_vScrollbar) {
-			_setVScrollValue(m_VCurrentScroll - pGr->tlu(20));
-		} else {
-			_setHScrollValue(m_HCurrentScroll - pGr->tlu(20));
-		}
-		break;
-    case NSScrollerIncrementLine:
-		UT_DEBUGMSG(("NSScrollerIncrementLine\n"));
-		if (sender == m_vScrollbar) {
-			_setVScrollValue(m_VCurrentScroll + pGr->tlu(20));
-		} else {
-			_setHScrollValue(m_HCurrentScroll + pGr->tlu(20));
-		}
-		break;
+	// (scrollers have had no arrow buttons since OS X 10.7)
     case NSScrollerKnob	:
     case NSScrollerKnobSlot	:
 		UT_DEBUGMSG(("NSScrollerKnob\n"));
@@ -411,6 +398,35 @@ void AP_CocoaFrameImpl::_hideLeftRulerNSView(void)
 	[ruler removeFromSuperview];
 }
 
+/*!
+ * Place the document view and scrollbars according to the system scrollbar
+ * style: overlay scrollbars (trackpad default) float over the document,
+ * legacy ones get their own strips.
+ */
+void AP_CocoaFrameImpl::_layoutDocArea()
+{
+	NSView * docArea = [_getController() getMainView];
+	if (!docArea || !m_docAreaGRView || !m_vScrollbar || !m_hScrollbar) {
+		return;
+	}
+	NSRect frame = [docArea bounds];
+	NSScrollerStyle style = [NSScroller preferredScrollerStyle];
+	CGFloat sw = [NSScroller scrollerWidthForControlSize:NSControlSizeRegular scrollerStyle:style];
+
+	[m_vScrollbar setFrame:NSMakeRect(NSMaxX(frame) - sw, sw, sw, frame.size.height - sw)];
+	[m_hScrollbar setFrame:NSMakeRect(0, 0, frame.size.width - sw, sw)];
+
+	NSRect docFrame = frame;
+	if (style == NSScrollerStyleLegacy) {
+		docFrame = NSMakeRect(0, sw, frame.size.width - sw, frame.size.height - sw);
+	}
+	[m_docAreaGRView setFrame:docFrame];
+	// visibility depends on the style
+	_setHScrollbarValues();
+	_setVScrollbarValues();
+	[docArea setNeedsDisplay:YES];
+}
+
 void AP_CocoaFrameImpl::_createDocView(GR_Graphics* &pG)
 {
 	XAP_Frame*	pFrame = getFrame();
@@ -423,46 +439,30 @@ void AP_CocoaFrameImpl::_createDocView(GR_Graphics* &pG)
         m_vScrollbar = nullptr;
         m_docAreaGRView = nullptr;
     }
-	[docAreaSubviews release];
 
 	NSRect frame = [docArea bounds];
-	NSRect controlFrame;
-	
-	/* vertical scrollbar */
-	controlFrame.origin.y = [NSScroller scrollerWidthForControlSize:NSControlSizeRegular scrollerStyle:NSScrollerStyleOverlay];
-	controlFrame.size.width = [NSScroller scrollerWidthForControlSize:NSControlSizeRegular scrollerStyle:NSScrollerStyleOverlay];
-	controlFrame.size.height = frame.size.height - controlFrame.origin.y;
-	controlFrame.origin.x = frame.size.width - controlFrame.size.width;
-	m_vScrollbar = [[XAP_NSScroller alloc] initWithFrame:controlFrame andController:_getController()
+
+	/* doc view, below the scrollbars so overlay scrollbars float over it */
+	m_docAreaGRView = [[XAP_CocoaTextView alloc] initWith:pFrame andFrame:frame andName:@"document view"];
+	[docArea addSubview:m_docAreaGRView];
+	[m_docAreaGRView setAutoresizingMask:(NSViewHeightSizable | NSViewWidthSizable)];
+	[m_docAreaGRView setEventDelegate:[[AP_DocViewDelegate alloc] init]];
+	[_getController() setTextView:m_docAreaGRView];
+	[[_getController() window] makeFirstResponder:m_docAreaGRView];
+
+	/* scrollbars; their frames are set by _layoutDocArea() */
+	m_vScrollbar = [[XAP_NSScroller alloc] initWithFrame:NSMakeRect(0, 0, 15, 100) andController:_getController()
 						vertical:YES];
 	[docArea addSubview:m_vScrollbar];
 	[m_vScrollbar setEnabled:YES];
-	[m_vScrollbar release];
-	
-	/* horizontal scrollbar */
-	controlFrame.origin.x = 0;
-	controlFrame.origin.y = 0;
-	controlFrame.size.height = [NSScroller scrollerWidthForControlSize:NSControlSizeRegular scrollerStyle:NSScrollerStyleOverlay];
-	controlFrame.size.width = frame.size.width - controlFrame.size.height;
-	m_hScrollbar = [[XAP_NSScroller alloc] initWithFrame:controlFrame andController:_getController()
+
+	m_hScrollbar = [[XAP_NSScroller alloc] initWithFrame:NSMakeRect(0, 0, 100, 15) andController:_getController()
 						vertical:NO];
 	[docArea addSubview:m_hScrollbar];
 	[m_hScrollbar setEnabled:YES];
-	[m_hScrollbar release];
 
-	/* doc view */
-	controlFrame.origin.x = 0;
-	controlFrame.origin.y = [NSScroller scrollerWidthForControlSize:NSControlSizeRegular scrollerStyle:NSScrollerStyleOverlay];
-	controlFrame.size.height = frame.size.height - controlFrame.origin.y;
-	controlFrame.size.width = frame.size.width - [NSScroller scrollerWidthForControlSize:NSControlSizeRegular scrollerStyle:NSScrollerStyleOverlay];
-	m_docAreaGRView = [[XAP_CocoaTextView alloc] initWith:pFrame andFrame:controlFrame andName:@"document view"];
-	[docArea addSubview:m_docAreaGRView];
-	[m_docAreaGRView setAutoresizingMask:(NSViewHeightSizable | NSViewWidthSizable)];
-	[m_docAreaGRView setEventDelegate:[[[AP_DocViewDelegate alloc] init] autorelease]];
-	[_getController() setTextView:m_docAreaGRView];
-	[[_getController() window] makeFirstResponder:m_docAreaGRView];
-	[m_docAreaGRView release];
-	
+	_layoutDocArea();
+
 	GR_CocoaAllocInfo ai(m_docAreaGRView);
 	pG = (GR_CocoaGraphics*)XAP_App::getApp()->newGraphics(ai);
 
@@ -650,7 +650,25 @@ void AP_CocoaFrameImpl::giveFocus()
 - (id)initWith:(XAP_CocoaFrameImpl *)frame
 {
 	UT_DEBUGMSG (("Cocoa: @AP_CocoaFrameController initWith:frame\n"));
-	return [super initWith:frame];
+	if (![super initWith:frame]) {
+		return nil;
+	}
+	// Follow "Show scroll bars" changes in System Settings (or plugging a mouse).
+	[[NSNotificationCenter defaultCenter] addObserver:self
+			selector:@selector(preferredScrollerStyleChanged:)
+			name:NSPreferredScrollerStyleDidChangeNotification object:nil];
+	return self;
+}
+
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)preferredScrollerStyleChanged:(NSNotification *)notification
+{
+	UT_UNUSED(notification);
+	static_cast<AP_CocoaFrameImpl*>(m_frame)->_layoutDocArea();
 }
 
 
@@ -679,6 +697,44 @@ void AP_CocoaFrameImpl::giveFocus()
 
 
 @implementation XAP_NSScroller
+
+/*
+ * These scrollers stay in AppKit legacy mode (the default for NSScroller
+ * subclasses): in overlay mode AppKit draws through private layers and only
+ * shows the knob while an NSScrollView flashes it, which never happens for
+ * standalone scrollers. When the system prefers overlay scrollbars,
+ * drawRect: below draws the slim floating knob instead, always visible.
+ * Mouse tracking is still done by NSScroller.
+ */
+- (void)drawRect:(NSRect)dirtyRect
+{
+	if ([NSScroller preferredScrollerStyle] != NSScrollerStyleOverlay) {
+		[super drawRect:dirtyRect];
+		return;
+	}
+	if (![self isEnabled] || [self knobProportion] >= 1.0) {
+		return;
+	}
+	NSRect knob = [self rectForPart:NSScrollerKnob];
+	if (NSIsEmptyRect(knob)) {
+		return;
+	}
+	const CGFloat thickness = 7.0;
+	const CGFloat margin = 2.0;
+	BOOL vertical = knob.size.height > knob.size.width;
+	if (vertical) {
+		knob = NSMakeRect(NSMaxX(knob) - thickness - margin, knob.origin.y + margin, thickness, knob.size.height - 2 * margin);
+	} else {
+		knob = NSMakeRect(knob.origin.x + margin, knob.origin.y + margin, knob.size.width - 2 * margin, thickness);
+	}
+	[[[NSColor labelColor] colorWithAlphaComponent:0.35] setFill];
+	[[NSBezierPath bezierPathWithRoundedRect:knob xRadius:thickness / 2 yRadius:thickness / 2] fill];
+}
+
+- (BOOL)isOpaque
+{
+	return NO;
+}
 
 -(id)initWithFrame:(NSRect)frame andController:(NSWindowController*)controller vertical:(BOOL)vertical
 {

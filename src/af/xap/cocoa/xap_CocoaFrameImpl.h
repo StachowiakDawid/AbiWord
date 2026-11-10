@@ -115,7 +115,6 @@ public:
 	XAP_CocoaFrameController *	_getController () { return m_frameController; };
 	virtual NSString *			_getNibName () = 0;
 	virtual XAP_CocoaFrameController *_createController() = 0;
-	static void				setToolbarRect(const NSRect &r);
 protected:
 	virtual void				_createDocumentWindow() = 0;
 	virtual void				_createStatusBarWindow(XAP_CocoaNSStatusBar *) = 0;

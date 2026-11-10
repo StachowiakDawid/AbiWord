@@ -56,7 +56,8 @@ class XAP_Drawable;
     NSString* m_name;
 	CGLayerRef m_layer;
 	bool m_layer_needs_resize;
-	bool m_layer_needs_redraw;
+	bool m_layer_needs_redraw;	/* re-render the whole layer */
+	NSRect m_layer_dirty_rect;	/* re-render just this part (top-left origin) */
 	NSCursor* _cursor;
 	bool _in_draw_rect;
 	XAP_Frame* m_pFrame;
@@ -75,6 +76,7 @@ class XAP_Drawable;
 - (void)setGraphics:(GR_CocoaGraphics*)gr;
 - (CGLayerRef)makeDrawingLayer;
 - (void)invalidateDrawingLayer;
+- (void)invalidateDrawingLayerInRect:(NSRect)rect;
 - (void)setEventDelegate:(NSObject<XAP_MouseEventDelegate>*)delegate;
 - (NSObject<XAP_MouseEventDelegate>*)eventDelegate;
 - (void)drawRect:(NSRect)aRect;

@@ -29,13 +29,10 @@
 
 @class XAP_CocoaFrameController;
 
+/* Places each frame's toolbars inside its own window (titlebar accessory). */
 @interface XAP_CocoaToolbarWindow_Controller : NSWindowController
 {
-	XAP_CocoaFrameController *	m_current;
-	NSMutableArray *			m_windows;
-	NSString *					m_SummaryID;
-	NSRect						m_bounds;
-
+	XAP_CocoaFrameController *	m_current;	/* not owned */
 	BOOL	m_lock;
 }
 + (XAP_CocoaToolbarWindow_Controller *)sharedToolbar;

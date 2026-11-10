@@ -56,6 +56,7 @@ class AP_CocoaFrameImpl : public XAP_CocoaFrameImpl
 	virtual XAP_FrameImpl * createInstance(XAP_Frame *pFrame);
 
 	virtual NSString *			_getNibName (); /* must be public to be called from Obj-C */
+	void _layoutDocArea(); /* public: called from the Obj-C controller */
 
 	UT_sint32 _getHScrollValue()	{ return m_HCurrentScroll; };
 	UT_sint32 _getHScrollMin()	{ return m_HMinScroll; };

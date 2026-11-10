@@ -61,9 +61,11 @@ public:
 	virtual void hide(void);
 
 	static	CGFloat	getButtonWidth (void)
-		{ return 28.0f; };
+		{ return 30.0f; };
 	static	CGFloat	getButtonHeight (void)
-		{ return 28.0f; };
+		{ return 30.0f; };
+	static	CGFloat	getButtonSpacing (void)
+		{ return 2.0f; };
 
 	static CGFloat getToolbarHeight(void)
 		{ return getButtonHeight(); };

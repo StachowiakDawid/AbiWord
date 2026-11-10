@@ -39,6 +39,7 @@
 #include "ap_CocoaViewListener.h"
 
 #import "ap_CocoaFrameImpl.h"
+#import "xap_CocoaTextView.h"
 
 /*****************************************************************/
 #define ENSUREP_RF(p)            do { UT_ASSERT(p); if (!p) return false; } while (0)

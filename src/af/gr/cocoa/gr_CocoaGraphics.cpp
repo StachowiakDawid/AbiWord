@@ -416,12 +416,7 @@ GR_CocoaGraphics::~GR_CocoaGraphics()
     UT_std_vector_sparsepurgeall(m_cacheRectArray);
 
     [m_view setGraphics:nullptr];
-    [m_fontForGraphics release];
-    [m_currentColor release];
 
-    for (int i = 0; i < COUNT_3D_COLORS; i++) {
-        [m_3dColors[i] release];
-    }
 }
 
 void GR_CocoaGraphics::fillNSRect(NSRect& aRect, NSColor* color)
@@ -435,10 +430,13 @@ void GR_CocoaGraphics::fillNSRect(NSRect& aRect, NSColor* color)
 
 void GR_CocoaGraphics::_beginPaint(void)
 {
-    NSGraphicsContext* context = NSGraphicsContext.currentContext;
-    m_CGContext = isPrinting() ? context.CGContext : ::CGLayerGetContext(getCGLayer());
+    // Screen drawing goes to the view's CGLayer; printing draws in the
+    // current context, or in the layer if there is none.
+    m_CGContext = nullptr;
+    if (isPrinting()) {
+        m_CGContext = NSGraphicsContext.currentContext.CGContext;
+    }
     if (!m_CGContext) {
-        // no context, let's draw in the CGLayer
         m_CGContext = ::CGLayerGetContext(getCGLayer());
     }
     _ASSERT_CG_CONTEXT;
@@ -632,22 +630,27 @@ void GR_CocoaGraphics::drawChars(const UT_UCS4Char* pChars, int iCharOffset,
     const UT_UCS4Char* begin = pChars + iCharOffset;
 
     NSFont* font = m_fontForGraphics;
-    NSDictionary* attributes = [NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName];
-    NSString* string = [[[NSString alloc]
+    // Draw with the context fill colour (the current GR colour) instead of
+    // Core Text's default black, so coloured text and ruler labels in dark
+    // mode render correctly.
+    NSDictionary* attributes = @{
+        NSFontAttributeName : font,
+        (NSString*)kCTForegroundColorFromContextAttributeName : @YES,
+    };
+    NSString* string = [[NSString alloc]
         initWithBytes:(void*)begin
                length:(NSUInteger)iLength * sizeof(UT_UCS4Char)
-             encoding:NSUTF32LittleEndianStringEncoding]
-        autorelease];
+             encoding:NSUTF32LittleEndianStringEncoding];
     // NSLog(@"drawChars string=%@ font=%@", string, font);
-    NSAttributedString* attrString = [[[NSAttributedString alloc]
+    NSAttributedString* attrString = [[NSAttributedString alloc]
         initWithString:string
-            attributes:attributes]
-        autorelease];
+            attributes:attributes];
 
     CTLineRef ctLine = ::CTLineCreateWithAttributedString((CFAttributedStringRef)attrString);
 
     GR_CGStateSave state(m_CGContext);
     ::CGContextSetShouldAntialias(m_CGContext, true);
+    ::CGContextSetFillColorWithColor(m_CGContext, m_currentColor.CGColor);
 
     // This is needed to set the text transformation matrix to sensible
     // value
@@ -985,21 +988,28 @@ void GR_CocoaGraphics::invertRect(const UT_Rect* pRect)
     UT_DEBUGMSG(("GR_CocoaGraphics::invertRect()\n"));
     UT_ASSERT(pRect);
 
-    // TODO handle invert. this is highlight.
-
-    NSHighlightRect(NSMakeRect(TDUX(pRect->left), _tduY(pRect->top), _tduR(pRect->width), _tduR(pRect->height)));
+    _ASSERT_CG_CONTEXT;
+    // difference with white inverts the colours underneath
+    GR_CGStateSave state(m_CGContext);
+    ::CGContextSetBlendMode(m_CGContext, kCGBlendModeDifference);
+    ::CGContextSetFillColorWithColor(m_CGContext, ::CGColorGetConstantColor(kCGColorWhite));
+    ::CGContextFillRect(m_CGContext, ::CGRectMake(TDUX(pRect->left), _tduY(pRect->top), _tduR(pRect->width), _tduR(pRect->height)));
 }
 
 void GR_CocoaGraphics::queueDraw(const UT_Rect* pRect)
 {
-    CGRect clip;
-    if (pRect) {
-        clip = ::CGRectMake(TDUX(pRect->left), _tduY(pRect->top), _tduR(pRect->width), _tduR(pRect->height));
-    } else {
-        clip = m_view.bounds;
+    if (!pRect) {
+        [m_view invalidateDrawingLayer];
+        [m_view setNeedsDisplay:YES];
+        return;
     }
-    [m_view invalidateDrawingLayer];
-    [m_view setNeedsDisplayInRect:clip];
+    // In GR (top-left origin) coordinates, for the update callback.
+    CGRect clip = ::CGRectMake(TDUX(pRect->left), _tduY(pRect->top), _tduR(pRect->width), _tduR(pRect->height));
+    [m_view invalidateDrawingLayerInRect:clip];
+    // The view itself is not flipped.
+    CGRect viewClip = clip;
+    viewClip.origin.y = m_view.bounds.size.height - clip.origin.y - clip.size.height;
+    [m_view setNeedsDisplayInRect:viewClip];
 }
 
 void GR_CocoaGraphics::setClipRect(const UT_Rect* pRect)
@@ -1093,115 +1103,25 @@ void GR_CocoaGraphics::scroll(UT_sint32 dx, UT_sint32 dy)
     if (!dx && !dy)
         return;
 
-    UT_sint32 oldDY = tdu(getPrevYOffset());
-    UT_sint32 oldDX = tdu(getPrevXOffset());
-    UT_sint32 newY = getPrevYOffset() + dy;
-    UT_sint32 newX = getPrevXOffset() + dx;
-    UT_sint32 ddx = -(tdu(newX) - oldDX);
-    UT_sint32 ddy = -(tdu(newY) - oldDY);
-    setPrevYOffset(newY);
-    setPrevXOffset(newX);
+    setPrevYOffset(getPrevYOffset() + dy);
+    setPrevXOffset(getPrevXOffset() + dx);
 
-    [m_view displayIfNeeded];
-
-    NSRect bounds = m_view.bounds;
-    NSSize offset = NSMakeSize(ddx, ddy);
-    [m_view scrollRect:bounds by:offset];
-
-    if (offset.width > 0) {
-        if (offset.width < bounds.size.width) {
-            if (offset.height > 0) {
-                if (offset.height < bounds.size.height) {
-                    NSRect tmp;
-                    tmp.origin.x = bounds.origin.x + offset.width;
-                    tmp.origin.y = bounds.origin.y;
-                    tmp.size.width = bounds.size.width - offset.width;
-                    tmp.size.height = offset.height;
-                    [m_view setNeedsDisplayInRect:tmp];
-
-                    bounds.size.width = offset.width;
-                }
-            } else if (offset.height < 0) {
-                if ((-offset.height) < bounds.size.height) {
-                    NSRect tmp;
-                    tmp.origin.x = bounds.origin.x + offset.width;
-                    tmp.origin.y = bounds.origin.y + bounds.size.height + offset.height;
-                    tmp.size.width = bounds.size.width - offset.width;
-                    tmp.size.height = -offset.height;
-                    [m_view setNeedsDisplayInRect:tmp];
-
-                    bounds.size.width = offset.width;
-                }
-            } else {
-                bounds.size.width = offset.width;
-            }
-        }
-    } else if (offset.width < 0) {
-        if ((-offset.width) < bounds.size.width) {
-            if (offset.height > 0) {
-                if (offset.height < bounds.size.height) {
-                    NSRect tmp;
-                    tmp.origin = bounds.origin;
-                    tmp.size.width = bounds.size.width - offset.width;
-                    tmp.size.height = offset.height;
-                    [m_view setNeedsDisplayInRect:tmp];
-
-                    bounds.origin.x += bounds.size.width + offset.width;
-                    bounds.size.width = -offset.width;
-                }
-            } else if (offset.height < 0) {
-                if ((-offset.height) < bounds.size.height) {
-                    NSRect tmp;
-                    tmp.origin.x = bounds.origin.x;
-                    tmp.origin.y = bounds.origin.y + bounds.size.height + offset.height;
-                    tmp.size.width = bounds.size.width + offset.width;
-                    tmp.size.height = -offset.height;
-                    [m_view setNeedsDisplayInRect:tmp];
-
-                    bounds.origin.x += bounds.size.width + offset.width;
-                    bounds.size.width = -offset.width;
-                }
-            } else {
-                bounds.origin.x += bounds.size.width + offset.width;
-                bounds.size.width = -offset.width;
-            }
-        }
-    } else {
-        if (offset.height > 0) {
-            if (offset.height < bounds.size.height) {
-                bounds.size.height = offset.height;
-            }
-        } else if (offset.height < 0) {
-            if ((-offset.height) < bounds.size.height) {
-                bounds.origin.y += bounds.size.height + offset.height;
-                bounds.size.height = -offset.height;
-            }
-        }
-    }
+    // The view draws from a cached layer that is re-rendered as a whole,
+    // so there is no need to shift pixels (the deprecated -scrollRect:by:).
     [m_view invalidateDrawingLayer];
-    [m_view setNeedsDisplayInRect:bounds];
+    [m_view setNeedsDisplay:YES];
 }
 
 void GR_CocoaGraphics::scroll(UT_sint32 x_dest, UT_sint32 y_dest,
     UT_sint32 x_src, UT_sint32 y_src,
-    UT_sint32 width, UT_sint32 height)
+    UT_sint32 /*width*/, UT_sint32 /*height*/)
 {
-    UT_sint32 dx = x_src - x_dest;
-    UT_sint32 dy = y_src - y_dest;
+    setPrevXOffset(getPrevXOffset() + (x_src - x_dest));
+    setPrevYOffset(getPrevYOffset() + (y_src - y_dest));
 
-    UT_sint32 oldDX = tdu(getPrevXOffset());
-    UT_sint32 oldDY = tdu(getPrevYOffset());
-
-    UT_sint32 newX = getPrevXOffset() + dx;
-    UT_sint32 newY = getPrevYOffset() + dy;
-
-    UT_sint32 ddx = oldDX - tdu(newX);
-    UT_sint32 ddy = oldDY - tdu(newY);
-
-    [m_view scrollRect:NSMakeRect(tdu(x_dest) - ddx, tdu(y_dest) - ddy, _tduR(width), _tduR(height)) by:NSMakeSize(ddx, ddy)];
-
-    setPrevXOffset(newX);
-    setPrevYOffset(newY);
+    // see above: re-render the cached layer instead of moving pixels
+    [m_view invalidateDrawingLayer];
+    [m_view setNeedsDisplay:YES];
 }
 
 void GR_CocoaGraphics::clearArea(UT_sint32 x, UT_sint32 y,
@@ -1462,8 +1382,7 @@ GR_Graphics::Cursor GR_CocoaGraphics::getCursor(void) const
  */
 void GR_CocoaGraphics::_utNSColorToRGBColor(NSColor* c, UT_RGBColor& clr)
 {
-    UT_DEBUGMSG(("colorSpaceName %s\n", c.colorSpaceName.UTF8String));
-    if ([c.colorSpaceName isEqualToString:NSPatternColorSpace]) {
+    if ([c type] == NSColorTypePattern) {
         NSImage* img = c.patternImage;
         UT_ASSERT(img);
         UT_DEBUGMSG(("NSColor pattern size is %f, %f\n", img.size.width, img.size.height));
@@ -1487,22 +1406,49 @@ void GR_CocoaGraphics::setColor3D(GR_Color3D c)
     _setColor(m_3dColors[c]);
 }
 
-bool GR_CocoaGraphics::getColor3D(GR_Color3D c, UT_RGBColor& /*colour*/)
+bool GR_CocoaGraphics::getColor3D(GR_Color3D c, UT_RGBColor& colour)
 {
     UT_ASSERT(c < COUNT_3D_COLORS);
+    if (c >= COUNT_3D_COLORS) {
+        return false;
+    }
+    // Resolve the dynamic colour for the view's current light/dark appearance.
+    NSAppearance* appearance = m_view ? m_view.effectiveAppearance : NSApp.effectiveAppearance;
+    __block UT_RGBColor resolved;
+    [appearance performAsCurrentDrawingAppearance:^{
+        _utNSColorToRGBColor(m_3dColors[c], resolved);
+    }];
+    colour = resolved;
+    return true;
+}
 
-    //UT_ASSERT(UT_NOT_IMPLEMENTED);
-    return false;
+/*!
+ * A colour that follows the system light/dark appearance.
+ */
+static NSColor* s_dynamicGray(NSString* name, CGFloat light, CGFloat dark)
+{
+    return [NSColor colorWithName:name dynamicProvider:^NSColor*(NSAppearance* appearance) {
+        NSAppearanceName match = [appearance bestMatchFromAppearancesWithNames:@[ NSAppearanceNameAqua, NSAppearanceNameDarkAqua ]];
+        CGFloat white = [match isEqualToString:NSAppearanceNameDarkAqua] ? dark : light;
+        return [NSColor colorWithSRGBRed:white green:white blue:white alpha:1.0];
+    }];
 }
 
 void GR_CocoaGraphics::init3dColors()
 {
     UT_DEBUGMSG(("init3dColors()\n"));
-    m_3dColors[CLR3D_Foreground] = NSColor.blackColor;
-    m_3dColors[CLR3D_Background] = NSColor.lightGrayColor;
-    m_3dColors[CLR3D_BevelUp] = NSColor.whiteColor;
-    m_3dColors[CLR3D_BevelDown] = NSColor.darkGrayColor;
-    m_3dColors[CLR3D_Highlight] = NSColor.whiteColor;
+    // Colours of the rulers and the area around the pages. They mirror the
+    // standard macOS window chrome rather than the old fixed greys.
+    // text and tick marks on the rulers
+    m_3dColors[CLR3D_Foreground] = s_dynamicGray(@"AbiRulerText", 0.38, 0.72);
+    // ruler face
+    m_3dColors[CLR3D_Background] = NSColor.windowBackgroundColor;
+    // bevel lines of the ruler handles
+    m_3dColors[CLR3D_BevelUp] = s_dynamicGray(@"AbiBevelUp", 1.00, 0.45);
+    // ruler margins and the canvas around the pages
+    m_3dColors[CLR3D_BevelDown] = s_dynamicGray(@"AbiCanvas", 0.84, 0.17);
+    // writable area of the ruler
+    m_3dColors[CLR3D_Highlight] = s_dynamicGray(@"AbiRulerBar", 1.00, 0.32);
 }
 
 void GR_CocoaGraphics::polygon(const UT_RGBColor& clr, const UT_Point* pts, UT_uint32 nPoints)
@@ -1615,9 +1561,7 @@ void GR_CocoaGraphics::saveRectangle(UT_Rect& rect, UT_uint32 iIndx)
     NSImage* cache = [[NSImage alloc] initWithSize:[imageRep size]];
     [cache addRepresentation:imageRep];
 
-    // update cache arrays
-    id oldObj = m_cacheArray[iIndx];
-    [oldObj release];
+    // update cache arrays (ARC releases the previous image)
     m_cacheArray[iIndx] = cache;
 
     NSRect* old = m_cacheRectArray[iIndx];

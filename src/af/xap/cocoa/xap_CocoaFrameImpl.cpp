@@ -455,28 +455,6 @@ void XAP_CocoaFrameImpl::_setController (XAP_CocoaFrameController * ctrl)
 	m_frameController = ctrl; 
 }
 
-void XAP_CocoaFrameImpl::setToolbarRect(const NSRect &r)
-{
-	UT_uint32 frameCount = XAP_App::getApp()->getFrameCount();
-	UT_uint32 i;
-	
-	for (i = 0; i < frameCount; i++) {
-		XAP_CocoaFrameImpl* impl = dynamic_cast<XAP_CocoaFrameImpl*>(XAP_App::getApp()->getFrame(i)->getFrameImpl());
-		XAP_CocoaFrameController* ctrl  = impl->_getController();
-		NSRect frame = [[ctrl window] frame];
-		if (NSIntersectsRect(frame, r)) {
-			if (frame.origin.y + frame.size.height > r.origin.y) {
-				UT_DEBUGMSG(("original frame is %f %f %f %f\n", frame.origin.x, frame.origin.y,
-									frame.size.width, frame.size.height));
-				frame.size.height = r.origin.y - frame.origin.y;
-				[[ctrl window] setFrame:frame display:YES];
-				UT_DEBUGMSG(("resized frame is %f %f %f %f\n", frame.origin.x, frame.origin.y,
-									frame.size.width, frame.size.height));
-			}
-		}
-	}
-}
-
 
 /* Objective C section */
 
