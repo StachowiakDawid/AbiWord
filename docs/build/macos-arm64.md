@@ -63,6 +63,8 @@ test -s smoke-readme.txt
 open install/AbiWord.app
 ```
 
+Run the unit tests with `make check`.
+
 The tested executable and bundled libabiword are both Mach-O arm64 binaries.
 The version command prints `3.1.90`, and the readme conversion produces
 nonempty text. GUI startup responds to an activation Apple event, and a

@@ -20,14 +20,20 @@
 
 #include "../xp/main.cpp"
 
+#import "xap_CocoaAppController.h"
+#include "ap_CocoaApp.h"
+
+static AP_CocoaApp *app = nullptr;
 
 void init_platform(void)
 {
+	[XAP_CocoaApplication sharedApplication];
+	app = new AP_CocoaApp(PACKAGE);
+	app->initialize();
 }
-
-
 
 void terminate_platform(void)
 {
-
+	delete app;
+	app = nullptr;
 }

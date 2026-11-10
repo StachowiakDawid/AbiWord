@@ -32,8 +32,13 @@ AbiWord_test_LDFLAGS =  -L$(top_builddir)/src -labiword-@ABIWORD_SERIES@ \
 
 AbiWord_test_LDADD =  $(DEPS_LIBS)
 
+if TOOLKIT_COCOA
+AbiWord_test_CPPFLAGS += -x objective-c++ -fobjc-arc
+AbiWord_test_SOURCES = cocoa/test_main.cpp
+else
 AbiWord_test_SOURCES = unix/test_main.cpp \
 	unix/all_test_unix.h
+endif
 
 testwrap.sh-stamp: unix/testwrap.sh
 	chmod a+x unix/testwrap.sh
@@ -48,5 +53,4 @@ CLEANFILES = vgcore.* \
 EXTRA_DIST = \
 	xp/main.cpp \
 	xp/all_test.h \
-	win/test_main.cpp \
-	cocoa/test_main.cpp
+	win/test_main.cpp
