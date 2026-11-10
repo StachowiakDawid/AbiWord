@@ -585,6 +585,14 @@ static XAP_CocoaAppController * XAP_AppController_Instance = nil;
 		m_AppMenu[XAP_CocoaAppMenu_Window] = oMenu_Window;
 		m_AppMenu[XAP_CocoaAppMenu_Help  ] = oMenu_Help;
 
+		// The XP layout has an RDF top-level menu that MainMenu.nib lacks.
+		m_AppMenu[XAP_CocoaAppMenu_RDF] = [[NSMenu alloc] initWithTitle:@"RDF"];
+		m_AppItem[XAP_CocoaAppMenu_RDF] = [[NSMenuItem alloc] initWithTitle:@"RDF" action:nil keyEquivalent:@""];
+		[m_AppItem[XAP_CocoaAppMenu_RDF] setSubmenu:m_AppMenu[XAP_CocoaAppMenu_RDF]];
+		NSMenu * mainMenu = [NSApp mainMenu];
+		[mainMenu insertItem:m_AppItem[XAP_CocoaAppMenu_RDF]
+					 atIndex:[mainMenu indexOfItem:oMenuItem_Window]];
+
 		UT_DEBUGMSG(("[...FinishLaunching] Building application menu:\n"));
 		pCocoaMenuBar->buildAppMenu();
 	}
@@ -788,9 +796,12 @@ static XAP_CocoaAppController * XAP_AppController_Instance = nil;
 	case XAP_CocoaAppMenu_Format:
 	case XAP_CocoaAppMenu_Tools:
 	case XAP_CocoaAppMenu_Table:
+	case XAP_CocoaAppMenu_RDF:
 	case XAP_CocoaAppMenu_Window: // ??
 	case XAP_CocoaAppMenu_Help:
+		// The menu bar shows the submenu's title, not the item's.
 		[m_AppItem[appMenu] setTitle:title];
+		[m_AppMenu[appMenu] setTitle:title];
 		break;
 
 	case XAP_CocoaAppMenu_AbiWord: // disallow
@@ -852,6 +863,7 @@ static XAP_CocoaAppController * XAP_AppController_Instance = nil;
 	case XAP_CocoaAppMenu_Format:
 	case XAP_CocoaAppMenu_Tools:
 	case XAP_CocoaAppMenu_Table:
+	case XAP_CocoaAppMenu_RDF:
 	case XAP_CocoaAppMenu_Help:
 	{
 		// UT_DEBUGMSG(("appendItem: toMenu:\"%s\"\n", [[m_AppItem[appMenu] title] UTF8String]));
@@ -889,6 +901,7 @@ static XAP_CocoaAppController * XAP_AppController_Instance = nil;
 	case XAP_CocoaAppMenu_Format:
 	case XAP_CocoaAppMenu_Tools:
 	case XAP_CocoaAppMenu_Table:
+	case XAP_CocoaAppMenu_RDF:
 		while (int count = [m_AppMenu[appMenu] numberOfItems])
 		{
 			[m_AppMenu[appMenu] removeItemAtIndex:(count - 1)];
@@ -925,6 +938,7 @@ static XAP_CocoaAppController * XAP_AppController_Instance = nil;
 	[self clearMenu:XAP_CocoaAppMenu_Format];
 	[self clearMenu:XAP_CocoaAppMenu_Tools ];
 	[self clearMenu:XAP_CocoaAppMenu_Table ];
+	[self clearMenu:XAP_CocoaAppMenu_RDF   ];
 	// !Windows
 	[self clearMenu:XAP_CocoaAppMenu_Help  ];
 }

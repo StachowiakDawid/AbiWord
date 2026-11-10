@@ -58,6 +58,7 @@ enum XAP_CocoaAppMenu_Id
 	XAP_CocoaAppMenu_Format,
 	XAP_CocoaAppMenu_Tools,
 	XAP_CocoaAppMenu_Table,
+	XAP_CocoaAppMenu_RDF, // not in the nib; created at launch
 	XAP_CocoaAppMenu_Window,
 	XAP_CocoaAppMenu_Help,
 	XAP_CocoaAppMenu_count__

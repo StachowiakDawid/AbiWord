@@ -407,6 +407,10 @@ void EV_CocoaMenu::buildAppMenu()
 				m_AppMenuCurrent = XAP_CocoaAppMenu_Table;
 				bNewAppMenuItem = true;
 				break;
+			case AP_MENU_ID_RDF:
+				m_AppMenuCurrent = XAP_CocoaAppMenu_RDF;
+				bNewAppMenuItem = true;
+				break;
 			case AP_MENU_ID_WINDOW:
 				m_AppMenuCurrent = XAP_CocoaAppMenu_Window;
 				bNewAppMenuItem = true;
