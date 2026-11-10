@@ -1193,10 +1193,16 @@ void GR_CocoaGraphics::drawImage(GR_Image* pImg, UT_sint32 xDest, UT_sint32 yDes
     _ASSERT_CG_CONTEXT;
 
     GR_CGStateSave state(m_CGContext);
-    //	::CGContextTranslateCTM (m_CGContext, -0.5, -0.5);
-    [image drawInRect:NSMakeRect(TDUX(xDest), _tduY(yDest), pCocoaImage->getDisplayWidth(), iImageHeight)
+    // The GR context is flipped (top-left origin) but NSImage draws
+    // bottom-up: flip around the image so it is not upside down.
+    CGFloat x = TDUX(xDest);
+    CGFloat y = _tduY(yDest);
+    ::CGContextTranslateCTM(m_CGContext, x, y + iImageHeight);
+    ::CGContextScaleCTM(m_CGContext, 1.0, -1.0);
+    // SourceOver: transparent parts show the page instead of punching holes.
+    [image drawInRect:NSMakeRect(0, 0, pCocoaImage->getDisplayWidth(), iImageHeight)
              fromRect:NSMakeRect(0, 0, size.width, size.height)
-            operation:NSCompositingOperationCopy
+            operation:NSCompositingOperationSourceOver
              fraction:1.0f];
 }
 

@@ -36,33 +36,56 @@
 GR_CocoaImage::GR_CocoaImage(const char* szName)
     : m_grtype(GRT_Raster) // Probably the safest default.
     , m_image(nil)
+    , m_bitmap(nil)
 {
     setName(szName ? szName : "CocoaImage");
 }
 
 GR_CocoaImage::~GR_CocoaImage()
 {
-    [m_image release];
 }
 
+void GR_CocoaImage::_setImage(NSImage* image)
+{
+    m_image = image;
+    m_bitmap = nil;
+}
+
+NSBitmapImageRep* GR_CocoaImage::_bitmap() const
+{
+    if (!m_bitmap && m_image) {
+        CGImageRef cgImage = [m_image CGImageForProposedRect:nullptr context:nil hints:nil];
+        if (cgImage) {
+            m_bitmap = [[NSBitmapImageRep alloc] initWithCGImage:cgImage];
+        }
+    }
+    return m_bitmap;
+}
+
+/*!
+ * Store the image as PNG, like the other platforms do.
+ */
 bool GR_CocoaImage::convertToBuffer(UT_ConstByteBufPtr& pBB) const
 {
+    pBB.reset();
+    NSBitmapImageRep* bitmap = _bitmap();
+    UT_return_val_if_fail(bitmap, false);
+
+    NSData* png = [bitmap representationUsingType:NSBitmapImageFileTypePNG properties:@{}];
+    UT_return_val_if_fail(png, false);
+
     UT_ByteBufPtr bb(new UT_ByteBuf);
-
-    UT_ASSERT(UT_NOT_IMPLEMENTED);
-    //	[m_pngData convertToAbiByteBuf:pBB];
-
+    bb->append(static_cast<const UT_Byte*>([png bytes]), static_cast<UT_uint32>([png length]));
     pBB = bb;
-
     return true;
 }
 
 void GR_CocoaImage::setFromImageRep(NSImageRep* imageRep)
 {
     NSSize size = imageRep.size;
-    [m_image release];
-    m_image = [[NSImage alloc] initWithSize:size];
-    [m_image addRepresentation:imageRep];
+    NSImage* image = [[NSImage alloc] initWithSize:size];
+    [image addRepresentation:imageRep];
+    _setImage(image);
     setDisplaySize((UT_sint32)lrintl(size.width), (UT_sint32)lrintl(size.height));
 }
 
@@ -117,10 +140,22 @@ GR_Image* GR_CocoaImage::createImageSegment(GR_Graphics* pG, const UT_Rect& rec)
  * Returns true if pixel at point (x,y) in device units is transparent.
  * See gr_UnixImage.cpp for how it's done in GTK.
  */
-bool GR_CocoaImage::isTransparentAt(UT_sint32 /*x*/, UT_sint32 /*y*/)
+bool GR_CocoaImage::isTransparentAt(UT_sint32 x, UT_sint32 y)
 {
-    UT_ASSERT(UT_NOT_IMPLEMENTED);
-    return false;
+    if (!hasAlpha()) {
+        return false;
+    }
+    NSBitmapImageRep* bitmap = _bitmap();
+    UT_sint32 dW = getDisplayWidth();
+    UT_sint32 dH = getDisplayHeight();
+    UT_return_val_if_fail(bitmap && dW > 0 && dH > 0, false);
+    UT_return_val_if_fail((x >= 0) && (x < dW) && (y >= 0) && (y < dH), false);
+
+    // x, y are at display size; the bitmap has the image's own pixel size.
+    NSInteger px = (NSInteger)((double)x * [bitmap pixelsWide] / dW);
+    NSInteger py = (NSInteger)((double)y * [bitmap pixelsHigh] / dH);
+    NSColor* color = [bitmap colorAtX:px y:py];
+    return color && [color alphaComponent] == 0.0;
 }
 
 /*!
@@ -128,16 +163,13 @@ bool GR_CocoaImage::isTransparentAt(UT_sint32 /*x*/, UT_sint32 /*y*/)
  */
 bool GR_CocoaImage::hasAlpha(void) const
 {
-    UT_ASSERT(UT_NOT_IMPLEMENTED);
-    return false;
+    NSBitmapImageRep* bitmap = _bitmap();
+    return bitmap && [bitmap hasAlpha];
 }
 
 bool GR_CocoaImage::convertFromBuffer(const UT_ConstByteBufPtr& pBB, const std::string& mimetype,
     UT_sint32 iDisplayWidth, UT_sint32 iDisplayHeight)
 {
-    const char* buffer = (const char*)pBB->getPointer(0);
-    UT_uint32 buflen = pBB->getLength();
-
     // We explicitely do not scale the image on load, since cairo can do
     // that during rendering. Scaling during loading will result in lost
     // image information, which in turns results in bugs like
@@ -145,26 +177,20 @@ bool GR_CocoaImage::convertFromBuffer(const UT_ConstByteBufPtr& pBB, const std::
     // So simply remember the display size for drawing later.
     setDisplaySize(iDisplayWidth, iDisplayHeight);
 
-    if (mimetype == "image/png") {
-
-        if (buflen < 6) {
-            return false;
-        }
-
-        char str1[10] = "\211PNG";
-        char str2[10] = "<89>PNG";
-
-        if (!(strncmp(buffer, str1, 4)) || !(strncmp(buffer, str2, 6))) {
-            m_grtype = GRT_Raster;
-            [m_image release];
-
-            NSData* data = [NSData dataWithBytesNoCopy:(void*)pBB->getPointer(0) length:pBB->getLength() freeWhenDone:NO];
-            m_image = [[NSImage alloc] initWithData:data];
-        }
-    } else {
+    if (mimetype == "image/svg+xml") {
         m_grtype = GRT_Vector;
+        return true;
     }
 
+    // PNG, JPEG, ... : anything NSImage can decode. Copy the bytes: NSImage
+    // may decode lazily, after the byte buffer is gone.
+    NSData* data = [NSData dataWithBytes:pBB->getPointer(0) length:pBB->getLength()];
+    NSImage* image = [[NSImage alloc] initWithData:data];
+    if (!image) {
+        return false;
+    }
+    m_grtype = GRT_Raster;
+    _setImage(image);
     return true;
 }
 

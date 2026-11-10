@@ -115,7 +115,7 @@
 	DeclareDialog(XAP_DIALOG_ID_HTMLOPTIONS,	XAP_CocoaDialog_HTMLOptions)
 	DeclareDialog(XAP_DIALOG_ID_ABOUT,			XAP_CocoaDialog_About)
 	DeclareDialog(XAP_DIALOG_ID_PLUGIN_MANAGER, XAP_CocoaDialog_PluginManager)
-//PORT	DeclareDialog(XAP_DIALOG_ID_CLIPART,        XAP_CocoaDialog_ClipArt)
+	DeclareDialog(XAP_DIALOG_ID_CLIPART,        XAP_CocoaDialog_ClipArt)
 	DeclareDialog(XAP_DIALOG_ID_ENCODING,       XAP_CocoaDialog_Encoding)
 	DeclareDialog(XAP_DIALOG_ID_FILE_IMPORT, XAP_CocoaDialog_FileOpenSaveAs)
 	DeclareDialog(XAP_DIALOG_ID_FILE_EXPORT, XAP_CocoaDialog_FileOpenSaveAs)

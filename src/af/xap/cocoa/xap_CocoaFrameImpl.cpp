@@ -64,7 +64,8 @@ XAP_CocoaFrameImpl::XAP_CocoaFrameImpl(XAP_Frame* frame)
 	: XAP_FrameImpl (frame),
 	  m_dialogFactory(XAP_App::getApp(), frame),
 	  m_pCocoaPopup(nullptr),
-	  m_frameController(nil)
+	  m_frameController(nil),
+	  m_bFullScreen(false)
 {
 //	m_pView = nullptr;
 
@@ -435,9 +436,45 @@ EV_Toolbar * XAP_CocoaFrameImpl::_newToolbar(XAP_Frame *frame,
 
 void XAP_CocoaFrameImpl::_queue_resize()
 {
-	UT_DEBUGMSG(("XAP_CocoaFrameImpl::queue_resize\n"));	
-	UT_ASSERT (UT_NOT_IMPLEMENTED);
-//	gtk_widget_queue_resize(m_wTopLevelWindow);
+	UT_DEBUGMSG(("XAP_CocoaFrameImpl::queue_resize\n"));
+	// Bars were shown or hidden: let the view pick up its new size.
+	XAP_CocoaTextView * textView = (XAP_CocoaTextView *) [m_frameController textView];
+	[textView hasBeenResized:nil];
+	[[[m_frameController window] contentView] setNeedsDisplay:YES];
+}
+
+/*!
+ * View > Full Screen: the XP code hides the bars, the window goes to the
+ * standard macOS full screen space.
+ */
+void XAP_CocoaFrameImpl::_setFullScreen(bool isFullScreen)
+{
+	m_bFullScreen = isFullScreen;
+	NSWindow * window = [m_frameController window];
+	if (!window) {
+		return;
+	}
+	[window setCollectionBehavior:([window collectionBehavior] | NSWindowCollectionBehaviorFullScreenPrimary)];
+	bool isFull = ([window styleMask] & NSWindowStyleMaskFullScreen) != 0;
+	if (isFull != isFullScreen) {
+		[window toggleFullScreen:nil];
+	}
+}
+
+void XAP_CocoaFrameImpl::_windowDidExitFullScreen()
+{
+	if (!m_bFullScreen) {
+		return;
+	}
+	// Left with Esc or the green button: undo View > Full Screen so the
+	// toolbars, rulers and status bar come back.
+	const EV_EditMethodContainer * pEMC = XAP_App::getApp()->getEditMethodContainer();
+	const EV_EditMethod * pEM = pEMC ? pEMC->findEditMethodByName("viewFullScreen") : nullptr;
+	AV_View * pView = getFrame()->getCurrentView();
+	if (pEM && pView) {
+		pEM->Fn(pView, nullptr);	// calls _setFullScreen(false)
+	}
+	m_bFullScreen = false;
 }
 
 
@@ -536,6 +573,12 @@ void XAP_CocoaFrameImpl::_setController (XAP_CocoaFrameController * ctrl)
 	UT_DEBUGMSG(("windowDidExpose:\n"));
 //	[[NSNotificationCenter defaultCenter] postNotificationName:XAP_CocoaFrameImpl::XAP_FrameNeedToolbar 
 //			object:self];
+}
+
+- (void)windowDidExitFullScreen:(NSNotification *)aNotification
+{
+	UT_UNUSED(aNotification);
+	m_frame->_windowDidExitFullScreen();
 }
 
 - (void)windowDidResignKey:(NSNotification *)aNotification

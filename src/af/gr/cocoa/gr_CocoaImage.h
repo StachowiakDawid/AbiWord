@@ -55,6 +55,11 @@ public:
     }
 
 private:
+    /* pixel data of m_image, created on demand */
+    NSBitmapImageRep* _bitmap() const;
+    void _setImage(NSImage* image);
+
     GRType m_grtype;
     NSImage* m_image;
+    mutable NSBitmapImageRep* m_bitmap;
 };

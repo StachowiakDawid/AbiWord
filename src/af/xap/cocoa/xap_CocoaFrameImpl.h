@@ -85,7 +85,7 @@ public:
 	virtual bool				_close();
 	virtual bool				_raise();
 	virtual bool				_show();
-	virtual void 				_setFullScreen(bool /*isFullScreen*/ ) { UT_ASSERT(UT_NOT_IMPLEMENTED); }
+	virtual void 				_setFullScreen(bool isFullScreen);
 	virtual bool				_updateTitle();
 	virtual UT_sint32			_setInputMode(const char * szName);
 	virtual void _hideMenuScroll(bool /*bHideMenuScroll*/)
@@ -130,6 +130,10 @@ private:
 	EV_CocoaMenuPopup *			m_pCocoaPopup; /* only valid while a context popup is up */
 
 	XAP_CocoaFrameController *		m_frameController;
+	bool						m_bFullScreen;	/* View > Full Screen is on */
+public:
+	/* the window left full screen by other means (Esc, green button) */
+	void						_windowDidExitFullScreen();
 };
 
 
