@@ -31,7 +31,7 @@
 
 static struct XAP_DialogFactory::_dlg_table s_dlg_table[] = {
 	
-#define DeclareDialog(id,cls)	{ id, cls::s_getPersistence(), cls::static_constructor, false },
+#define DeclareDialog(id,cls)	{ static_cast<XAP_Dialog_Id>(id), cls::s_getPersistence(), cls::static_constructor, false },
 #include "ap_CocoaDialog_All.h"
 #undef DeclareDialog
 };

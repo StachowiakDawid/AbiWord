@@ -156,7 +156,13 @@ case ${host_os} in
   *darwin*)
     PLATFORM="unix"
     TOOLKIT="cocoa"
-    CXXFLAGS="$CXXFLAGS -stdlib=libc++"
+    # Oldest macOS release still receiving security updates from Apple.
+    # Can be overridden with the MACOSX_DEPLOYMENT_TARGET environment variable.
+    abi_macos_min="${MACOSX_DEPLOYMENT_TARGET:-15.0}"
+    CFLAGS="$CFLAGS -mmacosx-version-min=$abi_macos_min"
+    CXXFLAGS="$CXXFLAGS -stdlib=libc++ -mmacosx-version-min=$abi_macos_min"
+    LDFLAGS="$LDFLAGS -mmacosx-version-min=$abi_macos_min"
+    AC_SUBST([MACOSX_MIN_VERSION], [$abi_macos_min])
     ;;
   *mingw*)
     PLATFORM="win"
@@ -381,20 +387,6 @@ AC_ARG_WITH([fink],
                 CPPFLAGS="$CPPFLAGS -I/sw/include"
                 LDFLAGS="$LDFLAGS -L/sw/lib"
         fi
-])
-
-AC_ARG_WITH([abisdk],
-	[AS_HELP_STRING([--with-abisdk], [(Mac OSX only) use the AbiSDK])], 
-[
-	if test "x$withval" = "x"; then
-		AC_MSG_ERROR([The AbiSDK path must be specified.])
-	fi
-	if test "x$withval" != "xno"; then
-		PKG_CONFIG=/opt/abi/bin/pkg-config
-		PKG_CONFIG_PATH=/usr/lib/pkgconfig ; export PKG_CONFIG_PATH
-		CPPFLAGS="$CPPFLAGS -mmacosx-version-min=10.4 -isysroot $withval -I/opt/abi/include"
-		LDFLAGS="$LDFLAGS -mmacosx-version-min=10.4 -isysroot $withval -L/opt/abi/lib"
-	fi
 ])
 
 
@@ -686,8 +678,7 @@ if test "$TOOLKIT" = "win"; then
 	SYSTEM_CFLAGS="-mthreads"
 elif test "$TOOLKIT" = "cocoa"; then
 	deps_pkgs="$deps_pkgs $cocoa_pkgs"
-	SYSTEM_CLFLAGS="-DMAC_OS_X_VERSION_MIN_REQUIRED=MAC_OS_X_VERSION_10_11"
-	SYSTEM_LIBS="-framework Cocoa"
+	SYSTEM_LIBS="-framework Cocoa -framework UniformTypeIdentifiers"
 	AC_CHECK_PROG([CONVERT], [convert], convert, AC_MSG_ERROR(Cannot find ImageMagick convert))
 elif test "$TOOLKIT" = "qt"; then
         deps_pkgs="$deps_pkgs $qt_pkgs"
@@ -865,7 +856,7 @@ fi
 AM_CONDITIONAL([ENABLE_DYNAMIC], test "$enable_shared" = "yes")
 AM_CONDITIONAL([ENABLE_STATIC], test "$enable_static" = "yes")
 
-PKG_CHECK_MODULES(PLUGIN,[$glib_req])
+PKG_CHECK_MODULES(PLUGIN,[$glib_req $gio_req])
 PLUGIN_CFLAGS="$PLUGIN_CFLAGS "'${WP_CPPFLAGS} -DABI_DLL'
 if test "$TOOLKIT" = "gtk"  || test "$TOOLKIT" = "qt" && 
    test "$enable_shared" = "yes"; then

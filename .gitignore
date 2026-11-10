@@ -10,6 +10,7 @@ Makefile.in
 .dirstamp
 
 # /
+/build/
 /nbproject
 /configure
 /depcomp

@@ -103,13 +103,13 @@
 - (IBAction)aColor_FG:(id)sender
 {
 	UT_UNUSED(sender);
-	[self setColor:AP_TOOLBAR_ID_COLOR_FORE];
+	[self setColor:static_cast<XAP_Toolbar_Id>(AP_TOOLBAR_ID_COLOR_FORE)];
 }
 
 - (IBAction)aColor_BG:(id)sender
 {
 	UT_UNUSED(sender);
-	[self setColor:AP_TOOLBAR_ID_COLOR_BACK];
+	[self setColor:static_cast<XAP_Toolbar_Id>(AP_TOOLBAR_ID_COLOR_BACK)];
 }
 
 - (void)toolbarSelected:(id)sender

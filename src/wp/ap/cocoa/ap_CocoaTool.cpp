@@ -73,7 +73,7 @@ static void s_addToolsToProvider (XAP_CocoaToolProvider * provider)
 #undef toolbaritem
 #endif
 #define toolbaritem(id) s_addToolToProvider(provider, \
-											toolbarLabelSet->getLabel(AP_TOOLBAR_ID_##id), \
+											toolbarLabelSet->getLabel(static_cast<XAP_Toolbar_Id>(AP_TOOLBAR_ID_##id)), \
 											#id, \
 											static_cast<unsigned>(AP_TOOLBAR_ID_##id));
 

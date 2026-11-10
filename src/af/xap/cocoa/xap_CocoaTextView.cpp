@@ -47,6 +47,7 @@
 		return nil;
 	}
 	m_hasMarkedText = NO;
+	m_selectedRange = NSMakeRange(NSNotFound, 0);
 	return self;
 }
 
@@ -327,6 +328,15 @@
 
 
 /* NSTextInput protocol */
+- (NSAttributedString *)attributedSubstringForProposedRange:(NSRange)range actualRange:(NSRangePointer)actualRange
+{
+	NSAttributedString * substring = [self attributedSubstringFromRange:range];
+	if (actualRange) {
+		*actualRange = substring ? range : NSMakeRange(NSNotFound, 0);
+	}
+	return substring;
+}
+
 - (NSAttributedString *)attributedSubstringFromRange:(NSRange)theRange
 {
 	UT_UNUSED(theRange);
@@ -359,6 +369,14 @@
 }
 
 
+- (NSRect)firstRectForCharacterRange:(NSRange)theRange actualRange:(NSRangePointer)actualRange
+{
+	if (actualRange) {
+		*actualRange = theRange;
+	}
+	return [self firstRectForCharacterRange:theRange];
+}
+
 - (NSRect)firstRectForCharacterRange:(NSRange)theRange
 {
 	// UT_ASSERT_NOT_REACHED();
@@ -375,8 +393,17 @@
 }
 
 
+- (void)insertText:(id)aString replacementRange:(NSRange)replacementRange
+{
+	UT_UNUSED(replacementRange);
+	[self insertText:aString];
+}
+
 - (void)insertText:(id)aString
 {
+	if ([aString isKindOfClass:[NSAttributedString class]]) {
+		aString = [aString string];
+	}
 	 /* UT_DEBUGMSG(("insertText '%s' in window '%s'\n", [str UTF8String], [[[self window] title] UTF8String]));
 	 */
 	UT_DEBUGMSG(("insertText: length=%u\n", [(NSString *)aString length]));
@@ -415,6 +442,12 @@
 {
 	UT_DEBUGMSG(("selectedRange=(location=%u,length=%u)\n",m_selectedRange.location,m_selectedRange.length));
 	return m_selectedRange;
+}
+
+- (void)setMarkedText:(id)aString selectedRange:(NSRange)selRange replacementRange:(NSRange)replacementRange
+{
+	UT_UNUSED(replacementRange);
+	[self setMarkedText:aString selectedRange:selRange];
 }
 
 - (void)setMarkedText:(id)aString selectedRange:(NSRange)selRange

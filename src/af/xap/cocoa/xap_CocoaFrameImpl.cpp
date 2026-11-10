@@ -544,6 +544,9 @@ void XAP_CocoaFrameImpl::setToolbarRect(const NSRect &r)
 
 	XAP_CocoaAppController * pController = (XAP_CocoaAppController *) [NSApp delegate];
 	[pController setCurrentView:pView inFrame:pFrame];
+	if (pView) {
+		pView->focusChange(AV_FOCUS_HERE);
+	}
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:XAP_CocoaFrameImpl::XAP_FrameNeedToolbar 
 			object:self];
@@ -562,6 +565,9 @@ void XAP_CocoaFrameImpl::setToolbarRect(const NSRect &r)
 	UT_UNUSED(aNotification);
 	UT_DEBUGMSG(("windowDidResignKey: '%s'\n", [[[self window] title] UTF8String]));
 
+	if (AV_View * pView = m_frame->getFrame()->getCurrentView()) {
+		pView->focusChange(AV_FOCUS_NONE);
+	}
 	XAP_CocoaAppController * pController = (XAP_CocoaAppController *) [NSApp delegate];
 	[pController setCurrentView:nullptr inFrame:nullptr];
 

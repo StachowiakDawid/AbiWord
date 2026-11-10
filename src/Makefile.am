@@ -145,10 +145,11 @@ AbiWord_LDADD = \
 AbiWord_SOURCES = \
 	$(main_cpp)
 
-nobase_resources_DATA = wp/main/cocoa/MainMenu.nib/*.nib
-resources_DATA = wp/main/cocoa/bundle/*.icns \
+cocoa_nib_resources = $(patsubst $(srcdir)/%,%,$(wildcard $(srcdir)/wp/main/cocoa/MainMenu.nib/*.nib))
+cocoa_bundle_files = wp/main/cocoa/bundle/*.icns \
 	wp/main/cocoa/bundle/*.tif \
 	wp/main/cocoa/bundle/*.png
+resources_DATA = $(patsubst $(srcdir)/%,%,$(wildcard $(addprefix $(srcdir)/,$(cocoa_bundle_files))))
 contents_DATA = wp/main/cocoa/bundle/Info.plist \
 	wp/main/cocoa/bundle/PkgInfo
 

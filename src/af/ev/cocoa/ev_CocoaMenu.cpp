@@ -290,7 +290,7 @@ bool EV_CocoaMenuPopup::refreshMenu(AV_View * /*pView*/)
 				if (!pEditMethodContainer)
 					return;
 				
-				const EV_Toolbar_Action * pAction = pToolbarActionSet->getAction(AP_TOOLBAR_ID_FMT_FONT);
+				const EV_Toolbar_Action * pAction = pToolbarActionSet->getAction(static_cast<XAP_Toolbar_Id>(AP_TOOLBAR_ID_FMT_FONT));
 				UT_ASSERT(pAction);
 				if (!pAction)
 					return;

@@ -193,10 +193,9 @@ static XAP_CocoaToolbarWindow_Controller * s_pSharedToolbar = nil;
 			NSWindowController * controller = (NSWindowController *) [m_windows objectAtIndex:i];
 			NSWindow * window = [controller window];
 			NSView * contentView = [window contentView];
-			NSArray * subviews = [contentView subviews];
-			while ([subviews count])
+			while ([[contentView subviews] count])
 			{
-				NSView * subview = (NSView *) [subviews objectAtIndex:0];
+				NSView * subview = [[contentView subviews] objectAtIndex:0];
 				[subview removeFromSuperview];
 			}
 			[contentView addSubview:view];

@@ -62,8 +62,8 @@ void GR_CGContextIsNull(NSString* format, ...)
 {
     va_list vl;
     va_start(vl, format);
-    va_end(vl);
     NSLogv(format, vl);
+    va_end(vl);
 }
 #define _ASSERT_CG_CONTEXT                                                               \
     if (m_CGContext == nullptr) {                                                        \
@@ -435,17 +435,20 @@ void GR_CocoaGraphics::fillNSRect(NSRect& aRect, NSColor* color)
 
 void GR_CocoaGraphics::_beginPaint(void)
 {
-    if (!m_view.in_draw_rect) {
-        NSLog(@"Not in drawRect. BREAK HERE if you need.");
-    }
-    NSGraphicsContext* context = context = NSGraphicsContext.currentContext;
-    m_CGContext = context.CGContext;
+    NSGraphicsContext* context = NSGraphicsContext.currentContext;
+    m_CGContext = isPrinting() ? context.CGContext : ::CGLayerGetContext(getCGLayer());
     if (!m_CGContext) {
         // no context, let's draw in the CGLayer
         m_CGContext = ::CGLayerGetContext(getCGLayer());
     }
     _ASSERT_CG_CONTEXT;
 
+    if (!m_CGContext) {
+        return;
+    }
+    [NSGraphicsContext saveGraphicsState];
+    [NSGraphicsContext setCurrentContext:[NSGraphicsContext graphicsContextWithCGContext:m_CGContext flipped:NO]];
+    ::CGContextSaveGState(m_CGContext);
     _resetContext();
 
 #if 0
@@ -461,7 +464,14 @@ void GR_CocoaGraphics::_beginPaint(void)
 
 void GR_CocoaGraphics::_endPaint(void)
 {
+    if (m_CGContext) {
+        ::CGContextRestoreGState(m_CGContext);
+        [NSGraphicsContext restoreGraphicsState];
+    }
     m_CGContext = nullptr;
+    if (!m_view.in_draw_rect) {
+        [m_view setNeedsDisplay:YES];
+    }
 }
 
 bool GR_CocoaGraphics::queryProperties(GR_Graphics::Properties gp) const
@@ -988,6 +998,7 @@ void GR_CocoaGraphics::queueDraw(const UT_Rect* pRect)
     } else {
         clip = m_view.bounds;
     }
+    [m_view invalidateDrawingLayer];
     [m_view setNeedsDisplayInRect:clip];
 }
 
@@ -1167,6 +1178,7 @@ void GR_CocoaGraphics::scroll(UT_sint32 dx, UT_sint32 dy)
             }
         }
     }
+    [m_view invalidateDrawingLayer];
     [m_view setNeedsDisplayInRect:bounds];
 }
 
@@ -1663,7 +1675,7 @@ CGFloat GR_CocoaGraphics::_getScreenResolution(void)
 /// Convenience to get the CGLayer, to abstract who owns / creates it.
 CGLayerRef GR_CocoaGraphics::getCGLayer() const
 {
-    return m_view.drawingLayer;
+    return [m_view makeDrawingLayer];
 }
 
 GR_Graphics* GR_CocoaGraphics::graphicsAllocator(GR_AllocInfo& info)

@@ -34,7 +34,7 @@
 
 static struct XAP_Toolbar_ControlFactory::_ctl_table s_ctl_table[] = {
 	
-#define Declare_Control(id,cls)	{ id, cls::static_constructor },
+#define Declare_Control(id,cls)	{ static_cast<XAP_Toolbar_Id>(id), cls::static_constructor },
 #include "ap_CocoaToolbar_Control_All.h"
 #undef Declare_Control
 	

@@ -328,7 +328,7 @@ libxap_la_SOURCES += \
 	cocoa/xap_PrintingNSView.h \
 	cocoa/xap_PrintingNSView.cpp
 
-nobase_resources_DATA = \
+cocoa_nib_files = \
 	cocoa/xap_CocoaDlg_About.nib/*.nib \
 	cocoa/xap_CocoaDlg_DocComparison.nib/*.nib \
 	cocoa/xap_CocoaDlg_FontChooser.nib/*.nib \
@@ -344,6 +344,7 @@ nobase_resources_DATA = \
 	cocoa/xap_CocoaToolPalette.nib/*.nib \
 	cocoa/xap_GenericListChooser_Controller.nib/*.nib \
 	$(NULL)
+cocoa_nib_resources = $(patsubst $(srcdir)/%,%,$(wildcard $(addprefix $(srcdir)/,$(cocoa_nib_files))))
 endif
 
 if TOOLKIT_WIN

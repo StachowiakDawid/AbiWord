@@ -42,7 +42,7 @@
 
 struct EV_CocoaKeyEquiv
 {
-	XAP_Menu_Id		menuid;
+	_Ap_Menu_Id		menuid;
 	const char *			equiv;
 	unsigned int	modifier;
 };
@@ -74,7 +74,7 @@ static struct EV_CocoaKeyEquiv KeyEquiv[] = {
 	{	AP_MENU_ID_ALIGN_LEFT,				"{",	NSEventModifierFlagCommand									}, // Cmd-{
 	{	AP_MENU_ID_ALIGN_CENTER,			"|",	NSEventModifierFlagCommand									}, // Cmd-|
 	{	AP_MENU_ID_ALIGN_RIGHT,				"}",	NSEventModifierFlagCommand									}, // Cmd-}
-	{	0,									nullptr,		0													}
+	{	AP_MENU_ID__BOGUS1__,				nullptr,		0													}
 };
 
 @implementation XAP_CocoaApplication
@@ -476,6 +476,11 @@ static XAP_CocoaAppController * XAP_AppController_Instance = nil;
 	if (bFileOpenedDuringLaunch == NO) {
 		UT_DEBUGMSG(("[...FinishLaunching] No file opened during launch, so opening untitled document:\n"));
 		[self applicationOpenUntitledFile:NSApp];
+	}
+	if (@available(macOS 14.0, *)) {
+		[NSApp activate];
+	} else {
+		[NSApp activateIgnoringOtherApps:YES];
 	}
 }
 

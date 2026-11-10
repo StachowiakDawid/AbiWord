@@ -1011,7 +1011,7 @@ static XAP_CocoaToolPalette * s_instance = nil;
 	}
 
 #define defn(T,X,Y)			m_ToolChest[ToolID_##T].button = T; \
-	m_ToolChest[ToolID_##T].tlbrid = X;							\
+	m_ToolChest[ToolID_##T].tlbrid = static_cast<XAP_Toolbar_Id>(X);	\
 	m_ToolChest[ToolID_##T].ttipid = Y;
 #include "xap_CocoaTools.h"
 #undef defn
@@ -1208,13 +1208,13 @@ static XAP_CocoaToolPalette * s_instance = nil;
 - (IBAction)aColor_FG:(id)sender
 {
 	UT_UNUSED(sender);
-	[self setColor:AP_TOOLBAR_ID_COLOR_FORE];
+	[self setColor:static_cast<XAP_Toolbar_Id>(AP_TOOLBAR_ID_COLOR_FORE)];
 }
 
 - (IBAction)aColor_BG:(id)sender
 {
 	UT_UNUSED(sender);
-	[self setColor:AP_TOOLBAR_ID_COLOR_BACK];
+	[self setColor:static_cast<XAP_Toolbar_Id>(AP_TOOLBAR_ID_COLOR_BACK)];
 }
 
 - (IBAction)aSwitch_FG:(id)sender
@@ -1251,7 +1251,7 @@ static XAP_CocoaToolPalette * s_instance = nil;
 		return;
 	}
 
-	const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(AP_TOOLBAR_ID_FMT_STYLE);
+	const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(static_cast<XAP_Toolbar_Id>(AP_TOOLBAR_ID_FMT_STYLE));
 	UT_ASSERT(pAction);
 	if (!pAction) {
 		return;
@@ -1285,7 +1285,7 @@ static XAP_CocoaToolPalette * s_instance = nil;
 		return;
 	}
 
-	const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(AP_TOOLBAR_ID_FMT_FONT);
+	const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(static_cast<XAP_Toolbar_Id>(AP_TOOLBAR_ID_FMT_FONT));
 	UT_ASSERT(pAction);
 	if (!pAction) {
 		return;
@@ -1375,7 +1375,7 @@ static XAP_CocoaToolPalette * s_instance = nil;
 		[self aTB_click:oTB_text_italic];
 	}
 
-	const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(AP_TOOLBAR_ID_FMT_FONT);
+	const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(static_cast<XAP_Toolbar_Id>(AP_TOOLBAR_ID_FMT_FONT));
 	UT_ASSERT(pAction);
 	if (!pAction) {
 		return;
@@ -1411,7 +1411,7 @@ static XAP_CocoaToolPalette * s_instance = nil;
 		return;
 	}
 
-	const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(AP_TOOLBAR_ID_FMT_SIZE);
+	const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(static_cast<XAP_Toolbar_Id>(AP_TOOLBAR_ID_FMT_SIZE));
 	UT_ASSERT(pAction);
 	if (!pAction)
 	{
@@ -1578,7 +1578,7 @@ static XAP_CocoaToolPalette * s_instance = nil;
 		{
 			bool okay = false;
 
-			const EV_Menu_Action * pAction = m_pMenuActionSet->getAction(AP_MENU_ID_EDIT_FIND);
+			const EV_Menu_Action * pAction = m_pMenuActionSet->getAction(static_cast<XAP_Menu_Id>(AP_MENU_ID_EDIT_FIND));
 			if (m_pViewCurrent && pAction) {
 				if (const char * szMethodName = pAction->getMethodName())
 				{
@@ -1600,7 +1600,7 @@ static XAP_CocoaToolPalette * s_instance = nil;
 		{
 			bool okay = false;
 
-			const EV_Menu_Action * pAction = m_pMenuActionSet->getAction(AP_MENU_ID_EDIT_REPLACE);
+			const EV_Menu_Action * pAction = m_pMenuActionSet->getAction(static_cast<XAP_Menu_Id>(AP_MENU_ID_EDIT_REPLACE));
 			if (m_pViewCurrent && pAction) {
 				if (const char * szMethodName = pAction->getMethodName())
 				{
@@ -1646,7 +1646,7 @@ static XAP_CocoaToolPalette * s_instance = nil;
 		return;
 	}
 
-	const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(AP_TOOLBAR_ID_ZOOM);
+	const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(static_cast<XAP_Toolbar_Id>(AP_TOOLBAR_ID_ZOOM));
 	UT_ASSERT(pAction);
 	if (!pAction)
 	{
@@ -1856,7 +1856,7 @@ static XAP_CocoaToolPalette * s_instance = nil;
 
 			[oDocumentStyle addItemsWithTitles:styles];
 
-			const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(AP_TOOLBAR_ID_FMT_STYLE);
+			const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(static_cast<XAP_Toolbar_Id>(AP_TOOLBAR_ID_FMT_STYLE));
 			UT_ASSERT(pAction);
 			if (pAction) {
 				const char* szState = nullptr;
@@ -1877,7 +1877,7 @@ static XAP_CocoaToolPalette * s_instance = nil;
 
 	if (m_pViewCurrent)
 	{
-		const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(AP_TOOLBAR_ID_FMT_FONT);
+		const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(static_cast<XAP_Toolbar_Id>(AP_TOOLBAR_ID_FMT_FONT));
 		UT_ASSERT(pAction);
 		if (pAction)
 		{
@@ -1900,7 +1900,7 @@ static XAP_CocoaToolPalette * s_instance = nil;
 
 	if (m_pViewCurrent)
 	{
-		const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(AP_TOOLBAR_ID_FMT_SIZE);
+		const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(static_cast<XAP_Toolbar_Id>(AP_TOOLBAR_ID_FMT_SIZE));
 		UT_ASSERT(pAction);
 		if (pAction)
 		{
@@ -1943,7 +1943,7 @@ static XAP_CocoaToolPalette * s_instance = nil;
 
 	if (m_pViewCurrent)
 	{
-		const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(AP_TOOLBAR_ID_ZOOM);
+		const EV_Toolbar_Action * pAction = m_pToolbarActionSet->getAction(static_cast<XAP_Toolbar_Id>(AP_TOOLBAR_ID_ZOOM));
 		UT_ASSERT(pAction);
 		if (pAction)
 		{

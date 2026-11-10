@@ -28,3 +28,10 @@ englishdir = $(resourcesdir)/English.lproj
 
 
 englishbuilddir = $(mainbuilddir)/AbiWord.app/Contents/Resources/English.lproj
+
+install-data-local:
+	@set -e; for nib in $(cocoa_nib_resources); do \
+		nibdir=$$(basename "$$(dirname "$$nib")"); \
+		$(MKDIR_P) "$(DESTDIR)$(resourcesdir)/$$nibdir"; \
+		$(INSTALL_DATA) "$(srcdir)/$$nib" "$(DESTDIR)$(resourcesdir)/$$nibdir/"; \
+	done

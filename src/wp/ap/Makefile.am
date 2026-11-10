@@ -683,7 +683,7 @@ resources_DATA= \
 	xp/ToolbarIcons/tb_semitem_edit.png \
 	xp/ToolbarIcons/tb_semitem_stylesheet_apply.png
 
-nobase_resources_DATA = \
+cocoa_nib_files = \
 	cocoa/ap_CocoaDialog_Annotation.nib/*.nib \
 	cocoa/ap_CocoaDialog_Background.nib/*.nib \
 	cocoa/ap_CocoaDialog_Break.nib/*.nib \
@@ -721,6 +721,7 @@ nobase_resources_DATA = \
 	cocoa/ap_CocoaDialog_WordCount.nib/*.nib \
 	cocoa/ap_CocoaFrame.nib/*.nib \
 	$(NULL)
+cocoa_nib_resources = $(patsubst $(srcdir)/%,%,$(wildcard $(addprefix $(srcdir)/,$(cocoa_nib_files))))
 endif
 
 if TOOLKIT_WIN

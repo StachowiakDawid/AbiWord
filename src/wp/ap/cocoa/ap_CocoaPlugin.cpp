@@ -291,7 +291,7 @@ static const char * s_GetMenuItemComputedLabel_Fn (const EV_Menu_Label * pLabel,
 
 		EV_Menu_ActionSet * pActionSet = XAP_App::getApp()->getMenuActionSet();
 
-		m_MenuID = 0;
+		m_MenuID = XAP_Menu_Id{};
 
 		XAP_Menu_Factory * pFact = XAP_App::getApp()->getMenuFactory();
 

@@ -63,6 +63,7 @@
 	m_drawable = nullptr;
 	m_layer = nullptr;
 	m_layer_needs_resize = false;
+	m_layer_needs_redraw = true;
 	if (frame) {
 		[[NSNotificationCenter defaultCenter] addObserver:self
 						selector:@selector(hasBeenResized:)
@@ -110,6 +111,7 @@
 - (void)setGraphics:(GR_CocoaGraphics *)gr
 {
 	m_pGR = gr;
+	m_layer_needs_redraw = true;
 }
 
 @synthesize in_draw_rect = _in_draw_rect;
@@ -125,9 +127,14 @@
 	if (m_layer == nil) {
 		NSGraphicsContext* context = nil;
 
-		context = [NSGraphicsContext graphicsContextWithWindow:self.window];
-		if (!context && _in_draw_rect) {
+		if (_in_draw_rect) {
 			context = NSGraphicsContext.currentContext;
+		}
+		if (!context) {
+			NSBitmapImageRep * bitmap = [self bitmapImageRepForCachingDisplayInRect:self.bounds];
+			if (bitmap) {
+				context = [NSGraphicsContext graphicsContextWithBitmapImageRep:bitmap];
+			}
 		}
 		//UT_ASSERT(context);
 		if (!context) {
@@ -135,8 +142,14 @@
 		}
 		m_layer = ::CGLayerCreateWithContext(context.CGContext, self.bounds.size, nullptr);
 		m_layer_needs_resize = false;
+		m_layer_needs_redraw = true;
 	}
 	return m_layer;
+}
+
+- (void)invalidateDrawingLayer
+{
+	m_layer_needs_redraw = true;
 }
 
 /// Draw the layer in the current context.
@@ -148,53 +161,28 @@
 			CGContextRef context = gc.CGContext;
 			CGSize layerSize = ::CGLayerGetSize(m_layer);
 			GR_CGStateSave state(context);
-			::CGContextScaleCTM(context, 1.0, -1.0);
-			::CGContextTranslateCTM(context, 0, -self.bounds.size.height);
 			NSLog(@"layer size W=%lf, H=%lf", layerSize.width, layerSize.height);
 			::CGContextDrawLayerAtPoint(context, CGPointMake(0, 0), m_layer);
-		}
-		if (m_layer_needs_resize) {
-			[self makeDrawingLayer];
-		} else {
-			CGContextRef context = ::CGLayerGetContext(m_layer);
-			GR_CGStateSave state(context);
-			CGColorRef white = ::CGColorGetConstantColor(kCGColorWhite);
-			::CGContextSetFillColorWithColor(context, white);
-			::CGContextFillRect(context, {{0.0, 0.0}, ::CGLayerGetSize(m_layer)});
 		}
 	}
 }
 
 - (void)drawRect:(NSRect)aRect
 {
+	UT_UNUSED(aRect);
 	_in_draw_rect = true;
-	if (!m_layer) {
-		[self makeDrawingLayer];
-	}
-	if (m_pGR) {
-		[self drawLayer];
-
-		UT_RGBColor clr;
+	[self makeDrawingLayer];
+	if (m_pGR && m_layer && m_layer_needs_redraw) {
+		m_layer_needs_redraw = false;
 		GR_Painter painter(m_pGR);
-
-		GR_CocoaGraphics::_utNSColorToRGBColor([NSColor redColor], clr);
-		m_pGR->fillRect (clr, aRect.origin.x, aRect.origin.y, aRect.size.width, aRect.size.height);
-
-		/*  Because of the way we convert from local to display units for scrolling and back again for expose
-		 *  events, there can be a sizeable discrepancy (in local units) between internal events and the
-		 *  reported exposed area. I am therefore marking an extra 1-pixel border around the exposed display area.
-		 */
-		aRect.origin.x    += -1.0;
-		aRect.origin.y    += -1.0;
-		aRect.size.width  +=  2.0;
-		aRect.size.height +=  2.0;
-
+		NSRect bounds = self.bounds;
 		if (m_drawable) {
 			m_drawable->drawImmediate();
 		} else {
-			m_pGR->_callUpdateCallback(&aRect);
+			m_pGR->_callUpdateCallback(&bounds);
 		}
 	}
+	[self drawLayer];
 	_in_draw_rect = false;
 }
 
