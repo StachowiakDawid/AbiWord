@@ -361,8 +361,8 @@ GR_CocoaGraphics::GR_CocoaGraphics(XAP_CocoaNSView* view)
 {
     _initColorAndImage();
 
-    UT_ASSERT(m_view);
-    if (![m_view isKindOfClass:[XAP_CocoaNSView class]]) {
+    // m_view is nil for GR_Graphics::newNullGraphics(), used for layout only.
+    if (m_view && ![m_view isKindOfClass:[XAP_CocoaNSView class]]) {
         NSLog(@"attaching a non-XAP_CocoaNSView to a GR_CocoaGraphics");
     }
 

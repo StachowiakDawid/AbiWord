@@ -1736,7 +1736,7 @@ bool GR_GraphicsFactory::isRegistered(UT_uint32 iClassId) const
 #elif defined(TOOLKIT_WIN)
 #include "gr_Win32Graphics.h"
 #elif defined(TOOLKIT_COCOA)
-#warning implement offscreen
+#include "gr_CocoaGraphics.h"
 #else
 #warning un-handled case
 #endif
@@ -1756,6 +1756,9 @@ GR_Graphics* GR_Graphics::newNullGraphics()
 	GR_Win32AllocInfo ai (GR_Win32Graphics::createbestmetafilehdc(), GR_Win32Graphics::getDocInfo(), nullptr);
 	return XAP_App::getApp()->newGraphics(GRID_WIN32, (GR_AllocInfo&)ai);
 #elif defined(TOOLKIT_COCOA)
+	// A graphics without a view measures text but never draws.
+	GR_CocoaAllocInfo ai(nil);
+	return XAP_App::getApp()->newGraphics(GRID_COCOA, ai);
 #endif
 
 	return nullptr;

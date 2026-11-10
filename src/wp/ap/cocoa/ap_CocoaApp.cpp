@@ -971,8 +971,10 @@ int AP_CocoaApp::main(const char * szAppName, int argc, char ** argv)
 		// Step 2: Handle all non-window args.
 
 		bool windowlessArgsWereSuccessful = true;
-		if (!Args.doWindowlessArgs(windowlessArgsWereSuccessful))
-				return false;
+		if (!Args.doWindowlessArgs(windowlessArgsWereSuccessful)) {
+			delete pMyCocoaApp;
+			return (windowlessArgsWereSuccessful ? 0 : -1);
+		}
 
 		// Setup signal handlers, primarily for segfault
 		// If we segfaulted before here, we *really* blew it
