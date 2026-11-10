@@ -90,6 +90,9 @@
 #	include "ap_CocoaDialog_Latex.h"
 #   include "ap_CocoaDialog_Annotation.h"
 #   include "ap_CocoaPreview_Annotation.h"
+#	include "ap_CocoaDialog_InsertXMLID.h"
+#	include "ap_CocoaDialog_RDFQuery.h"
+#	include "ap_CocoaDialog_RDFEditor.h"
 #if 0
 #	include "ap_CocoaDialog_Download_File.h"
 #endif
@@ -174,9 +177,9 @@
 	DeclareDialog(AP_DIALOG_ID_DOWNLOAD_FILE,	AP_CocoaDialog_Download_File)
 #endif
 
-//FIXME: TO BE IMPLEMENTED
-//	DeclareDialog(AP_DIALOG_ID_RDF_QUERY,			AP_CocoaDialog_RDFQuery)
-//	DeclareDialog(AP_DIALOG_ID_RDF_EDITOR,			AP_CocoaDialog_RDFEditor)
+	DeclareDialog(AP_DIALOG_ID_INSERTXMLID,		AP_CocoaDialog_InsertXMLID)
+	DeclareDialog(AP_DIALOG_ID_RDF_QUERY,			AP_CocoaDialog_RDFQuery)
+	DeclareDialog(AP_DIALOG_ID_RDF_EDITOR,			AP_CocoaDialog_RDFEditor)
 
     // ... also add new dialogs here ...
 

@@ -445,6 +445,8 @@ libap_la_SOURCES += \
 	cocoa/ap_CocoaDialog_InsertHyperlink.cpp \
 	cocoa/ap_CocoaDialog_InsertTable.h \
 	cocoa/ap_CocoaDialog_InsertTable.cpp \
+	cocoa/ap_CocoaDialog_InsertXMLID.h \
+	cocoa/ap_CocoaDialog_InsertXMLID.cpp \
 	cocoa/ap_CocoaDialog_Latex.h \
 	cocoa/ap_CocoaDialog_Latex.cpp \
 	cocoa/ap_CocoaDialog_ListRevisions.h \
@@ -469,6 +471,10 @@ libap_la_SOURCES += \
 	cocoa/ap_CocoaDialog_PageSetup.cpp \
 	cocoa/ap_CocoaDialog_Paragraph.h \
 	cocoa/ap_CocoaDialog_Paragraph.cpp \
+	cocoa/ap_CocoaDialog_RDFEditor.h \
+	cocoa/ap_CocoaDialog_RDFEditor.cpp \
+	cocoa/ap_CocoaDialog_RDFQuery.h \
+	cocoa/ap_CocoaDialog_RDFQuery.cpp \
 	cocoa/ap_CocoaDialog_Replace.h \
 	cocoa/ap_CocoaDialog_Replace.cpp \
 	cocoa/ap_CocoaDialog_SplitCells.h \
