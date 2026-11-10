@@ -120,6 +120,8 @@ if TOOLKIT_COCOA
 AM_CPPFLAGS += \
 	-x objective-c++ -fobjc-arc
 libimpexp_la_SOURCES += \
+	cocoa/ie_exp_PDF_Cocoa.cpp \
+	cocoa/ie_exp_PDF_Cocoa.h \
 	cocoa/ie_impexp_RegisterCocoa.cpp \
 	cocoa/ie_impGraphic_Cocoa.cpp \
 	cocoa/ie_impGraphic_Cocoa.h

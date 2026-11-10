@@ -25,6 +25,7 @@
 #include "ie_impexp_Register.h"
 
 #include "ie_impGraphic_Cocoa.h"
+#include "ie_exp_PDF_Cocoa.h"
 
 
 /*!
@@ -34,5 +35,6 @@
 void IE_ImpExp_RegisterPlatform ()
 {
 	IE_ImpGraphic::registerImporter(new IE_ImpGraphicCocoa_Sniffer());
+	IE_Exp::registerExporter(new IE_Exp_PDF_Cocoa_Sniffer());
 }
     
