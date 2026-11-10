@@ -135,10 +135,10 @@ private:
     void _openParagraphDelayed();
     
     const PP_AttrProp* m_delayedAP;
-    ODe_Style_List*    m_delayedListStyle;
-    bool               m_delayedPendingMasterPageStyleChange;
-    bool               m_delayedPageBreak;
-    bool               m_delayedColumnBreak;
+    ODe_Style_List*    m_delayedListStyle = nullptr;
+    bool               m_delayedPendingMasterPageStyleChange = false;
+    bool               m_delayedPageBreak = false;
+    bool               m_delayedColumnBreak = false;
     std::string        m_delayedMasterPageStyleName;
     UT_uint32          m_delayedSpacesOffset;
 
@@ -159,7 +159,7 @@ private:
 
     bool m_pendingColumnBreak;
     bool m_pendingPageBreak;
-    bool m_bAfter;
+    bool m_bAfter = false;
 
     bool m_pendingMasterPageStyleChange;
     UT_UTF8String m_masterPageStyleName;
