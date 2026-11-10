@@ -173,8 +173,12 @@ void AP_CocoaDialog_FormatTable::event_BorderThicknessChanged(NSPopUpButton *ctr
 void AP_CocoaDialog_FormatTable::destroy(void)
 {
 	finalize();
-	[m_dlg close];
+	AP_CocoaDialog_FormatTableController * dlg = m_dlg;
 	m_dlg = nil;
+	[dlg discardXAP]; // closing the window must not call back
+	[dlg close];
+	// We may be inside the controller's windowWillClose: release it later.
+	dispatch_async(dispatch_get_main_queue(), ^{ (void)dlg; });
 }
 
 void AP_CocoaDialog_FormatTable::activate(void)
@@ -225,8 +229,19 @@ void AP_CocoaDialog_FormatTable::_storeWindowData(void)
 	_xap = dynamic_cast<AP_CocoaDialog_FormatTable*>(owner);
 }
 
+- (void)windowWillClose:(NSNotification *)notification
+{
+	UT_UNUSED(notification);
+	// Like the Gtk dialog, closing the window ends the dialog (and its updater).
+	if (AP_CocoaDialog_FormatTable * xap = _xap) {
+		_xap = nullptr;
+		xap->event_Close();
+	}
+}
+
 - (void)windowDidLoad
 {
+	[[self window] setDelegate:self];
 	if (_xap) {
 		const XAP_StringSet *pSS = XAP_App::getApp()->getStringSet();
 		_xap->ConstructWindowName();

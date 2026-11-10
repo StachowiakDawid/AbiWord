@@ -153,9 +153,12 @@ void AP_CocoaDialog_FormatFrame::destroy(void)
 {
 	finalize();
 
-	if (m_dlg) {
-		[m_dlg close];
+	if (AP_CocoaDialog_FormatFrameController * dlg = m_dlg) {
 		m_dlg = nil;
+		[dlg discardXAP]; // closing the window must not call back
+		[dlg close];
+		// We may be inside the controller's windowWillClose: release it later.
+		dispatch_async(dispatch_get_main_queue(), ^{ (void)dlg; });
 	}
 	DELETEP(m_pPreviewWidget);
 }
@@ -311,8 +314,19 @@ void AP_CocoaDialog_FormatFrame::_storeWindowData(void)
 	_xap = nullptr;
 }
 
+- (void)windowWillClose:(NSNotification *)notification
+{
+	UT_UNUSED(notification);
+	// Like the Gtk dialog, closing the window ends the dialog (and its updater).
+	if (AP_CocoaDialog_FormatFrame * xap = _xap) {
+		_xap = nullptr;
+		xap->event_Close();
+	}
+}
+
 - (void)windowDidLoad
 {
+	[[self window] setDelegate:self];
 	if (_xap) {
 		const XAP_StringSet * pSS = XAP_App::getApp()->getStringSet();
 

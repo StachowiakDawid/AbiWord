@@ -63,7 +63,7 @@ private:
 };
 
 
-@interface AP_CocoaDialog_FormatTableController : NSWindowController <XAP_CocoaDialogProtocol>
+@interface AP_CocoaDialog_FormatTableController : NSWindowController <XAP_CocoaDialogProtocol, NSWindowDelegate>
 {
 @public
     IBOutlet NSButton *_applyBtn;

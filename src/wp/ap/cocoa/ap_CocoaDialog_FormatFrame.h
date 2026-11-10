@@ -66,7 +66,7 @@ private:
 
 @class XAP_CocoaToolbarButton;
 
-@interface AP_CocoaDialog_FormatFrameController : NSWindowController <XAP_CocoaDialogProtocol, XAP_CocoaButtonController>
+@interface AP_CocoaDialog_FormatFrameController : NSWindowController <XAP_CocoaDialogProtocol, XAP_CocoaButtonController, NSWindowDelegate>
 {
 	IBOutlet NSColorWell *		_bgColorWell;
 	IBOutlet NSColorWell *		_borderColorWell;
