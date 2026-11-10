@@ -416,6 +416,8 @@ libap_la_SOURCES += \
 	cocoa/ap_CocoaDialog_Annotation.cpp \
 	cocoa/ap_CocoaDialog_Background.h \
 	cocoa/ap_CocoaDialog_Background.cpp \
+	cocoa/ap_CocoaDialog_Border_Shading.h \
+	cocoa/ap_CocoaDialog_Border_Shading.cpp \
 	cocoa/ap_CocoaDialog_Break.h \
 	cocoa/ap_CocoaDialog_Break.cpp \
 	cocoa/ap_CocoaDialog_Columns.h \
