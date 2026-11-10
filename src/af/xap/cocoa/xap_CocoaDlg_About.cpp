@@ -37,6 +37,9 @@
 
 #import "xap_Cocoa_ResourceIDs.h"
 
+extern unsigned char g_pngSidebar[];		// see ap_wp_sidebar.cpp
+extern unsigned long g_pngSidebar_sizeof;	// see ap_wp_sidebar.cpp
+
 
 /*****************************************************************/
 
@@ -116,17 +119,24 @@ void XAP_CocoaDialog_About::event_URL(void)
 	[m_appName setStringValue:[NSString stringWithUTF8String:app->getApplicationName()]];
 	pSS->getValueUTF8(XAP_STRING_ID_DLG_ABOUT_Version, s);
 	[m_versionLabel setStringValue:[NSString stringWithFormat:[NSString stringWithUTF8String:s.c_str()], XAP_App::s_szBuild_Version]];
-	[m_licenseText insertText:[NSString stringWithFormat:@"%s\n\n%@", XAP_ABOUT_COPYRIGHT,
+	[m_licenseText setString:[NSString stringWithFormat:@"%s\n\n%@", XAP_ABOUT_COPYRIGHT,
 					[NSString stringWithFormat:@XAP_ABOUT_GPL_LONG_LF, app->getApplicationName()]]];
 	[m_licenseText setEditable:NO];
 
-	NSClipView * clipView = (NSClipView *) [m_licenseText superview];
-	[clipView scrollToPoint:NSZeroPoint];
+	// make sure the beginning of the text is shown
+	// once the window is laid out.
+	// The dialog runs modally, so schedule in the modal run loop mode too.
+	[m_licenseText setSelectedRange:NSMakeRange(0, 0)];
+	[m_licenseText performSelector:@selector(scrollToBeginningOfDocument:) withObject:nil afterDelay:0.0
+		inModes:@[NSDefaultRunLoopMode, NSModalPanelRunLoopMode]];
 
-	NSScrollView * scrollView = (NSScrollView *) [clipView superview]; // Not sure why this is necessary...
-	[scrollView reflectScrolledClipView:clipView];
-
-	NSImage*	image = [NSImage imageNamed:XAP_COCOA_ABOUT_SIDEBAR_RESOURCE_NAME];
+	// The sidebar artwork is compiled into libabiword (ap_wp_sidebar.cpp),
+	// it is not a bundle resource.
+	NSData * data = [NSData dataWithBytesNoCopy:g_pngSidebar length:g_pngSidebar_sizeof freeWhenDone:NO];
+	NSImage * image = [[NSImage alloc] initWithData:data];
+	if (!image) {
+		image = [NSImage imageNamed:XAP_COCOA_ABOUT_SIDEBAR_RESOURCE_NAME];
+	}
 	[m_imageView setImage:image];
 }
 

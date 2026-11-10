@@ -364,7 +364,7 @@ void AP_CocoaDialog_FormatFrame::_storeWindowData(void)
 - (IBAction)borderThicknessField:(id)sender
 {
 	NSStepper * stepper = 0;
-	NSFormCell * field = 0;
+	NSTextFieldCell * field = 0;
 	float thickness = 0;
 	std::string sThick;
 
@@ -442,7 +442,7 @@ void AP_CocoaDialog_FormatFrame::_storeWindowData(void)
 - (IBAction)borderThicknessStepper:(id)sender
 {
 	NSStepper * stepper = 0;
-	NSFormCell * field = 0;
+	NSTextFieldCell * field = 0;
 	float thickness = 0;
 
 	switch ([sender tag])

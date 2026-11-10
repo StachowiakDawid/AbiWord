@@ -75,8 +75,8 @@ protected:
 
 	IBOutlet NSTableView *	oFieldsTable;
 
-	IBOutlet NSForm *		oFieldName;
-	IBOutlet NSFormCell *	oFieldNameCell;
+	IBOutlet NSTextField *	oFieldName;
+	IBOutlet NSTextField *	oFieldNameCell;	/* label of oFieldName */
 
 	IBOutlet NSButton *		oOpenFile;
 	IBOutlet NSButton *		oClose;

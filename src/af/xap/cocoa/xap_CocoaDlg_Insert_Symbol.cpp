@@ -581,7 +581,7 @@ static unichar s_remap[224] = {
 			[cell setFont:[NSFont labelFontOfSize:12.0f]];
 
 			[cell setDrawsBackground:YES];
-			[cell setBackgroundColor:[NSColor controlHighlightColor]];
+			[cell setBackgroundColor:[NSColor unemphasizedSelectedContentBackgroundColor]];
 
 			if (m_OffsetString[rowIndex])
 				return m_OffsetString[rowIndex];
@@ -603,7 +603,7 @@ static unichar s_remap[224] = {
 	if ((columnIndex == m_Symbol_lo) && (rowIndex == m_Symbol_hi))
 		{
 			[cell setDrawsBackground:YES];
-			[cell setBackgroundColor:[NSColor controlHighlightColor]];
+			[cell setBackgroundColor:[NSColor unemphasizedSelectedContentBackgroundColor]];
 		}
 	else
 		{

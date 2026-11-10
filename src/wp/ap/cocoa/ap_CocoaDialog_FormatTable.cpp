@@ -243,9 +243,14 @@ void AP_CocoaDialog_FormatTable::_storeWindowData(void)
 		LocalizeControl(_thicknessLabel, pSS,AP_STRING_ID_DLG_FormatTable_Thickness);
 		LocalizeControl(_imageBgBox, pSS, AP_STRING_ID_DLG_FormatTable_SetImageBackground);
 		LocalizeControl(_setImageBtn, pSS, AP_STRING_ID_DLG_FormatTable_SelectImage);
-		[_setImageBtn setImage:[NSImage imageNamed:@"tb_insert_graphic"]];
+		[_setImageBtn setImage:XAP_CocoaSymbolImage(@"tb_insert_graphic", @"photo.badge.plus", @"photo", nil)];
 		LocalizeControl(_noImageBtn, pSS, AP_STRING_ID_DLG_FormatTable_NoImageBackground);
-		[_noImageBtn setImage:[NSImage imageNamed:@"tb_remove_graphic"]];
+		[_noImageBtn setImage:XAP_CocoaSymbolImage(@"tb_remove_graphic", @"xmark.rectangle", nil)];
+		// icon buttons: the (long) title would be drawn over the icon
+		for (NSButton * btn in @[_setImageBtn, _noImageBtn]) {
+			[btn setToolTip:[btn title]];
+			[btn setImagePosition:NSImageOnly];
+		}
 		LocalizeControl(_previewBox, pSS, AP_STRING_ID_DLG_FormatTable_Preview);
 		LocalizeControl(_applyToLabel, pSS, AP_STRING_ID_DLG_FormatTable_Apply_To);
 		[_applyToPopup removeAllItems];
@@ -253,10 +258,10 @@ void AP_CocoaDialog_FormatTable::_storeWindowData(void)
 		AppendLocalizedMenuItem(_applyToPopup, pSS, AP_STRING_ID_DLG_FormatTable_Apply_To_Row, 1);
 		AppendLocalizedMenuItem(_applyToPopup, pSS, AP_STRING_ID_DLG_FormatTable_Apply_To_Column, 2);
 		AppendLocalizedMenuItem(_applyToPopup, pSS, AP_STRING_ID_DLG_FormatTable_Apply_To_Table, 3);
-		[_rightBorderBtn setImage:[NSImage imageNamed:@"tb_LineRight"]];
-		[_topBorderBtn setImage:[NSImage imageNamed:@"tb_LineTop"]];
-		[_leftBorderBtn setImage:[NSImage imageNamed:@"tb_LineLeft"]];
-		[_bottomBorderBtn setImage:[NSImage imageNamed:@"tb_LineBottom"]];
+		[_rightBorderBtn setImage:XAP_CocoaSymbolImage(@"tb_LineRight", @"rectangle.righthalf.inset.filled", @"square.righthalf.filled", nil)];
+		[_topBorderBtn setImage:XAP_CocoaSymbolImage(@"tb_LineTop", @"rectangle.tophalf.inset.filled", @"square.tophalf.filled", nil)];
+		[_leftBorderBtn setImage:XAP_CocoaSymbolImage(@"tb_LineLeft", @"rectangle.lefthalf.inset.filled", @"square.lefthalf.filled", nil)];
+		[_bottomBorderBtn setImage:XAP_CocoaSymbolImage(@"tb_LineBottom", @"rectangle.bottomhalf.inset.filled", @"square.bottomhalf.filled", nil)];
 		
 		[_thicknessPopup removeAllItems];
 		[_thicknessPopup addItemWithTitle:@"1/2 pt"];

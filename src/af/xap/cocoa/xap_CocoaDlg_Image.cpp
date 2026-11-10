@@ -45,12 +45,16 @@
 @public
 	IBOutlet NSTabView *        _mainTab;
 	IBOutlet NSBox *            _nameBox;
-	IBOutlet NSFormCell *		_titleCell;
-	IBOutlet NSFormCell *		_descriptionCell;
+	IBOutlet NSTextFieldCell *		_titleCell;
+	IBOutlet NSTextField *			_titleLabel;
+	IBOutlet NSTextField *			_descriptionLabel;
+	IBOutlet NSTextField *			_widthLabel;
+	IBOutlet NSTextField *			_heightLabel;
+	IBOutlet NSTextFieldCell *		_descriptionCell;
 
 	IBOutlet NSBox *            _imageSizeBox;
-	IBOutlet NSFormCell *		_widthCell;
-	IBOutlet NSFormCell *		_heightCell;
+	IBOutlet NSTextFieldCell *		_widthCell;
+	IBOutlet NSTextFieldCell *		_heightCell;
 
 	IBOutlet NSStepper *		_widthNumStepper;
 	IBOutlet NSStepper *		_heightNumStepper;
@@ -380,11 +384,11 @@ void XAP_CocoaDialog_Image::runModal(XAP_Frame * /*pFrame*/)
 		LocalizeControl([_mainTab tabViewItemAtIndex:1], pSS, XAP_STRING_ID_DLG_Image_WrapTabLabel);
 
 		LocalizeControl(_nameBox,			pSS, XAP_STRING_ID_DLG_Image_ImageDesc);
-		LocalizeControl(_titleCell,			pSS, XAP_STRING_ID_DLG_Image_LblTitle);
-		LocalizeControl(_descriptionCell,	pSS, XAP_STRING_ID_DLG_Image_LblDescription);
+		LocalizeControl(_titleLabel,			pSS, XAP_STRING_ID_DLG_Image_LblTitle);
+		LocalizeControl(_descriptionLabel,	pSS, XAP_STRING_ID_DLG_Image_LblDescription);
 		LocalizeControl(_imageSizeBox,		pSS, XAP_STRING_ID_DLG_Image_ImageSize);
-		LocalizeControl(_widthCell,			pSS, XAP_STRING_ID_DLG_Image_Width);
-		LocalizeControl(_heightCell,		pSS, XAP_STRING_ID_DLG_Image_Height);
+		LocalizeControl(_widthLabel,			pSS, XAP_STRING_ID_DLG_Image_Width);
+		LocalizeControl(_heightLabel,		pSS, XAP_STRING_ID_DLG_Image_Height);
 		LocalizeControl(_preserveAspectBtn,	pSS, XAP_STRING_ID_DLG_Image_Aspect);
 		LocalizeControl(_textWrapLabel,		pSS, XAP_STRING_ID_DLG_Image_TextWrapping);
 		LocalizeControl(_textWrapInline,	pSS, XAP_STRING_ID_DLG_Image_InLine);

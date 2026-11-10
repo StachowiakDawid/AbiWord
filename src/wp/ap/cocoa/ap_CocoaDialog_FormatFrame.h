@@ -98,17 +98,17 @@ private:
 	IBOutlet NSTextField *		_bgColorLabel;
 	IBOutlet NSTextField *		_borderColorLabel;
 
-	IBOutlet NSFormCell *		_borderNumber;
-	IBOutlet NSFormCell *		_rightBorderNumber;
-	IBOutlet NSFormCell *		_leftBorderNumber;
-	IBOutlet NSFormCell *		_topBorderNumber;
-	IBOutlet NSFormCell *		_bottomBorderNumber;
+	IBOutlet NSTextFieldCell *		_borderNumber;
+	IBOutlet NSTextFieldCell *		_rightBorderNumber;
+	IBOutlet NSTextFieldCell *		_leftBorderNumber;
+	IBOutlet NSTextFieldCell *		_topBorderNumber;
+	IBOutlet NSTextFieldCell *		_bottomBorderNumber;
 
-	IBOutlet NSForm *			_borderNumberForm;
-	IBOutlet NSForm *			_rightBorderNumberForm;
-	IBOutlet NSForm *			_leftBorderNumberForm;
-	IBOutlet NSForm *			_topBorderNumberForm;
-	IBOutlet NSForm *			_bottomBorderNumberForm;
+	IBOutlet NSTextField *			_borderNumberForm;
+	IBOutlet NSTextField *			_rightBorderNumberForm;
+	IBOutlet NSTextField *			_leftBorderNumberForm;
+	IBOutlet NSTextField *			_topBorderNumberForm;
+	IBOutlet NSTextField *			_bottomBorderNumberForm;
 
 	IBOutlet NSStepper *		_borderStepper;
 	IBOutlet NSStepper *		_rightBorderStepper;

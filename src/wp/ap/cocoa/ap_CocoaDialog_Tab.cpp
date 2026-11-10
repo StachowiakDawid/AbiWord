@@ -326,6 +326,18 @@ void AP_CocoaDialog_Tab::_clearList()
 {
 	const XAP_StringSet * pSS = XAP_App::getApp()->getStringSet();
 	LocalizeControl([self window], pSS, AP_STRING_ID_DLG_Tab_TabTitle);
+
+	// The default tab field is too narrow for values like "0.5000in" with
+	// the current system font: take some room from its label.
+	const CGFloat extra = 16.0;
+	NSRect fieldFrame = [_defaultTabData frame];
+	fieldFrame.origin.x -= extra;
+	fieldFrame.size.width += extra;
+	[_defaultTabData setFrame:fieldFrame];
+	NSRect labelFrame = [_defaultTabLabel frame];
+	labelFrame.size.width = MAX(0.0, NSMinX(fieldFrame) - 4.0 - NSMinX(labelFrame));
+	[_defaultTabLabel setFrame:labelFrame];
+
 	LocalizeControl(_tabPositionLabel, pSS, AP_STRING_ID_DLG_Tab_Label_TabPosition);
 	LocalizeControl(_tabClearLabel, pSS, AP_STRING_ID_DLG_Tab_Label_TabToClear);
 	LocalizeControl(_setBtn, pSS, AP_STRING_ID_DLG_Tab_Button_Set);

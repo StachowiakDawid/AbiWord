@@ -67,28 +67,27 @@ DQ
                             <action selector="aInsert:" target="-2" id="30"/>
                         </connections>
                     </button>
-                    <form verticalHuggingPriority="750" mode="track" allowsEmptySelection="NO" autosizesCells="NO" id="11">
-                        <rect key="frame" x="20" y="38" width="310" height="19"/>
+                    <textField verticalHuggingPriority="750" id="14">
+                        <rect key="frame" x="17" y="40" width="96" height="14"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        <size key="cellSize" width="310" height="19"/>
-                        <size key="intercellSpacing" width="1" height="8"/>
-                        <formCell key="prototype" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="justified" title="Field:" id="39">
+                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="Field Name:" id="9140">
                             <font key="font" metaFont="smallSystem"/>
-                            <font key="titleFont" metaFont="smallSystem"/>
-                        </formCell>
-                        <cells>
-                            <column>
-                                <formCell scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="justified" title="Field Name:" id="14">
-                                    <font key="font" metaFont="smallSystem"/>
-                                    <font key="titleFont" metaFont="smallSystem"/>
-                                </formCell>
-                            </column>
-                        </cells>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" id="11">
+                        <rect key="frame" x="120" y="38" width="210" height="19"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" stringValue="" drawsBackground="YES" id="9110">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
                         <connections>
                             <action selector="aFieldName:" target="-2" id="28"/>
                         </connections>
-                    </form>
+                    </textField>
                     <textField verticalHuggingPriority="750" id="15">
                         <rect key="frame" x="17" y="223" width="186" height="14"/>
                         <autoresizingMask key="autoresizingMask"/>

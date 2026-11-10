@@ -240,6 +240,10 @@ void AP_CocoaDialog_Columns::enableLineBetweenControl(bool /*bState*/)
 
 		LocalizeControl([self window],			pSS, AP_STRING_ID_DLG_Column_ColumnTitle);
 
+		[_oneBtn setImage:XAP_CocoaSymbolImage(@"tb_1column", @"rectangle", nil)];
+		[_twoBtn setImage:XAP_CocoaSymbolImage(@"tb_2column", @"rectangle.split.2x1", nil)];
+		[_threeBtn setImage:XAP_CocoaSymbolImage(@"tb_3column", @"rectangle.split.3x1", nil)];
+
 		LocalizeControl(_okBtn,					pSS, XAP_STRING_ID_DLG_OK);
 		LocalizeControl(_cancelBtn,				pSS, XAP_STRING_ID_DLG_Cancel);
 

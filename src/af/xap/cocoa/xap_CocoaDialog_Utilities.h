@@ -37,6 +37,8 @@ void LocalizeControl (id control, const XAP_StringSet * pSS, XAP_String_Id strin
 NSString* LocalizedString (const XAP_StringSet * pSS, XAP_String_Id stringId);
 void AppendLocalizedMenuItem (NSPopUpButton* menu, const XAP_StringSet * pSS, XAP_String_Id stringId, int tag);
 void _convertLabelToMac (char * buf, size_t bufSize, const char * label);
+/* First available SF Symbol of names (nil-terminated), else imageNamed:fallback. */
+NSImage* XAP_CocoaSymbolImage (NSString * fallback, NSString * name, ...) NS_REQUIRES_NIL_TERMINATION;
 
 @protocol XAP_CocoaDialogProtocol
 

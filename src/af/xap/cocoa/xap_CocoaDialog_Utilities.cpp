@@ -140,3 +140,18 @@ void _convertLabelToMac (char * buf, size_t bufSize, const char * label)
 	}
 	*dst = 0;
 }
+
+NSImage* XAP_CocoaSymbolImage (NSString * fallback, NSString * name, ...)
+{
+	va_list args;
+	va_start(args, name);
+	for (NSString * candidate = name; candidate; candidate = va_arg(args, NSString *)) {
+		if (NSImage * image = [NSImage imageWithSystemSymbolName:candidate accessibilityDescription:nil]) {
+			va_end(args);
+			// about the size of the bitmaps they replace
+			return [image imageWithSymbolConfiguration:[NSImageSymbolConfiguration configurationWithPointSize:18.0 weight:NSFontWeightRegular]];
+		}
+	}
+	va_end(args);
+	return fallback ? [NSImage imageNamed:fallback] : nil;
+}

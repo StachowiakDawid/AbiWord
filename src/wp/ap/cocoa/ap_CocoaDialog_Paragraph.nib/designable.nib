@@ -7,6 +7,10 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AP_CocoaDialog_ParagraphController">
             <connections>
+                <outlet property="_indentLeftLabel" destination="1140" id="1152"/>
+                <outlet property="_indentRightLabel" destination="1143" id="1153"/>
+                <outlet property="_spacingBeforeLabel" destination="1146" id="1154"/>
+                <outlet property="_spacingAfterLabel" destination="1149" id="1155"/>
                 <outlet property="_alignmentLabel" destination="64" id="71"/>
                 <outlet property="_alignmentPopup" destination="14" id="72"/>
                 <outlet property="_atData" destination="53" id="74"/>
@@ -96,35 +100,48 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="435" height="72"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <form verticalHuggingPriority="750" mode="track" allowsEmptySelection="NO" autosizesCells="NO" id="21">
-                                                        <rect key="frame" x="30" y="13" width="149" height="46"/>
+                                                    <textField verticalHuggingPriority="750" id="1140">
+                                                        <rect key="frame" x="28" y="42" width="67" height="15"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                        <size key="cellSize" width="149" height="19"/>
-                                                        <size key="intercellSpacing" width="1" height="8"/>
-                                                        <formCell key="prototype" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="justified" title="Field:" id="138">
+                                                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="Left:" id="1141">
                                                             <font key="font" metaFont="smallSystem"/>
-                                                            <font key="titleFont" metaFont="smallSystem"/>
-                                                        </formCell>
-                                                        <cells>
-                                                            <column>
-                                                                <formCell lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="justified" title="Left:" id="22">
-                                                                    <font key="font" metaFont="smallSystem"/>
-                                                                    <font key="titleFont" metaFont="smallSystem"/>
-                                                                    <connections>
-                                                                        <action selector="editAction:" target="-2" id="99"/>
-                                                                    </connections>
-                                                                </formCell>
-                                                                <formCell lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="justified" tag="1" title="Right:" id="23">
-                                                                    <font key="font" metaFont="smallSystem"/>
-                                                                    <font key="titleFont" metaFont="smallSystem"/>
-                                                                    <connections>
-                                                                        <action selector="editAction:" target="-2" id="100"/>
-                                                                    </connections>
-                                                                </formCell>
-                                                            </column>
-                                                        </cells>
-                                                    </form>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" id="1142">
+                                                        <rect key="frame" x="101" y="40" width="78" height="19"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="22">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                        <connections>
+                                                            <action selector="editAction:" target="-2" id="99"/>
+                                                        </connections>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" id="1143">
+                                                        <rect key="frame" x="28" y="15" width="67" height="15"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="Right:" id="1144">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" tag="1" id="1145">
+                                                        <rect key="frame" x="101" y="13" width="78" height="19"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" tag="1" drawsBackground="YES" id="23">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                        <connections>
+                                                            <action selector="editAction:" target="-2" id="100"/>
+                                                        </connections>
+                                                    </textField>
                                                     <popUpButton verticalHuggingPriority="750" id="40">
                                                         <rect key="frame" x="184" y="10" width="105" height="22"/>
                                                         <autoresizingMask key="autoresizingMask"/>
@@ -186,35 +203,48 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="435" height="73"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <form verticalHuggingPriority="750" mode="track" allowsEmptySelection="NO" autosizesCells="NO" id="29">
-                                                        <rect key="frame" x="23" y="14" width="156" height="46"/>
+                                                    <textField verticalHuggingPriority="750" id="1146">
+                                                        <rect key="frame" x="21" y="43" width="70" height="15"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                        <size key="cellSize" width="156" height="19"/>
-                                                        <size key="intercellSpacing" width="1" height="8"/>
-                                                        <formCell key="prototype" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="justified" title="Field:" id="139">
+                                                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="Before:" id="1147">
                                                             <font key="font" metaFont="smallSystem"/>
-                                                            <font key="titleFont" metaFont="smallSystem"/>
-                                                        </formCell>
-                                                        <cells>
-                                                            <column>
-                                                                <formCell lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="justified" title="Before:" id="31">
-                                                                    <font key="font" metaFont="smallSystem"/>
-                                                                    <font key="titleFont" metaFont="smallSystem"/>
-                                                                    <connections>
-                                                                        <action selector="editAction:" target="-2" id="104"/>
-                                                                    </connections>
-                                                                </formCell>
-                                                                <formCell lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="justified" tag="1" title="After:" id="30">
-                                                                    <font key="font" metaFont="smallSystem"/>
-                                                                    <font key="titleFont" metaFont="smallSystem"/>
-                                                                    <connections>
-                                                                        <action selector="editAction:" target="-2" id="105"/>
-                                                                    </connections>
-                                                                </formCell>
-                                                            </column>
-                                                        </cells>
-                                                    </form>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" id="1148">
+                                                        <rect key="frame" x="97" y="41" width="82" height="19"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="31">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                        <connections>
+                                                            <action selector="editAction:" target="-2" id="104"/>
+                                                        </connections>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" id="1149">
+                                                        <rect key="frame" x="21" y="16" width="70" height="15"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="After:" id="1150">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" tag="1" id="1151">
+                                                        <rect key="frame" x="97" y="14" width="82" height="19"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" tag="1" drawsBackground="YES" id="30">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                        <connections>
+                                                            <action selector="editAction:" target="-2" id="105"/>
+                                                        </connections>
+                                                    </textField>
                                                     <popUpButton verticalHuggingPriority="750" id="48">
                                                         <rect key="frame" x="184" y="12" width="105" height="22"/>
                                                         <autoresizingMask key="autoresizingMask"/>

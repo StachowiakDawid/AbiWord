@@ -7,6 +7,10 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="XAP_CocoaDialog_ImageController">
             <connections>
+                <outlet property="_widthLabel" destination="1218" id="1230"/>
+                <outlet property="_heightLabel" destination="1221" id="1231"/>
+                <outlet property="_titleLabel" destination="1224" id="1232"/>
+                <outlet property="_descriptionLabel" destination="1227" id="1233"/>
                 <outlet property="_cancelBtn" destination="21" id="27"/>
                 <outlet property="_descriptionCell" destination="93" id="98"/>
                 <outlet property="_heightCell" destination="141" id="170"/>
@@ -118,29 +122,42 @@ Gw
                                                             <font key="font" metaFont="smallSystem"/>
                                                         </buttonCell>
                                                     </button>
-                                                    <form verticalHuggingPriority="750" mode="track" allowsEmptySelection="NO" autosizesCells="NO" id="140">
-                                                        <rect key="frame" x="16" y="42" width="147" height="46"/>
+                                                    <textField verticalHuggingPriority="750" id="1218">
+                                                        <rect key="frame" x="14" y="71" width="66" height="15"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                        <size key="cellSize" width="147" height="19"/>
-                                                        <size key="intercellSpacing" width="1" height="8"/>
-                                                        <formCell key="prototype" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="justified" title="Field:" id="213">
+                                                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="Width:" id="1219">
                                                             <font key="font" metaFont="smallSystem"/>
-                                                            <font key="titleFont" metaFont="smallSystem"/>
-                                                        </formCell>
-                                                        <cells>
-                                                            <column>
-                                                                <formCell scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="justified" title="Width:" id="142">
-                                                                    <font key="font" metaFont="smallSystem"/>
-                                                                    <font key="titleFont" metaFont="smallSystem"/>
-                                                                </formCell>
-                                                                <formCell scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="justified" tag="1" title="Height:" id="141">
-                                                                    <font key="font" metaFont="smallSystem"/>
-                                                                    <font key="titleFont" metaFont="smallSystem"/>
-                                                                </formCell>
-                                                            </column>
-                                                        </cells>
-                                                    </form>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" id="1220">
+                                                        <rect key="frame" x="86" y="69" width="77" height="19"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="142">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" id="1221">
+                                                        <rect key="frame" x="14" y="44" width="66" height="15"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="Height:" id="1222">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" tag="1" id="1223">
+                                                        <rect key="frame" x="86" y="42" width="77" height="19"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" tag="1" drawsBackground="YES" id="141">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
                                                 </subviews>
                                             </view>
                                             <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
@@ -163,29 +180,42 @@ Gw
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                     </textField>
-                                                    <form verticalHuggingPriority="750" mode="track" allowsEmptySelection="NO" autosizesCells="NO" id="91">
-                                                        <rect key="frame" x="14" y="27" width="333" height="46"/>
+                                                    <textField verticalHuggingPriority="750" id="1224">
+                                                        <rect key="frame" x="12" y="56" width="150" height="15"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                        <size key="cellSize" width="333" height="19"/>
-                                                        <size key="intercellSpacing" width="1" height="8"/>
-                                                        <formCell key="prototype" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="justified" title="Field:" id="214">
+                                                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="Title:" id="1225">
                                                             <font key="font" metaFont="smallSystem"/>
-                                                            <font key="titleFont" metaFont="smallSystem"/>
-                                                        </formCell>
-                                                        <cells>
-                                                            <column>
-                                                                <formCell scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="justified" title="Title:" id="92">
-                                                                    <font key="font" metaFont="smallSystem"/>
-                                                                    <font key="titleFont" metaFont="smallSystem"/>
-                                                                </formCell>
-                                                                <formCell scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="justified" tag="1" title="Description:" id="93">
-                                                                    <font key="font" metaFont="smallSystem"/>
-                                                                    <font key="titleFont" metaFont="smallSystem"/>
-                                                                </formCell>
-                                                            </column>
-                                                        </cells>
-                                                    </form>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" id="1226">
+                                                        <rect key="frame" x="168" y="54" width="179" height="19"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="92">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" id="1227">
+                                                        <rect key="frame" x="12" y="29" width="150" height="15"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="Description:" id="1228">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" tag="1" id="1229">
+                                                        <rect key="frame" x="168" y="27" width="179" height="19"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" tag="1" drawsBackground="YES" id="93">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
                                                 </subviews>
                                             </view>
                                             <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>

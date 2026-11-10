@@ -148,14 +148,7 @@ void AP_CocoaDialog_Paragraph::event_EditChanged(id sender)
 {
 	tControl idc = (tControl)-1;
 	
-	if ([sender isKindOfClass:[NSForm class]]) {
-		int idx = [sender indexOfSelectedItem];
-		UT_ASSERT (idx != -1);
-		idc = (tControl)[[sender cellAtRow:idx column:0] tag];
-	}
-	else {
-		idc = (tControl)[sender tag];
-	}
+	idc = (tControl)[sender tag];
 	
 	// this function will massage the contents for proper
 	// formatting for spinbuttons that need it.  for example,
@@ -395,9 +388,9 @@ int AP_CocoaDialog_Paragraph::_tCheckStateToNS(AP_CocoaDialog_Paragraph::tCheckS
 		LocalizeControl(_rtlDominantBtn, pSS, AP_STRING_ID_DLG_Para_DomDirection);
 		[_rtlDominantBtn setTag:(int)AP_Dialog_Paragraph::id_CHECK_DOMDIRECTION];
 		LocalizeControl(_indentationBox, pSS, AP_STRING_ID_DLG_Para_LabelIndentation);
-		LocalizeControl(_indentLeftFormCell, pSS, AP_STRING_ID_DLG_Para_LabelLeft);
+		LocalizeControl(_indentLeftLabel, pSS, AP_STRING_ID_DLG_Para_LabelLeft);
 		[_indentLeftFormCell setTag:(int)AP_Dialog_Paragraph::id_SPIN_LEFT_INDENT];
-		LocalizeControl(_indentRightFormCell, pSS, AP_STRING_ID_DLG_Para_LabelRight);
+		LocalizeControl(_indentRightLabel, pSS, AP_STRING_ID_DLG_Para_LabelRight);
 		[_indentRightFormCell setTag:(int)AP_Dialog_Paragraph::id_SPIN_RIGHT_INDENT];
 		LocalizeControl(_specialLabel, pSS, AP_STRING_ID_DLG_Para_LabelSpecial);
 
@@ -411,9 +404,9 @@ int AP_CocoaDialog_Paragraph::_tCheckStateToNS(AP_CocoaDialog_Paragraph::tCheckS
 		LocalizeControl(_byLabel, pSS, AP_STRING_ID_DLG_Para_LabelBy);
 		[_byData setTag:(int)AP_Dialog_Paragraph::id_SPIN_SPECIAL_INDENT];
 		LocalizeControl(_spacingBox, pSS, AP_STRING_ID_DLG_Para_LabelSpacing);
-		LocalizeControl(_spacingBeforeFormCell, pSS, AP_STRING_ID_DLG_Para_LabelBefore);
+		LocalizeControl(_spacingBeforeLabel, pSS, AP_STRING_ID_DLG_Para_LabelBefore);
 		[_spacingBeforeFormCell setTag:(int)AP_Dialog_Paragraph::id_SPIN_BEFORE_SPACING];
-		LocalizeControl(_spacingAfterFormCell, pSS, AP_STRING_ID_DLG_Para_LabelAfter);
+		LocalizeControl(_spacingAfterLabel, pSS, AP_STRING_ID_DLG_Para_LabelAfter);
 		[_spacingAfterFormCell setTag:(int)AP_Dialog_Paragraph::id_SPIN_AFTER_SPACING];
 		LocalizeControl(_lineSpacingLabel, pSS, AP_STRING_ID_DLG_Para_LabelLineSpacing);
 		/*menu items*/
