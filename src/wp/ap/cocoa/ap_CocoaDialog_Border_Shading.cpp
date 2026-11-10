@@ -38,7 +38,7 @@ static const char * s_borderStyles[BORDER_SHADING_NUMOFSTYLES] = {
 };
 
 static const char * s_sizes[] = {
-	"1/2 pt", "3/4 pt", "1 pt", "1 1/2 pt", "2 1/4 pt", "3 pt", "4 1/2 pt", "6 pt",
+	"1/4 pt", "1/2 pt", "3/4 pt", "1 pt", "1 1/2 pt", "2 1/4 pt", "3 pt", "4 1/2 pt", "6 pt",
 };
 
 static const NSSize s_previewSize = { 220, 160 };

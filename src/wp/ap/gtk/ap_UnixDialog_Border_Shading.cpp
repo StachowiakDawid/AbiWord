@@ -540,6 +540,7 @@ GtkWidget * AP_UnixDialog_Border_Shading::_constructWindow(void)
 	m_wBorderThickness = GTK_WIDGET(gtk_builder_get_object(builder, "omBorderThickness"));
 	GtkComboBox* combo = GTK_COMBO_BOX(m_wBorderThickness);
 	XAP_makeGtkComboBoxText(combo, G_TYPE_NONE);
+	XAP_appendComboBoxText(combo, "1/4 pt");
 	XAP_appendComboBoxText(combo, "1/2 pt");
 	XAP_appendComboBoxText(combo, "3/4 pt");
 	XAP_appendComboBoxText(combo, "1 pt");
@@ -574,6 +575,7 @@ GtkWidget * AP_UnixDialog_Border_Shading::_constructWindow(void)
 	m_wShadingOffset = GTK_WIDGET(gtk_builder_get_object(builder, "cmbShadingOffset"));
 	GtkComboBox* combo_offset = GTK_COMBO_BOX(m_wShadingOffset);
 	XAP_makeGtkComboBoxText(combo_offset, G_TYPE_NONE);
+	XAP_appendComboBoxText(combo_offset, "1/4 pt");
 	XAP_appendComboBoxText(combo_offset, "1/2 pt");
 	XAP_appendComboBoxText(combo_offset, "3/4 pt");
 	XAP_appendComboBoxText(combo_offset, "1 pt");
