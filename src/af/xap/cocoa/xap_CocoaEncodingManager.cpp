@@ -464,7 +464,9 @@ void  XAP_CocoaEncodingManager::initialize()
 	LanguageISOName = "en";
 	LanguageISOTerritory = "US";
 	
-	if (!*locname || !strcmp(locname,"C"))
+	// "C.UTF-8" and "POSIX" are the C locale too: keep en-US rather than
+	// turning "C" into a language code
+	if (!*locname || !strcmp(locname,"C") || !strncmp(locname,"C.",2) || !strcmp(locname,"POSIX"))
 	{ 	/* paranoic case - broken system */
 		; /*already initialized*/
 	}

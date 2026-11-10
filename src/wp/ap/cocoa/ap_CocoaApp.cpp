@@ -100,6 +100,7 @@
 #include "ie_impGraphic.h"
 
 #include "spell_manager.h"
+#include "xap_CocoaModule.h"
 
 
 
@@ -293,7 +294,13 @@ bool AP_CocoaApp::initialize(void)
 			szPathname += ".strings";
 #endif
 
-			NSString* stringSet = [resources stringByAppendingPathComponent:[NSString stringWithFormat:@"AbiWord/strings/%s%@", sstringSet.c_str(), @".strings"]];
+			// installed as Resources/strings (ABIWORD_DATADIR); the old
+			// Resources/AbiWord/strings location is still honoured
+			NSString* fileName = [NSString stringWithFormat:@"%s.strings", sstringSet.c_str()];
+			NSString* stringSet = [[resources stringByAppendingPathComponent:@"strings"] stringByAppendingPathComponent:fileName];
+			if (![[NSFileManager defaultManager] fileExistsAtPath:stringSet]) {
+				stringSet = [[resources stringByAppendingPathComponent:@"AbiWord/strings"] stringByAppendingPathComponent:fileName];
+			}
 
 			AP_DiskStringSet * pDiskStringSet = new AP_DiskStringSet(this);
 			UT_ASSERT(pDiskStringSet);
@@ -369,8 +376,9 @@ bool AP_CocoaApp::initialize(void)
 	bool bFound = getPrefsValueBool(XAP_PREF_KEY_AutoLoadPlugins, bLoadPlugins);
 	if(bLoadPlugins || !bFound)
 	{
-		XAP_CocoaAppController * pController = (XAP_CocoaAppController *) [NSApp delegate];
-		[pController setAutoLoadPluginsAfterLaunch:YES];
+		// Load the importer/exporter modules now, like the GTK frontend, so
+		// that command line conversions (--to) can use them too.
+		XAP_CocoaModule::loadAllPlugins();
 	}
 
     return true;
