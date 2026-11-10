@@ -115,6 +115,7 @@ PKG_CHECK_EXISTS(cairo >= 1.10, [gtk_req="$gtk_req cairo-fc"],[])
 gtk_pkgs="
   ${cairo_req}
   ${gtk_req}
+  gmodule-2.0
   ${goffice_req}
 "
 
@@ -151,11 +152,19 @@ if test "x$HAVE_PERL" = "xno"; then
 fi
 
 
+AC_ARG_WITH([toolkit],
+	[AS_HELP_STRING([--with-toolkit=cocoa|gtk], [(macOS only) user interface toolkit, default cocoa])],
+	[abi_darwin_toolkit="$withval"],
+	[abi_darwin_toolkit="cocoa"])
+
 AC_MSG_CHECKING([for platform and toolkit])
 case ${host_os} in
   *darwin*)
     PLATFORM="unix"
-    TOOLKIT="cocoa"
+    case "$abi_darwin_toolkit" in
+      cocoa|gtk) TOOLKIT="$abi_darwin_toolkit" ;;
+      *) AC_MSG_ERROR([--with-toolkit must be cocoa or gtk]) ;;
+    esac
     # Oldest macOS release still receiving security updates from Apple.
     # Can be overridden with the MACOSX_DEPLOYMENT_TARGET environment variable.
     abi_macos_min="${MACOSX_DEPLOYMENT_TARGET:-15.0}"

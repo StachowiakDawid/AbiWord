@@ -19,5 +19,7 @@ EOF
 LSAN_OPTIONS=suppressions=./supp.txt
 export LSAN_OPTIONS
 
-exec libtool --mode=execute ./AbiWord-test
+# Use the build tree's libtool: a system "libtool" may be missing, or on
+# macOS be Apple's unrelated static-library tool.
+exec @abs_top_builddir@/libtool --mode=execute ./AbiWord-test
 

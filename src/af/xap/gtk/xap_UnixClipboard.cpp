@@ -202,15 +202,18 @@ void XAP_UnixClipboard::finishedAddingData(void)
 
 void XAP_UnixClipboard::clearData(bool bClipboard, bool bPrimary)
 {
+	// Clipboards are null without a display; Quartz GTK crashes on null.
 	if (bClipboard)
     {
-		gtk_clipboard_clear (gtkClipboardForTarget (TAG_ClipboardOnly));
+		if (m_clip)
+			gtk_clipboard_clear(m_clip);
 		m_fakeClipboard.clearClipboard();
     }
 	
 	if (bPrimary)
     {
-		gtk_clipboard_clear(gtkClipboardForTarget (TAG_PrimaryOnly));
+		if (m_primary)
+			gtk_clipboard_clear(m_primary);
 		m_fakePrimaryClipboard.clearClipboard();
     }
 }

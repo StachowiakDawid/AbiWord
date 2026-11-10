@@ -12,6 +12,9 @@ endif
 libabiword_@ABIWORD_SERIES@_test_la_LDFLAGS = \
 	-no-undefined
 
+libabiword_@ABIWORD_SERIES@_test_la_LIBADD = \
+	$(DEPS_LIBS)
+
 libabiword_@ABIWORD_SERIES@_test_la_SOURCES = \
 	xp/tf_test.cpp \
 	xp/tf_test.h \
