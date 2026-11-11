@@ -29,6 +29,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+#import <MapKit/MapKit.h>
 
 #include <string>
 #include <vector>
@@ -58,6 +59,25 @@
 {
 	UT_UNUSED(notification);
 	[NSApp stopModalWithCode:NSModalResponseCancel];
+}
+@end
+
+/* The location editor's map: moving it puts its centre in the Lat and
+   Long fields, as the Gtk (champlain) map does. */
+@interface AP_CocoaLocationMapDelegate : NSObject <MKMapViewDelegate>
+@property (nonatomic, weak) NSTextField * latField;
+@property (nonatomic, weak) NSTextField * longField;
+@end
+
+@implementation AP_CocoaLocationMapDelegate
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
+{
+	UT_UNUSED(animated);
+	if (!mapView.window) {
+		return; // the first region, set before the map is shown
+	}
+	self.latField.stringValue = [NSString stringWithUTF8String:tostr(mapView.centerCoordinate.latitude).c_str()];
+	self.longField.stringValue = [NSString stringWithUTF8String:tostr(mapView.centerCoordinate.longitude).c_str()];
 }
 @end
 
@@ -314,13 +334,32 @@ public:
 
 	virtual void * createEditor() override
 	{
-		// Same fields and labels as pd_RDFLocation.ui (without the map).
+		// Same fields and labels as pd_RDFLocation.ui, the map below them.
 		EditorFields f;
 		w_name = f.add(@"Name", m_name);
 		w_desc = f.add(@"Description", m_desc);
 		w_dlat = f.add(@"Lat", tostr(m_dlat));
 		w_dlong = f.add(@"Long", tostr(m_dlong));
-		m_editor = f.view();
+
+		MKMapView * map = [[MKMapView alloc] initWithFrame:NSMakeRect(0, 0, 640, 480)];
+		map.translatesAutoresizingMaskIntoConstraints = NO;
+		[map.widthAnchor constraintEqualToConstant:640].active = YES;
+		[map.heightAnchor constraintEqualToConstant:480].active = YES;
+		CLLocationCoordinate2D centre = { m_dlat, m_dlong };
+		if (fabs(m_dlat) <= 90 && fabs(m_dlong) <= 180) {
+			// About champlain's zoom level 8 at this size.
+			[map setRegion:MKCoordinateRegionMake(centre, MKCoordinateSpanMake(2.0, 3.5)) animated:NO];
+		}
+		m_mapDelegate = [[AP_CocoaLocationMapDelegate alloc] init];
+		m_mapDelegate.latField = w_dlat;
+		m_mapDelegate.longField = w_dlong;
+		map.delegate = m_mapDelegate;
+
+		NSStackView * stack = [NSStackView stackViewWithViews:@[f.view(), map]];
+		stack.orientation = NSUserInterfaceLayoutOrientationVertical;
+		stack.alignment = NSLayoutAttributeLeading;
+		stack.spacing = 12;
+		m_editor = stack;
 		return (__bridge void *)m_editor;
 	}
 
@@ -351,6 +390,7 @@ public:
 
 private:
 	NSView * m_editor = nil;
+	AP_CocoaLocationMapDelegate * m_mapDelegate = nil;
 	NSTextField * w_name = nil;
 	NSTextField * w_desc = nil;
 	NSTextField * w_dlat = nil;

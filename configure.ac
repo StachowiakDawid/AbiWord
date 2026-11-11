@@ -687,7 +687,7 @@ if test "$TOOLKIT" = "win"; then
 	SYSTEM_CFLAGS="-mthreads"
 elif test "$TOOLKIT" = "cocoa"; then
 	deps_pkgs="$deps_pkgs $cocoa_pkgs"
-	SYSTEM_LIBS="-framework Cocoa -framework UniformTypeIdentifiers"
+	SYSTEM_LIBS="-framework Cocoa -framework UniformTypeIdentifiers -framework MapKit"
 	AC_CHECK_PROG([CONVERT], [convert], convert, AC_MSG_ERROR(Cannot find ImageMagick convert))
 elif test "$TOOLKIT" = "qt"; then
         deps_pkgs="$deps_pkgs $qt_pkgs"
