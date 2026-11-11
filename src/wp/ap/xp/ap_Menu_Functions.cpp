@@ -671,10 +671,6 @@ Defun_EV_GetMenuItemState_Fn(ap_GetState_haveSemItems)
     PD_DocumentRDFHandle rdf = pDoc->getDocumentRDF();
 	UT_return_val_if_fail( rdf, EV_MIS_Gray );
 
-	/* The editors aren't working yet. Remove if they do work. */
-	if (id == (XAP_Menu_Id)AP_MENU_ID_RDFANCHOR_EDITSEMITEM) 
-		return EV_MIS_Gray;
-
 #ifndef WITH_EVOLUTION_DATA_SERVER
 	if (id == (XAP_Menu_Id)AP_MENU_ID_RDFANCHOR_EXPORTSEMITEM) 
 		return EV_MIS_Gray;
