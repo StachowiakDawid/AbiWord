@@ -196,6 +196,10 @@ NSSavePanel* XAP_CocoaDialog_FileOpenSaveAs::_makeSavePanel(const std::string& f
 
     [savePanel setCanSelectHiddenExtension:YES];
     [savePanel setExtensionHidden:NO];
+    // A name ending in another extension than the selected type's ("x.pdf"
+    // while AbiWord is selected) gets AppKit's "Use .abw / Use .pdf" alert,
+    // like the Gtk dialog's mismatch warning, instead of becoming x.pdf.abw.
+    [savePanel setAllowsOtherFileTypes:YES];
     [m_accessoryViewsController setFileTypeLabel:fileTypeLabel];
 
     /* File-types PopUp:
