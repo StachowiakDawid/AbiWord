@@ -335,6 +335,19 @@ static NSString * s_symbolNameForToolbarId(XAP_Toolbar_Id tlbrid)
 
 @end
 
+/* What VoiceOver reads for a toolbar control: its short label, else its
+   tooltip. Icon-only controls have no title to fall back on, and only the
+   SF Symbol images carry a description. */
+static NSString * s_accessibilityLabel(EV_Toolbar_Label * pLabel)
+{
+	for (const char * s : { pLabel->getToolbarLabel(), pLabel->getToolTip(), pLabel->getStatusMsg() }) {
+		if (s && *s) {
+			return [NSString stringWithUTF8String:s];
+		}
+	}
+	return nil;
+}
+
 static NSImage * s_imageForToolbarItem(XAP_Toolbar_Id tlbrid, EV_Toolbar_Label * pLabel)
 {
 	if (NSString * symbol = s_symbolNameForToolbarId(tlbrid)) {
@@ -401,6 +414,7 @@ NSButton * EV_CocoaToolbar::_makeToolbarButton (int type, EV_Toolbar_Label * pLa
 
 		if (const char * szToolTip = pLabel->getToolTip())
 			[btn setToolTip:[NSString stringWithUTF8String:szToolTip]];
+		[btn setAccessibilityLabel:s_accessibilityLabel(pLabel)];
 
 		[parent addSubview:btn];
 	}
@@ -667,6 +681,7 @@ bool EV_CocoaToolbar::synthesize(void)
 					if (szToolTip) {
 						[comboBox setToolTip:[NSString stringWithUTF8String:szToolTip]];
 					}
+					[comboBox setAccessibilityLabel:s_accessibilityLabel(pLabel)];
 					s_centreInRow(comboBox, btnFrame.origin.x, fWidth, BTN_HEIGHT);
 
 					btnX += fWidth + 4.0;
@@ -685,6 +700,7 @@ bool EV_CocoaToolbar::synthesize(void)
 					if (szToolTip) {
 						[popupButton setToolTip:[NSString stringWithUTF8String:szToolTip]];
 					}
+					[popupButton setAccessibilityLabel:s_accessibilityLabel(pLabel)];
 					s_centreInRow(popupButton, btnFrame.origin.x, fWidth, BTN_HEIGHT);
 
 					btnX += fWidth + 4.0;
