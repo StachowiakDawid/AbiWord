@@ -400,8 +400,8 @@ bool XAP_CocoaFrameImpl::_updateTitle()
 }
 
 /*****************************************************************/
-bool XAP_CocoaFrameImpl::_runModalContextMenu(AV_View * /* pView */, const char * szMenuName,
-										   UT_sint32 /*x*/, UT_sint32 /*y*/)
+bool XAP_CocoaFrameImpl::_runModalContextMenu(AV_View * pView, const char * szMenuName,
+										   UT_sint32 x, UT_sint32 y)
 {
 	bool bResult = true;
 
@@ -410,7 +410,28 @@ bool XAP_CocoaFrameImpl::_runModalContextMenu(AV_View * /* pView */, const char 
 	m_pCocoaPopup = new EV_CocoaMenuPopup(szMenuName, m_szMenuLabelSetName);
 	if (m_pCocoaPopup && m_pCocoaPopup->synthesizeMenuPopup()) {
 		NSEvent *evt = [NSApp currentEvent];
-		[NSMenu popUpContextMenu:m_pCocoaPopup->getMenuHandle() withEvent:evt forView:[m_frameController getMainView]];
+		switch ([evt type]) {
+		case NSEventTypeLeftMouseDown:
+		case NSEventTypeRightMouseDown:
+		case NSEventTypeOtherMouseDown:
+			[NSMenu popUpContextMenu:m_pCocoaPopup->getMenuHandle() withEvent:evt forView:[m_frameController getMainView]];
+			break;
+		default:
+			// Opened from the keyboard (Shift+F10): at the insertion point,
+			// which x and y give in layout units of the document view.
+			if (pView && pView->getGraphics()) {
+				GR_Graphics * pG = pView->getGraphics();
+				NSView * view = [m_frameController textView];
+				// The graphics draw flipped in an unflipped view.
+				double py = pG->tduD(y);
+				if (![view isFlipped]) {
+					py = NSHeight([view bounds]) - py;
+				}
+				[m_pCocoaPopup->getMenuHandle() popUpMenuPositioningItem:nil
+					atLocation:NSMakePoint(pG->tduD(x), py) inView:view];
+			}
+			break;
+		}
 	}
 	XAP_Frame * pFrame = (XAP_Frame *)getFrame();
 	if (pFrame->getCurrentView()) {
