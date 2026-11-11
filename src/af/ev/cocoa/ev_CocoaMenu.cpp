@@ -30,6 +30,7 @@
 #include "ut_types.h"
 #include "ut_debugmsg.h"
 #include "ut_string.h"
+#include "ut_std_string.h"
 
 #include "xap_CocoaApp.h"
 #include "xap_CocoaFrame.h"
@@ -511,6 +512,15 @@ void EV_CocoaMenu::addToAppMenu(XAP_Menu_Id menuid, const EV_Menu_Action * pActi
 		if (!szLabelName)
 			break; // erk!
 		
+		std::string aboutLabel;
+		if (menuid == AP_MENU_ID_HELP_ABOUT)
+		{
+			// The application name is the package name, "abiword"; the
+			// app menu names the bundle, as in "Hide AbiWord".
+			aboutLabel = UT_std_string_sprintf(pLabel->getMenuLabel(),
+				[[NSRunningApplication currentApplication].localizedName UTF8String]);
+			szLabelName = aboutLabel.c_str();
+		}
 		NSString * itemName = convertToString(szLabelName, (menuid == AP_MENU_ID_HELP_ABOUT));
 		
 		switch (menuid)

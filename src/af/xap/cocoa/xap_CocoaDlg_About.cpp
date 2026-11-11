@@ -111,15 +111,17 @@ void XAP_CocoaDialog_About::event_URL(void)
 	XAP_App * app = XAP_App::getApp();
 	// we get all our strings from the application string set
 	const XAP_StringSet * pSS = app->getStringSet();
+	// The bundle's name, "AbiWord", not the package name "abiword".
+	const char * appName = [[NSRunningApplication currentApplication].localizedName UTF8String];
 	std::string s;
 	pSS->getValueUTF8(XAP_STRING_ID_DLG_ABOUT_Title, s);
-	[[self window] setTitle:[NSString stringWithFormat:[NSString stringWithUTF8String:s.c_str()], app->getApplicationName()]];	
+	[[self window] setTitle:[NSString stringWithFormat:[NSString stringWithUTF8String:s.c_str()], appName]];
 	[m_okBtn setTitle:[NSString stringWithUTF8String:pSS->getValue(XAP_STRING_ID_DLG_OK)]];
-	[m_appName setStringValue:[NSString stringWithUTF8String:app->getApplicationName()]];
+	[m_appName setStringValue:[NSString stringWithUTF8String:appName]];
 	pSS->getValueUTF8(XAP_STRING_ID_DLG_ABOUT_Version, s);
 	[m_versionLabel setStringValue:[NSString stringWithFormat:[NSString stringWithUTF8String:s.c_str()], XAP_App::s_szBuild_Version]];
 	[m_licenseText setString:[NSString stringWithFormat:@"%s\n\n%@", XAP_ABOUT_COPYRIGHT,
-					[NSString stringWithFormat:@XAP_ABOUT_GPL_LONG_LF, app->getApplicationName()]]];
+					[NSString stringWithFormat:@XAP_ABOUT_GPL_LONG_LF, appName]]];
 	[m_licenseText setEditable:NO];
 
 	// make sure the beginning of the text is shown

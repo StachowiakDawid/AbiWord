@@ -534,6 +534,40 @@ static XAP_CocoaAppController * XAP_AppController_Instance = nil;
 	return [key isEqualToString:@"orderedDocuments"];
 }
 
+/* MainMenu.nib is English only. Give the standard items it holds
+   AppKit's own translations, as the items AppKit adds itself have.
+   AppKit has none for "Hide AbiWord", "Hide Others" or "Quit AbiWord". */
+- (void)localizeStandardMenuItems
+{
+	NSBundle * appKit = [NSBundle bundleForClass:[NSApplication class]];
+	auto localize = ^(NSMenuItem * item, NSString * key, NSString * table) {
+		if (item) {
+			[item setTitle:[appKit localizedStringForKey:key value:[item title] table:table]];
+		}
+	};
+	auto itemWithAction = ^NSMenuItem * (NSMenu * menu, SEL action) {
+		for (NSMenuItem * item in [menu itemArray]) {
+			if ([item action] == action) {
+				return item;
+			}
+		}
+		return nil;
+	};
+	if (NSMenu * services = [NSApp servicesMenu]) {
+		NSMenu * appMenu = [services supermenu];
+		NSInteger index = [appMenu indexOfItemWithSubmenu:services];
+		if (index >= 0) {
+			localize([appMenu itemAtIndex:index], @"Services", @"Services");
+			[services setTitle:[[appMenu itemAtIndex:index] title]];
+		}
+		localize(itemWithAction(appMenu, @selector(unhideAllApplications:)), @"Show All", @"Common");
+	}
+	if (NSMenu * windows = [NSApp windowsMenu]) {
+		localize(itemWithAction(windows, @selector(performMiniaturize:)), @"Minimize", @"MenuCommands");
+		localize(itemWithAction(windows, @selector(arrangeInFront:)), @"Bring All to Front", @"MenuCommands");
+	}
+}
+
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification
 {
 	UT_UNUSED(aNotification);
@@ -543,6 +577,7 @@ static XAP_CocoaAppController * XAP_AppController_Instance = nil;
 		
 		[[NSFileManager defaultManager] changeCurrentDirectoryPath:desktop];
 	}
+	[self localizeStandardMenuItems];
 	if (NSMenu * menu = [NSApp windowsMenu]) {
 		if (NSMenuItem * item = [[NSMenuItem alloc] initWithTitle:@"Panels" action:nil keyEquivalent:@""])
 		{
