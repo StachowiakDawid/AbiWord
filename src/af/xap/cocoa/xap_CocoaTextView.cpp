@@ -347,8 +347,49 @@
 }
 
 
+/* The NSF1FunctionKey... character of an F-key press, or 0. Synthetic
+   events (remote desktop, automation) can come without characters: then
+   the key code tells the key. */
+static unichar s_functionKeyCharacter(NSEvent * event)
+{
+	NSString * chars = [event charactersIgnoringModifiers];
+	if ([chars length] == 1) {
+		unichar c = [chars characterAtIndex:0];
+		return (c >= NSF1FunctionKey && c <= NSF35FunctionKey) ? c : 0;
+	}
+	if ([chars length] != 0) {
+		return 0;
+	}
+	// kVK_F1...kVK_F20 from <HIToolbox/Events.h>
+	static const unsigned short keyCodes[] = {
+		122, 120, 99, 118, 96, 97, 98, 100, 101, 109,
+		103, 111, 105, 107, 113, 106, 64, 79, 80, 90 };
+	for (unsigned i = 0; i < G_N_ELEMENTS(keyCodes); i++) {
+		if (keyCodes[i] == [event keyCode]) {
+			return NSF1FunctionKey + i;
+		}
+	}
+	return 0;
+}
+
 - (void)doCommandBySelector:(SEL)aSelector
 {
+	// AppKit binds no function keys (noop:); AbiWord binds F1-F12, as
+	// F7 for spelling and Shift+F10 for the context menu.
+	NSEvent * event = [NSApp currentEvent];
+	AV_View * pView = m_pFrame->getCurrentView();
+	if (aSelector == @selector(noop:) && pView && [event type] == NSEventTypeKeyDown) {
+		unichar c = s_functionKeyCharacter(event);
+		if (c) {
+			NSEvent * fkey = [NSEvent keyEventWithType:NSEventTypeKeyDown location:[event locationInWindow]
+				modifierFlags:[event modifierFlags] timestamp:[event timestamp] windowNumber:[event windowNumber]
+				context:nil characters:[NSString stringWithCharacters:&c length:1]
+				charactersIgnoringModifiers:[NSString stringWithCharacters:&c length:1]
+				isARepeat:[event isARepeat] keyCode:[event keyCode]];
+			static_cast<ev_CocoaKeyboard *>(m_pFrame->getKeyboard())->keyPressEvent(pView, fkey);
+			return;
+		}
+	}
 	if ([self respondsToSelector:aSelector]) {
 		[self performSelector:aSelector withObject:self];
 		return;

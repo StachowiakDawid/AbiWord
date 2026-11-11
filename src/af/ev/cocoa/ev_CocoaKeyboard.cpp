@@ -232,6 +232,10 @@ static EV_EditBits s_mapVirtualKeyCodeToNVK(UT_uint32 keyCode)
 	default:
 		break;
 	}
+	// F1-F35 are in the same order in both sets: F7 spells, Shift+F10
+	// opens the context menu, as with the other front ends.
+	if (keyCode >= NSF1FunctionKey && keyCode <= NSF35FunctionKey)
+		return EV_NVK_F1 + (keyCode - NSF1FunctionKey);
 	return EV_NVK__IGNORE__;
 }
 
