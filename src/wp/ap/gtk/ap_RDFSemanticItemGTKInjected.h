@@ -81,7 +81,7 @@ class ABI_EXPORT AP_RDFSemanticItemGTKInjected : public ParentClass
     {
     }
 
-    void showEditorWindow( PD_RDFSemanticItemHandle c )
+    void showEditorWindow( const PD_RDFSemanticItemHandle& c ) override
     {
         UT_DEBUGMSG(("showEditorWindow(INJECTED) name:%s linksubj:%s\n",
                      c->name().c_str(), c->linkingSubject().toString().c_str() ));
@@ -114,7 +114,7 @@ class ABI_EXPORT AP_RDFSemanticItemGTKInjected : public ParentClass
         gtk_widget_show_all (d);
     }
 
-    void showEditorWindow( PD_RDFSemanticItems cl )
+    void showEditorWindow( const PD_RDFSemanticItems& cl ) override
     {
         UT_DEBUGMSG(("showEditorWindow() list... sz:%ld\n", cl.size() ));
 
@@ -130,7 +130,7 @@ class ABI_EXPORT AP_RDFSemanticItemGTKInjected : public ParentClass
         GtkNotebook* notebook = GTK_NOTEBOOK(gtk_notebook_new());
         gtk_container_add( GTK_CONTAINER(gtk_dialog_get_content_area( GTK_DIALOG (d))),
                            GTK_WIDGET(notebook) );
-        for( PD_RDFSemanticItems::iterator ci = cl.begin(); ci != cl.end(); ++ci )
+        for( PD_RDFSemanticItems::const_iterator ci = cl.begin(); ci != cl.end(); ++ci )
         {
             PD_RDFSemanticItemHandle c = *ci;
             GtkWidget* w = GTK_WIDGET(c->createEditor());
