@@ -4733,6 +4733,39 @@ static bool dlgEditLatexEquation(AV_View *pAV_View, EV_EditMethodCallData * /*pC
 
 /*****************************************************************/
 
+/*!
+ * The context of the hyperlink at the insertion point, the one its
+ * context menu is registered for: normal link, annotation or RDF anchor.
+ * EV_EMC_HYPERLINK if there is none.
+ */
+static EV_EditMouseContext s_hyperlinkContext(FV_View * pView)
+{
+	fp_Run * pRun = pView->getHyperLinkRun(pView->getPoint());
+	fp_HyperlinkRun * pHRun = pRun ? pRun->getHyperlink() : nullptr;
+	if (!pHRun)
+		return EV_EMC_HYPERLINK;
+
+	switch (pHRun->getHyperlinkType())
+	{
+	case HYPERLINK_NORMAL:
+#ifdef ENABLE_SPELL
+		if (pView->isTextMisspelled())
+			return EV_EMC_HYPERLINKMISSPELLED;
+#endif
+		return EV_EMC_HYPERLINKTEXT;
+	case HYPERLINK_ANNOTATION:
+#ifdef ENABLE_SPELL
+		if (pView->isTextMisspelled())
+			return EV_EMC_ANNOTATIONMISSPELLED;
+#endif
+		return EV_EMC_ANNOTATIONTEXT;
+	case HYPERLINK_RDFANCHOR:
+		return EV_EMC_RDFANCHORTEXT;
+	default:
+		return EV_EMC_HYPERLINK;
+	}
+}
+
 Defun1(contextMenu)
 {
 	CHECK_FRAME;
@@ -4748,6 +4781,8 @@ Defun1(contextMenu)
 
 	UT_sint32 xPos, yPos;
 	EV_EditMouseContext emc = pView->getInsertionPointContext(&xPos,&yPos);
+	if (emc == EV_EMC_HYPERLINK)
+		emc = s_hyperlinkContext(pView); // as contextHyperlink does
 
 	const char * szContextMenuName = XAP_App::getApp()->getMenuFactory()->FindContextMenu(emc);
 	if (!szContextMenuName)
@@ -4983,37 +5018,10 @@ Defun(contextHyperlink)
 	if (!pView->isXYSelected(pCallData->m_xPos, pCallData->m_yPos))
 		EX(warpInsPtToXY);
 	
-	fp_Run * pRun = pView->getHyperLinkRun(pView->getPoint());
-	UT_return_val_if_fail(pRun, false);
-	fp_HyperlinkRun * pHRun = pRun->getHyperlink();
-	
-	if(pHRun && pHRun->getHyperlinkType() == HYPERLINK_NORMAL) // normal hyperlinks
-	{
-#ifdef ENABLE_SPELL
-		if(pView->isTextMisspelled())
-			return s_doContextMenu_no_move(EV_EMC_HYPERLINKMISSPELLED,pCallData->m_xPos, pCallData->m_yPos,pView,pFrame);
-		else
-#endif
-			return s_doContextMenu_no_move(EV_EMC_HYPERLINKTEXT,pCallData->m_xPos, pCallData->m_yPos,pView,pFrame);
-	}
-
-	if(pHRun && pHRun->getHyperlinkType() == HYPERLINK_ANNOTATION) // annotations
-	{
-#ifdef ENABLE_SPELL
-		if(pView->isTextMisspelled())
-			return s_doContextMenu_no_move(EV_EMC_ANNOTATIONMISSPELLED,pCallData->m_xPos, pCallData->m_yPos,pView,pFrame);
-		else
-#endif
-			return s_doContextMenu_no_move(EV_EMC_ANNOTATIONTEXT,pCallData->m_xPos, pCallData->m_yPos,pView,pFrame);
-	}
-
-
-	if(pHRun && pHRun->getHyperlinkType() == HYPERLINK_RDFANCHOR)
-	{
-		UT_DEBUGMSG(("open rdf context menu\n"));
-		return s_doContextMenu_no_move(EV_EMC_RDFANCHORTEXT,pCallData->m_xPos, pCallData->m_yPos,pView,pFrame);
-	}
-	return false; // to avoid compilation warnings (should never be reached)
+	EV_EditMouseContext emc = s_hyperlinkContext(pView);
+	if (emc == EV_EMC_HYPERLINK)
+		return false;
+	return s_doContextMenu_no_move(emc, pCallData->m_xPos, pCallData->m_yPos, pView, pFrame);
 }
 
 #ifdef ENABLE_SPELL
