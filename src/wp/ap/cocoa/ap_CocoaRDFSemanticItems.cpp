@@ -18,20 +18,23 @@
  */
 
 /*
- * Cocoa counterpart of ap_RDFSemanticItemFactoryGTK.cpp and
- * ap_RDFSemanticItemGTKInjected.cpp: the semantic item (contact, event,
- * location) factory and the RDF dialogs that are not dialog-factory
- * dialogs (RDF > Semantic Item > Create Reference, RDF > Stylesheet >
- * Settings). Without the factory the document has no semantic items.
- * The Gtk editors for single items are not ported yet: createEditor()
- * returns nothing, as PD_RDFSemanticItem::showEditorWindow() does.
+ * Cocoa counterpart of ap_RDFSemanticItemFactoryGTK.cpp,
+ * ap_RDFContactGTK.cpp, ap_RDFEventGTK.cpp, ap_RDFLocationGTK.cpp and
+ * ap_RDFSemanticItemGTKInjected.*: the semantic item (contact, event,
+ * location) factory with the item editors, and the RDF dialogs that are
+ * not dialog-factory dialogs (RDF > Semantic Item > Create Reference,
+ * RDF > Stylesheet > Settings). Without the factory the document has no
+ * semantic items.
  */
 
 #import <Cocoa/Cocoa.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 #include <string>
 #include <vector>
 
+#include "ut_std_string.h"
+#include "ut_conversion.h"
 #include "xap_App.h"
 #include "xap_CocoaDialog_Utilities.h"
 #include "pd_Document.h"
@@ -42,37 +45,316 @@
 #include "ap_RDFEvent.h"
 #include "ap_RDFLocation.h"
 
+/* Ends the modal session of an editor panel with the clicked button's tag. */
+@interface AP_CocoaSemItemPanelTarget : NSObject <NSWindowDelegate>
+@end
+
+@implementation AP_CocoaSemItemPanelTarget
+- (void)buttonAction:(NSButton *)sender
+{
+	[NSApp stopModalWithCode:sender.tag];
+}
+- (void)windowWillClose:(NSNotification *)notification
+{
+	UT_UNUSED(notification);
+	[NSApp stopModalWithCode:NSModalResponseCancel];
+}
+@end
+
 namespace {
 
 /*****************************************************************/
-/* semantic items                                                */
+/* semantic item editors                                         */
 /*****************************************************************/
 
-class AP_RDFContactCocoa : public AP_RDFContact
+/* Runs a modal panel around content with an OK button; true if OK was
+   pressed, false if the window was closed. */
+bool runEditorPanel(NSView * content, const std::string & title)
+{
+	AP_CocoaSemItemPanelTarget * target = [[AP_CocoaSemItemPanelTarget alloc] init];
+	NSButton * ok = [NSButton buttonWithTitle:LocalizedLabel(XAP_App::getApp()->getStringSet(), XAP_STRING_ID_DLG_OK)
+	                                   target:target action:@selector(buttonAction:)];
+	ok.tag = NSModalResponseOK;
+	ok.keyEquivalent = @"\r";
+
+	NSStackView * stack = [NSStackView stackViewWithViews:@[content, ok]];
+	stack.orientation = NSUserInterfaceLayoutOrientationVertical;
+	stack.alignment = NSLayoutAttributeTrailing;
+	stack.spacing = 16;
+	stack.translatesAutoresizingMaskIntoConstraints = NO;
+	NSView * container = [[NSView alloc] initWithFrame:NSZeroRect];
+	[container addSubview:stack];
+	[NSLayoutConstraint activateConstraints:@[
+		[stack.leadingAnchor constraintEqualToAnchor:container.leadingAnchor constant:20],
+		[stack.trailingAnchor constraintEqualToAnchor:container.trailingAnchor constant:-20],
+		[stack.topAnchor constraintEqualToAnchor:container.topAnchor constant:20],
+		[stack.bottomAnchor constraintEqualToAnchor:container.bottomAnchor constant:-20],
+	]];
+
+	NSPanel * panel = [[NSPanel alloc] initWithContentRect:NSZeroRect
+	                                             styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
+	                                               backing:NSBackingStoreBuffered
+	                                                 defer:YES];
+	panel.releasedWhenClosed = NO;
+	panel.contentView = container;
+	panel.title = [NSString stringWithUTF8String:title.c_str()];
+	panel.delegate = target;
+	[panel center];
+	NSModalResponse response = [NSApp runModalForWindow:panel];
+	panel.delegate = nil;
+	[panel close];
+	return response == NSModalResponseOK;
+}
+
+/* The fields of one item editor, as a label | text field grid. */
+class EditorFields
 {
 public:
-	AP_RDFContactCocoa(PD_DocumentRDFHandle rdf, PD_ResultBindings_t::iterator & it)
-		: AP_RDFContact(rdf, it) {}
-	virtual void * createEditor() override { return nullptr; }
-	virtual void updateFromEditorData(PD_DocumentRDFMutationHandle) override {}
+	NSTextField * add(NSString * label, const std::string & value)
+	{
+		NSTextField * field = [NSTextField textFieldWithString:[NSString stringWithUTF8String:value.c_str()]];
+		[field.widthAnchor constraintGreaterThanOrEqualToConstant:300].active = YES;
+		[m_rows addObject:@[[NSTextField labelWithString:label], field]];
+		return field;
+	}
+	NSView * view()
+	{
+		NSGridView * grid = [NSGridView gridViewWithViews:m_rows];
+		[grid columnAtIndex:0].xPlacement = NSGridCellPlacementTrailing;
+		grid.rowAlignment = NSGridRowAlignmentFirstBaseline;
+		return grid;
+	}
+private:
+	NSMutableArray * m_rows = [NSMutableArray array];
 };
 
-class AP_RDFEventCocoa : public AP_RDFEvent
+std::string text(NSTextField * field)
+{
+	return field ? std::string(field.stringValue.UTF8String) : std::string();
+}
+
+/* Same role as AP_RDFSemanticItemGTKInjected: editor windows, import
+   completion and file choosers for the semantic item classes. */
+template <class ParentClass>
+class AP_RDFSemanticItemCocoaInjected : public ParentClass
 {
 public:
-	AP_RDFEventCocoa(PD_DocumentRDFHandle rdf, PD_ResultBindings_t::iterator & it)
-		: AP_RDFEvent(rdf, it) {}
-	virtual void * createEditor() override { return nullptr; }
-	virtual void updateFromEditorData(PD_DocumentRDFMutationHandle) override {}
+	using ParentClass::ParentClass;
+
+	virtual void showEditorWindow(const PD_RDFSemanticItemHandle & c) override
+	{
+		NSView * editor = (__bridge NSView *)c->createEditor();
+		// Like the Gtk dialog, closing the window also keeps the edits.
+		runEditorPanel(editor, c->getDisplayLabel());
+		c->updateFromEditorData();
+	}
+
+	virtual void showEditorWindow(const PD_RDFSemanticItems & cl) override
+	{
+		NSTabView * tabs = [[NSTabView alloc] initWithFrame:NSZeroRect];
+		for (const PD_RDFSemanticItemHandle & c : cl) {
+			NSTabViewItem * tab = [[NSTabViewItem alloc] init];
+			tab.label = [NSString stringWithUTF8String:c->getDisplayLabel().c_str()];
+			tab.view = (__bridge NSView *)c->createEditor();
+			[tabs addTabViewItem:tab];
+		}
+		// Like the Gtk dialog, closing the window drops the edits.
+		if (runEditorPanel(tabs, "")) {
+			for (const PD_RDFSemanticItemHandle & c : cl) {
+				c->updateFromEditorData();
+			}
+		}
+	}
+
+	virtual void importFromDataComplete(std::istream & /*iss*/, PD_DocumentRDFHandle /*rdf*/,
+	                                    PD_DocumentRDFMutationHandle m,
+	                                    PD_DocumentRange * /*pDocRange*/ = nullptr) override
+	{
+		// The editor is filled from the imported member values; committing
+		// it writes them to the document RDF.
+		this->createEditor();
+		this->updateFromEditorData(m);
+	}
+
+	virtual std::string getImportFromFileName(const std::string & filename_const,
+	                                          std::list<std::pair<std::string, std::string>> types) const override
+	{
+		NSOpenPanel * panel = [NSOpenPanel openPanel];
+		panel.allowedContentTypes = contentTypes(types);
+		if ([panel runModal] != NSModalResponseOK) {
+			return filename_const;
+		}
+		return panel.URL.path.UTF8String;
+	}
+
+	virtual std::string getExportToFileName(const std::string & filename_const, std::string defaultExtension,
+	                                        std::list<std::pair<std::string, std::string>> types) const override
+	{
+		if (!filename_const.empty()) {
+			return filename_const;
+		}
+		NSSavePanel * panel = [NSSavePanel savePanel];
+		panel.allowedContentTypes = contentTypes(types);
+		if ([panel runModal] != NSModalResponseOK) {
+			return filename_const;
+		}
+		std::string filename = panel.URL.path.UTF8String;
+		if (!ends_with(filename, defaultExtension)) {
+			filename += defaultExtension;
+		}
+		return filename;
+	}
+
+private:
+	static NSArray<UTType *> * contentTypes(const std::list<std::pair<std::string, std::string>> & types)
+	{
+		NSMutableArray<UTType *> * ret = [NSMutableArray array];
+		for (const auto & t : types) {
+			if (UTType * type = [UTType typeWithFilenameExtension:[NSString stringWithUTF8String:t.second.c_str()]]) {
+				[ret addObject:type];
+			}
+		}
+		return ret;
+	}
 };
 
-class AP_RDFLocationCocoa : public AP_RDFLocation
+class AP_RDFContactCocoa : public AP_RDFSemanticItemCocoaInjected<AP_RDFContact>
 {
 public:
-	AP_RDFLocationCocoa(PD_DocumentRDFHandle rdf, PD_ResultBindings_t::iterator & it, bool isGeo84)
-		: AP_RDFLocation(rdf, it, isGeo84) {}
-	virtual void * createEditor() override { return nullptr; }
-	virtual void updateFromEditorData(PD_DocumentRDFMutationHandle) override {}
+	using AP_RDFSemanticItemCocoaInjected::AP_RDFSemanticItemCocoaInjected;
+
+	virtual void * createEditor() override
+	{
+		// Same fields and labels as pd_RDFContact.ui.
+		EditorFields f;
+		w_name = f.add(@"Name", m_name);
+		w_nick = f.add(@"Nick", m_nick);
+		w_email = f.add(@"EMail", m_email);
+		w_homePage = f.add(@"Home Page", m_homePage);
+		w_imageUrl = f.add(@"Image", m_imageUrl);
+		w_phone = f.add(@"Phone", m_phone);
+		m_editor = f.view();
+		return (__bridge void *)m_editor;
+	}
+
+	virtual void updateFromEditorData(PD_DocumentRDFMutationHandle m) override
+	{
+		// Same as AP_RDFContactGTK::updateFromEditorData().
+		if (m_linkingSubject.toString().empty()) {
+			m_linkingSubject = XAP_App::getApp()->createUUIDString();
+		}
+		std::string predBase = "http://xmlns.com/foaf/0.1/";
+		setRDFType(m, predBase + "Person");
+		updateTriple(m, m_name, text(w_name), predBase + "name");
+		updateTriple(m, m_nick, text(w_nick), predBase + "nick");
+		updateTriple(m, m_email, text(w_email), predBase + "mbox");
+		updateTriple(m, m_homePage, text(w_homePage), predBase + "homepage");
+		updateTriple(m, m_imageUrl, text(w_imageUrl), predBase + "image");
+		updateTriple(m, m_phone, text(w_phone), predBase + "phone");
+		// No Jabber ID field: the Gtk editor has none either.
+	}
+
+private:
+	NSView * m_editor = nil;
+	NSTextField * w_name = nil;
+	NSTextField * w_nick = nil;
+	NSTextField * w_email = nil;
+	NSTextField * w_homePage = nil;
+	NSTextField * w_imageUrl = nil;
+	NSTextField * w_phone = nil;
+};
+
+class AP_RDFEventCocoa : public AP_RDFSemanticItemCocoaInjected<AP_RDFEvent>
+{
+public:
+	using AP_RDFSemanticItemCocoaInjected::AP_RDFSemanticItemCocoaInjected;
+
+	virtual void * createEditor() override
+	{
+		// Same fields and labels as pd_RDFEvent.ui.
+		EditorFields f;
+		w_summary = f.add(@"Summary", m_summary);
+		w_location = f.add(@"Location", m_location);
+		w_desc = f.add(@"Description", m_desc);
+		w_dtstart = f.add(@"Start", toTimeString(m_dtstart));
+		w_dtend = f.add(@"End", toTimeString(m_dtend));
+		m_editor = f.view();
+		return (__bridge void *)m_editor;
+	}
+
+	virtual void updateFromEditorData(PD_DocumentRDFMutationHandle m) override
+	{
+		// Same as AP_RDFEventGTK::updateFromEditorData().
+		if (m_linkingSubject.toString().empty()) {
+			m_linkingSubject = XAP_App::getApp()->createUUIDString();
+		}
+		std::string predBase = "http://www.w3.org/2002/12/cal/icaltzd#";
+		setRDFType(m, predBase + "Vevent");
+		updateTriple(m, m_uid, std::string(m_uid), predBase + "uid");
+		updateTriple(m, m_summary, text(w_summary), predBase + "summary");
+		updateTriple(m, m_location, text(w_location), predBase + "location");
+		updateTriple(m, m_desc, text(w_desc), predBase + "description");
+		updateTriple(m, m_dtstart, parseTimeString(text(w_dtstart)), predBase + "dtstart");
+		updateTriple(m, m_dtend, parseTimeString(text(w_dtend)), predBase + "dtend");
+	}
+
+private:
+	NSView * m_editor = nil;
+	NSTextField * w_summary = nil;
+	NSTextField * w_location = nil;
+	NSTextField * w_desc = nil;
+	NSTextField * w_dtstart = nil;
+	NSTextField * w_dtend = nil;
+};
+
+class AP_RDFLocationCocoa : public AP_RDFSemanticItemCocoaInjected<AP_RDFLocation>
+{
+public:
+	using AP_RDFSemanticItemCocoaInjected::AP_RDFSemanticItemCocoaInjected;
+
+	virtual void * createEditor() override
+	{
+		// Same fields and labels as pd_RDFLocation.ui (without the map).
+		EditorFields f;
+		w_name = f.add(@"Name", m_name);
+		w_desc = f.add(@"Description", m_desc);
+		w_dlat = f.add(@"Lat", tostr(m_dlat));
+		w_dlong = f.add(@"Long", tostr(m_dlong));
+		m_editor = f.view();
+		return (__bridge void *)m_editor;
+	}
+
+	virtual void updateFromEditorData(PD_DocumentRDFMutationHandle m) override
+	{
+		// Same as AP_RDFLocationGTK::updateFromEditorData().
+		std::string dcBase = "http://purl.org/dc/elements/1.1/";
+		std::string rdfBase = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+		if (m_linkingSubject.toString().empty()) {
+			m_linkingSubject = XAP_App::getApp()->createUUIDString();
+		}
+		if (!m_isGeo84 && m_joiner.empty()) {
+			m_joiner = PD_Object(XAP_App::getApp()->createUUIDString());
+			m->add(linkingSubject(), PD_URI(rdfBase + "rest"), m_joiner);
+		}
+		updateTriple(m, m_desc, text(w_desc), dcBase + "title");
+		double newLat = toType<double>(text(w_dlat));
+		double newLong = toType<double>(text(w_dlong));
+		if (m_isGeo84) {
+			std::string wgs84Base = "http://www.w3.org/2003/01/geo/wgs84_pos#";
+			updateTriple(m, m_dlat, newLat, wgs84Base + "lat");
+			updateTriple(m, m_dlong, newLong, wgs84Base + "long");
+		} else {
+			updateTriple(m, m_dlat, newLat, rdfBase + "first", linkingSubject());
+			updateTriple(m, m_dlong, newLong, rdfBase + "first", m_joiner);
+		}
+	}
+
+private:
+	NSView * m_editor = nil;
+	NSTextField * w_name = nil;
+	NSTextField * w_desc = nil;
+	NSTextField * w_dlat = nil;
+	NSTextField * w_dlong = nil;
 };
 
 class AP_SemanticItemFactoryCocoa : public PD_SemanticItemFactory
