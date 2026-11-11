@@ -1765,12 +1765,10 @@ PD_RDFSemanticItem::createSemanticItem( PD_DocumentRDFHandle rdf,
     {
         return PD_RDFSemanticItemHandle( PD_DocumentRDF::getSemanticItemFactory()->createEvent( rdf, it ));
     }
-#ifdef WITH_CHAMPLAIN
     if (semanticClass == "Location")
     {
         return PD_RDFSemanticItemHandle( PD_DocumentRDF::getSemanticItemFactory()->createLocation( rdf, it ));
     }
-#endif
     return PD_RDFSemanticItemHandle();
 }
 
@@ -2414,8 +2412,10 @@ PD_RDFLocation::exportToFile( const std::string& filename_const ) const
 std::set< std::string >
 PD_RDFLocation::getXMLIDs() const
 {
-    std::set< std::string > ret;
-    
+    // The ids linked to the location itself, as insert() links them,
+    // and those of the subjects referring to it.
+    std::set< std::string > ret = PD_RDFSemanticItem::getXMLIDs();
+
     std::stringstream ss;
     ss << "prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  " << std::endl
        << "prefix foaf: <http://xmlns.com/foaf/0.1/> " << std::endl
@@ -5186,13 +5186,11 @@ PD_DocumentRDF::addLocations( PD_RDFLocations& ret,
         uniqfilter.insert(n);
         UT_DEBUGMSG(("addLocations() n:%s\n", n.c_str() ));
 
-#ifdef WITH_CHAMPLAIN
+        // The map in the Gtk editor is optional (WITH_CHAMPLAIN), the
+        // locations are not.
         PD_RDFLocation* newItem = PD_DocumentRDF::getSemanticItemFactory()->createLocation( rdf, it, isGeo84 );
         PD_RDFLocationHandle h( newItem );
         ret.push_back( h );
-#else
-    UT_UNUSED( isGeo84 );
-#endif
     }
     return ret;
 }
