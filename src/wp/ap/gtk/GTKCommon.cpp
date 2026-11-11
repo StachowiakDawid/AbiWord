@@ -220,8 +220,12 @@ void setEntry( GtkEntry* w, time_t v )
 }
 void setEntry( GtkEntry* w, double v )
 {
-    UT_DEBUGMSG(("setEntry(double) v:%f str:%s\n", v, tostr(v).c_str()));
-    XAP_gtk_entry_set_text(GTK_ENTRY(w), tostr(v).c_str());
+    // Not tostr(): the one in scope here takes a long, and a latitude
+    // of 52.4064 became 52.
+    std::stringstream ss;
+    ss << v;
+    UT_DEBUGMSG(("setEntry(double) v:%f str:%s\n", v, ss.str().c_str()));
+    XAP_gtk_entry_set_text(GTK_ENTRY(w), ss.str().c_str());
 }
 
 
