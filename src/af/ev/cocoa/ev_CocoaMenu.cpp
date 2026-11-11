@@ -424,7 +424,18 @@ void EV_CocoaMenu::buildAppMenu()
 				break;
 			}
 		}
-		if ((!m_AppMenuCurrent && !m_bContextMenu) 
+		if (bNewAppMenuItem && (m_AppMenuCurrent == XAP_CocoaAppMenu_Window))
+		{
+			// The XP Window menu ("&Documents") is replaced by the standard
+			// macOS one, but its translation names that menu: "Fenster",
+			// "Fenêtre"... Keep the English "Window", the macOS convention.
+			const char ** data = getLabelName(XAP_App::getApp(), pAction, pLabel);
+			if (data && data[0] && strcmp(pLabel->getMenuLabel(), "&Documents") != 0)
+			{
+				[pController setTitle:convertToString(data[0]) forMenu:XAP_CocoaAppMenu_Window];
+			}
+		}
+		if ((!m_AppMenuCurrent && !m_bContextMenu)
 			|| (m_AppMenuCurrent == XAP_CocoaAppMenu_Window)) // I want to skip window-menu entries
 		{
 			continue;
